@@ -1,0 +1,133 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+function cst_schedule_cron() {
+    if ( ! wp_next_scheduled( 'cst_hourly_event' ) ) {
+        wp_schedule_event( time(), 'hourly', 'cst_hourly_event' );
+    }
+    if ( ! wp_next_scheduled( 'cst_daily_event' ) ) {
+        wp_schedule_event( time(), 'daily', 'cst_daily_event' );
+    }
+}
+
+function cst_clear_cron() {
+    $hourly_timestamp = wp_next_scheduled( 'cst_hourly_event' );
+    if ( $hourly_timestamp ) {
+        wp_unschedule_event( $hourly_timestamp, 'cst_hourly_event' );
+    }
+    $daily_timestamp = wp_next_scheduled( 'cst_daily_event' );
+    if ( $daily_timestamp ) {
+        wp_unschedule_event( $daily_timestamp, 'cst_daily_event' );
+    }
+}
+
+add_action( 'cst_hourly_event', 'cst_send_reminders' );
+add_action( 'cst_daily_event', 'cst_cleanup_old_meta' );
+
+function cst_cleanup_old_meta() {
+    global $wpdb;
+    $two_days_ago = wp_date( 'Y-m-d H:i:s', time() - ( 2 * DAY_IN_SECONDS ) );
+    
+    // Delete _cst_reminder_sent for old posts to keep db clean
+    $wpdb->query( $wpdb->prepare(
+        "DELETE pm FROM {$wpdb->postmeta} pm
+         JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+         WHERE pm.meta_key = '_cst_reminder_sent'
+           AND p.post_date < %s",
+        $two_days_ago
+    ) );
+}
+
+function cst_send_reminders() {
+    if (!\Convoca\Core\Utils::acquire_lock('cst_reminder_cron', 120)) {
+        return;
+    }
+    try {
+    // Find turnos starting in the next 2 hours
+    $now = time();
+    $in_two_hours = $now + ( 2 * HOUR_IN_SECONDS );
+    
+    $args = array(
+        'post_type'      => 'centro_turno',
+        'posts_per_page' => -1,
+        'post_status'    => 'publish',
+        'date_query'     => array(
+            array(
+                'after'     => wp_date( 'Y-m-d H:i:s', $now ),
+                'before'    => wp_date( 'Y-m-d H:i:s', $in_two_hours ),
+                'inclusive' => true,
+            ),
+        ),
+        'meta_query' => array(
+            'relation' => 'AND',
+            array(
+                'key'     => '_id_responsable',
+                'value'   => 0,
+                'compare' => '>',
+            ),
+            array(
+                'relation' => 'OR',
+                array(
+                    'key'     => '_estado',
+                    'value'   => 'abierto_disponible',
+                    'compare' => '=',
+                ),
+                array(
+                    'key'     => '_estado',
+                    'value'   => 'abierto_ocupado',
+                    'compare' => '=',
+                ),
+            ),
+            array(
+                'key'     => '_estado_real',
+                'value'   => array('realizado', 'no_asistio'),
+                'compare' => 'NOT IN',
+            )
+        )
+    );
+
+    $turnos = new WP_Query( $args );
+    
+    if ( $turnos->have_posts() ) {
+        while ( $turnos->have_posts() ) {
+            $turnos->the_post();
+            $post_id = get_the_ID();
+            
+            // Avoid sending multiple reminders for the same turno
+            if ( get_post_meta( $post_id, '_cst_reminder_sent', true ) ) {
+                continue;
+            }
+            
+            // Re-verify state: turno might have been cancelled or reassigned after the query
+            $current_estado = get_post_meta( $post_id, '_estado', true );
+            if ( $current_estado === 'cerrado' || empty( $current_estado ) ) {
+                continue;
+            }
+            $current_responsable = (int) get_post_meta( $post_id, '_id_responsable', true );
+            if ( $current_responsable <= 0 ) {
+                continue;
+            }
+            
+            $user = get_userdata( $current_responsable );
+            
+            if ( $user ) {
+                $subject = __( 'Recordatorio de turno en Centro Social', 'convoca-shifts' );
+                $message = sprintf(
+                    __( 'Hola %s,\n\nTe recordamos que tienes un turno asignado para abrir el centro pronto:\n\nTurno: %s\nHora de inicio: %s\n\n¡Gracias por tu voluntariado!', 'convoca-shifts' ),
+                    $user->first_name,
+                    get_the_title(),
+                    get_the_date( 'Y-m-d H:i' )
+                );
+                
+                wp_mail( $user->user_email, $subject, $message );
+                
+                // Mark as sent
+                update_post_meta( $post_id, '_cst_reminder_sent', 1 );
+            }
+        }
+        wp_reset_postdata();
+        }
+    } finally {
+        \Convoca\Core\Utils::release_lock('cst_reminder_cron');
+    }
+}
