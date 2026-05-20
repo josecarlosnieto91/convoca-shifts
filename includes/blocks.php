@@ -69,8 +69,8 @@ function cst_should_load_assets()
                 continue;
 
             foreach ($widgets as $widget_id) {
-                $base = _get_widget_id_base($widget_id);
-                $number = _get_widget_id_number($widget_id);
+                $base = preg_replace("/-\d+$/", "", $widget_id);
+                $num_m = []; $number = preg_match("/-(\d+)$/", $widget_id, $num_m) ? (int)$num_m[1] : 0;
                 $widget_instances = get_option('widget_' . $base);
 
                 if (isset($widget_instances[$number])) {
