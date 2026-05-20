@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Convoca Shifts
- * Plugin URI: https://biodevas.org
+ * Plugin URI: https://convoca.org
  * Description: Volunteer shift management for community centers.
  * Version: 2.5.0
  * Author: Jose Carlos Nieto Ramos
@@ -223,7 +223,7 @@ function cst_check_required_role() {
 
     if ( ! get_role( 'voluntario_aprobado' ) ) {
         ?>
-        <div class="biodevas-alert biodevas-alert--warning" style="display:block;margin-bottom:20px;">
+        <div class="convoca-alert convoca-alert--warning" style="display:block;margin-bottom:20px;">
             <p><?php _e( '<strong>Atención:</strong> El rol "Voluntario Aprobado" no existe. Este rol es necesario para el funcionamiento de Centro Social Turnos y debería ser creado por el plugin Biodevas Members. Por favor, asegúrate de que Biodevas Members está activo y ha sido reactivado recientemente.', 'convoca-shifts' ); ?>
             <a href="?cst_dismiss_role_notice=1" style="float:right;text-decoration:none;color:#999;">✕</a></p>
         </div>

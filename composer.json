@@ -1,5 +1,5 @@
 {
-    "name": "biodevas/convoca-shifts",
+    "name": "convoca/convoca-shifts",
     "description": "Convoca Plugin",
     "type": "wordpress-plugin",
     "require": {

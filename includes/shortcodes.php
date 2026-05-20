@@ -30,7 +30,7 @@ function cst_register_scripts() {
 }
 
 // Shortcode: [calendario_centro]
-add_shortcode( 'calendario_centro', 'cst_shortcode_calendario_centro' );
+add_shortcode( 'convoca_calendario', 'cst_shortcode_calendario_centro' );
 function cst_shortcode_calendario_centro() {
     wp_enqueue_style( 'cst-estilo' );
     wp_enqueue_script( 'cst-calendario' );
@@ -133,7 +133,7 @@ function cst_render_frontend_modal() {
 }
 
 // Shortcode: [boton_apuntarse]
-add_shortcode( 'boton_apuntarse', 'cst_shortcode_boton_apuntarse' );
+add_shortcode( 'convoca_boton_apuntarse', 'cst_shortcode_boton_apuntarse' );
 function cst_shortcode_boton_apuntarse() {
     if ( ! is_user_logged_in() || ( ! current_user_can( 'gestionar_mis_turnos' ) && ! current_user_can( 'manage_options' ) ) ) {
         return '';
@@ -192,7 +192,7 @@ function cst_shortcode_boton_apuntarse() {
 }
 
 // Shortcode: [resumen_turnos]
-add_shortcode( 'resumen_turnos', 'cst_shortcode_resumen_turnos' );
+add_shortcode( 'convoca_resumen_turnos', 'cst_shortcode_resumen_turnos' );
 function cst_shortcode_resumen_turnos($atts = []) {
     $atts = shortcode_atts(['semana' => 'this'], $atts);
     wp_enqueue_style( 'cst-estilo' );
@@ -297,7 +297,7 @@ function cst_shortcode_resumen_turnos($atts = []) {
 }
 
 // Shortcode: [proximos_turnos cantidad="5"]
-add_shortcode( 'proximos_turnos', 'cst_shortcode_proximos_turnos' );
+add_shortcode( 'convoca_proximos_turnos', 'cst_shortcode_proximos_turnos' );
 function cst_shortcode_proximos_turnos( $atts ) {
     $atts = shortcode_atts( array(
         'cantidad' => 5,
