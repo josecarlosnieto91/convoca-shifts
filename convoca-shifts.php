@@ -121,7 +121,7 @@ function cst_create_log_table() {
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
     dbDelta( $sql );
-    $wpdb->query("ALTER TABLE $table_name ADD INDEX created_at (created_at)");
+    $wpdb->query("// Index already created by CREATE TABLE");
 }
 
 /**
