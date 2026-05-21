@@ -19,7 +19,26 @@
     <properties>
       <property name="text_domain" type="array">
         <element value="convoca"/>
+        <element value="convoca-shifts"/>
       </property>
     </properties>
+  </rule>
+  <rule ref="WordPress.PHP.YodaConditions">
+    <exclude name="WordPress.PHP.YodaConditions.NotYoda"/>
+  </rule>
+  <rule ref="Universal.Operators.DisallowShortTernary">
+    <exclude name="Universal.Operators.DisallowShortTernary.Found"/>
+  </rule>
+  <rule ref="Squiz.Commenting">
+    <exclude name="Squiz.Commenting.ClassComment"/>
+    <exclude name="Squiz.Commenting.FunctionComment"/>
+    <exclude name="Squiz.Commenting.FileComment"/>
+    <exclude name="Squiz.Commenting.VariableComment"/>
+  </rule>
+  <rule ref="Generic.Files.OneObjectStructurePerFile">
+    <exclude name="Generic.Files.OneObjectStructurePerFile.MultipleFound"/>
+  </rule>
+  <rule ref="Universal.Files.SeparateFunctionsFromOO">
+    <exclude name="Universal.Files.SeparateFunctionsFromOO.Mixed"/>
   </rule>
 </ruleset>
