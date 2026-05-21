@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Convoca Shifts
- * Plugin URI: https://convoca.org
+ * Plugin URI: https://convoca.org.
  * Description: Volunteer shift management for community centers.
  * Version: 2.5.0
  * Author: Jose Carlos Nieto Ramos
@@ -10,7 +10,7 @@
  * Requires PHP: 8.1
  * Tested up to: 6.5
  * License: GPL2
- * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html.
  * Requires Plugins: convoca-core, convoca-members
  */
 
@@ -129,7 +129,7 @@ function cst_create_log_table() {
 
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 	dbDelta( $sql );
-	$wpdb->query( '// Index already created by CREATE TABLE' );
+	$wpdb->query( '// Index already created by CREATE TABLE' ); .
 }
 
 /**

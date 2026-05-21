@@ -46,7 +46,7 @@ function cst_voluntarios_pendientes_page() {
 			$user = get_userdata( $user_id );
 			if ( $user ) {
 				$user->set_role( 'subscriber' );
-				update_user_meta( $user_id, '_cst_aprobado', -1 ); // Mark as revoked/rejected but keep meta for history
+				update_user_meta( $user_id, '_cst_aprobado', -1 ); // Mark as revoked/rejected but keep meta for history.
 
 				// Unassign future shifts.
 				$futuros = get_posts(

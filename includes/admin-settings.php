@@ -76,7 +76,7 @@ function cst_settings_page() {
 
 				<div class="biodevas-field">
 					<label for="cst_calendar_page_url"><?php _e( 'URL de la página del Calendario', 'convoca-shifts' ); ?></label>
-					<input type="url" id="cst_calendar_page_url" name="cst_calendar_page_url" value="<?php echo esc_attr( get_option( 'cst_calendar_page_url' ) ); ?>" placeholder="https://tuweb.com/calendario">
+					<input type="url" id="cst_calendar_page_url" name="cst_calendar_page_url" value="<?php echo esc_attr( get_option( 'cst_calendar_page_url' ) ); ?>" placeholder="https://tuweb.com/calendario">.
 					<small class="biodevas-small"><?php _e( 'URL donde has pegado el shortcode [calendario_centro].', 'convoca-shifts' ); ?></small>
 				</div>
 

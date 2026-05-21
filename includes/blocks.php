@@ -23,7 +23,7 @@ function cst_enqueue_block_assets() {
 		wp_enqueue_script( 'cst-calendario' );
 	}
 }
-add_action( 'wp_enqueue_scripts', 'cst_enqueue_block_assets' ); // Changed from enqueue_block_assets for better frontend coverage
+add_action( 'wp_enqueue_scripts', 'cst_enqueue_block_assets' ); // Changed from enqueue_block_assets for better frontend coverage.
 
 /**
  * Robust detection of CST presence in current page.
@@ -134,7 +134,7 @@ function cst_register_blocks() {
 	$common_args = array(
 		'apiVersion'    => 3,
 		'category'      => 'biodevas-turnos',
-		'editor_script' => 'cst-blocks-js', // This links the JS to the blocks
+		'editor_script' => 'cst-blocks-js', // This links the JS to the blocks.
 	);
 
 	// 1. Calendario.

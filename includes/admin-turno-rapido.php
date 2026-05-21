@@ -166,7 +166,7 @@ function cst_turno_rapido_page() {
 			['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].forEach(d => html += `<th>${d}</th>`);
 			html += '</tr></thead><tbody><tr>';
 
-			const firstDay = (new Date(year, month, 1).getDay() + 6) % 7; // Monday start
+			const firstDay = (new Date(year, month, 1).getDay() + 6) % 7; // Monday start.
 			const daysInMonth = new Date(year, month + 1, 0).getDate();
 			
 			const today = new Date();

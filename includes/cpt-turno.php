@@ -114,7 +114,7 @@ function cst_register_cpt_centro_turno() {
 		'labels'              => $labels,
 		'supports'            => array( 'title', 'editor', 'custom-fields' ),
 		'hierarchical'        => false,
-		'public'              => false, // We use it via REST/FullCalendar mainly
+		'public'              => false, // We use it via REST/FullCalendar mainly.
 		'show_ui'             => true,
 		'show_in_menu'        => true,
 		'menu_position'       => 25,
@@ -157,7 +157,7 @@ function cst_register_cpt_centro_turno() {
 		array(
 			'show_in_rest' => true,
 			'single'       => true,
-			'type'         => 'string', // format: Y-m-d H:i:s
+			'type'         => 'string', // format: Y-m-d H:i:s.
 		)
 	);
 	register_post_meta(
@@ -167,7 +167,7 @@ function cst_register_cpt_centro_turno() {
 			'show_in_rest' => true,
 			'single'       => true,
 			'type'         => 'string',
-			'default'      => 'abierto_disponible', // abierto_disponible, abierto_ocupado, cerrado
+			'default'      => 'abierto_disponible', // abierto_disponible, abierto_ocupado, cerrado.
 		)
 	);
 	register_post_meta(
@@ -206,7 +206,7 @@ function cst_register_cpt_centro_turno() {
 			'show_in_rest' => true,
 			'single'       => true,
 			'type'         => 'string',
-			'default'      => 'pendiente', // pendiente, realizado, no_asistio
+			'default'      => 'pendiente', // pendiente, realizado, no_asistio.
 		)
 	);
 	register_post_meta(
@@ -690,7 +690,7 @@ function cst_exportar_csv_turnos() {
 		header( 'Pragma: no-cache' );
 		header( 'Expires: 0' );
 
-		$output = fopen( 'php://output', 'w' );
+		$output = fopen( 'php://output', 'w' ); .
 		// Add UTF-8 BOM for Excel compatibility.
 		fprintf( $output, chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ) );
 		fputcsv( $output, array( 'ID', 'Título', 'Fecha Inicio', 'Fecha Fin', 'Estado', 'Responsable', 'Necesita Apoyo', 'Asistencia', 'Notas' ) );

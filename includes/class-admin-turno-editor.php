@@ -26,7 +26,7 @@ class CST_Admin_Turno_Editor {
 
 	public function register_page(): void {
 		add_submenu_page(
-			null, // Hidden from menu
+			null, // Hidden from menu.
 			__( 'Editar Turno', 'convoca-shifts' ),
 			__( 'Editar Turno', 'convoca-shifts' ),
 			'cst_manage_turnos',

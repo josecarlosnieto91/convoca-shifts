@@ -14,8 +14,8 @@ add_action( 'init', 'cst_register_scripts' );
 
 function cst_register_scripts() {
 	wp_register_style( 'cst-estilo', CST_PLUGIN_URL . 'assets/css/estilo.css', array(), CST_PLUGIN_VERSION );
-	wp_enqueue_style( 'dashicons' ); // Needed for buttons/icons
-	wp_register_script( 'fullcalendar-core', 'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js', array(), '6.1.15', true );
+	wp_enqueue_style( 'dashicons' ); // Needed for buttons/icons.
+	wp_register_script( 'fullcalendar-core', 'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js', array(), '6.1.15', true ); .
 	wp_register_script( 'cst-calendario', CST_PLUGIN_URL . 'assets/js/calendario.js', array( 'fullcalendar-core', 'jquery' ), CST_PLUGIN_VERSION, true );
 
 	wp_localize_script(
@@ -151,7 +151,7 @@ function cst_shortcode_boton_apuntarse() {
 		return '';
 	}
 
-	wp_enqueue_script( 'cst-calendario' ); // reuse the script for data
+	wp_enqueue_script( 'cst-calendario' ); // reuse the script for data.
 	wp_enqueue_style( 'cst-estilo' );
 
 	ob_start();

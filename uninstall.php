@@ -20,7 +20,7 @@ $turnos = get_posts(
 );
 
 foreach ( $turnos as $turno ) {
-	wp_delete_post( $turno->ID, true ); // Force delete, skip trash
+	wp_delete_post( $turno->ID, true ); // Force delete, skip trash.
 }
 
 // 1.1 Clean up taxonomy terms.

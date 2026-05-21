@@ -18,7 +18,7 @@ function cst_register_rest_routes() {
 		array(
 			'methods'             => 'GET',
 			'callback'            => 'cst_rest_get_turnos',
-			'permission_callback' => '__return_true', // Publicly readable
+			'permission_callback' => '__return_true', // Publicly readable.
 		)
 	);
 
@@ -73,7 +73,7 @@ function cst_register_rest_routes() {
 		array(
 			'methods'             => 'GET',
 			'callback'            => 'cst_rest_get_proximo_libre',
-			'permission_callback' => '__return_true', // Public
+			'permission_callback' => '__return_true', // Public.
 		)
 	);
 
@@ -146,19 +146,19 @@ function cst_rest_get_turnos( WP_REST_Request $request ) {
 			$necesita_apoyo = get_post_meta( $post_id, '_necesita_apoyo', true );
 
 			$title = get_the_title();
-			$color = '#f1c40f'; // Default yellow (Pendiente)
+			$color = '#f1c40f'; // Default yellow (Pendiente).
 
 			if ( $estado === 'cerrado' ) {
-				$color = '#e74c3c'; // Red
+				$color = '#e74c3c'; // Red.
 				$title = '🔴 Centro Cerrado';
 			} elseif ( $estado === 'abierto_ocupado' ) {
-				$color          = '#3498db'; // Blue
+				$color          = '#3498db'; // Blue.
 				$actividad_obj  = wp_get_post_terms( $post_id, 'cst_actividad' );
 				$actividad_name = ( ! empty( $actividad_obj ) && ! is_wp_error( $actividad_obj ) ) ? $actividad_obj[0]->name : 'Ocupado';
 				$title          = '🔵 ' . $actividad_name;
 			} elseif ( $estado === 'abierto_disponible' ) {
 				if ( $responsable_id > 0 ) {
-					$color = '#2ecc71'; // Green (Cubierto)
+					$color = '#2ecc71'; // Green (Cubierto).
 					$user  = get_userdata( $responsable_id );
 					if ( $user ) {
 						$nombre_mostrar = ! empty( $user->first_name ) ? $user->first_name : $user->display_name;
@@ -178,7 +178,7 @@ function cst_rest_get_turnos( WP_REST_Request $request ) {
 			}
 
 			$fecha_inicio = get_post_meta( $post_id, '_fecha_inicio', true );
-			$event_start  = get_the_date( 'Y-m-d\TH:i:s' ); // fallback
+			$event_start  = get_the_date( 'Y-m-d\TH:i:s' ); // fallback.
 			$event_end    = $event_start;
 
 			if ( $fecha_inicio ) {

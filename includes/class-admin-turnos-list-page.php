@@ -22,7 +22,7 @@ class Admin_Turnos_List_Page {
 	 */
 	public function register_page(): void {
 		add_submenu_page(
-			null, // null = página oculta, sin entrada en el menú
+			null, // null = página oculta, sin entrada en el menú.
 			__( 'Turnos', 'convoca-shifts' ),
 			__( 'Turnos', 'convoca-shifts' ),
 			'cst_manage_turnos',
