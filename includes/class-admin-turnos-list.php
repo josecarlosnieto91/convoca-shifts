@@ -71,18 +71,18 @@ class Admin_Turnos_List extends \WP_List_Table {
 	protected function column_estado( $item ): string {
 		$estado = get_post_meta( $item->ID, '_estado', true );
 		$badges = array(
-			'abierto_disponible' => 'biodevas-badge--warning',
-			'abierto_ocupado'    => 'biodevas-badge--info',
-			'cerrado'            => 'biodevas-badge--error',
+			'abierto_disponible' => 'convoca-badge--warning',
+			'abierto_ocupado'    => 'convoca-badge--info',
+			'cerrado'            => 'convoca-badge--error',
 		);
 		$labels = array(
 			'abierto_disponible' => '🟡 Pendiente',
 			'abierto_ocupado'    => '🔵 Ocupado',
 			'cerrado'            => '🔴 Cerrado',
 		);
-		$class  = $badges[ $estado ] ?? 'biodevas-badge--info';
+		$class  = $badges[ $estado ] ?? 'convoca-badge--info';
 		$label  = $labels[ $estado ] ?? $estado;
-		return '<span class="biodevas-badge ' . esc_attr( $class ) . '">' . esc_html( $label ) . '</span>';
+		return '<span class="convoca-badge ' . esc_attr( $class ) . '">' . esc_html( $label ) . '</span>';
 	}
 
 	protected function column_responsable( $item ): string {
@@ -96,30 +96,30 @@ class Admin_Turnos_List extends \WP_List_Table {
 
 	protected function column_apoyo( $item ): string {
 		$apoyo = (int) get_post_meta( $item->ID, '_necesita_apoyo', true );
-		return $apoyo ? '<span class="biodevas-badge biodevas-badge--warning">🛟 Sí</span>' : '<span style="color:#94a3b8;">No</span>';
+		return $apoyo ? '<span class="convoca-badge convoca-badge--warning">🛟 Sí</span>' : '<span style="color:#94a3b8;">No</span>';
 	}
 
 	protected function column_estado_real( $item ): string {
 		$estado  = get_post_meta( $item->ID, '_estado_real', true ) ?: 'pendiente';
 		$classes = array(
-			'pendiente'  => 'biodevas-badge--warning',
-			'realizado'  => 'biodevas-badge--success',
-			'no_asistio' => 'biodevas-badge--error',
+			'pendiente'  => 'convoca-badge--warning',
+			'realizado'  => 'convoca-badge--success',
+			'no_asistio' => 'convoca-badge--error',
 		);
 		$labels  = array(
 			'pendiente'  => '⏳ Pendiente',
 			'realizado'  => '✅ Realizado',
 			'no_asistio' => '❌ No asistió',
 		);
-		$class   = $classes[ $estado ] ?? 'biodevas-badge--warning';
-		return '<span class="biodevas-badge ' . esc_attr( $class ) . '">' . esc_html( $labels[ $estado ] ?? $estado ) . '</span>';
+		$class   = $classes[ $estado ] ?? 'convoca-badge--warning';
+		return '<span class="convoca-badge ' . esc_attr( $class ) . '">' . esc_html( $labels[ $estado ] ?? $estado ) . '</span>';
 	}
 
 	protected function column_acciones( $item ): string {
 		$edit_url = admin_url( 'edit.php?post_type=centro_turno&page=cst-editar-turno&id=' . $item->ID );
 
 		$actions   = array();
-		$actions[] = '<a href="' . esc_url( $edit_url ) . '" class="biodevas-btn biodevas-btn-outline" style="padding:3px 8px;font-size:12px;">✏️ ' . __( 'Editar', 'convoca-shifts' ) . '</a>';
+		$actions[] = '<a href="' . esc_url( $edit_url ) . '" class="convoca-btn convoca-btn-outline" style="padding:3px 8px;font-size:12px;">✏️ ' . __( 'Editar', 'convoca-shifts' ) . '</a>';
 
 		return '<div style="display:flex;gap:5px;">' . implode( '', $actions ) . '</div>';
 	}
@@ -232,7 +232,7 @@ class Admin_Turnos_List extends \WP_List_Table {
 				<option value="0" <?php selected( $filter_apoyo, '0' ); ?>><?php _e( 'Sin apoyo', 'convoca-shifts' ); ?></option>
 			</select>
 
-			<?php submit_button( __( 'Filtrar', 'convoca-shifts' ), 'biodevas-btn biodevas-btn-outline', 'filter_action', false ); ?>
+			<?php submit_button( __( 'Filtrar', 'convoca-shifts' ), 'convoca-btn convoca-btn-outline', 'filter_action', false ); ?>
 		</div>
 		<?php
 	}

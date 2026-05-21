@@ -104,10 +104,10 @@ function cst_turno_rapido_notices() {
 	$screen = get_current_screen();
 	if ( $screen && $screen->id === 'edit-centro_turno' && isset( $_GET['cst_msg'] ) ) {
 		if ( $_GET['cst_msg'] === 'created' ) {
-			echo '<div class="biodevas-alert biodevas-alert--success" style="display:block;margin-bottom:20px;"><p>' . __( 'Turno creado correctamente.', 'convoca-shifts' ) . '</p></div>';
+			echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . __( 'Turno creado correctamente.', 'convoca-shifts' ) . '</p></div>';
 		} elseif ( $_GET['cst_msg'] === 'error' ) {
 			$err = isset( $_GET['cst_err'] ) ? sanitize_text_field( $_GET['cst_err'] ) : __( 'Error desconocido', 'convoca-shifts' );
-			echo '<div class="biodevas-alert biodevas-alert--danger" style="display:block;margin-bottom:20px;"><p><strong>Error:</strong> ' . esc_html( $err ) . '</p></div>';
+			echo '<div class="convoca-alert convoca-alert--danger" style="display:block;margin-bottom:20px;"><p><strong>Error:</strong> ' . esc_html( $err ) . '</p></div>';
 		}
 	}
 }
@@ -119,15 +119,15 @@ function cst_turno_rapido_page() {
 	?>
 	<div class="wrap">
 		<h1><?php _e( 'Añadir Turno Rápido', 'convoca-shifts' ); ?></h1>
-		<div class="biodevas-alert biodevas-alert--info" style="display:block;margin-bottom:20px;">
+		<div class="convoca-alert convoca-alert--info" style="display:block;margin-bottom:20px;">
 			<p><?php _e( 'Selecciona un día en el calendario para crear un turno sin pasar por la pantalla de edición estándar.', 'convoca-shifts' ); ?></p>
 		</div>
 		
 		<div id="cst-admin-calendar-container" class="card" style="padding: 20px; max-width: 800px;">
 <div id="cst-calendar-controls" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-					<button type="button" id="cst-prev-month" class="biodevas-btn biodevas-btn-outline">&laquo; Mes anterior</button>
+					<button type="button" id="cst-prev-month" class="convoca-btn convoca-btn-outline">&laquo; Mes anterior</button>
 					<h2 id="cst-calendar-month-year" style="margin:0;"></h2>
-					<button type="button" id="cst-next-month" class="biodevas-btn biodevas-btn-outline">Mes siguiente &raquo;</button>
+					<button type="button" id="cst-next-month" class="convoca-btn convoca-btn-outline">Mes siguiente &raquo;</button>
 				</div>
 			<div id="cst-calendar-grid"></div>
 		</div>
@@ -374,8 +374,8 @@ function cst_render_quick_add_modal() {
 				</div>
 
 <div class="cst-modal-footer">
-					<button type="button" class="biodevas-btn biodevas-btn-outline cst-cancel-btn"><?php _e( 'Cancelar', 'convoca-shifts' ); ?></button>
-					<button type="submit" class="biodevas-btn biodevas-btn-primary"><?php _e( 'Guardar Turno', 'convoca-shifts' ); ?></button>
+					<button type="button" class="convoca-btn convoca-btn-outline cst-cancel-btn"><?php _e( 'Cancelar', 'convoca-shifts' ); ?></button>
+					<button type="submit" class="convoca-btn convoca-btn-primary"><?php _e( 'Guardar Turno', 'convoca-shifts' ); ?></button>
 				</div>
 			</form>
 		</div>

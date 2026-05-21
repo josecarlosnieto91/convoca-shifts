@@ -24,9 +24,9 @@ function cst_voluntarios_pendientes_page() {
 		if ( $user ) {
 			$user->set_role( 'voluntario_aprobado' );
 			delete_user_meta( $user_id, '_cst_aprobado' );
-			echo '<div class="biodevas-alert biodevas-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( __( 'Usuario %s aprobado como voluntario.', 'convoca-shifts' ), $user->display_name ) . '</p></div>';
-			do_action( 'bdv_voluntario_aprobado', $user_id );
-			$attachments = apply_filters( 'bdv_voluntario_aprobado_attachments', array(), $user_id );
+			echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( __( 'Usuario %s aprobado como voluntario.', 'convoca-shifts' ), $user->display_name ) . '</p></div>';
+			do_action( 'conv_voluntario_aprobado', $user_id );
+			$attachments = apply_filters( 'conv_voluntario_aprobado_attachments', array(), $user_id );
 			wp_mail( $user->user_email, __( '¡Solicitud de voluntariado aprobada!', 'convoca-shifts' ), __( 'Hola, ya puedes acceder y gestionar turnos en el centro social. Adjunto a este correo encontrarás tu Acuerdo de Incorporación si procede.', 'convoca-shifts' ), '', $attachments );
 
 			// Log activity.
@@ -41,7 +41,7 @@ function cst_voluntarios_pendientes_page() {
 		$user_id = intval( $_GET['user'] );
 
 		if ( $user_id === get_current_user_id() ) {
-			echo '<div class="biodevas-alert biodevas-alert--danger" style="display:block;margin-bottom:20px;"><p>' . __( 'No puedes revocarte tus propios permisos.', 'convoca-shifts' ) . '</p></div>';
+			echo '<div class="convoca-alert convoca-alert--danger" style="display:block;margin-bottom:20px;"><p>' . __( 'No puedes revocarte tus propios permisos.', 'convoca-shifts' ) . '</p></div>';
 		} else {
 			$user = get_userdata( $user_id );
 			if ( $user ) {
@@ -89,7 +89,7 @@ function cst_voluntarios_pendientes_page() {
 					cst_log_activity( get_current_user_id(), 0, 'voluntario_revocado', array( 'voluntario_id' => $user_id ) );
 				}
 
-				echo '<div class="biodevas-alert biodevas-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( __( 'Permisos de voluntario revocados para %s y turnos futuros liberados.', 'convoca-shifts' ), $user->display_name ) . '</p></div>';
+				echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( __( 'Permisos de voluntario revocados para %s y turnos futuros liberados.', 'convoca-shifts' ), $user->display_name ) . '</p></div>';
 			}
 		}
 	}
@@ -128,7 +128,7 @@ function cst_voluntarios_pendientes_page() {
 			echo '<td><a href="mailto:' . esc_attr( $user->user_email ) . '">' . esc_html( $user->user_email ) . '</a></td>';
 			echo '<td>' . esc_html( $telefono ) . '</td>';
 			echo '<td>' . nl2br( esc_html( $motivacion ) ) . '</td>';
-			echo '<td><a href="' . esc_url( $approve_url ) . '" class="biodevas-btn biodevas-btn-primary">' . __( 'Aprobar Voluntario', 'convoca-shifts' ) . '</a></td>';
+			echo '<td><a href="' . esc_url( $approve_url ) . '" class="convoca-btn convoca-btn-primary">' . __( 'Aprobar Voluntario', 'convoca-shifts' ) . '</a></td>';
 			echo '</tr>';
 		}
 		echo '</tbody></table>';
@@ -153,7 +153,7 @@ function cst_voluntarios_pendientes_page() {
 			echo '<td>' . esc_html( $user->user_email ) . '</td>';
 			echo '<td>' . esc_html( $telefono ) . '</td>';
 			echo '<td>
-                <a href="' . esc_url( $revoke_url ) . '" class="biodevas-btn biodevas-btn-outline biodevas-btn--danger" onclick="return confirm(\'¿Estás seguro de que quieres revocar los permisos a este voluntario?\');">' . __( 'Revocar Permisos', 'convoca-shifts' ) . '</a>
+                <a href="' . esc_url( $revoke_url ) . '" class="convoca-btn convoca-btn-outline convoca-btn--danger" onclick="return confirm(\'¿Estás seguro de que quieres revocar los permisos a este voluntario?\');">' . __( 'Revocar Permisos', 'convoca-shifts' ) . '</a>
               </td>';
 			echo '</tr>';
 		}

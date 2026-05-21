@@ -56,7 +56,7 @@ class CST_Admin_Status {
 
 	public static function check_tables(): array {
 		global $wpdb;
-		$tables  = array( "{$wpdb->prefix}biodevas_logs", "{$wpdb->prefix}biodevas_locks" );
+		$tables  = array( "{$wpdb->prefix}convoca_logs", "{$wpdb->prefix}convoca_locks" );
 		$missing = array();
 		foreach ( $tables as $t ) {
 			if ( ! $wpdb->get_var( "SHOW TABLES LIKE '$t'" ) ) {
@@ -71,7 +71,7 @@ class CST_Admin_Status {
 			'Tablas BD',
 			'Faltan: ' . implode( ', ', $missing ),
 			self::SEVERITY_ERROR,
-			'Activa biodevas-common para crear las tablas compartidas.'
+			'Activa convoca-common para crear las tablas compartidas.'
 		);
 	}
 
@@ -111,27 +111,27 @@ class CST_Admin_Status {
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Estado del Sistema - Turnos', 'convoca-shifts' ); ?></h1>
-			<div class="biodevas-diagnostic">
-				<div class="biodevas-diagnostic-header biodevas-diagnostic-header--<?php echo $has_errors ? 'error' : ( $has_warnings ? 'warning' : 'success' ); ?>">
-					<div class="biodevas-diagnostic-icon">
+			<div class="convoca-diagnostic">
+				<div class="convoca-diagnostic-header convoca-diagnostic-header--<?php echo $has_errors ? 'error' : ( $has_warnings ? 'warning' : 'success' ); ?>">
+					<div class="convoca-diagnostic-icon">
 						<?php echo $has_errors ? '✗' : ( $has_warnings ? '⚠' : '✓' ); ?>
 					</div>
-					<div class="biodevas-diagnostic-summary">
+					<div class="convoca-diagnostic-summary">
 						<h3><?php echo $has_errors ? __( 'Se encontraron errores', 'convoca-shifts' ) : ( $has_warnings ? __( 'Atención: algunas comprobaciones requieren revisión', 'convoca-shifts' ) : __( 'Todo correcto', 'convoca-shifts' ) ); ?></h3>
 						<p><?php printf( __( '%d comprobaciones realizadas.', 'convoca-shifts' ), count( $results ) ); ?></p>
 					</div>
 				</div>
-				<div class="biodevas-diagnostic-results">
+				<div class="convoca-diagnostic-results">
 					<?php foreach ( $results as $r ) : ?>
-						<div class="biodevas-diagnostic-row">
-							<div class="biodevas-diagnostic-severity biodevas-badge--<?php echo esc_attr( $r['severity'] === self::SEVERITY_OK ? 'success' : ( $r['severity'] === self::SEVERITY_WARNING ? 'warning' : 'error' ) ); ?>">
+						<div class="convoca-diagnostic-row">
+							<div class="convoca-diagnostic-severity convoca-badge--<?php echo esc_attr( $r['severity'] === self::SEVERITY_OK ? 'success' : ( $r['severity'] === self::SEVERITY_WARNING ? 'warning' : 'error' ) ); ?>">
 								<?php echo $r['severity'] === self::SEVERITY_OK ? '✓' : ( $r['severity'] === self::SEVERITY_WARNING ? '⚠' : '✗' ); ?>
 							</div>
-							<div class="biodevas-diagnostic-content">
+							<div class="convoca-diagnostic-content">
 								<strong><?php echo esc_html( $r['label'] ); ?></strong>
-								<div class="biodevas-diagnostic-message"><?php echo esc_html( $r['message'] ); ?></div>
+								<div class="convoca-diagnostic-message"><?php echo esc_html( $r['message'] ); ?></div>
 								<?php if ( ! empty( $r['fix'] ) ) : ?>
-									<div class="biodevas-diagnostic-fix"><?php echo esc_html( $r['fix'] ); ?></div>
+									<div class="convoca-diagnostic-fix"><?php echo esc_html( $r['fix'] ); ?></div>
 								<?php endif; ?>
 							</div>
 						</div>

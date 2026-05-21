@@ -33,7 +33,7 @@ class Hour_Sync {
 		}
 
 		// Check if user is a volunteer.
-		$is_volunteer = in_array( 'voluntario_aprobado', (array) $user->roles ) || $user->has_cap( 'gestionar_mis_turnos' ) || get_user_meta( $user_id, '_bdv_es_voluntario', true );
+		$is_volunteer = in_array( 'voluntario_aprobado', (array) $user->roles ) || $user->has_cap( 'gestionar_mis_turnos' ) || get_user_meta( $user_id, '_conv_es_voluntario', true );
 		if ( ! $is_volunteer ) {
 			return;
 		}
@@ -114,7 +114,7 @@ class Hour_Sync {
 
 			// Fire hook only after successful commit.
 			if ( $should_hook ) {
-				\Convoca\Core\Utils::do_action( 'bdv_after_horas_voluntario_actualizadas', 'bdv_horas_voluntario_actualizadas', $user_id, $diff_hours );
+				\Convoca\Core\Utils::do_action( 'conv_after_horas_voluntario_actualizadas', 'conv_horas_voluntario_actualizadas', $user_id, $diff_hours );
 			}
 		} catch ( \Throwable $e ) {
 			$wpdb->query( 'ROLLBACK' );
@@ -127,7 +127,7 @@ class Hour_Sync {
 	 */
 	private static function update_global_hours_locked( int $user_id, float $hours ) {
 		global $wpdb;
-		$meta_key = '_bdv_horas_voluntariado_total';
+		$meta_key = '_conv_horas_voluntariado_total';
 
 		// Atomic UPSERT: handles both insert and update in one query, avoiding SELECT+INSERT race.
 		$wpdb->query(
@@ -149,7 +149,7 @@ class Hour_Sync {
 	private static function create_log_entry( int $post_id, int $user_id, float $hours ) {
 		if ( ! post_type_exists( 'registro_hora' ) ) {
 			\Convoca\Core\Logger::warning(
-				"Horas no registradas: el CPT 'registro_hora' no está disponible. Activa biodevas-members.",
+				"Horas no registradas: el CPT 'registro_hora' no está disponible. Activa convoca-members.",
 				'Turnos/HourSync',
 				$post_id
 			);
@@ -173,7 +173,7 @@ class Hour_Sync {
 			$members = get_posts(
 				array(
 					'post_type'      => 'miembro',
-					'meta_key'       => '_bdv_email',
+					'meta_key'       => '_conv_email',
 					'meta_value'     => $user->user_email,
 					'posts_per_page' => 1,
 					'fields'         => 'ids',
@@ -181,16 +181,16 @@ class Hour_Sync {
 			);
 
 			if ( ! empty( $members ) ) {
-				update_post_meta( $log_id, '_bdv_miembro_id', $members[0] );
+				update_post_meta( $log_id, ' _conv_miembro_id', $members[0] );
 			}
 
-			update_post_meta( $log_id, '_bdv_usuario_id', $user_id );
-			update_post_meta( $log_id, '_bdv_fecha', wp_date( 'Y-m-d' ) );
-			update_post_meta( $log_id, '_bdv_horas', $hours );
+			update_post_meta( $log_id, '_conv_usuario_id', $user_id );
+			update_post_meta( $log_id, '_conv_fecha', wp_date( 'Y-m-d' ) );
+			update_post_meta( $log_id, '_conv_horas', $hours );
 			// We use 'turno' as activity or just project ID 0. Turno post ID is not an actividad, but we link it here.
-			update_post_meta( $log_id, '_bdv_actividad_id', 0 );
-			update_post_meta( $log_id, '_bdv_estado', 'aprobada' );
-			update_post_meta( $log_id, '_bdv_tareas', 'Turno en Centro Social: ' . $post->post_title );
+			update_post_meta( $log_id, '_conv_actividad_id', 0 );
+			update_post_meta( $log_id, '_conv_estado', 'aprobada' );
+			update_post_meta( $log_id, '_conv_tareas', 'Turno en Centro Social: ' . $post->post_title );
 		}
 	}
 }

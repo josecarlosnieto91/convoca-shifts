@@ -133,7 +133,7 @@ function cst_register_blocks() {
 
 	$common_args = array(
 		'apiVersion'    => 3,
-		'category'      => 'biodevas-turnos',
+		'category'      => 'convoca-turnos',
 		'editor_script' => 'cst-blocks-js', // This links the JS to the blocks.
 	);
 

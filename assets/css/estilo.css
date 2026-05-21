@@ -700,7 +700,7 @@
 .cst-form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--wp--preset--color--antracita, #1a1a1a); }
 .cst-form-group input[type="time"], .cst-form-group select { width: 100%; padding: 10px; border: 1px solid var(--wp--preset--color--gris-medio, #e0e0e0); border-radius: 6px; font-size: 14px; }
 .cst-modal-footer { margin-top: 30px; display: flex; justify-content: stretch; gap: 15px; border-top: 2px solid var(--wp--preset--color--gris-piedra, #f4f4f4); padding-top: 25px; }
-.cst-modal-footer .biodevas-btn { flex: 1; padding: 15px 25px !important; font-size: 16px !important; height: auto !important; line-height: 1.2 !important; border-radius: 10px !important; font-weight: 700 !important; text-align: center !important; transition: all 0.2s ease !important; border: none !important; cursor: pointer !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important; }
+.cst-modal-footer .convoca-btn { flex: 1; padding: 15px 25px !important; font-size: 16px !important; height: auto !important; line-height: 1.2 !important; border-radius: 10px !important; font-weight: 700 !important; text-align: center !important; transition: all 0.2s ease !important; border: none !important; cursor: pointer !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important; }
 .cst-cancel-btn:hover { background: #fee2e2 !important; color: #ef4444 !important; border-color: #fecaca !important; }
 
 /* Admin: Presets */

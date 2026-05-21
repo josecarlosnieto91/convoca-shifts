@@ -70,32 +70,32 @@ function cst_settings_page() {
 		<?php if ( $active_tab == 'general' ) : ?>
 			<p><?php _e( 'Configura las URLs de las páginas que contienen los shortcodes para que el plugin pueda generar enlaces correctos.', 'convoca-shifts' ); ?></p>
 
-			<form method="post" action="options.php" class="biodevas-box" style="background:#fff;border-radius:12px;padding:30px;max-width:700px;margin-top:20px;">
+			<form method="post" action="options.php" class="convoca-box" style="background:#fff;border-radius:12px;padding:30px;max-width:700px;margin-top:20px;">
 				<?php settings_fields( 'cst_settings_group' ); ?>
 				<?php do_settings_sections( 'cst_settings_group' ); ?>
 
-				<div class="biodevas-field">
+				<div class="convoca-field">
 					<label for="cst_calendar_page_url"><?php _e( 'URL de la página del Calendario', 'convoca-shifts' ); ?></label>
 					<input type="url" id="cst_calendar_page_url" name="cst_calendar_page_url" value="<?php echo esc_attr( get_option( 'cst_calendar_page_url' ) ); ?>" placeholder="https://tuweb.com/calendario">.
-					<small class="biodevas-small"><?php _e( 'URL donde has pegado el shortcode [calendario_centro].', 'convoca-shifts' ); ?></small>
+					<small class="convoca-small"><?php _e( 'URL donde has pegado el shortcode [calendario_centro].', 'convoca-shifts' ); ?></small>
 				</div>
 
-				<div class="biodevas-field">
+				<div class="convoca-field">
 					<label for="cst_hora_apertura"><?php _e( 'Horario del Centro', 'convoca-shifts' ); ?></label>
 					<div style="display:flex; align-items:center; gap:10px;">
 						<input type="time" id="cst_hora_apertura" name="cst_hora_apertura" value="<?php echo esc_attr( get_option( 'cst_hora_apertura', '09:00' ) ); ?>">
 						<span><?php _e( 'hasta las', 'convoca-shifts' ); ?></span>
 						<input type="time" id="cst_hora_cierre" name="cst_hora_cierre" value="<?php echo esc_attr( get_option( 'cst_hora_cierre', '22:00' ) ); ?>">
 					</div>
-					<small class="biodevas-small"><?php _e( 'Restringe la creación de turnos fuera de este horario.', 'convoca-shifts' ); ?></small>
+					<small class="convoca-small"><?php _e( 'Restringe la creación de turnos fuera de este horario.', 'convoca-shifts' ); ?></small>
 				</div>
 
 				<div style="margin-top:30px;">
-					<button type="submit" class="biodevas-btn biodevas-btn-primary"><?php _e( 'Guardar ajustes', 'convoca-shifts' ); ?></button>
+					<button type="submit" class="convoca-btn convoca-btn-primary"><?php _e( 'Guardar ajustes', 'convoca-shifts' ); ?></button>
 				</div>
 			</form>
 
-			<div class="biodevas-alert biodevas-alert--info" style="display:block;margin-top:20px;margin-bottom:20px;">
+			<div class="convoca-alert convoca-alert--info" style="display:block;margin-top:20px;margin-bottom:20px;">
 				<p><strong>💡 <?php _e( '¡Novedad!', 'convoca-shifts' ); ?></strong>: <?php _e( 'Ahora tienes dos nuevas formas de insertar el contenido: mediante **Bloques de Gutenberg** (recomendado para el editor moderno) o mediante **Widgets** (para barras laterales y pie de página). Ambos son más fáciles de configurar que los shortcodes.', 'convoca-shifts' ); ?></p>
 			</div>
 
@@ -204,8 +204,8 @@ function cst_get_system_checks( bool $force = false ) {
 
 	// 1. Plugins.
 	$required_plugins = array(
-		'biodevas-common/biodevas-common.php'   => 'Biodevas Common',
-		'biodevas-members/biodevas-members.php' => 'Biodevas Members',
+		'convoca-common/convoca-common.php'   => 'Biodevas Common',
+		'convoca-members/convoca-members.php' => 'Biodevas Members',
 	);
 
 	foreach ( $required_plugins as $path => $name ) {

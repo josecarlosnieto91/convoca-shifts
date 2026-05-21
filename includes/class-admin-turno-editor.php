@@ -3,7 +3,7 @@
  * Custom editor for centro_turno (shifts).
  *
  * Replaces the WordPress standard editor with a custom form
- * using biodevas-common CSS classes.
+ * using convoca-common CSS classes.
  *
  * @package CentroSocialTurnos
  */
@@ -115,32 +115,32 @@ class CST_Admin_Turno_Editor {
 		<div class="wrap" style="max-width: 800px; margin: 20px auto;">
 			<h1><?php echo $is_edit ? esc_html__( 'Editar Turno', 'convoca-shifts' ) : esc_html__( 'Nuevo Turno', 'convoca-shifts' ); ?></h1>
 
-			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="biodevas-box" style="background:#fff;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,0.05);padding:40px;margin-top:20px;">
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="convoca-box" style="background:#fff;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,0.05);padding:40px;margin-top:20px;">
 				<input type="hidden" name="action" value="cst_save_turno">
 				<input type="hidden" name="post_id" value="<?php echo $is_edit ? $post_id : 0; ?>">
 
-				<div class="biodevas-grid-2">
+				<div class="convoca-grid-2">
 
 					<h3 style="grid-column:1/-1;margin:0 0 1rem 0;padding-bottom:.5rem;border-bottom:1px solid var(--bde-border,#ccc);">
 						<?php esc_html_e( 'Datos del Turno', 'convoca-shifts' ); ?>
 					</h3>
 
-					<div class="biodevas-field">
+					<div class="convoca-field">
 						<label for="cst_fecha"><?php esc_html_e( 'Fecha', 'convoca-shifts' ); ?></label>
 						<input type="date" id="cst_fecha" name="cst_fecha" value="<?php echo esc_attr( $fecha ); ?>" required>
 					</div>
 
-					<div class="biodevas-field">
+					<div class="convoca-field">
 						<label for="cst_hora_ini"><?php esc_html_e( 'Hora inicio', 'convoca-shifts' ); ?></label>
 						<input type="time" id="cst_hora_ini" name="cst_hora_ini" value="<?php echo esc_attr( $hora_ini ); ?>" required>
 					</div>
 
-					<div class="biodevas-field">
+					<div class="convoca-field">
 						<label for="cst_hora_fin"><?php esc_html_e( 'Hora fin', 'convoca-shifts' ); ?></label>
 						<input type="time" id="cst_hora_fin" name="cst_hora_fin" value="<?php echo esc_attr( $hora_fin ); ?>">
 					</div>
 
-					<div class="biodevas-field">
+					<div class="convoca-field">
 						<label for="cst_id_responsable"><?php esc_html_e( 'Responsable', 'convoca-shifts' ); ?></label>
 						<select id="cst_id_responsable" name="cst_id_responsable">
 							<option value="0"><?php esc_html_e( '— Sin asignar —', 'convoca-shifts' ); ?></option>
@@ -159,7 +159,7 @@ class CST_Admin_Turno_Editor {
 						<?php esc_html_e( 'Estado y Actividad', 'convoca-shifts' ); ?>
 					</h3>
 
-					<div class="biodevas-field">
+					<div class="convoca-field">
 						<label for="cst_estado"><?php esc_html_e( 'Estado del centro', 'convoca-shifts' ); ?></label>
 						<select id="cst_estado" name="cst_estado" onchange="document.getElementById('cst_ocupado_fields').style.display=this.value==='abierto_ocupado'?'':'none';">
 							<option value="abierto_disponible" <?php selected( $estado, 'abierto_disponible' ); ?>><?php esc_html_e( '🟡 Pendiente (Abierto)', 'convoca-shifts' ); ?></option>
@@ -171,8 +171,8 @@ class CST_Admin_Turno_Editor {
 					<div></div>
 
 					<div id="cst_ocupado_fields" style="grid-column:1/-1;<?php echo $estado === 'abierto_ocupado' ? '' : 'display:none;'; ?> background:var(--wp--preset--color--gris-piedra,#f4f4f4);padding:20px;border-radius:8px;">
-						<div class="biodevas-grid-2">
-							<div class="biodevas-field">
+						<div class="convoca-grid-2">
+							<div class="convoca-field">
 								<label for="cst_actividad_term"><?php esc_html_e( 'Actividad', 'convoca-shifts' ); ?></label>
 								<select id="cst_actividad_term" name="cst_actividad_term">
 									<option value="0"><?php esc_html_e( '— Seleccionar —', 'convoca-shifts' ); ?></option>
@@ -183,7 +183,7 @@ class CST_Admin_Turno_Editor {
 									<?php endforeach; ?>
 								</select>
 							</div>
-							<div class="biodevas-field">
+							<div class="convoca-field">
 								<label for="cst_monitor_select"><?php esc_html_e( 'Monitor/a', 'convoca-shifts' ); ?></label>
 								<select id="cst_monitor_select" name="cst_monitor_user">
 									<option value="0"><?php esc_html_e( '— Sin monitor —', 'convoca-shifts' ); ?></option>
@@ -197,8 +197,8 @@ class CST_Admin_Turno_Editor {
 						</div>
 					</div>
 
-					<div class="biodevas-field" style="grid-column:1/-1;">
-						<div class="biodevas-check-group">
+					<div class="convoca-field" style="grid-column:1/-1;">
+						<div class="convoca-check-group">
 							<input type="checkbox" id="cst_necesita_apoyo" name="cst_necesita_apoyo" value="1" <?php checked( $apoyo, 1 ); ?>>
 							<label for="cst_necesita_apoyo"><?php esc_html_e( '🛟 Necesita apoyo (sin llaves / acompañamiento)', 'convoca-shifts' ); ?></label>
 						</div>
@@ -208,7 +208,7 @@ class CST_Admin_Turno_Editor {
 						<?php esc_html_e( 'Seguimiento', 'convoca-shifts' ); ?>
 					</h3>
 
-					<div class="biodevas-field" style="grid-column:1/-1;">
+					<div class="convoca-field" style="grid-column:1/-1;">
 						<label for="cst_estado_real"><?php esc_html_e( 'Estado de asistencia', 'convoca-shifts' ); ?></label>
 						<select id="cst_estado_real" name="cst_estado_real">
 							<option value="pendiente" <?php selected( $estado_real, 'pendiente' ); ?>><?php esc_html_e( '⏳ Pendiente', 'convoca-shifts' ); ?></option>
@@ -219,10 +219,10 @@ class CST_Admin_Turno_Editor {
 				</div>
 
 				<div style="margin-top:40px;display:flex;justify-content:flex-end;gap:15px;align-items:center;">
-					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=centro_turno' ) ); ?>" class="biodevas-btn biodevas-btn-outline">
+					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=centro_turno' ) ); ?>" class="convoca-btn convoca-btn-outline">
 						&larr; <?php esc_html_e( 'Volver al listado', 'convoca-shifts' ); ?>
 					</a>
-					<button type="submit" class="biodevas-btn biodevas-btn-primary">
+					<button type="submit" class="convoca-btn convoca-btn-primary">
 						<?php echo $is_edit ? esc_html__( 'Guardar cambios', 'convoca-shifts' ) : esc_html__( 'Crear turno', 'convoca-shifts' ); ?>
 					</button>
 				</div>

@@ -21,7 +21,7 @@ function cst_auditoria_horas_page() {
 	if ( isset( $_POST['cst_action'] ) && $_POST['cst_action'] === 'recalcular' && isset( $_POST['user_id'] ) ) {
 		check_admin_referer( 'cst_recalcular_' . (int) $_POST['user_id'] );
 		cst_recalcular_horas_usuario( (int) $_POST['user_id'] );
-		echo '<div class="biodevas-alert biodevas-alert--success" style="display:block;margin-bottom:20px;"><p>' . __( 'Horas recalculadas correctamente.', 'convoca-shifts' ) . '</p></div>';
+		echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . __( 'Horas recalculadas correctamente.', 'convoca-shifts' ) . '</p></div>';
 	}
 
 	$users = get_users( array( 'role__in' => array( 'voluntario_aprobado', 'administrator' ) ) );
@@ -42,7 +42,7 @@ function cst_auditoria_horas_page() {
 			<tbody>
 				<?php
 				foreach ( $users as $u ) :
-					$horas_meta        = (float) get_user_meta( $u->ID, '_bdv_horas_voluntariado_total', true );
+					$horas_meta        = (float) get_user_meta( $u->ID, '_conv_horas_voluntariado_total', true );
 					$turnos_realizados = $wpdb->get_var(
 						$wpdb->prepare(
 							"SELECT COUNT(*) FROM {$wpdb->postmeta} pm
@@ -103,7 +103,7 @@ function cst_recalcular_horas_usuario( int $user_id ): void {
 		}
 	}
 
-	update_user_meta( $user_id, '_bdv_horas_voluntariado_total', $total_horas );
+	update_user_meta( $user_id, '_conv_horas_voluntariado_total', $total_horas );
 
 	\Convoca\Core\Logger::info(
 		"Horas recalculadas para usuario #$user_id: $total_horas horas en " . count( $turnos ) . ' turnos.',

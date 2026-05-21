@@ -136,8 +136,8 @@ function cst_render_frontend_modal() {
 				</label>
 			</div>
 			<div class="cst-modal-footer">
-				<button type="button" class="cst-fe-cancel biodevas-btn biodevas-btn-outline"><?php _e( 'Cancelar', 'convoca-shifts' ); ?></button>
-				<button type="button" id="cst-fe-save" class="biodevas-btn biodevas-btn-primary"><?php _e( 'Guardar Turno', 'convoca-shifts' ); ?></button>
+				<button type="button" class="cst-fe-cancel convoca-btn convoca-btn-outline"><?php _e( 'Cancelar', 'convoca-shifts' ); ?></button>
+				<button type="button" id="cst-fe-save" class="convoca-btn convoca-btn-primary"><?php _e( 'Guardar Turno', 'convoca-shifts' ); ?></button>
 			</div>
 		</div>
 	</div>

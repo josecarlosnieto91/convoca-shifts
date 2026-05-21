@@ -28,7 +28,7 @@ function cst_estadisticas_page() {
 	}
 
 	if ( ! $table_exists ) {
-		echo '<div class="error"><p>' . sprintf( __( 'La tabla de logs (%s) no existe. El registro de actividad no funcionará.', 'convoca-shifts' ), $table_log ) . ' <a href="' . admin_url( 'edit.php?post_type=centro_turno&page=cst_estadisticas&cst_fix_logs=1' ) . '" class="biodevas-btn biodevas-btn-outline">' . __( 'Intentar crear ahora', 'convoca-shifts' ) . '</a></p></div>';
+		echo '<div class="error"><p>' . sprintf( __( 'La tabla de logs (%s) no existe. El registro de actividad no funcionará.', 'convoca-shifts' ), $table_log ) . ' <a href="' . admin_url( 'edit.php?post_type=centro_turno&page=cst_estadisticas&cst_fix_logs=1' ) . '" class="convoca-btn convoca-btn-outline">' . __( 'Intentar crear ahora', 'convoca-shifts' ) . '</a></p></div>';
 	}
 
 	// Get all users who have the volunteer role or have done turns.
@@ -52,7 +52,7 @@ function cst_estadisticas_page() {
 			<form method="post" action="">
 				<?php wp_nonce_field( 'cst_exportar_stats_action' ); ?>
 				<input type="hidden" name="cst_action" value="exportar_stats_csv">
-				<button type="submit" class="biodevas-btn biodevas-btn-outline"><?php _e( '📥 Exportar Estadísticas a CSV', 'convoca-shifts' ); ?></button>
+				<button type="submit" class="convoca-btn convoca-btn-outline"><?php _e( '📥 Exportar Estadísticas a CSV', 'convoca-shifts' ); ?></button>
 			</form>
 		</div>
 

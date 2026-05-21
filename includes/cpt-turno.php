@@ -764,16 +764,16 @@ function cst_generar_turnos_page() {
 		if ( $_POST['cst_action'] === 'duplicar_semana' ) {
 			$result = cst_duplicar_semana();
 			if ( is_wp_error( $result ) ) {
-				echo '<div class="biodevas-alert biodevas-alert--danger" style="display:block;margin-bottom:20px;"><p>' . esc_html( $result->get_error_message() ) . '</p></div>';
+				echo '<div class="convoca-alert convoca-alert--danger" style="display:block;margin-bottom:20px;"><p>' . esc_html( $result->get_error_message() ) . '</p></div>';
 			} else {
-				echo '<div class="biodevas-alert biodevas-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( __( 'Se han duplicado %d turnos.', 'convoca-shifts' ), $result ) . '</p></div>';
+				echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( __( 'Se han duplicado %d turnos.', 'convoca-shifts' ), $result ) . '</p></div>';
 			}
 		} elseif ( $_POST['cst_action'] === 'generar_semana' ) {
 			$result = cst_crear_semana_tipo();
 			if ( is_wp_error( $result ) ) {
-				echo '<div class="biodevas-alert biodevas-alert--danger" style="display:block;margin-bottom:20px;"><p>' . esc_html( $result->get_error_message() ) . '</p></div>';
+				echo '<div class="convoca-alert convoca-alert--danger" style="display:block;margin-bottom:20px;"><p>' . esc_html( $result->get_error_message() ) . '</p></div>';
 			} else {
-				echo '<div class="biodevas-alert biodevas-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( __( 'Se han generado %d turnos nuevos.', 'convoca-shifts' ), $result ) . '</p></div>';
+				echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( __( 'Se han generado %d turnos nuevos.', 'convoca-shifts' ), $result ) . '</p></div>';
 			}
 		}
 	}
@@ -788,7 +788,7 @@ function cst_generar_turnos_page() {
 			<form method="post" action="">
 				<?php wp_nonce_field( 'cst_generar_turnos_action' ); ?>
 				<input type="hidden" name="cst_action" value="duplicar_semana">
-				<button type="submit" class="biodevas-btn biodevas-btn-primary"><?php _e( 'Duplicar Semana Anterior', 'convoca-shifts' ); ?></button>
+				<button type="submit" class="convoca-btn convoca-btn-primary"><?php _e( 'Duplicar Semana Anterior', 'convoca-shifts' ); ?></button>
 			</form>
 		</div>
 
@@ -870,7 +870,7 @@ function cst_generar_turnos_page() {
 				});
 				</script>
 				<p class="submit">
-					<button type="submit" class="biodevas-btn biodevas-btn-primary"><?php _e( 'Generar Semana', 'convoca-shifts' ); ?></button>
+					<button type="submit" class="convoca-btn convoca-btn-primary"><?php _e( 'Generar Semana', 'convoca-shifts' ); ?></button>
 				</p>
 			</form>
 		</div>
@@ -881,7 +881,7 @@ function cst_generar_turnos_page() {
 			<form method="post" action="">
 				<?php wp_nonce_field( 'cst_exportar_csv_action' ); ?>
 				<input type="hidden" name="cst_action" value="exportar_csv">
-				<button type="submit" class="biodevas-btn biodevas-btn-outline"><?php _e( 'Exportar historial a CSV', 'convoca-shifts' ); ?></button>
+				<button type="submit" class="convoca-btn convoca-btn-outline"><?php _e( 'Exportar historial a CSV', 'convoca-shifts' ); ?></button>
 			</form>
 		</div>
 	</div>

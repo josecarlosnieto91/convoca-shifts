@@ -10,7 +10,7 @@
             apiVersion: 3,
             title: title,
             icon: icon,
-            category: 'biodevas-turnos',
+            category: 'convoca-turnos',
             edit: function( props ) {
                 if ( ! serverSideRender ) {
                     return el( 'div', { className: 'cst-block-editor-preview' }, 'Error: wp.serverSideRender no disponible.' );
@@ -37,7 +37,7 @@
         apiVersion: 3,
         title: 'CST: Resumen Semanal',
         icon: 'chart-bar',
-        category: 'biodevas-turnos',
+        category: 'convoca-turnos',
         attributes: {
             semana: {
                 type: 'string',
@@ -82,7 +82,7 @@
         apiVersion: 3,
         title: 'CST: Próximos Turnos',
         icon: 'list-view',
-        category: 'biodevas-turnos',
+        category: 'convoca-turnos',
         attributes: {
             cantidad: {
                 type: 'number',
