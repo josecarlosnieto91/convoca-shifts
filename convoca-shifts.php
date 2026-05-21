@@ -129,7 +129,7 @@ function cst_create_log_table() {
 
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 	dbDelta( $sql );
-	$wpdb->query( '// Index already created by CREATE TABLE' ); .
+	$wpdb->query( '// Index already created by CREATE TABLE' );
 }
 
 /**

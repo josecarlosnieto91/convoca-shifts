@@ -300,7 +300,7 @@ function cst_exportar_stats_csv_handler() {
 		header( 'Pragma: no-cache' );
 		header( 'Expires: 0' );
 
-		$output = fopen( 'php://output', 'w' ); .
+		$output = fopen( 'php://output', 'w' );
 		fprintf( $output, chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ) ); // BOM for Excel.
 		fputcsv(
 			$output,

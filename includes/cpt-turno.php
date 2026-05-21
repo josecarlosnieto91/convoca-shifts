@@ -690,7 +690,7 @@ function cst_exportar_csv_turnos() {
 		header( 'Pragma: no-cache' );
 		header( 'Expires: 0' );
 
-		$output = fopen( 'php://output', 'w' ); .
+		$output = fopen( 'php://output', 'w' );
 		// Add UTF-8 BOM for Excel compatibility.
 		fprintf( $output, chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ) );
 		fputcsv( $output, array( 'ID', 'Título', 'Fecha Inicio', 'Fecha Fin', 'Estado', 'Responsable', 'Necesita Apoyo', 'Asistencia', 'Notas' ) );
