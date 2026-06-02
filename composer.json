@@ -1,6 +1,6 @@
 {
-    "name": "convoca/convoca-shifts",
-    "description": "Convoca Plugin",
+    "name": "convoca/shifts",
+    "description": "Volunteer shift management for community centers",
     "type": "wordpress-plugin",
     "require": {
         "php": ">=8.1"
@@ -11,6 +11,11 @@
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
         "wp-coding-standards/wpcs": "^3.1",
         "php-stubs/wordpress-stubs": "^6.0"
+    },
+    "autoload": {
+        "classmap": [
+            "includes/"
+        ]
     },
     "config": {
         "allow-plugins": {

@@ -28,6 +28,12 @@ if ( ! defined( 'CST_PLUGIN_VERSION' ) ) {
 	define( 'CST_PLUGIN_VERSION', '2.5.0' );
 }
 
+/* ── Composer autoload ─────────────────────────────── */
+$composer_autoload = __DIR__ . '/vendor/autoload.php';
+if ( file_exists( $composer_autoload ) ) {
+	require_once $composer_autoload;
+}
+
 // Includes.
 require_once CST_PLUGIN_DIR . 'includes/cpt-turno.php';
 require_once CST_PLUGIN_DIR . 'includes/rest-api.php';
@@ -46,6 +52,16 @@ if ( is_admin() ) {
 require_once CST_PLUGIN_DIR . 'includes/cron.php';
 require_once CST_PLUGIN_DIR . 'includes/widgets.php';
 require_once CST_PLUGIN_DIR . 'includes/blocks.php';
+
+/* ── Convoca Core fallback ────────────────────────── */
+if ( ! class_exists( '\\Convoca\\Core\\Utils' ) ) {
+	$core_path = WP_PLUGIN_DIR . '/convoca-core/includes';
+	if ( is_dir( $core_path ) ) {
+		foreach ( glob( $core_path . '/class-*.php' ) as $file ) {
+			require_once $file;
+		}
+	}
+}
 
 /* ── Dependency Check ──────────────────────────────────── */
 if ( ! class_exists( '\\Convoca\\Core\\Utils' ) ) {
