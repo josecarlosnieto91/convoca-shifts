@@ -13,9 +13,9 @@
         "php-stubs/wordpress-stubs": "^6.0"
     },
     "autoload": {
-        "classmap": [
-            "includes/"
-        ]
+        "psr-4": {
+            "Convoca\\Shifts\\": "includes/"
+        }
     },
     "config": {
         "allow-plugins": {
