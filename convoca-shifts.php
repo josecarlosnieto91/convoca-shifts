@@ -53,7 +53,7 @@ if ( ! class_exists( '\\Convoca\\Core\\Utils' ) ) {
 		'admin_notices',
 		function (): void {
 			printf(
-				'<div class="notice notice-error"><p><strong>Centro Social Turnos:</strong> Este plugin requiere el plugin <strong>Biodevas Common Utilities</strong> activo.</p></div>'
+				'<div class="notice notice-error"><p><strong>Centro Social Turnos:</strong> Este plugin requiere el plugin <strong>Convoca Core</strong> activo.</p></div>'
 			);
 		}
 	);
@@ -106,7 +106,7 @@ function cst_activate_plugin() {
 
 	// Defensive: check if the required role exists.
 	if ( ! get_role( 'voluntario_aprobado' ) ) {
-		error_log( 'CST Warning: The role "voluntario_aprobado" is missing. It should be created by Biodevas Members.' );
+		error_log( 'CST Warning: The role "voluntario_aprobado" is missing. It should be created by Convoca Members.' );
 	}
 }
 
@@ -210,7 +210,7 @@ require_once CST_PLUGIN_DIR . 'includes/class-cst-upgrade-manager.php';
 add_action(
 	'plugins_loaded',
 	function () {
-		if ( class_exists( '\\Biodevas\\CST\\CST_Upgrade_Manager' ) ) {
+		if ( class_exists( '\\Convoca\\Shifts\\CST_Upgrade_Manager' ) ) {
 			$upgrade_manager = new \Convoca\Shifts\CST_Upgrade_Manager();
 			$upgrade_manager->init();
 		}
@@ -236,7 +236,7 @@ function cst_check_required_role() {
 	if ( ! get_role( 'voluntario_aprobado' ) ) {
 		?>
 		<div class="convoca-alert convoca-alert--warning" style="display:block;margin-bottom:20px;">
-			<p><?php _e( '<strong>Atención:</strong> El rol "Voluntario Aprobado" no existe. Este rol es necesario para el funcionamiento de Centro Social Turnos y debería ser creado por el plugin Biodevas Members. Por favor, asegúrate de que Biodevas Members está activo y ha sido reactivado recientemente.', 'convoca-shifts' ); ?>
+			<p><?php _e( '<strong>Atención:</strong> El rol "Voluntario Aprobado" no existe. Este rol es necesario para el funcionamiento de Centro Social Turnos y debería ser creado por el plugin Convoca Members. Por favor, asegúrate de que Convoca Members está activo y ha sido reactivado recientemente.', 'convoca-shifts' ); ?>
 			<a href="?cst_dismiss_role_notice=1" style="float:right;text-decoration:none;color:#999;">✕</a></p>
 		</div>
 		<?php

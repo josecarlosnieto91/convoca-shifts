@@ -5,7 +5,7 @@
 - PHP 7.4+
 
 ## 2. Instalación
-1. Sube la carpeta `biodevas-centro-social` a `/wp-content/plugins/`.
+1. Sube la carpeta `convoca-shifts` a `/wp-content/plugins/`.
 2. Activa el plugin desde el panel de WordPress.
 3. El plugin creará automáticamente:
    - El rol **Voluntario Aprobado**.
@@ -22,8 +22,8 @@ Para que el sistema sea funcional, debes crear dos páginas:
 
 ### B. Página de Registro (Members)
 - Crea una página (ej. "Registro de Voluntariado").
-- Pega el shortcode de Biodevas Members: `[biodevas_voluntariado]`
-- **IMPORTANTE**: Asegúrate de que el plugin `biodevas-members` esté activo.
+- Pega el shortcode de Convoca Members: `[convoca_voluntariado]`
+- **IMPORTANTE**: Asegúrate de que el plugin `convoca-members` esté activo.
 
 ## 4. Flujo de Trabajo Recomendado
 1. **Paso 1**: Publica las páginas con los shortcodes.
@@ -33,7 +33,7 @@ Para que el sistema sea funcional, debes crear dos páginas:
 
 ## 5. Shortcodes Detallados
 - `[calendario_centro]`: El componente principal.
-- `[biodevas_voluntariado]` (Plugin Members): Imprescindible para el flujo de alta.
+- `[convoca_voluntariado]` (Plugin Members): Imprescindible para el flujo de alta.
 - `[boton_apuntarse]`: Ideal para la barra lateral o páginas de inicio.
 - `[resumen_turnos]`: Muestra visualmente cuántos huecos quedan esta semana.
 - `[proximos_turnos]`: Lista simple de fechas y horas.

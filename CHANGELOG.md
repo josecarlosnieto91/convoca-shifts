@@ -19,7 +19,7 @@
 - Actualización: Documentación sincronizada (versión 2.4.0)
 
 ## 2.3.1
-- **Seguridad:** Added dependency check for `biodevas-common` plugin (previously missing).
+- **Seguridad:** Added dependency check for `convoca-core` plugin (previously missing).
 - **Fix:** Race condition in shift title sync - hook now re-added in `finally` block if `wp_update_post()` fails.
 - **Fix:** Trackability in hour sync - `registro_hora` created before COMMIT to prevent data loss on errors.
 
@@ -28,7 +28,7 @@
 - **Nuevo:** Panel de **Estado** para diagnóstico de dependencias y configuración de shortcodes.
 
 ## 2.2.0
-- **Mejora:** Reorganización de los bloques en su propia sección "Biodevas: Centro Social" del insertador.
+- **Mejora:** Reorganización de los bloques en su propia sección "Convoca: Centro Social" del insertador.
 - **Mejora:** Añadidas comprobaciones de seguridad para evitar errores de renderizado de `serverSideRender`.
 - **Mejora:** Actualizado el requisito mínimo de PHP a 8.1 para consistencia.
 

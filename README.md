@@ -19,7 +19,7 @@ Gestión de turnos de voluntariado para el Centro Social.
 
 ## Dependencies
 
-WordPress 6.4+, PHP 8.1+, biodevas-common (optional but recommended)
+WordPress 6.4+, PHP 8.1+, convoca-core (optional but recommended)
 
 ## Version
 

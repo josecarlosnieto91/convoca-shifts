@@ -84,7 +84,7 @@ function cst_process_quick_add_turno() {
 			cst_log_activity( get_current_user_id(), $post_id, 'turno_creado', array( 'origen' => 'admin_rapido' ) );
 		}
 
-		if ( class_exists( 'Biodevas\\Common\\Logger' ) ) {
+		if ( class_exists( 'Convoca\\Core\\Logger' ) ) {
 			\Convoca\Core\Logger::info( "Turno rápido creado para el día $date ($h_start - $h_end)", 'Turnos', $post_id );
 		}
 

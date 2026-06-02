@@ -18,7 +18,7 @@ class PDF_Certificado {
 	 */
 	public static function generar( int $post_id ): ?int {
 		if ( ! class_exists( '\\Convoca\\Core\\CONV_Signature' ) ) {
-			error_log( 'Biodevas Turnos: CONV_Signature class not found.' );
+			error_log( 'Convoca Shifts: CONV_Signature class not found.' );
 			return null;
 		}
 
@@ -86,7 +86,7 @@ class PDF_Certificado {
 		$templates     = get_option( 'conv_pdf_templates', array() );
 		$template_html = isset( $templates['certificado'] ) ? $templates['certificado']['content'] : '<h1>Certificado</h1><p>Nombre: {{nombre}}</p><p>DNI: {{dni}}</p><p>Actividad: {{actividad}}</p><p>Fecha: {{fecha}}</p>';
 
-		$stamp_html = $signature->get_acceptance_stamp_html( 'Asociación Biodevas', $ip, $timestamp, $content_for_hash );
+		$stamp_html = $signature->get_acceptance_stamp_html( 'Asociación Convoca', $ip, $timestamp, $content_for_hash );
 
 		if ( strpos( $template_html, '<!-- FIRMA DIGITAL SERÁ AÑADIDA POR LA CLASE CONV_Signature -->' ) !== false ) {
 			$template_html = str_replace( '<!-- FIRMA DIGITAL SERÁ AÑADIDA POR LA CLASE CONV_Signature -->', $stamp_html, $template_html );

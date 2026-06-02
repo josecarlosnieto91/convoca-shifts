@@ -44,7 +44,7 @@ delete_transient( 'cst_resumen_turnos_semana' );
 delete_option( 'cst_plugin_version' );
 
 // 4. Note: User meta with _cst_ prefix (_cst_aprobado, _cst_telefono, _cst_motivacion).
-// is created by Biodevas Members plugin, NOT by Centro Social Turnos.
+// is created by Convoca Members plugin, NOT by Centro Social Turnos.
 // Therefore, we do NOT delete it here to preserve Member functionality.
 
 // 5. Clear scheduled CRON events.

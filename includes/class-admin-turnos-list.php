@@ -1,6 +1,6 @@
 <?php
 /**
- * Custom WP_List_Table for centro_turno with Biodevas styling.
+ * Custom WP_List_Table for centro_turno with Convoca styling.
  *
  * @package CentroSocialTurnos
  */

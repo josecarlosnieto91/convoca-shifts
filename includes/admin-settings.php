@@ -204,8 +204,8 @@ function cst_get_system_checks( bool $force = false ) {
 
 	// 1. Plugins.
 	$required_plugins = array(
-		'convoca-common/convoca-common.php'   => 'Biodevas Common',
-		'convoca-members/convoca-members.php' => 'Biodevas Members',
+		'convoca-common/convoca-common.php'   => 'Convoca Core',
+		'convoca-members/convoca-members.php' => 'Convoca Members',
 	);
 
 	foreach ( $required_plugins as $path => $name ) {

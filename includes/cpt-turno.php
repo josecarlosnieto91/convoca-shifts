@@ -508,7 +508,7 @@ function cst_handle_admin_attendance_action() {
 			update_post_meta( $post_id, '_estado_real', $status );
 
 			// Sync hours if applicable.
-			if ( class_exists( '\\Biodevas\\CentroSocialTurnos\\Hour_Sync' ) ) {
+			if ( class_exists( '\\Convoca\\Shifts\\Hour_Sync' ) ) {
 				\Convoca\Shifts\Hour_Sync::sync_hours_to_volunteer_global( $post_id, $id_responsable, $status );
 			}
 
@@ -661,7 +661,7 @@ function cst_save_turno_quick_edit( $post_id, $post ) {
 
 			// Sync hours if applicable.
 			$id_responsable = (int) get_post_meta( $post_id, '_id_responsable', true );
-			if ( class_exists( '\\Biodevas\\CentroSocialTurnos\\Hour_Sync' ) ) {
+			if ( class_exists( '\\Convoca\\Shifts\\Hour_Sync' ) ) {
 				\Convoca\Shifts\Hour_Sync::sync_hours_to_volunteer_global( $post_id, $id_responsable, $new_status );
 			}
 
