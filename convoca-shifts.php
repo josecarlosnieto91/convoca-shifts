@@ -15,6 +15,11 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
+
+// Load translations.
+add_action( 'init', function () {
+	load_plugin_textdomain( 'convoca-shifts', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+} );
 	exit; // Exit if accessed directly.
 }
 
