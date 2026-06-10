@@ -1,6 +1,7 @@
 {
     "name": "convoca/shifts",
-    "description": "Volunteer shift management for community centers",
+    "license": "GPL-2.0-or-later",
+	"description": "Volunteer shift management for community centers",
     "type": "wordpress-plugin",
     "require": {
         "php": ">=8.1"
