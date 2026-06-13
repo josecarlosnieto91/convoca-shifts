@@ -1,79 +1,19 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Call to static method info\(\) on an unknown class Convoca\\Core\\Logger\.$#'
+			message: '#^Instantiated class Dompdf\\Options not found\.$#'
 			identifier: class.notFound
 			count: 1
-			path: includes/admin-auditoria-horas.php
+			path: ../convoca-core/convoca-core.php
 
 		-
-			message: '#^Call to static method is_plugin_active_safe\(\) on an unknown class Convoca\\Core\\Utils\.$#'
+			message: '#^Instantiated class Dompdf\\Options not found\.$#'
 			identifier: class.notFound
 			count: 1
-			path: includes/admin-settings.php
-
-		-
-			message: '#^Call to static method info\(\) on an unknown class Convoca\\Core\\Logger\.$#'
-			identifier: class.notFound
-			count: 1
-			path: includes/admin-turno-rapido.php
-
-		-
-			message: '#^Call to static method info\(\) on an unknown class Convoca\\Core\\Logger\.$#'
-			identifier: class.notFound
-			count: 1
-			path: includes/class-cst-upgrade-manager.php
-
-		-
-			message: '#^Call to static method do_action\(\) on an unknown class Convoca\\Core\\Utils\.$#'
-			identifier: class.notFound
-			count: 1
-			path: includes/class-hour-sync.php
-
-		-
-			message: '#^Call to static method error\(\) on an unknown class Convoca\\Core\\Logger\.$#'
-			identifier: class.notFound
-			count: 1
-			path: includes/class-hour-sync.php
-
-		-
-			message: '#^Call to static method warning\(\) on an unknown class Convoca\\Core\\Logger\.$#'
-			identifier: class.notFound
-			count: 1
-			path: includes/class-hour-sync.php
-
-		-
-			message: '#^Call to static method acquire_lock\(\) on an unknown class Convoca\\Core\\Utils\.$#'
-			identifier: class.notFound
-			count: 2
-			path: includes/cpt-turno.php
-
-		-
-			message: '#^Call to static method error\(\) on an unknown class Convoca\\Core\\Logger\.$#'
-			identifier: class.notFound
-			count: 1
-			path: includes/cpt-turno.php
-
-		-
-			message: '#^Call to static method release_lock\(\) on an unknown class Convoca\\Core\\Utils\.$#'
-			identifier: class.notFound
-			count: 2
-			path: includes/cpt-turno.php
+			path: ../convoca-core/includes/CONV_Signature.php
 
 		-
 			message: '#^Function cst_crear_semana_tipo invoked with 0 parameters, 2 required\.$#'
 			identifier: arguments.count
 			count: 1
 			path: includes/cpt-turno.php
-
-		-
-			message: '#^Call to static method acquire_lock\(\) on an unknown class Convoca\\Core\\Utils\.$#'
-			identifier: class.notFound
-			count: 1
-			path: includes/cron.php
-
-		-
-			message: '#^Call to static method release_lock\(\) on an unknown class Convoca\\Core\\Utils\.$#'
-			identifier: class.notFound
-			count: 1
-			path: includes/cron.php
