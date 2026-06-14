@@ -201,20 +201,20 @@ add_action( 'init', 'cst_register_blocks' );
  * Render Callbacks
  */
 function cst_render_block_calendario() {
-	$output = cst_shortcode_calendario_centro();
+	$output = convoca_shifts_calendario_centro();
 	// Fail-safe trigger for dynamic loading (Gutenberg/AJAX).
 	$output .= '<script>if(window.initCSTCalendar) { window.initCSTCalendar(document); } else if(window.parent && window.parent.initCSTCalendar) { window.parent.initCSTCalendar(document); }</script>';
 	return $output;
 }
 
 function cst_render_block_boton_apuntarse() {
-	return cst_shortcode_boton_apuntarse();
+	return convoca_shifts_boton_apuntarse();
 }
 
 function cst_render_block_resumen() {
-	return cst_shortcode_resumen_turnos();
+	return convoca_shifts_resumen_turnos();
 }
 
 function cst_render_block_proximos_turnos( $attributes ) {
-	return cst_shortcode_proximos_turnos( $attributes );
+	return convoca_shifts_proximos_turnos( $attributes );
 }

@@ -22,6 +22,22 @@ Plugin de gestión de turnos de voluntariado para el ecosistema Convoca:
 * Exportación CSV y activity log completo
 * REST API y notificaciones por email
 
+= Privacidad =
+
+Este plugin recoge y almacena datos personales de los voluntarios que se registran en turnos: nombre y apellidos, correo electrónico, turnos seleccionados, fechas y horas de voluntariado, y preferencias de horario. Estos datos se almacenan en la base de datos local de WordPress (tablas personalizadas wp_convoca_shifts_*).
+
+Los datos se utilizan exclusivamente para la gestión de turnos de voluntariado, control horario, generación de resúmenes de horas trabajadas y comunicación sobre los turnos asignados. El plugin envía notificaciones por correo electrónico a los voluntarios sobre asignación y cambios de turnos.
+
+Este plugin se apoya en Convoca Members para los perfiles de voluntario; los datos personales se sincronizan entre ambos plugins según sea necesario para el funcionamiento del sistema.
+
+No se comparten datos personales con terceros. Los correos electrónicos se envían a través del sistema de correo de WordPress.
+
+Los usuarios tienen derecho a:
+* Solicitar acceso al registro de sus turnos y horas
+* Solicitar la exportación de sus datos
+* Solicitar la eliminación de sus datos (con limitaciones por registro histórico necesario)
+Para ejercer estos derechos, contacte con el administrador del sitio.
+
 == Installation ==
 
 1. Asegúrate de que Convoca Core y Convoca Members están activos

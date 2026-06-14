@@ -37,7 +37,7 @@ class CST_Calendario_Widget extends WP_Widget {
 		if ( ! empty( $instance['title'] ) ) {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
 		}
-		echo cst_shortcode_calendario_centro();
+		echo convoca_shifts_calendario_centro();
 		echo $args['after_widget'];
 	}
 
@@ -75,7 +75,7 @@ class CST_Boton_Apuntarse_Widget extends WP_Widget {
 		if ( ! empty( $instance['title'] ) ) {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
 		}
-		echo cst_shortcode_boton_apuntarse();
+		echo convoca_shifts_boton_apuntarse();
 		echo $args['after_widget'];
 	}
 
@@ -113,7 +113,7 @@ class CST_Resumen_Turnos_Widget extends WP_Widget {
 		if ( ! empty( $instance['title'] ) ) {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
 		}
-		echo cst_shortcode_resumen_turnos();
+		echo convoca_shifts_resumen_turnos();
 		echo $args['after_widget'];
 	}
 
@@ -153,7 +153,7 @@ class CST_Proximos_Turnos_Widget extends WP_Widget {
 		if ( ! empty( $instance['title'] ) ) {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
 		}
-		echo cst_shortcode_proximos_turnos( array( 'cantidad' => $cantidad ) );
+		echo convoca_shifts_proximos_turnos( array( 'cantidad' => $cantidad ) );
 		echo $args['after_widget'];
 	}
 

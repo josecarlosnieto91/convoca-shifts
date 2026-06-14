@@ -1,1194 +1,1175 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the convoca-shifts package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# Copyright (C) 2026 Jose Carlos Nieto Ramos
+# This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: convoca-shifts 1.0\n"
-"Report-Msgid-Bugs-To: dev@getconvoca.app\n"
-"POT-Creation-Date: 2026-06-14 13:31+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Project-Id-Version: Convoca Shifts 2.5.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/convoca-shifts\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-06-14T13:49:10+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: convoca-shifts\n"
 
-#: convoca-shifts/includes/Admin_Turnos_List.php:34
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:131
-#: convoca-shifts/includes/class-admin-turno-editor.php:129
-#: convoca-shifts/includes/class-admin-turnos-list.php:32
-msgid "Fecha"
+#. Plugin Name of the plugin
+#: convoca-shifts.php
+msgid "Convoca Shifts"
 msgstr ""
 
-#: convoca-shifts/includes/Admin_Turnos_List.php:35
-#: convoca-shifts/includes/class-admin-turnos-list.php:33
-msgid "Horario"
+#. Plugin URI of the plugin
+#: convoca-shifts.php
+msgid "https://convoca.org."
 msgstr ""
 
-#: convoca-shifts/includes/Admin_Turnos_List.php:36
-#: convoca-shifts/includes/admin-settings.php:23
-#: convoca-shifts/includes/admin-settings.php:67
-#: convoca-shifts/includes/class-admin-turnos-list.php:34
-#: convoca-shifts/includes/shortcodes.php:120
-msgid "Estado"
+#. Description of the plugin
+#: convoca-shifts.php
+msgid "Volunteer shift management for community centers."
 msgstr ""
 
-#: convoca-shifts/includes/Admin_Turnos_List.php:37
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:146
-#: convoca-shifts/includes/class-admin-turno-editor.php:144
-#: convoca-shifts/includes/class-admin-turnos-list.php:35
-#: convoca-shifts/includes/cpt-turno.php:399
-#: convoca-shifts/includes/cpt-turno.php:552
-msgid "Responsable"
+#. Author of the plugin
+#: convoca-shifts.php
+msgid "Jose Carlos Nieto Ramos"
 msgstr ""
 
-#: convoca-shifts/includes/Admin_Turnos_List.php:38
-#: convoca-shifts/includes/class-admin-turnos-list.php:36
-msgid "Apoyo"
+#: convoca-shifts.php:260
+msgid "<strong>Atención:</strong> El rol \"Voluntario Aprobado\" no existe. Este rol es necesario para el funcionamiento de Centro Social Turnos y debería ser creado por el plugin Convoca Members. Por favor, asegúrate de que Convoca Members está activo y ha sido reactivado recientemente."
 msgstr ""
 
-#: convoca-shifts/includes/Admin_Turnos_List.php:39
-#: convoca-shifts/includes/class-admin-turnos-list.php:37
-#: convoca-shifts/includes/cpt-turno.php:400
-#: convoca-shifts/includes/cpt-turno.php:564
-msgid "Asistencia"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List.php:40
-#: convoca-shifts/includes/admin-approval.php:119
-#: convoca-shifts/includes/admin-approval.php:145
-#: convoca-shifts/includes/admin-auditoria-horas.php:39
-#: convoca-shifts/includes/class-admin-turnos-list.php:38
-msgid "Acciones"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List.php:124
-#: convoca-shifts/includes/class-admin-turnos-list.php:122
-msgid "Editar"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List.php:131
-#: convoca-shifts/includes/class-admin-turnos-list.php:129
-msgid "✅ Marcar Realizado"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List.php:132
-#: convoca-shifts/includes/class-admin-turnos-list.php:130
-msgid "❌ Marcar No asistió"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List.php:218
-#: convoca-shifts/includes/class-admin-turnos-list.php:216
-msgid "Todos los estados"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List.php:219
-#: convoca-shifts/includes/class-admin-turnos-list.php:217
-msgid "🟡 Pendiente"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List.php:220
-#: convoca-shifts/includes/class-admin-turnos-list.php:218
-msgid "🔵 Ocupado"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List.php:221
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:169
-#: convoca-shifts/includes/class-admin-turno-editor.php:167
-#: convoca-shifts/includes/class-admin-turnos-list.php:219
-#: convoca-shifts/includes/cpt-turno.php:292
-msgid "🔴 Cerrado"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List.php:225
-#: convoca-shifts/includes/class-admin-turnos-list.php:223
-msgid "Todas asistencias"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List.php:226
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:216
-#: convoca-shifts/includes/class-admin-turno-editor.php:214
-#: convoca-shifts/includes/class-admin-turnos-list.php:224
-#: convoca-shifts/includes/cpt-turno.php:566
-msgid "⏳ Pendiente"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List.php:227
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:217
-#: convoca-shifts/includes/class-admin-turno-editor.php:215
-#: convoca-shifts/includes/class-admin-turnos-list.php:225
-#: convoca-shifts/includes/cpt-turno.php:567
-msgid "✅ Realizado"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List.php:228
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:218
-#: convoca-shifts/includes/class-admin-turno-editor.php:216
-#: convoca-shifts/includes/class-admin-turnos-list.php:226
-#: convoca-shifts/includes/cpt-turno.php:568
-msgid "❌ No asistió"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List.php:232
-#: convoca-shifts/includes/class-admin-turnos-list.php:230
-msgid "Apoyo: Todos"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List.php:233
-#: convoca-shifts/includes/admin-turno-rapido.php:371
-#: convoca-shifts/includes/class-admin-turnos-list.php:231
-msgid "🛟 Necesita apoyo"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List.php:234
-#: convoca-shifts/includes/class-admin-turnos-list.php:232
-msgid "Sin apoyo"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List.php:237
-#: convoca-shifts/includes/class-admin-turnos-list.php:235
-msgid "Filtrar"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List_Page.php:28
-#: convoca-shifts/includes/Admin_Turnos_List_Page.php:29
-#: convoca-shifts/includes/Admin_Turnos_List_Page.php:70
-#: convoca-shifts/includes/class-admin-turnos-list-page.php:26
-#: convoca-shifts/includes/class-admin-turnos-list-page.php:27
-#: convoca-shifts/includes/class-admin-turnos-list-page.php:68
-msgid "Turnos"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List_Page.php:72
-#: convoca-shifts/includes/admin-turno-rapido.php:17
-#: convoca-shifts/includes/admin-turno-rapido.php:18
-#: convoca-shifts/includes/admin-turno-rapido.php:121
-#: convoca-shifts/includes/class-admin-turnos-list-page.php:70
-msgid "Añadir Turno Rápido"
-msgstr ""
-
-#: convoca-shifts/includes/Admin_Turnos_List_Page.php:79
-#: convoca-shifts/includes/class-admin-turnos-list-page.php:77
-msgid "Buscar turno..."
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Status.php:115
-#: convoca-shifts/includes/class-admin-status.php:113
-msgid "Estado del Sistema - Turnos"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Status.php:122
-#: convoca-shifts/includes/class-admin-status.php:120
-msgid "Se encontraron errores"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Status.php:122
-#: convoca-shifts/includes/class-admin-status.php:120
-msgid "Atención: algunas comprobaciones requieren revisión"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Status.php:122
-#: convoca-shifts/includes/class-admin-status.php:120
-msgid "Todo correcto"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Status.php:123
-#: convoca-shifts/includes/class-admin-status.php:121
-#, php-format
-msgid "%d comprobaciones realizadas."
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:32
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:33
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:118
-#: convoca-shifts/includes/class-admin-turno-editor.php:30
-#: convoca-shifts/includes/class-admin-turno-editor.php:31
-#: convoca-shifts/includes/class-admin-turno-editor.php:116
-#: convoca-shifts/includes/cpt-turno.php:103
-msgid "Editar Turno"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:72
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:253
-#: convoca-shifts/includes/class-admin-turno-editor.php:70
-#: convoca-shifts/includes/class-admin-turno-editor.php:251
-#: convoca-shifts/includes/cpt-turno.php:493
-msgid "No tienes permisos para editar este turno."
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:118
-#: convoca-shifts/includes/class-admin-turno-editor.php:116
-#: convoca-shifts/includes/cpt-turno.php:102
-msgid "Nuevo Turno"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:127
-#: convoca-shifts/includes/class-admin-turno-editor.php:125
-msgid "Datos del Turno"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:136
-#: convoca-shifts/includes/class-admin-turno-editor.php:134
-msgid "Hora inicio"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:141
-#: convoca-shifts/includes/class-admin-turno-editor.php:139
-msgid "Hora fin"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:148
-#: convoca-shifts/includes/class-admin-turno-editor.php:146
-#: convoca-shifts/includes/cpt-turno.php:275
-#: convoca-shifts/includes/cpt-turno.php:554
-msgid "— Sin asignar —"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:161
-#: convoca-shifts/includes/class-admin-turno-editor.php:159
-msgid "Estado y Actividad"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:165
-#: convoca-shifts/includes/class-admin-turno-editor.php:163
-msgid "Estado del centro"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:167
-#: convoca-shifts/includes/class-admin-turno-editor.php:165
-#: convoca-shifts/includes/cpt-turno.php:290
-msgid "🟡 Pendiente (Abierto)"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:168
-#: convoca-shifts/includes/class-admin-turno-editor.php:166
-#: convoca-shifts/includes/cpt-turno.php:291
-msgid "🔵 Ocupado (Actividad)"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:178
-#: convoca-shifts/includes/class-admin-turno-editor.php:176
-msgid "Actividad"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:180
-#: convoca-shifts/includes/class-admin-turno-editor.php:178
-msgid "— Seleccionar —"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:189
-#: convoca-shifts/includes/class-admin-turno-editor.php:187
-msgid "Monitor/a"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:191
-#: convoca-shifts/includes/class-admin-turno-editor.php:189
-#: convoca-shifts/includes/cpt-turno.php:315
-msgid "— Sin monitor —"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:205
-#: convoca-shifts/includes/class-admin-turno-editor.php:203
-msgid "🛟 Necesita apoyo (sin llaves / acompañamiento)"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:210
-#: convoca-shifts/includes/class-admin-turno-editor.php:208
-msgid "Seguimiento"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:214
-#: convoca-shifts/includes/class-admin-turno-editor.php:212
-msgid "Estado de asistencia"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:225
-#: convoca-shifts/includes/class-admin-turno-editor.php:223
-msgid "Volver al listado"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:228
-#: convoca-shifts/includes/class-admin-turno-editor.php:226
-msgid "Guardar cambios"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:228
-#: convoca-shifts/includes/class-admin-turno-editor.php:226
-msgid "Crear turno"
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:246
-#: convoca-shifts/includes/class-admin-turno-editor.php:244
-msgid "Acceso denegado."
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:249
-#: convoca-shifts/includes/admin-turno-rapido.php:58
-#: convoca-shifts/includes/class-admin-turno-editor.php:247
-msgid "Nonce inválido."
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:255
-#: convoca-shifts/includes/class-admin-turno-editor.php:253
-msgid "No tienes permisos para crear turnos."
-msgstr ""
-
-#: convoca-shifts/includes/CST_Admin_Turno_Editor.php:290
-#: convoca-shifts/includes/class-admin-turno-editor.php:288
-#: convoca-shifts/includes/shortcodes.php:34
-msgid "Error al crear el turno."
-msgstr ""
-
-#: convoca-shifts/includes/admin-approval.php:11
-#: convoca-shifts/includes/admin-approval.php:12
+#: includes/admin-approval.php:11
+#: includes/admin-approval.php:12
 msgid "Gestionar Voluntarios"
 msgstr ""
 
-#: convoca-shifts/includes/admin-approval.php:27
+#: includes/admin-approval.php:27
 #, php-format
 msgid "Usuario %s aprobado como voluntario."
 msgstr ""
 
-#: convoca-shifts/includes/admin-approval.php:30
+#: includes/admin-approval.php:30
 msgid "¡Solicitud de voluntariado aprobada!"
 msgstr ""
 
-#: convoca-shifts/includes/admin-approval.php:30
-msgid ""
-"Hola, ya puedes acceder y gestionar turnos en el centro social. Adjunto a "
-"este correo encontrarás tu Acuerdo de Incorporación si procede."
+#: includes/admin-approval.php:30
+msgid "Hola, ya puedes acceder y gestionar turnos en el centro social. Adjunto a este correo encontrarás tu Acuerdo de Incorporación si procede."
 msgstr ""
 
-#: convoca-shifts/includes/admin-approval.php:44
+#: includes/admin-approval.php:44
 msgid "No puedes revocarte tus propios permisos."
 msgstr ""
 
-#: convoca-shifts/includes/admin-approval.php:92
+#: includes/admin-approval.php:92
 #, php-format
 msgid "Permisos de voluntario revocados para %s y turnos futuros liberados."
 msgstr ""
 
-#: convoca-shifts/includes/admin-approval.php:113
+#: includes/admin-approval.php:113
 msgid "Gestión de Voluntariado"
 msgstr ""
 
-#: convoca-shifts/includes/admin-approval.php:116
+#: includes/admin-approval.php:116
 msgid "Solicitudes Pendientes"
 msgstr ""
 
-#: convoca-shifts/includes/admin-approval.php:119
-#: convoca-shifts/includes/admin-approval.php:145
+#: includes/admin-approval.php:119
+#: includes/admin-approval.php:145
 msgid "Nombre"
 msgstr ""
 
-#: convoca-shifts/includes/admin-approval.php:119
-#: convoca-shifts/includes/admin-approval.php:145
-#: convoca-shifts/includes/admin-auditoria-horas.php:36
-#: convoca-shifts/includes/admin-estadisticas.php:63
-#: convoca-shifts/includes/admin-estadisticas.php:309
+#: includes/admin-approval.php:119
+#: includes/admin-approval.php:145
+#: includes/admin-auditoria-horas.php:36
+#: includes/admin-estadisticas.php:63
+#: includes/admin-estadisticas.php:309
 msgid "Email"
 msgstr ""
 
-#: convoca-shifts/includes/admin-approval.php:119
-#: convoca-shifts/includes/admin-approval.php:145
+#: includes/admin-approval.php:119
+#: includes/admin-approval.php:145
 msgid "Teléfono"
 msgstr ""
 
-#: convoca-shifts/includes/admin-approval.php:119
+#: includes/admin-approval.php:119
 msgid "Motivación"
 msgstr ""
 
-#: convoca-shifts/includes/admin-approval.php:131
+#: includes/admin-approval.php:119
+#: includes/admin-approval.php:145
+#: includes/admin-auditoria-horas.php:39
+#: includes/Admin_Turnos_List.php:40
+#: includes/class-admin-turnos-list.php:38
+msgid "Acciones"
+msgstr ""
+
+#: includes/admin-approval.php:131
 msgid "Aprobar Voluntario"
 msgstr ""
 
-#: convoca-shifts/includes/admin-approval.php:136
+#: includes/admin-approval.php:136
 msgid "No hay solicitudes pendientes."
 msgstr ""
 
-#: convoca-shifts/includes/admin-approval.php:142
+#: includes/admin-approval.php:142
 msgid "Voluntarios Activos"
 msgstr ""
 
-#: convoca-shifts/includes/admin-approval.php:156
+#: includes/admin-approval.php:156
 msgid "Revocar Permisos"
 msgstr ""
 
-#: convoca-shifts/includes/admin-approval.php:162
+#: includes/admin-approval.php:162
 msgid "No hay voluntarios activos registrados."
 msgstr ""
 
-#: convoca-shifts/includes/admin-auditoria-horas.php:10
+#: includes/admin-auditoria-horas.php:10
 msgid "Auditoría de Horas"
 msgstr ""
 
-#: convoca-shifts/includes/admin-auditoria-horas.php:11
+#: includes/admin-auditoria-horas.php:11
 msgid "Auditoría Horas"
 msgstr ""
 
-#: convoca-shifts/includes/admin-auditoria-horas.php:24
+#: includes/admin-auditoria-horas.php:24
 msgid "Horas recalculadas correctamente."
 msgstr ""
 
-#: convoca-shifts/includes/admin-auditoria-horas.php:30
+#: includes/admin-auditoria-horas.php:30
 msgid "Auditoría de Horas - Voluntariado"
 msgstr ""
 
-#: convoca-shifts/includes/admin-auditoria-horas.php:31
-msgid ""
-"Listado de voluntarios con el total de horas acumuladas desde turnos "
-"realizados."
+#: includes/admin-auditoria-horas.php:31
+msgid "Listado de voluntarios con el total de horas acumuladas desde turnos realizados."
 msgstr ""
 
-#: convoca-shifts/includes/admin-auditoria-horas.php:35
-#: convoca-shifts/includes/admin-estadisticas.php:124
+#: includes/admin-auditoria-horas.php:35
+#: includes/admin-estadisticas.php:124
 msgid "Usuario"
 msgstr ""
 
-#: convoca-shifts/includes/admin-auditoria-horas.php:37
+#: includes/admin-auditoria-horas.php:37
 msgid "Horas Totales (meta)"
 msgstr ""
 
-#: convoca-shifts/includes/admin-auditoria-horas.php:38
+#: includes/admin-auditoria-horas.php:38
 msgid "Turnos Realizados"
 msgstr ""
 
-#: convoca-shifts/includes/admin-auditoria-horas.php:68
-msgid ""
-"¿Recalcular horas? Esta acción escaneará todos los turnos realizados y "
-"actualizará el contador."
+#: includes/admin-auditoria-horas.php:68
+msgid "¿Recalcular horas? Esta acción escaneará todos los turnos realizados y actualizará el contador."
 msgstr ""
 
-#: convoca-shifts/includes/admin-auditoria-horas.php:68
+#: includes/admin-auditoria-horas.php:68
 msgid "Recalcular"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:10
+#: includes/admin-estadisticas.php:10
 msgid "Estadísticas Voluntariado"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:11
+#: includes/admin-estadisticas.php:11
 msgid "Estadísticas"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:27
+#: includes/admin-estadisticas.php:27
 msgid "Intento de creación de tabla realizado."
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:31
+#: includes/admin-estadisticas.php:31
 #, php-format
-msgid ""
-"La tabla de logs (%s) no existe. El registro de actividad no funcionará."
+msgid "La tabla de logs (%s) no existe. El registro de actividad no funcionará."
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:31
+#: includes/admin-estadisticas.php:31
 msgid "Intentar crear ahora"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:48
+#: includes/admin-estadisticas.php:48
 msgid "Estadísticas de Voluntariado"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:49
+#: includes/admin-estadisticas.php:49
 msgid "Resumen de actividad y horas dedicadas por cada voluntario."
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:55
+#: includes/admin-estadisticas.php:55
 msgid "📥 Exportar Estadísticas a CSV"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:62
-#: convoca-shifts/includes/admin-estadisticas.php:308
+#: includes/admin-estadisticas.php:62
+#: includes/admin-estadisticas.php:308
 msgid "Voluntario"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:64
-#: convoca-shifts/includes/admin-estadisticas.php:310
+#: includes/admin-estadisticas.php:64
+#: includes/admin-estadisticas.php:310
 msgid "Turnos (Total)"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:65
-#: convoca-shifts/includes/admin-estadisticas.php:311
+#: includes/admin-estadisticas.php:65
+#: includes/admin-estadisticas.php:311
 msgid "Realizados"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:66
-#: convoca-shifts/includes/admin-estadisticas.php:312
+#: includes/admin-estadisticas.php:66
+#: includes/admin-estadisticas.php:312
 msgid "Faltas"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:67
-#: convoca-shifts/includes/admin-estadisticas.php:313
+#: includes/admin-estadisticas.php:67
+#: includes/admin-estadisticas.php:313
 msgid "Horas (Aprobadas)"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:68
-#: convoca-shifts/includes/admin-estadisticas.php:314
+#: includes/admin-estadisticas.php:68
+#: includes/admin-estadisticas.php:314
 msgid "Último Turno"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:74
+#: includes/admin-estadisticas.php:74
 msgid "No hay voluntarios registrados aún."
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:100
+#: includes/admin-estadisticas.php:100
 msgid "Registro de Actividad Reciente"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:123
+#: includes/admin-estadisticas.php:123
 msgid "Fecha/Hora"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:125
+#: includes/admin-estadisticas.php:125
 msgid "Acción"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:126
+#: includes/admin-estadisticas.php:126
 msgid "Detalles"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:131
+#: includes/admin-estadisticas.php:131
 msgid "No hay actividad registrada aún."
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:136
+#: includes/admin-estadisticas.php:136
 msgid "Usuario Desconocido"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:145
+#: includes/admin-estadisticas.php:145
 msgid "Voluntario: "
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:167
+#: includes/admin-estadisticas.php:167
 #, php-format
 msgid "%d elementos"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:170
+#: includes/admin-estadisticas.php:170
 msgid "Página anterior"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:173
+#: includes/admin-estadisticas.php:173
 msgid "de"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:176
+#: includes/admin-estadisticas.php:176
 msgid "Página siguiente"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:275
+#: includes/admin-estadisticas.php:275
 msgid "Creado"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:276
+#: includes/admin-estadisticas.php:276
 msgid "Cubierto"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:277
+#: includes/admin-estadisticas.php:277
 msgid "Liberado"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:278
+#: includes/admin-estadisticas.php:278
 msgid "Asignado (Admin)"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:279
+#: includes/admin-estadisticas.php:279
 msgid "Desasignado (Admin)"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:280
+#: includes/admin-estadisticas.php:280
 msgid "Asistencia OK"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:281
+#: includes/admin-estadisticas.php:281
 msgid "No asistió"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:282
+#: includes/admin-estadisticas.php:282
 msgid "Voluntario Aprobado"
 msgstr ""
 
-#: convoca-shifts/includes/admin-estadisticas.php:283
+#: includes/admin-estadisticas.php:283
 msgid "Voluntario Revocado"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:13
+#: includes/admin-settings.php:13
 msgid "Ajustes del Sistema"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:14
-#: convoca-shifts/includes/admin-settings.php:66
+#: includes/admin-settings.php:14
+#: includes/admin-settings.php:66
 msgid "Ajustes"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:22
+#: includes/admin-settings.php:22
 msgid "Estado del Sistema"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:60
+#: includes/admin-settings.php:23
+#: includes/admin-settings.php:67
+#: includes/Admin_Turnos_List.php:36
+#: includes/class-admin-turnos-list.php:34
+#: includes/shortcodes.php:120
+msgid "Estado"
+msgstr ""
+
+#: includes/admin-settings.php:60
 msgid "Ajustes de Centro Social Turnos"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:61
+#: includes/admin-settings.php:61
 msgid "Configuración del sistema de turnos y apertura"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:71
-msgid ""
-"Configura las URLs de las páginas que contienen los shortcodes para que el "
-"plugin pueda generar enlaces correctos."
+#: includes/admin-settings.php:71
+msgid "Configura las URLs de las páginas que contienen los shortcodes para que el plugin pueda generar enlaces correctos."
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:78
+#: includes/admin-settings.php:78
 msgid "URL de la página del Calendario"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:80
+#: includes/admin-settings.php:80
 msgid "URL donde has pegado el shortcode [calendario_centro]."
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:84
+#: includes/admin-settings.php:84
 msgid "Horario del Centro"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:87
+#: includes/admin-settings.php:87
 msgid "hasta las"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:90
+#: includes/admin-settings.php:90
 msgid "Restringe la creación de turnos fuera de este horario."
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:94
+#: includes/admin-settings.php:94
 msgid "Guardar ajustes"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:99
+#: includes/admin-settings.php:99
 msgid "¡Novedad!"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:99
-msgid ""
-"Ahora tienes dos nuevas formas de insertar el contenido: mediante **Bloques "
-"de Gutenberg** (recomendado para el editor moderno) o mediante **Widgets** "
-"(para barras laterales y pie de página). Ambos son más fáciles de configurar "
-"que los shortcodes."
+#: includes/admin-settings.php:99
+msgid "Ahora tienes dos nuevas formas de insertar el contenido: mediante **Bloques de Gutenberg** (recomendado para el editor moderno) o mediante **Widgets** (para barras laterales y pie de página). Ambos son más fáciles de configurar que los shortcodes."
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:102
+#: includes/admin-settings.php:102
 msgid "Guía de Bloques / Widgets / Shortcodes"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:103
-msgid ""
-"Puedes usar estos elementos como bloques de Gutenberg, widgets o mediante "
-"shortcodes:"
+#: includes/admin-settings.php:103
+msgid "Puedes usar estos elementos como bloques de Gutenberg, widgets o mediante shortcodes:"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:114
-#: convoca-shifts/includes/blocks.php:147
-#: convoca-shifts/includes/widgets.php:30
+#: includes/admin-settings.php:114
+#: includes/blocks.php:147
+#: includes/widgets.php:30
 msgid "CST: Calendario"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:116
+#: includes/admin-settings.php:116
 msgid "Muestra el calendario interactivo (FullCalendar)."
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:119
-#: convoca-shifts/includes/blocks.php:192
-#: convoca-shifts/includes/widgets.php:144
+#: includes/admin-settings.php:119
+#: includes/blocks.php:192
+#: includes/widgets.php:144
 msgid "CST: Próximos Turnos"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:121
+#: includes/admin-settings.php:121
 msgid "Lista simple de los próximos turnos programados."
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:124
-#: convoca-shifts/includes/blocks.php:173
-#: convoca-shifts/includes/widgets.php:106
+#: includes/admin-settings.php:124
+#: includes/blocks.php:173
+#: includes/widgets.php:106
 msgid "CST: Resumen Semanal"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:126
+#: includes/admin-settings.php:126
 msgid "Resumen semanal con contador de huecos libres y botón de acción rápida."
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:129
-#: convoca-shifts/includes/blocks.php:160
-#: convoca-shifts/includes/widgets.php:68
+#: includes/admin-settings.php:129
+#: includes/blocks.php:160
+#: includes/widgets.php:68
 msgid "CST: Botón Apuntarse"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:131
+#: includes/admin-settings.php:131
 msgid "Botón directo \"Me apunto al siguiente turno libre\"."
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:153
+#: includes/admin-settings.php:153
 msgid "Se han detectado problemas críticos que impiden el funcionamiento."
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:154
+#: includes/admin-settings.php:154
 msgid "Estado: Errores detectados"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:158
+#: includes/admin-settings.php:158
 msgid "Hay advertencias que podrían afectar el funcionamiento."
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:159
+#: includes/admin-settings.php:159
 msgid "Estado: Advertencias"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:163
+#: includes/admin-settings.php:163
 msgid "Todos los componentes están configurados correctamente."
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:164
+#: includes/admin-settings.php:164
 msgid "Estado: Todo correcto"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:214
+#: includes/admin-settings.php:214
 #, php-format
 msgid "Plugin: %s"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:216
+#: includes/admin-settings.php:216
 msgid "Activo y funcionando."
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:216
+#: includes/admin-settings.php:216
 msgid "Plugin no detectado o inactivo."
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:217
+#: includes/admin-settings.php:217
 #, php-format
 msgid "Se recomienda instalar y activar el plugin %s."
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:224
+#: includes/admin-settings.php:224
 msgid "Página: Calendario"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:226
+#: includes/admin-settings.php:226
 msgid "Crea una página con el shortcode [calendario_centro]."
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:235
+#: includes/admin-settings.php:235
 #, php-format
 msgid "Detectada: %s"
 msgstr ""
 
-#: convoca-shifts/includes/admin-settings.php:235
+#: includes/admin-settings.php:235
 msgid "No se ha encontrado ninguna página con este shortcode."
 msgstr ""
 
-#: convoca-shifts/includes/admin-turno-rapido.php:63
+#: includes/admin-turno-rapido.php:17
+#: includes/admin-turno-rapido.php:18
+#: includes/admin-turno-rapido.php:121
+#: includes/Admin_Turnos_List_Page.php:72
+#: includes/class-admin-turnos-list-page.php:70
+msgid "Añadir Turno Rápido"
+msgstr ""
+
+#: includes/admin-turno-rapido.php:58
+#: includes/class-admin-turno-editor.php:247
+#: includes/CST_Admin_Turno_Editor.php:249
+msgid "Nonce inválido."
+msgstr ""
+
+#: includes/admin-turno-rapido.php:63
 msgid "No tienes permisos para realizar esta acción."
 msgstr ""
 
-#: convoca-shifts/includes/admin-turno-rapido.php:107
+#: includes/admin-turno-rapido.php:107
 msgid "Turno creado correctamente."
 msgstr ""
 
-#: convoca-shifts/includes/admin-turno-rapido.php:109
+#: includes/admin-turno-rapido.php:109
 msgid "Error desconocido"
 msgstr ""
 
-#: convoca-shifts/includes/admin-turno-rapido.php:123
-msgid ""
-"Selecciona un día en el calendario para crear un turno sin pasar por la "
-"pantalla de edición estándar."
+#: includes/admin-turno-rapido.php:123
+msgid "Selecciona un día en el calendario para crear un turno sin pasar por la pantalla de edición estándar."
 msgstr ""
 
-#: convoca-shifts/includes/admin-turno-rapido.php:330
-#: convoca-shifts/includes/shortcodes.php:95
+#: includes/admin-turno-rapido.php:330
+#: includes/shortcodes.php:95
 msgid "Crear Nuevo Turno"
 msgstr ""
 
-#: convoca-shifts/includes/admin-turno-rapido.php:338
-#: convoca-shifts/includes/shortcodes.php:98
+#: includes/admin-turno-rapido.php:338
+#: includes/shortcodes.php:98
 msgid "Seleccionar Horario"
 msgstr ""
 
-#: convoca-shifts/includes/admin-turno-rapido.php:340
-#: convoca-shifts/includes/shortcodes.php:100
+#: includes/admin-turno-rapido.php:340
+#: includes/shortcodes.php:100
 msgid "Mañana (10-13h)"
 msgstr ""
 
-#: convoca-shifts/includes/admin-turno-rapido.php:341
-#: convoca-shifts/includes/shortcodes.php:101
+#: includes/admin-turno-rapido.php:341
+#: includes/shortcodes.php:101
 msgid "Tarde (17-20h)"
 msgstr ""
 
-#: convoca-shifts/includes/admin-turno-rapido.php:342
-#: convoca-shifts/includes/shortcodes.php:102
+#: includes/admin-turno-rapido.php:342
+#: includes/shortcodes.php:102
 msgid "Personalizado"
 msgstr ""
 
-#: convoca-shifts/includes/admin-turno-rapido.php:349
-#: convoca-shifts/includes/shortcodes.php:109
+#: includes/admin-turno-rapido.php:349
+#: includes/shortcodes.php:109
 msgid "Hora Inicio"
 msgstr ""
 
-#: convoca-shifts/includes/admin-turno-rapido.php:353
-#: convoca-shifts/includes/shortcodes.php:113
+#: includes/admin-turno-rapido.php:353
+#: includes/shortcodes.php:113
 msgid "Hora Fin"
 msgstr ""
 
-#: convoca-shifts/includes/admin-turno-rapido.php:360
+#: includes/admin-turno-rapido.php:360
 msgid "Estado Inicial"
 msgstr ""
 
-#: convoca-shifts/includes/admin-turno-rapido.php:373
-msgid ""
-"Marca esto si el voluntario necesita acompañamiento (p.ej. no tiene llaves)."
+#: includes/admin-turno-rapido.php:371
+#: includes/Admin_Turnos_List.php:233
+#: includes/class-admin-turnos-list.php:231
+msgid "🛟 Necesita apoyo"
 msgstr ""
 
-#: convoca-shifts/includes/admin-turno-rapido.php:377
-#: convoca-shifts/includes/shortcodes.php:139
+#: includes/admin-turno-rapido.php:373
+msgid "Marca esto si el voluntario necesita acompañamiento (p.ej. no tiene llaves)."
+msgstr ""
+
+#: includes/admin-turno-rapido.php:377
+#: includes/shortcodes.php:139
 msgid "Cancelar"
 msgstr ""
 
-#: convoca-shifts/includes/admin-turno-rapido.php:378
-#: convoca-shifts/includes/shortcodes.php:140
+#: includes/admin-turno-rapido.php:378
+#: includes/shortcodes.php:140
 msgid "Guardar Turno"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:92
+#: includes/Admin_Turnos_List.php:34
+#: includes/class-admin-turno-editor.php:129
+#: includes/class-admin-turnos-list.php:32
+#: includes/CST_Admin_Turno_Editor.php:131
+msgid "Fecha"
+msgstr ""
+
+#: includes/Admin_Turnos_List.php:35
+#: includes/class-admin-turnos-list.php:33
+msgid "Horario"
+msgstr ""
+
+#: includes/Admin_Turnos_List.php:37
+#: includes/class-admin-turno-editor.php:144
+#: includes/class-admin-turnos-list.php:35
+#: includes/cpt-turno.php:399
+#: includes/cpt-turno.php:552
+#: includes/CST_Admin_Turno_Editor.php:146
+msgid "Responsable"
+msgstr ""
+
+#: includes/Admin_Turnos_List.php:38
+#: includes/class-admin-turnos-list.php:36
+msgid "Apoyo"
+msgstr ""
+
+#: includes/Admin_Turnos_List.php:39
+#: includes/class-admin-turnos-list.php:37
+#: includes/cpt-turno.php:400
+#: includes/cpt-turno.php:564
+msgid "Asistencia"
+msgstr ""
+
+#: includes/Admin_Turnos_List.php:124
+#: includes/class-admin-turnos-list.php:122
+msgid "Editar"
+msgstr ""
+
+#: includes/Admin_Turnos_List.php:131
+#: includes/class-admin-turnos-list.php:129
+msgid "✅ Marcar Realizado"
+msgstr ""
+
+#: includes/Admin_Turnos_List.php:132
+#: includes/class-admin-turnos-list.php:130
+msgid "❌ Marcar No asistió"
+msgstr ""
+
+#: includes/Admin_Turnos_List.php:218
+#: includes/class-admin-turnos-list.php:216
+msgid "Todos los estados"
+msgstr ""
+
+#: includes/Admin_Turnos_List.php:219
+#: includes/class-admin-turnos-list.php:217
+msgid "🟡 Pendiente"
+msgstr ""
+
+#: includes/Admin_Turnos_List.php:220
+#: includes/class-admin-turnos-list.php:218
+msgid "🔵 Ocupado"
+msgstr ""
+
+#: includes/Admin_Turnos_List.php:221
+#: includes/class-admin-turno-editor.php:167
+#: includes/class-admin-turnos-list.php:219
+#: includes/cpt-turno.php:292
+#: includes/CST_Admin_Turno_Editor.php:169
+msgid "🔴 Cerrado"
+msgstr ""
+
+#: includes/Admin_Turnos_List.php:225
+#: includes/class-admin-turnos-list.php:223
+msgid "Todas asistencias"
+msgstr ""
+
+#: includes/Admin_Turnos_List.php:226
+#: includes/class-admin-turno-editor.php:214
+#: includes/class-admin-turnos-list.php:224
+#: includes/cpt-turno.php:566
+#: includes/CST_Admin_Turno_Editor.php:216
+msgid "⏳ Pendiente"
+msgstr ""
+
+#: includes/Admin_Turnos_List.php:227
+#: includes/class-admin-turno-editor.php:215
+#: includes/class-admin-turnos-list.php:225
+#: includes/cpt-turno.php:567
+#: includes/CST_Admin_Turno_Editor.php:217
+msgid "✅ Realizado"
+msgstr ""
+
+#: includes/Admin_Turnos_List.php:228
+#: includes/class-admin-turno-editor.php:216
+#: includes/class-admin-turnos-list.php:226
+#: includes/cpt-turno.php:568
+#: includes/CST_Admin_Turno_Editor.php:218
+msgid "❌ No asistió"
+msgstr ""
+
+#: includes/Admin_Turnos_List.php:232
+#: includes/class-admin-turnos-list.php:230
+msgid "Apoyo: Todos"
+msgstr ""
+
+#: includes/Admin_Turnos_List.php:234
+#: includes/class-admin-turnos-list.php:232
+msgid "Sin apoyo"
+msgstr ""
+
+#: includes/Admin_Turnos_List.php:237
+#: includes/class-admin-turnos-list.php:235
+msgid "Filtrar"
+msgstr ""
+
+#: includes/Admin_Turnos_List_Page.php:28
+#: includes/Admin_Turnos_List_Page.php:29
+#: includes/Admin_Turnos_List_Page.php:70
+#: includes/class-admin-turnos-list-page.php:26
+#: includes/class-admin-turnos-list-page.php:27
+#: includes/class-admin-turnos-list-page.php:68
+msgid "Turnos"
+msgstr ""
+
+#: includes/Admin_Turnos_List_Page.php:79
+#: includes/class-admin-turnos-list-page.php:77
+msgid "Buscar turno..."
+msgstr ""
+
+#: includes/class-admin-status.php:113
+#: includes/CST_Admin_Status.php:115
+msgid "Estado del Sistema - Turnos"
+msgstr ""
+
+#: includes/class-admin-status.php:120
+#: includes/CST_Admin_Status.php:122
+msgid "Se encontraron errores"
+msgstr ""
+
+#: includes/class-admin-status.php:120
+#: includes/CST_Admin_Status.php:122
+msgid "Atención: algunas comprobaciones requieren revisión"
+msgstr ""
+
+#: includes/class-admin-status.php:120
+#: includes/CST_Admin_Status.php:122
+msgid "Todo correcto"
+msgstr ""
+
+#: includes/class-admin-status.php:121
+#: includes/CST_Admin_Status.php:123
+#, php-format
+msgid "%d comprobaciones realizadas."
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:30
+#: includes/class-admin-turno-editor.php:31
+#: includes/class-admin-turno-editor.php:116
+#: includes/cpt-turno.php:103
+#: includes/CST_Admin_Turno_Editor.php:32
+#: includes/CST_Admin_Turno_Editor.php:33
+#: includes/CST_Admin_Turno_Editor.php:118
+msgid "Editar Turno"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:70
+#: includes/class-admin-turno-editor.php:251
+#: includes/cpt-turno.php:493
+#: includes/CST_Admin_Turno_Editor.php:72
+#: includes/CST_Admin_Turno_Editor.php:253
+msgid "No tienes permisos para editar este turno."
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:116
+#: includes/cpt-turno.php:102
+#: includes/CST_Admin_Turno_Editor.php:118
+msgid "Nuevo Turno"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:125
+#: includes/CST_Admin_Turno_Editor.php:127
+msgid "Datos del Turno"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:134
+#: includes/CST_Admin_Turno_Editor.php:136
+msgid "Hora inicio"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:139
+#: includes/CST_Admin_Turno_Editor.php:141
+msgid "Hora fin"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:146
+#: includes/cpt-turno.php:275
+#: includes/cpt-turno.php:554
+#: includes/CST_Admin_Turno_Editor.php:148
+msgid "— Sin asignar —"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:159
+#: includes/CST_Admin_Turno_Editor.php:161
+msgid "Estado y Actividad"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:163
+#: includes/CST_Admin_Turno_Editor.php:165
+msgid "Estado del centro"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:165
+#: includes/cpt-turno.php:290
+#: includes/CST_Admin_Turno_Editor.php:167
+msgid "🟡 Pendiente (Abierto)"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:166
+#: includes/cpt-turno.php:291
+#: includes/CST_Admin_Turno_Editor.php:168
+msgid "🔵 Ocupado (Actividad)"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:176
+#: includes/CST_Admin_Turno_Editor.php:178
+msgid "Actividad"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:178
+#: includes/CST_Admin_Turno_Editor.php:180
+msgid "— Seleccionar —"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:187
+#: includes/CST_Admin_Turno_Editor.php:189
+msgid "Monitor/a"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:189
+#: includes/cpt-turno.php:315
+#: includes/CST_Admin_Turno_Editor.php:191
+msgid "— Sin monitor —"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:203
+#: includes/CST_Admin_Turno_Editor.php:205
+msgid "🛟 Necesita apoyo (sin llaves / acompañamiento)"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:208
+#: includes/CST_Admin_Turno_Editor.php:210
+msgid "Seguimiento"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:212
+#: includes/CST_Admin_Turno_Editor.php:214
+msgid "Estado de asistencia"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:223
+#: includes/CST_Admin_Turno_Editor.php:225
+msgid "Volver al listado"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:226
+#: includes/CST_Admin_Turno_Editor.php:228
+msgid "Guardar cambios"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:226
+#: includes/CST_Admin_Turno_Editor.php:228
+msgid "Crear turno"
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:244
+#: includes/CST_Admin_Turno_Editor.php:246
+msgid "Acceso denegado."
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:253
+#: includes/CST_Admin_Turno_Editor.php:255
+msgid "No tienes permisos para crear turnos."
+msgstr ""
+
+#: includes/class-admin-turno-editor.php:288
+#: includes/CST_Admin_Turno_Editor.php:290
+#: includes/shortcodes.php:34
+msgid "Error al crear el turno."
+msgstr ""
+
+#: includes/cpt-turno.php:92
 msgctxt "Post Type General Name"
 msgid "Turnos"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:93
+#: includes/cpt-turno.php:93
 msgctxt "Post Type Singular Name"
 msgid "Turno"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:94
+#: includes/cpt-turno.php:94
 msgid "Turnos Centro"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:95
-#: convoca-shifts/includes/cpt-turno.php:112
+#: includes/cpt-turno.php:95
+#: includes/cpt-turno.php:112
 msgid "Turno"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:96
+#: includes/cpt-turno.php:96
 msgid "Archivo de Turnos"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:97
+#: includes/cpt-turno.php:97
 msgid "Atributos de Turno"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:98
+#: includes/cpt-turno.php:98
 msgid "Turno Padre:"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:99
+#: includes/cpt-turno.php:99
 msgid "Todos los Turnos"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:100
+#: includes/cpt-turno.php:100
 msgid "Añadir Nuevo Turno"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:101
+#: includes/cpt-turno.php:101
 msgid "Añadir Nuevo"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:104
+#: includes/cpt-turno.php:104
 msgid "Actualizar Turno"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:105
+#: includes/cpt-turno.php:105
 msgid "Ver Turno"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:106
+#: includes/cpt-turno.php:106
 msgid "Ver Turnos"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:107
+#: includes/cpt-turno.php:107
 msgid "Buscar Turno"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:108
+#: includes/cpt-turno.php:108
 msgid "No encontrado"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:109
+#: includes/cpt-turno.php:109
 msgid "No encontrado en la Papelera"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:113
+#: includes/cpt-turno.php:113
 msgid "Turnos de apertura del centro social"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:138
+#: includes/cpt-turno.php:138
 msgid "Actividades"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:238
+#: includes/cpt-turno.php:238
 msgid "Opciones de Turno"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:273
+#: includes/cpt-turno.php:273
 msgid "👤 Responsable Asignado:"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:288
+#: includes/cpt-turno.php:288
 msgid "Estado del Centro:"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:296
+#: includes/cpt-turno.php:296
 msgid "Actividad:"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:300
+#: includes/cpt-turno.php:300
 msgid "— Seleccionar Actividad —"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:311
+#: includes/cpt-turno.php:311
 msgid "Gestiona actividades desde el menú lateral."
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:313
+#: includes/cpt-turno.php:313
 msgid "Monitor/a:"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:331
+#: includes/cpt-turno.php:331
 msgid "Asigna un usuario con rol monitor_actividad."
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:421
+#: includes/cpt-turno.php:421
 msgid "Sin asignar"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:501
+#: includes/cpt-turno.php:501
 msgid "No se puede marcar como realizado un turno sin responsable asignado."
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:519
+#: includes/cpt-turno.php:519
 msgid "Error al procesar la asistencia."
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:754
-#: convoca-shifts/includes/cpt-turno.php:755
+#: includes/cpt-turno.php:754
+#: includes/cpt-turno.php:755
 msgid "Generar Turnos"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:769
+#: includes/cpt-turno.php:769
 #, php-format
 msgid "Se han duplicado %d turnos."
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:776
+#: includes/cpt-turno.php:776
 #, php-format
 msgid "Se han generado %d turnos nuevos."
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:783
+#: includes/cpt-turno.php:783
 msgid "Generador de Turnos"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:786
+#: includes/cpt-turno.php:786
 msgid "Duplicar semana anterior"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:787
-msgid ""
-"Copia todos los turnos de los últimos 7 días y los reprograma exactamente "
-"una semana después, dejándolos pendientes."
+#: includes/cpt-turno.php:787
+msgid "Copia todos los turnos de los últimos 7 días y los reprograma exactamente una semana después, dejándolos pendientes."
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:791
+#: includes/cpt-turno.php:791
 msgid "Duplicar Semana Anterior"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:796
+#: includes/cpt-turno.php:796
 msgid "Crear semana tipo"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:803
+#: includes/cpt-turno.php:803
 msgid "Fecha del Lunes"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:807
+#: includes/cpt-turno.php:807
 msgid "Configuración diaria"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:834
+#: includes/cpt-turno.php:834
 msgid "— Actividad —"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:844
+#: includes/cpt-turno.php:844
 msgid "— Monitor/a —"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:873
+#: includes/cpt-turno.php:873
 msgid "Generar Semana"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:879
+#: includes/cpt-turno.php:879
 msgid "Exportar datos (Copias de Seguridad / Estadísticas)"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:880
-msgid ""
-"Descarga un archivo CSV con el historial completo de turnos, estados y "
-"voluntarios asignados. Ideal para guardar estadísticas antes de desinstalar "
-"el plugin o limpiar el calendario."
+#: includes/cpt-turno.php:880
+msgid "Descarga un archivo CSV con el historial completo de turnos, estados y voluntarios asignados. Ideal para guardar estadísticas antes de desinstalar el plugin o limpiar el calendario."
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:884
+#: includes/cpt-turno.php:884
 msgid "Exportar historial a CSV"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:1138
-#: convoca-shifts/includes/cpt-turno.php:1150
+#: includes/cpt-turno.php:1138
+#: includes/cpt-turno.php:1150
 msgid "URL de Información"
 msgstr ""
 
-#: convoca-shifts/includes/cpt-turno.php:1140
-#: convoca-shifts/includes/cpt-turno.php:1153
-msgid ""
-"Enlace a la entrada del blog o página con más información e inscripciones."
+#: includes/cpt-turno.php:1140
+#: includes/cpt-turno.php:1153
+msgid "Enlace a la entrada del blog o página con más información e inscripciones."
 msgstr ""
 
-#: convoca-shifts/includes/cron.php:118
+#: includes/cron.php:118
 msgid "Recordatorio de turno en Centro Social"
 msgstr ""
 
-#: convoca-shifts/includes/cron.php:120
+#: includes/cron.php:120
 #, php-format
-msgid ""
-"Hola %1$s,\\n\\nTe recordamos que tienes un turno asignado para abrir el "
-"centro pronto:\\n\\nTurno: %2$s\\nHora de inicio: %3$s\\n\\n¡Gracias por tu "
-"voluntariado!"
+msgid "Hola %1$s,\\n\\nTe recordamos que tienes un turno asignado para abrir el centro pronto:\\n\\nTurno: %2$s\\nHora de inicio: %3$s\\n\\n¡Gracias por tu voluntariado!"
 msgstr ""
 
-#: convoca-shifts/includes/rest-api.php:35
-#: convoca-shifts/includes/rest-api.php:50
-#: convoca-shifts/includes/rest-api.php:65
+#: includes/rest-api.php:35
+#: includes/rest-api.php:50
+#: includes/rest-api.php:65
 msgid "Lo siento, no tienes permisos para realizar esta acción."
 msgstr ""
 
-#: convoca-shifts/includes/rest-api.php:582
-#: convoca-shifts/includes/rest-api.php:746
+#: includes/rest-api.php:582
+#: includes/rest-api.php:746
 msgid "a las"
 msgstr ""
 
-#: convoca-shifts/includes/shortcodes.php:30
+#: includes/shortcodes.php:30
 msgid "¿Quieres cubrir este turno?"
 msgstr ""
 
-#: convoca-shifts/includes/shortcodes.php:31
+#: includes/shortcodes.php:31
 msgid "¿Quieres dejar este turno libre?"
 msgstr ""
 
-#: convoca-shifts/includes/shortcodes.php:32
+#: includes/shortcodes.php:32
 msgid "Hubo un error, por favor recarga la página."
 msgstr ""
 
-#: convoca-shifts/includes/shortcodes.php:33
+#: includes/shortcodes.php:33
 msgid "¿Quieres liberar este turno? Si lo haces, otra persona podrá cubrirlo."
 msgstr ""
 
-#: convoca-shifts/includes/shortcodes.php:38
-msgid ""
-"Este horario se sale del margen permitido del centro y ha sido ajustado."
+#: includes/shortcodes.php:38
+msgid "Este horario se sale del margen permitido del centro y ha sido ajustado."
 msgstr ""
 
-#: convoca-shifts/includes/shortcodes.php:39
+#: includes/shortcodes.php:39
 msgid "Aún no hay turnos definidos para esta vista."
 msgstr ""
 
-#: convoca-shifts/includes/shortcodes.php:55
-msgid ""
-"Este es el cuadrante actual. Si eres voluntario/a, inicia sesión para "
-"apuntarte a un turno."
+#: includes/shortcodes.php:55
+msgid "Este es el cuadrante actual. Si eres voluntario/a, inicia sesión para apuntarte a un turno."
 msgstr ""
 
-#: convoca-shifts/includes/shortcodes.php:55
+#: includes/shortcodes.php:55
 msgid "Ir a Acceso"
 msgstr ""
 
-#: convoca-shifts/includes/shortcodes.php:59
-msgid ""
-"Tu cuenta está pendiente de aprobación. Podrás apuntarte a turnos en cuanto "
-"un administrador te active."
+#: includes/shortcodes.php:59
+msgid "Tu cuenta está pendiente de aprobación. Podrás apuntarte a turnos en cuanto un administrador te active."
 msgstr ""
 
-#: convoca-shifts/includes/shortcodes.php:123
+#: includes/shortcodes.php:123
 msgid "Pendiente"
 msgstr ""
 
-#: convoca-shifts/includes/shortcodes.php:124
+#: includes/shortcodes.php:124
 msgid "Cerrado"
 msgstr ""
 
-#: convoca-shifts/includes/shortcodes.php:128
+#: includes/shortcodes.php:128
 msgid "Pendiente (Disponible para voluntarios)"
 msgstr ""
 
-#: convoca-shifts/includes/shortcodes.php:135
+#: includes/shortcodes.php:135
 msgid "Necesita apoyo"
 msgstr ""
 
-#: convoca-shifts/includes/shortcodes.php:162
+#: includes/shortcodes.php:162
 msgid "Me apunto al siguiente turno libre"
 msgstr ""
 
-#: convoca-shifts/includes/shortcodes.php:306
+#: includes/shortcodes.php:306
 msgid "Huecos libres:"
 msgstr ""
 
-#: convoca-shifts/includes/shortcodes.php:358
+#: includes/shortcodes.php:358
 msgid "No hay turnos próximos programados."
 msgstr ""
 
-#: convoca-shifts/includes/shortcodes.php:377
+#: includes/shortcodes.php:377
 msgid "Sin cubrir"
 msgstr ""
 
-#: convoca-shifts/includes/widgets.php:31
+#: includes/widgets.php:31
 msgid "Muestra el calendario de turnos."
 msgstr ""
 
-#: convoca-shifts/includes/widgets.php:48
-#: convoca-shifts/includes/widgets.php:86
-#: convoca-shifts/includes/widgets.php:124
-#: convoca-shifts/includes/widgets.php:165
+#: includes/widgets.php:48
+#: includes/widgets.php:86
+#: includes/widgets.php:124
+#: includes/widgets.php:165
 msgid "Título:"
 msgstr ""
 
-#: convoca-shifts/includes/widgets.php:69
+#: includes/widgets.php:69
 msgid "Botón rápido para apuntarse al siguiente turno libre."
 msgstr ""
 
-#: convoca-shifts/includes/widgets.php:107
+#: includes/widgets.php:107
 msgid "Muestra un resumen de los turnos de la semana."
 msgstr ""
 
-#: convoca-shifts/includes/widgets.php:145
+#: includes/widgets.php:145
 msgid "Muestra una lista de los próximos turnos."
 msgstr ""
 
-#: convoca-shifts/includes/widgets.php:169
+#: includes/widgets.php:169
 msgid "Cantidad de turnos:"
-msgstr ""
-
-#: convoca-shifts/convoca-shifts.php:260
-msgid ""
-"<strong>Atención:</strong> El rol \"Voluntario Aprobado\" no existe. Este "
-"rol es necesario para el funcionamiento de Centro Social Turnos y debería "
-"ser creado por el plugin Convoca Members. Por favor, asegúrate de que "
-"Convoca Members está activo y ha sido reactivado recientemente."
 msgstr ""
