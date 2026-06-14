@@ -1,13 +1,19 @@
 <?php
 /**
- * Fired when the plugin is uninstalled.
+ * Uninstall handler for Convoca Shifts.
  *
  * @package CentroSocialTurnos
  */
 
-// If uninstall not called from WordPress, then exit.
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
+}
+
+// ─── Keep data mode ───
+// Define CONVOCA_KEEP_DATA_ON_UNINSTALL in wp-config.php to preserve all data
+// when uninstalling. Useful for temporary deactivation + reactivation.
+if ( defined( 'CONVOCA_KEEP_DATA_ON_UNINSTALL' ) && CONVOCA_KEEP_DATA_ON_UNINSTALL ) {
+	return;
 }
 
 // 1. Delete all 'centro_turno' posts (including their meta automatically deleted by WP core).
@@ -42,6 +48,10 @@ foreach ( $taxonomies as $tax ) {
 // 3. Delete transients and options.
 delete_transient( 'cst_resumen_turnos_semana' );
 delete_option( 'cst_plugin_version' );
+delete_option( 'cst_hora_apertura' );
+delete_option( 'cst_hora_cierre' );
+delete_option( 'cst_calendar_page_url' );
+delete_option( 'cst_access_page_url' );
 
 // 4. Note: User meta with _cst_ prefix (_cst_aprobado, _cst_telefono, _cst_motivacion).
 // is created by Convoca Members plugin, NOT by Centro Social Turnos.

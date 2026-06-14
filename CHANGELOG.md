@@ -1,5 +1,9 @@
 # Changelog - Centro Social Turnos
 
+## 2.5.0
+- **Fix:** Plugin header metadata actualizado (Requires at least 6.4, Tested up to 7.0).
+- **Fix:** readme.txt creado.
+
 ## 2.4.1
 - **Fix:** Calendario REST: fechas se mostraban en UTC+0 en vez de Europe/Madrid (`wp_date(strtotime)`).
 - **Fix:** Asignación de turnos: `_id_responsable` meta no existía para la mayoría de turnos → TypeError en el UPDATE atómico.

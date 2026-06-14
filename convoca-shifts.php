@@ -6,9 +6,9 @@
  * Version: 2.5.0
  * Author: Jose Carlos Nieto Ramos
  * Text Domain: convoca-shifts
- * Requires at least: 6.0
+ * Requires at least: 6.4
  * Requires PHP: 8.1
- * Tested up to: 6.5
+ * Tested up to: 7.0
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html.
  * Requires Plugins: convoca-core, convoca-members
@@ -162,7 +162,7 @@ function cst_log_activity( $user_id, $turno_id, $action, $data = array() ) {
 
 	// Cache existence of table to avoid SHOW TABLES on every log.
 	if ( false === get_transient( 'cst_log_table_exists' ) ) {
-		if ( $wpdb->get_var( "SHOW TABLES LIKE '$table_name'" ) != $table_name ) {
+		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) ) != $table_name ) {
 			cst_create_log_table();
 		}
 		set_transient( 'cst_log_table_exists', 1, DAY_IN_SECONDS );
