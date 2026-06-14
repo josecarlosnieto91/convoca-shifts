@@ -20,7 +20,7 @@ function convoca_shifts_register_scripts() {
 
 	wp_localize_script(
 		'convoca-shifts-calendario',
-		'cstData',
+		'convocaShiftsData',
 		array(
 			'restUrl'        => esc_url_raw( rest_url( 'centro/v1/turnos' ) ),
 			'nonce'          => wp_create_nonce( 'wp_rest' ),

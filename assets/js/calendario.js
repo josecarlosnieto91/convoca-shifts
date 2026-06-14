@@ -1,6 +1,6 @@
 jQuery(document).ready(function ($) {
     
-    window.initCSTCalendar = function(container) {
+    window.initConvocaShiftsCalendar = function(container) {
         if (typeof FullCalendar === 'undefined') {
             console.error('FullCalendar is not loaded.');
             return;
@@ -9,10 +9,10 @@ jQuery(document).ready(function ($) {
 
         // Overlap check helper
         function hasOverlap(newEvent) {
-            var cal = window.cstCalendarInstance;
+            var cal = window.convocaShiftsCalendarInstance;
             if (!cal) return false;
             var myEvents = cal.getEvents().filter(function(ev) {
-                return parseInt(ev.extendedProps.responsable_id) === parseInt(cstData.userId);
+                return parseInt(ev.extendedProps.responsable_id) === parseInt(convocaShiftsData.userId);
             });
             var newStart = newEvent.start;
             var newEnd = newEvent.end || new Date(newStart.getTime() + 2 * 60 * 60 * 1000); // Default 2h if no end
@@ -30,7 +30,7 @@ jQuery(document).ready(function ($) {
             if ($(calendarEl).hasClass('fc')) return;
 
             function getInitialView() {
-                var savedView = localStorage.getItem('cst_calendar_view_' + calendarEl.id);
+                var savedView = localStorage.getItem('convoca_shifts_calendar_view_' + calendarEl.id);
                 if (savedView && ['dayGridMonth', 'timeGridWeek', 'listWeek'].includes(savedView)) {
                     return savedView;
                 }
@@ -43,7 +43,7 @@ jQuery(document).ready(function ($) {
                 initialView: getInitialView(),
                 datesSet: function (dateInfo) {
                     if (!isAutoChangingView) {
-                        localStorage.setItem('cst_calendar_view_' + calendarEl.id, dateInfo.view.type);
+                        localStorage.setItem('convoca_shifts_calendar_view_' + calendarEl.id, dateInfo.view.type);
                     }
                 },
                 locale: 'es',
@@ -63,8 +63,8 @@ jQuery(document).ready(function ($) {
                 moreLinkText: function (n) { return '+ ' + n + ' más'; },
                 eventDisplay: 'block',
                 noEventsContent: function () {
-                    var html = cstData.msgNoEvents;
-                    if (cstData.canManage) {
+                    var html = convocaShiftsData.msgNoEvents;
+                    if (convocaShiftsData.canManage) {
                         html += ' <a href="/wp-admin/edit.php?post_type=centro_turno&page=cst_generar_turnos">¿Te animas a crear una semana tipo?</a>';
                     }
                     return { html: html };
@@ -78,7 +78,7 @@ jQuery(document).ready(function ($) {
                         }
                     } else {
                         if (calendar.view.type === 'listWeek') {
-                            var savedView = localStorage.getItem('cst_calendar_view_' + calendarEl.id);
+                            var savedView = localStorage.getItem('convoca_shifts_calendar_view_' + calendarEl.id);
                             if (savedView && savedView !== 'listWeek') {
                                 isAutoChangingView = true;
                                 calendar.changeView(savedView);
@@ -93,7 +93,7 @@ jQuery(document).ready(function ($) {
                 },
                 events: function (fetchInfo, successCallback, failureCallback) {
                     $.ajax({
-                        url: cstData.restUrl,
+                        url: convocaShiftsData.restUrl,
                         type: 'GET',
                         data: {
                             start: fetchInfo.startStr,
@@ -193,7 +193,7 @@ jQuery(document).ready(function ($) {
                         $el.find('.fc-event-main').prepend('<span class="convoca-shifts-event-time-top">' + timeStr + '</span>');
                     }
 
-                    if (cstData.canManage && props.estado === 'abierto_disponible' && props.responsable_id == cstData.userId) {
+                    if (convocaShiftsData.canManage && props.estado === 'abierto_disponible' && props.responsable_id == convocaShiftsData.userId) {
                         var btnHtml = '<button class="convoca-shifts-event-action convoca-shifts-btn-liberar" title="Liberar mi turno">Liberar mi turno</button>';
                         if (isList) {
                             $el.find('.fc-list-event-title').append(btnHtml);
@@ -203,23 +203,23 @@ jQuery(document).ready(function ($) {
 
                         $el.find('.convoca-shifts-btn-liberar').on('click', function (e) {
                             e.stopPropagation(); e.preventDefault();
-                            if (!confirm(cstData.confirmLiberar)) return;
+                            if (!confirm(convocaShiftsData.confirmLiberar)) return;
                             var $btn = $(this);
                             var originalText = $btn.text();
                             $btn.text('...');
                             $el.css('opacity', '0.5');
                             $el.css('pointer-events', 'none');
                             $.ajax({
-                                url: cstData.restUrl + '/' + event.id + '/desapuntarse',
+                                url: convocaShiftsData.restUrl + '/' + event.id + '/desapuntarse',
                                 type: 'POST',
-                                beforeSend: function (xhr) { xhr.setRequestHeader('X-WP-Nonce', cstData.nonce); },
+                                beforeSend: function (xhr) { xhr.setRequestHeader('X-WP-Nonce', convocaShiftsData.nonce); },
                                 success: function (response) {
                                     if (response.success) { calendar.refetchEvents(); } 
-                                    else { alert(response.message || cstData.msgError); $btn.text(originalText); $el.css('opacity', '1'); }
+                                    else { alert(response.message || convocaShiftsData.msgError); $btn.text(originalText); $el.css('opacity', '1'); }
                                 },
                                 error: function (xhr) {
                                     var res = xhr.responseJSON;
-                                    alert((res && res.message) ? res.message : cstData.msgError);
+                                    alert((res && res.message) ? res.message : convocaShiftsData.msgError);
                                     $btn.text(originalText); $el.css('opacity', '1');
                                 },
                                 complete: function () { $el.css('pointer-events', 'auto'); }
@@ -230,34 +230,34 @@ jQuery(document).ready(function ($) {
                 eventClick: function (info) {
                     var event = info.event;
                     var props = event.extendedProps;
-                    console.log('CST eventClick:', event.id, props.estado, props.responsable_id, 'userId:', cstData.userId, 'canManage:', cstData.canManage);
+                    console.log('CST eventClick:', event.id, props.estado, props.responsable_id, 'userId:', convocaShiftsData.userId, 'canManage:', convocaShiftsData.canManage);
                     if (props.estado === 'abierto_ocupado' && props.actividad_url) { window.open(props.actividad_url, '_blank'); return; }
-                    if (!cstData.canManage) { console.log('CST: blocked by canManage'); return; }
+                    if (!convocaShiftsData.canManage) { console.log('CST: blocked by canManage'); return; }
                     if (props.estado === 'abierto_disponible' && props.responsable_id === 0) {
-                        if (cstData.confirmSignup && !confirm('¿Te apuntas a este turno? Serás responsable de abrir el centro.')) return;
+                        if (convocaShiftsData.confirmSignup && !confirm('¿Te apuntas a este turno? Serás responsable de abrir el centro.')) return;
                         // Overlap check
-                        if (cstData.userId > 0 && hasOverlap(event)) {
+                        if (convocaShiftsData.userId > 0 && hasOverlap(event)) {
                             if (!confirm('⚠️ Este turno se solapa con otro turno que ya tienes asignado. ¿Aún quieres apuntarte?')) return;
                         }
                         var $el = $(info.el);
                         $el.css('opacity', '0.5'); $el.css('pointer-events', 'none');
-                        console.log('CST: sending AJAX to', cstData.restUrl + '/' + event.id + '/apuntarse');
+                        console.log('CST: sending AJAX to', convocaShiftsData.restUrl + '/' + event.id + '/apuntarse');
                         $.ajax({
-                            url: cstData.restUrl + '/' + event.id + '/apuntarse',
+                            url: convocaShiftsData.restUrl + '/' + event.id + '/apuntarse',
                             type: 'POST',
                             beforeSend: function (xhr) { 
-                                console.log('CST: setting nonce header:', cstData.nonce);
-                                xhr.setRequestHeader('X-WP-Nonce', cstData.nonce); 
+                                console.log('CST: setting nonce header:', convocaShiftsData.nonce);
+                                xhr.setRequestHeader('X-WP-Nonce', convocaShiftsData.nonce); 
                             },
                             success: function (response) {
                                 console.log('CST: AJAX success', response);
                                 if (response.success) { calendar.refetchEvents(); } 
-                                else { alert(response.message || cstData.msgError); $el.css('opacity', '1'); if (response.code === 'ya_cubierto') calendar.refetchEvents(); }
+                                else { alert(response.message || convocaShiftsData.msgError); $el.css('opacity', '1'); if (response.code === 'ya_cubierto') calendar.refetchEvents(); }
                             },
                             error: function (xhr) {
                                 console.log('CST: AJAX error', xhr.status, xhr.responseJSON);
                                 var res = xhr.responseJSON;
-                                alert((res && res.message) ? res.message : cstData.msgError);
+                                alert((res && res.message) ? res.message : convocaShiftsData.msgError);
                                 $el.css('opacity', '1'); if (res && res.code === 'ya_cubierto') calendar.refetchEvents();
                             },
                             complete: function () { $el.css('pointer-events', 'auto'); }
@@ -265,7 +265,7 @@ jQuery(document).ready(function ($) {
                     }
                 },
                 dateClick: function (info) {
-                    if (!cstData.canManage) return;
+                    if (!convocaShiftsData.canManage) return;
                     const today = new Date(); today.setHours(0, 0, 0, 0);
                     if (info.date < today) return;
                     const modal = $('#convoca-shifts-frontend-modal');
@@ -281,12 +281,12 @@ jQuery(document).ready(function ($) {
 
             calendar.render();
             $(calendarEl).addClass('fc'); // Mark as initialized
-            window.cstCalendarInstance = calendar;
+            window.convocaShiftsCalendarInstance = calendar;
 
             // Load Proximo Libre for summary
             if ($('.convoca-shifts-proximo-libre').length > 0) {
                 $.ajax({
-                    url: cstData.restUrl + '/proximo-libre',
+                    url: convocaShiftsData.restUrl + '/proximo-libre',
                     type: 'GET',
                     success: function (response) { $('.convoca-shifts-proximo-libre').html(response.texto); }
                 });
@@ -295,11 +295,11 @@ jQuery(document).ready(function ($) {
     }
 
     // Initial load
-    window.initCSTCalendar(document);
+    window.initConvocaShiftsCalendar(document);
 
     // MutationObserver to detect changes in the DOM
     var observer = new MutationObserver(function(mutations) {
-        window.initCSTCalendar(document);
+        window.initConvocaShiftsCalendar(document);
     });
 
     observer.observe(document.body, {
@@ -320,11 +320,11 @@ jQuery(document).ready(function ($) {
         else {
             $('#convoca-shifts-custom-time-fields').slideUp();
             let start = $(this).data('start'); let end = $(this).data('end');
-            const limitOpen = cstData.horaApertura; const limitClose = cstData.horaCierre;
+            const limitOpen = convocaShiftsData.horaApertura; const limitClose = convocaShiftsData.horaCierre;
             let adjusted = false;
             if (start < limitOpen) { start = limitOpen; adjusted = true; }
             if (end > limitClose) { end = limitClose; adjusted = true; }
-            if (adjusted) alert(cstData.msgAdjusted);
+            if (adjusted) alert(convocaShiftsData.msgAdjusted);
             $('#fe_h_start').val(start); $('#fe_h_end').val(end);
         }
     });
@@ -333,7 +333,7 @@ jQuery(document).ready(function ($) {
         const $btn = $(this);
         const modal = $('#convoca-shifts-frontend-modal');
         let h_start = $('#fe_h_start').val(); let h_end = $('#fe_h_end').val();
-        const limitOpen = cstData.horaApertura; const limitClose = cstData.horaCierre;
+        const limitOpen = convocaShiftsData.horaApertura; const limitClose = convocaShiftsData.horaCierre;
         let adjusted = false;
         if (h_start < limitOpen) { h_start = limitOpen; adjusted = true; }
         if (h_end > limitClose) { h_end = limitClose; adjusted = true; }
@@ -348,16 +348,16 @@ jQuery(document).ready(function ($) {
         };
         $btn.prop('disabled', true).text('Guardando...');
         $.ajax({
-            url: cstData.restUrl + '/crear',
+            url: convocaShiftsData.restUrl + '/crear',
             type: 'POST',
-            beforeSend: function (xhr) { xhr.setRequestHeader('X-WP-Nonce', cstData.nonce); },
+            beforeSend: function (xhr) { xhr.setRequestHeader('X-WP-Nonce', convocaShiftsData.nonce); },
             data: data,
             success: function (response) {
                 modal.removeClass('is-active');
-                if (window.cstCalendarInstance) window.cstCalendarInstance.refetchEvents();
+                if (window.convocaShiftsCalendarInstance) window.convocaShiftsCalendarInstance.refetchEvents();
                 $('#fe_apoyo').prop('checked', false);
             },
-            error: function (xhr) { alert(cstData.errorCrear); },
+            error: function (xhr) { alert(convocaShiftsData.errorCrear); },
             complete: function () { $btn.prop('disabled', false).text('Guardar Turno'); }
         });
     });
