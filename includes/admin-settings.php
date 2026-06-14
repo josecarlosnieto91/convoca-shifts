@@ -55,7 +55,7 @@ function convoca_shifts_settings_page() {
 	?>
 	<div class="wrap cst-settings-wrap">
 		<div class="cst-admin-header" style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
-			<img src="<?php echo esc_url( CONVOCA_IMAGES_URL . 'logo.png' ); ?>" alt="Centro Social Turnos" style="width: 80px; height: 80px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+			<img src="<?php echo esc_url( CONVOCA_IMAGES_URL . 'logo.png' ); ?>" alt="Convoca Shifts" style="width: 80px; height: 80px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
 			<div>
 				<h1 style="margin: 0; padding: 0;"><?php _e( 'Ajustes de Centro Social Turnos', 'convoca-shifts' ); ?></h1>
 				<p style="margin: 5px 0 0; color: #666; font-size: 1.1em;"><?php _e( 'Configuración del sistema de turnos y apertura', 'convoca-shifts' ); ?></p>

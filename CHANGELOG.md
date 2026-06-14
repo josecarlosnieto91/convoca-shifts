@@ -1,4 +1,4 @@
-# Changelog - Centro Social Turnos
+# Changelog - Convoca Shifts
 
 ## 2.5.0
 - **Fix:** Plugin header metadata actualizado (Requires at least 6.4, Tested up to 7.0).
@@ -15,11 +15,11 @@
 - **Nuevo:** Eliminado duplicado de "Todos los Turnos" en el menú lateral.
 
 ## 2.4.0
-- Seguridad: cst_process_quick_add_turno movido de admin_init a admin_post_cst_quick_add_turno
+- Seguridad: convoca_shifts_process_quick_add_turno movido de admin_init a admin_post_cst_quick_add_turno
 - El formulario ahora envía a admin-post.php con action oculto
 - Nonce fallido redirige con error en lugar de ignorar
 - Nuevo: Clase Hour_Sync para sincronización automática de horas con el contador global de voluntarios
-- Corrección: Handler de generar_semana faltante en cst_generar_turnos_page
+- Corrección: Handler de generar_semana faltante en convoca_shifts_generar_turnos_page
 - Actualización: Documentación sincronizada (versión 2.4.0)
 
 ## 2.3.1

@@ -1,4 +1,4 @@
-# Centro Social Turnos
+# Convoca Shifts
 
 Gestión de turnos de voluntariado para el Centro Social.
 
@@ -34,7 +34,7 @@ WordPress 6.4+, PHP 8.1+, convoca-core (optional but recommended)
 
 ### 2.3.1
 - Bugfix: asset enqueue detection for AJAX-loaded content
-- Added cst_force_enqueue_assets filter
+- Added convoca_shifts_force_enqueue_assets filter
 
 ### 2.3.0
 - Added Duplicar Semana tool

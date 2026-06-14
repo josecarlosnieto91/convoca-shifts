@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Register all widgets for Centro Social Turnos
+ * Register all widgets for Convoca Shifts
  */
 function convoca_shifts_register_widgets() {
 	register_widget( 'Convoca_Shifts_Calendario_Widget' );

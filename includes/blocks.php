@@ -127,7 +127,7 @@ function convoca_shifts_enqueue_block_editor_assets() {
 add_action( 'enqueue_block_editor_assets', 'convoca_shifts_enqueue_block_editor_assets' );
 
 /**
- * Register Gutenberg blocks for Centro Social Turnos
+ * Register Gutenberg blocks for Convoca Shifts
  */
 function convoca_shifts_register_blocks() {
 
