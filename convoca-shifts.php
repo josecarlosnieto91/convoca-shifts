@@ -23,14 +23,14 @@ add_action( 'init', function () {
 	exit; // Exit if accessed directly.
 }
 
-if ( ! defined( 'CST_PLUGIN_DIR' ) ) {
-	define( 'CST_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+if ( ! defined( 'CONVOCA_SHIFTS_DIR' ) ) {
+	define( 'CONVOCA_SHIFTS_DIR', plugin_dir_path( __FILE__ ) );
 }
-if ( ! defined( 'CST_PLUGIN_URL' ) ) {
-	define( 'CST_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+if ( ! defined( 'CONVOCA_SHIFTS_URL' ) ) {
+	define( 'CONVOCA_SHIFTS_URL', plugin_dir_url( __FILE__ ) );
 }
-if ( ! defined( 'CST_PLUGIN_VERSION' ) ) {
-	define( 'CST_PLUGIN_VERSION', '2.5.0' );
+if ( ! defined( 'CONVOCA_SHIFTS_VERSION' ) ) {
+	define( 'CONVOCA_SHIFTS_VERSION', '2.5.0' );
 }
 
 /* ── Composer autoload ─────────────────────────────── */
@@ -40,23 +40,23 @@ if ( file_exists( $composer_autoload ) ) {
 }
 
 // Includes.
-require_once CST_PLUGIN_DIR . 'includes/cpt-turno.php';
-require_once CST_PLUGIN_DIR . 'includes/rest-api.php';
-require_once CST_PLUGIN_DIR . 'includes/shortcodes.php';
-require_once CST_PLUGIN_DIR . 'includes/admin-approval.php';
-require_once CST_PLUGIN_DIR . 'includes/admin-turno-rapido.php';
-require_once CST_PLUGIN_DIR . 'includes/admin-estadisticas.php';
-require_once CST_PLUGIN_DIR . 'includes/admin-settings.php';
-require_once CST_PLUGIN_DIR . 'includes/class-admin-turno-editor.php';
-require_once CST_PLUGIN_DIR . 'includes/class-admin-turnos-list.php';
-require_once CST_PLUGIN_DIR . 'includes/class-admin-turnos-list-page.php';
+require_once CONVOCA_SHIFTS_DIR . 'includes/cpt-turno.php';
+require_once CONVOCA_SHIFTS_DIR . 'includes/rest-api.php';
+require_once CONVOCA_SHIFTS_DIR . 'includes/shortcodes.php';
+require_once CONVOCA_SHIFTS_DIR . 'includes/admin-approval.php';
+require_once CONVOCA_SHIFTS_DIR . 'includes/admin-turno-rapido.php';
+require_once CONVOCA_SHIFTS_DIR . 'includes/admin-estadisticas.php';
+require_once CONVOCA_SHIFTS_DIR . 'includes/admin-settings.php';
+require_once CONVOCA_SHIFTS_DIR . 'includes/class-admin-turno-editor.php';
+require_once CONVOCA_SHIFTS_DIR . 'includes/class-admin-turnos-list.php';
+require_once CONVOCA_SHIFTS_DIR . 'includes/class-admin-turnos-list-page.php';
 if ( is_admin() ) {
-	new CST_Admin_Turno_Editor();
+	new Convoca_Shifts_Admin_Turno_Editor();
 	new Admin_Turnos_List_Page();
 }
-require_once CST_PLUGIN_DIR . 'includes/cron.php';
-require_once CST_PLUGIN_DIR . 'includes/widgets.php';
-require_once CST_PLUGIN_DIR . 'includes/blocks.php';
+require_once CONVOCA_SHIFTS_DIR . 'includes/cron.php';
+require_once CONVOCA_SHIFTS_DIR . 'includes/widgets.php';
+require_once CONVOCA_SHIFTS_DIR . 'includes/blocks.php';
 
 /* ── Convoca Core fallback ────────────────────────── */
 if ( ! class_exists( '\\Convoca\\Core\\Utils' ) ) {
@@ -85,12 +85,12 @@ if ( ! class_exists( '\\Convoca\\Core\\Utils' ) ) {
 add_action(
 	'admin_enqueue_scripts',
 	function ( string $hook ): void {
-		wp_register_style( 'cst-estilo', CST_PLUGIN_URL . 'assets/css/estilo.css', array(), CST_PLUGIN_VERSION );
+		wp_register_style( 'cst-estilo', CONVOCA_SHIFTS_URL . 'assets/css/estilo.css', array(), CONVOCA_SHIFTS_VERSION );
 		$screen = get_current_screen();
 		if ( $screen && in_array( $screen->post_type, array( 'centro_turno' ), true ) ) {
 			wp_enqueue_style( 'cst-estilo' );
 		}
-		if ( strpos( $hook, 'cst_' ) !== false || strpos( $hook, 'centro_turno' ) !== false ) {
+		if ( strpos( $hook, 'convoca_shifts_' ) !== false || strpos( $hook, 'centro_turno' ) !== false ) {
 			wp_enqueue_style( 'cst-estilo' );
 		}
 	}
@@ -106,7 +106,7 @@ spl_autoload_register(
 		$relative = str_replace( $prefix, '', $class );
 		$relative = strtolower( str_replace( '_', '-', $relative ) );
 
-		$file = CST_PLUGIN_DIR . 'includes/class-' . $relative . '.php';
+		$file = CONVOCA_SHIFTS_DIR . 'includes/class-' . $relative . '.php';
 		if ( file_exists( $file ) ) {
 			require_once $file;
 		}
@@ -118,12 +118,12 @@ spl_autoload_register(
 /**
  * Activation hook
  */
-register_activation_hook( __FILE__, 'cst_activate_plugin' );
-function cst_activate_plugin() {
-	cst_register_cpt_centro_turno();
-	cst_create_log_table();
+register_activation_hook( __FILE__, 'convoca_shifts_activate_plugin' );
+function convoca_shifts_activate_plugin() {
+	convoca_shifts_register_cpt_centro_turno();
+	convoca_shifts_create_log_table();
 	flush_rewrite_rules();
-	cst_schedule_cron();
+	convoca_shifts_schedule_cron();
 
 	// Defensive: check if the required role exists.
 	if ( ! get_role( 'voluntario_aprobado' ) ) {
@@ -131,9 +131,9 @@ function cst_activate_plugin() {
 	}
 }
 
-function cst_create_log_table() {
+function convoca_shifts_create_log_table() {
 	global $wpdb;
-	$table_name      = $wpdb->prefix . 'cst_activity_log';
+	$table_name      = $wpdb->prefix . 'convoca_shifts_activity_log';
 	$charset_collate = $wpdb->get_charset_collate();
 
 	$sql = "CREATE TABLE $table_name (
@@ -156,16 +156,16 @@ function cst_create_log_table() {
 /**
  * Log an activity to the custom table.
  */
-function cst_log_activity( $user_id, $turno_id, $action, $data = array() ) {
+function convoca_shifts_log_activity( $user_id, $turno_id, $action, $data = array() ) {
 	global $wpdb;
-	$table_name = $wpdb->prefix . 'cst_activity_log';
+	$table_name = $wpdb->prefix . 'convoca_shifts_activity_log';
 
 	// Cache existence of table to avoid SHOW TABLES on every log.
-	if ( false === get_transient( 'cst_log_table_exists' ) ) {
+	if ( false === get_transient( 'convoca_shifts_log_table_exists' ) ) {
 		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) ) != $table_name ) {
-			cst_create_log_table();
+			convoca_shifts_create_log_table();
 		}
-		set_transient( 'cst_log_table_exists', 1, DAY_IN_SECONDS );
+		set_transient( 'convoca_shifts_log_table_exists', 1, DAY_IN_SECONDS );
 	}
 
 	$wpdb->insert(
@@ -183,9 +183,9 @@ function cst_log_activity( $user_id, $turno_id, $action, $data = array() ) {
 /**
  * Deactivation hook
  */
-register_deactivation_hook( __FILE__, 'cst_deactivate_plugin' );
-function cst_deactivate_plugin() {
-	cst_clear_cron();
+register_deactivation_hook( __FILE__, 'convoca_shifts_deactivate_plugin' );
+function convoca_shifts_deactivate_plugin() {
+	convoca_shifts_clear_cron();
 }
 
 /**
@@ -194,7 +194,7 @@ function cst_deactivate_plugin() {
  * @param int $timestamp Unix timestamp.
  * @return string Date formatted as "lunes 5 de mayo a las 14:00"
  */
-function cst_fecha_legible( int $timestamp ): string {
+function convoca_shifts_fecha_legible( int $timestamp ): string {
 	static $dias  = array( 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' );
 	static $meses = array( '', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' );
 
@@ -212,7 +212,7 @@ function cst_fecha_legible( int $timestamp ): string {
  * @param int $timestamp Unix timestamp.
  * @return string e.g. "lunes 5 de mayo"
  */
-function cst_fecha_corta( int $timestamp ): string {
+function convoca_shifts_fecha_corta( int $timestamp ): string {
 	static $dias  = array( 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' );
 	static $meses = array( '', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' );
 
@@ -223,7 +223,7 @@ function cst_fecha_corta( int $timestamp ): string {
 	return "$dia_semana $dia_mes de $mes";
 }
 
-require_once CST_PLUGIN_DIR . 'includes/class-cst-upgrade-manager.php';
+require_once CONVOCA_SHIFTS_DIR . 'includes/class-convoca-shifts-upgrade-manager.php';
 
 /**
  * Initialize Upgrade Manager
@@ -231,8 +231,8 @@ require_once CST_PLUGIN_DIR . 'includes/class-cst-upgrade-manager.php';
 add_action(
 	'plugins_loaded',
 	function () {
-		if ( class_exists( '\\Convoca\\Shifts\\CST_Upgrade_Manager' ) ) {
-			$upgrade_manager = new \Convoca\Shifts\CST_Upgrade_Manager();
+		if ( class_exists( '\\Convoca\\Shifts\\Convoca_Shifts_Upgrade_Manager' ) ) {
+			$upgrade_manager = new \Convoca\Shifts\Convoca_Shifts_Upgrade_Manager();
 			$upgrade_manager->init();
 		}
 	},
@@ -242,14 +242,14 @@ add_action(
 /**
  * Admin notice if the required role is missing
  */
-add_action( 'admin_notices', 'cst_check_required_role' );
-function cst_check_required_role() {
+add_action( 'admin_notices', 'convoca_shifts_check_required_role' );
+function convoca_shifts_check_required_role() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
 
 	// Allow user to dismiss this notice for 7 days.
-	$dismissed = get_user_meta( get_current_user_id(), '_cst_role_notice_dismissed', true );
+	$dismissed = get_user_meta( get_current_user_id(), '_convoca_shifts_role_notice_dismissed', true );
 	if ( $dismissed && time() - (int) $dismissed < DAY_IN_SECONDS * 7 ) {
 		return;
 	}
@@ -258,7 +258,7 @@ function cst_check_required_role() {
 		?>
 		<div class="convoca-alert convoca-alert--warning" style="display:block;margin-bottom:20px;">
 			<p><?php _e( '<strong>Atención:</strong> El rol "Voluntario Aprobado" no existe. Este rol es necesario para el funcionamiento de Centro Social Turnos y debería ser creado por el plugin Convoca Members. Por favor, asegúrate de que Convoca Members está activo y ha sido reactivado recientemente.', 'convoca-shifts' ); ?>
-			<a href="?cst_dismiss_role_notice=1" style="float:right;text-decoration:none;color:#999;">✕</a></p>
+			<a href="?convoca_shifts_dismiss_role_notice=1" style="float:right;text-decoration:none;color:#999;">✕</a></p>
 		</div>
 		<?php
 	}
@@ -268,9 +268,9 @@ function cst_check_required_role() {
 add_action(
 	'admin_init',
 	function () {
-		if ( isset( $_GET['cst_dismiss_role_notice'] ) && current_user_can( 'manage_options' ) ) {
-			update_user_meta( get_current_user_id(), '_cst_role_notice_dismissed', time() );
-			wp_safe_redirect( remove_query_arg( 'cst_dismiss_role_notice' ) );
+		if ( isset( $_GET['convoca_shifts_dismiss_role_notice'] ) && current_user_can( 'manage_options' ) ) {
+			update_user_meta( get_current_user_id(), '_convoca_shifts_role_notice_dismissed', time() );
+			wp_safe_redirect( remove_query_arg( 'convoca_shifts_dismiss_role_notice' ) );
 			exit;
 		}
 	}

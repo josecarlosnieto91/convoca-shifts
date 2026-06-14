@@ -57,7 +57,7 @@ class Hour_Sync {
 			// Get hours already counted, using DB directly to bypass WP Cache within transaction.
 			$horas_contabilizadas = (float) $wpdb->get_var(
 				$wpdb->prepare(
-					"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = '_cst_horas_contabilizadas'",
+					"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = '_convoca_shifts_horas_contabilizadas'",
 					$post_id
 				)
 			);
@@ -82,7 +82,7 @@ class Hour_Sync {
 
 					if ( $hours > 0 ) {
 						self::update_global_hours_locked( $user_id, $hours );
-						update_post_meta( $post_id, '_cst_horas_contabilizadas', $hours );
+						update_post_meta( $post_id, '_convoca_shifts_horas_contabilizadas', $hours );
 
 						// Prepare log entry data (will be created after commit).
 						$log_entry_data = array(
@@ -99,7 +99,7 @@ class Hour_Sync {
 			// If it was already counted but status changed to something else, we should subtract the hours.
 			elseif ( $status !== 'realizado' && $horas_contabilizadas > 0 ) {
 				self::update_global_hours_locked( $user_id, -$horas_contabilizadas );
-				delete_post_meta( $post_id, '_cst_horas_contabilizadas' );
+				delete_post_meta( $post_id, '_convoca_shifts_horas_contabilizadas' );
 
 				$should_hook = true;
 				$diff_hours  = -$horas_contabilizadas;

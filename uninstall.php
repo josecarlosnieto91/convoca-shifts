@@ -30,7 +30,7 @@ foreach ( $turnos as $turno ) {
 }
 
 // 1.1 Clean up taxonomy terms.
-$taxonomies = array( 'cst_actividad' );
+$taxonomies = array( 'convoca_shifts_actividad' );
 foreach ( $taxonomies as $tax ) {
 	$terms = get_terms(
 		array(
@@ -46,23 +46,23 @@ foreach ( $taxonomies as $tax ) {
 }
 
 // 3. Delete transients and options.
-delete_transient( 'cst_resumen_turnos_semana' );
-delete_option( 'cst_plugin_version' );
-delete_option( 'cst_hora_apertura' );
-delete_option( 'cst_hora_cierre' );
-delete_option( 'cst_calendar_page_url' );
-delete_option( 'cst_access_page_url' );
+delete_transient( 'convoca_shifts_resumen_turnos_semana' );
+delete_option( 'convoca_shifts_version' );
+delete_option( 'convoca_shifts_hora_apertura' );
+delete_option( 'convoca_shifts_hora_cierre' );
+delete_option( 'convoca_shifts_calendar_page_url' );
+delete_option( 'convoca_shifts_access_page_url' );
 
-// 4. Note: User meta with _cst_ prefix (_cst_aprobado, _cst_telefono, _cst_motivacion).
+// 4. Note: User meta with _convoca_shifts_ prefix (_convoca_shifts_aprobado, _convoca_shifts_telefono, _convoca_shifts_motivacion).
 // is created by Convoca Members plugin, NOT by Centro Social Turnos.
 // Therefore, we do NOT delete it here to preserve Member functionality.
 
 // 5. Clear scheduled CRON events.
-$timestamp = wp_next_scheduled( 'cst_hourly_event' );
+$timestamp = wp_next_scheduled( 'convoca_shifts_hourly_event' );
 if ( $timestamp ) {
-	wp_unschedule_event( $timestamp, 'cst_hourly_event' );
+	wp_unschedule_event( $timestamp, 'convoca_shifts_hourly_event' );
 }
 
 // 6. Clean activity log table.
 global $wpdb;
-$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}cst_activity_log" );
+$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}convoca_shifts_activity_log" );

@@ -10,13 +10,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Hook to register scripts properly.
-add_action( 'init', 'cst_register_scripts' );
+add_action( 'init', 'convoca_shifts_register_scripts' );
 
-function cst_register_scripts() {
-	wp_register_style( 'cst-estilo', CST_PLUGIN_URL . 'assets/css/estilo.css', array(), CST_PLUGIN_VERSION );
+function convoca_shifts_register_scripts() {
+	wp_register_style( 'cst-estilo', CONVOCA_SHIFTS_URL . 'assets/css/estilo.css', array(), CONVOCA_SHIFTS_VERSION );
 	wp_enqueue_style( 'dashicons' ); // Needed for buttons/icons.
 	wp_register_script( 'fullcalendar-core', 'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js', array(), '6.1.15', true );
-	wp_register_script( 'cst-calendario', CST_PLUGIN_URL . 'assets/js/calendario.js', array( 'fullcalendar-core', 'jquery' ), CST_PLUGIN_VERSION, true );
+	wp_register_script( 'cst-calendario', CONVOCA_SHIFTS_URL . 'assets/js/calendario.js', array( 'fullcalendar-core', 'jquery' ), CONVOCA_SHIFTS_VERSION, true );
 
 	wp_localize_script(
 		'cst-calendario',
@@ -32,9 +32,9 @@ function cst_register_scripts() {
 			'msgError'       => __( 'Hubo un error, por favor recarga la página.', 'convoca-shifts' ),
 			'confirmLiberar' => __( '¿Quieres liberar este turno? Si lo haces, otra persona podrá cubrirlo.', 'convoca-shifts' ),
 			'errorCrear'     => __( 'Error al crear el turno.', 'convoca-shifts' ),
-			'confirmSignup'  => apply_filters( 'cst_confirm_signup', true ),
-			'horaApertura'   => get_option( 'cst_hora_apertura', '09:00' ),
-			'horaCierre'     => get_option( 'cst_hora_cierre', '22:00' ),
+			'confirmSignup'  => apply_filters( 'convoca_shifts_confirm_signup', true ),
+			'horaApertura'   => get_option( 'convoca_shifts_hora_apertura', '09:00' ),
+			'horaCierre'     => get_option( 'convoca_shifts_hora_cierre', '22:00' ),
 			'msgAdjusted'    => __( 'Este horario se sale del margen permitido del centro y ha sido ajustado.', 'convoca-shifts' ),
 			'msgNoEvents'    => __( 'Aún no hay turnos definidos para esta vista.', 'convoca-shifts' ),
 		)
@@ -50,7 +50,7 @@ function convoca_shifts_calendario_centro() {
 	ob_start();
 
 	if ( ! is_user_logged_in() ) {
-		$access_url = get_option( 'cst_access_page_url', '#' );
+		$access_url = get_option( 'convoca_shifts_access_page_url', '#' );
 		echo '<div class="cst-public-notice">';
 		echo '<p>💡 ' . __( 'Este es el cuadrante actual. Si eres voluntario/a, inicia sesión para apuntarte a un turno.', 'convoca-shifts' ) . ' <a href="' . esc_url( $access_url ) . '">' . __( 'Ir a Acceso', 'convoca-shifts' ) . '</a></p>';
 		echo '</div>';
@@ -74,7 +74,7 @@ function convoca_shifts_calendario_centro() {
 	static $modal_added = false;
 	if ( ! $modal_added ) {
 		$modal_added = true;
-		add_action( 'wp_footer', 'cst_render_frontend_modal' );
+		add_action( 'wp_footer', 'convoca_shifts_render_frontend_modal' );
 	}
 
 	return ob_get_clean();
@@ -83,7 +83,7 @@ function convoca_shifts_calendario_centro() {
 /**
  * Render the modal in the footer to avoid transform/containment issues.
  */
-function cst_render_frontend_modal() {
+function convoca_shifts_render_frontend_modal() {
 	if ( ! is_user_logged_in() || ( ! current_user_can( 'gestionar_mis_turnos' ) && ! current_user_can( 'manage_options' ) ) ) {
 		return;
 	}
@@ -211,7 +211,7 @@ function convoca_shifts_resumen_turnos( $atts = array() ) {
 	wp_enqueue_script( 'cst-calendario' );
 
 	$week_modifier = $atts['semana'] === 'next' ? 'next week' : 'this week';
-	$transient_key = 'cst_resumen_turnos_' . ( $atts['semana'] === 'next' ? 'next' : 'this' );
+	$transient_key = 'convoca_shifts_resumen_turnos_' . ( $atts['semana'] === 'next' ? 'next' : 'this' );
 	$resumen       = get_transient( $transient_key );
 
 	if ( false === $resumen ) {
@@ -306,7 +306,7 @@ function convoca_shifts_resumen_turnos( $atts = array() ) {
 			echo '<div class="cst-resumen-gaps"><strong>' . __( 'Huecos libres:', 'convoca-shifts' ) . '</strong> ';
 			$gap_strings = array();
 			foreach ( $gaps as $gap ) {
-				$gap_strings[] = cst_fecha_corta( get_post_timestamp( $gap ) ) . ' (' . esc_html( get_the_time( 'H:i', $gap ) ) . ')';
+				$gap_strings[] = convoca_shifts_fecha_corta( get_post_timestamp( $gap ) ) . ' (' . esc_html( get_the_time( 'H:i', $gap ) ) . ')';
 			}
 			echo implode( ', ', $gap_strings );
 			echo '</div>';
@@ -363,7 +363,7 @@ function convoca_shifts_proximos_turnos( $atts ) {
 	foreach ( $turnos as $turno ) {
 		$responsable_id = (int) get_post_meta( $turno->ID, '_id_responsable', true );
 		$ts             = get_post_timestamp( $turno );
-		$date           = cst_fecha_corta( $ts );
+		$date           = convoca_shifts_fecha_corta( $ts );
 		$time           = get_the_time( 'H:i', $turno );
 
 		$responsable_texto = '';
@@ -387,16 +387,16 @@ function convoca_shifts_proximos_turnos( $atts ) {
 }
 
 // Clear transient when a turno is saved/assigned.
-add_action( 'save_post_centro_turno', 'cst_clear_resumen_transient' );
-function cst_clear_resumen_transient() {
-	delete_transient( 'cst_resumen_turnos_semana' );
+add_action( 'save_post_centro_turno', 'convoca_shifts_clear_resumen_transient' );
+function convoca_shifts_clear_resumen_transient() {
+	delete_transient( 'convoca_shifts_resumen_turnos_semana' );
 }
 
 // Clear transient on assign/unassign API calls.
 add_action(
 	'rest_api_init',
 	function () {
-		add_action( 'rest_after_insert_centro_turno', 'cst_clear_resumen_transient' );
+		add_action( 'rest_after_insert_centro_turno', 'convoca_shifts_clear_resumen_transient' );
 	}
 );
 // Since we manually update meta in REST, let's hook onto the update meta action to clear transient.
@@ -404,7 +404,7 @@ add_action(
 	'updated_post_meta',
 	function ( $meta_id, $post_id, $meta_key, $meta_value ) {
 		if ( ( '_id_responsable' === $meta_key || '_estado' === $meta_key ) && get_post_type( $post_id ) === 'centro_turno' ) {
-			delete_transient( 'cst_resumen_turnos_semana' );
+			delete_transient( 'convoca_shifts_resumen_turnos_semana' );
 		}
 	},
 	10,

@@ -4,40 +4,40 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Add menu page.
-add_action( 'admin_menu', 'cst_add_admin_menu', 10 );
-function cst_add_admin_menu() {
+add_action( 'admin_menu', 'convoca_shifts_add_admin_menu', 10 );
+function convoca_shifts_add_admin_menu() {
 	add_submenu_page(
 		'edit.php?post_type=centro_turno',
 		__( 'Gestionar Voluntarios', 'convoca-shifts' ),
 		__( 'Gestionar Voluntarios', 'convoca-shifts' ),
-		'cst_manage_turnos',
-		'cst_voluntarios_pendientes',
-		'cst_voluntarios_pendientes_page'
+		'convoca_shifts_manage_turnos',
+		'convoca_shifts_voluntarios_pendientes',
+		'convoca_shifts_voluntarios_pendientes_page'
 	);
 }
 
-function cst_voluntarios_pendientes_page() {
+function convoca_shifts_voluntarios_pendientes_page() {
 	// Handle approval.
-	if ( isset( $_GET['action'] ) && $_GET['action'] === 'approve' && isset( $_GET['user'] ) && check_admin_referer( 'cst_approve_user_' . $_GET['user'] ) ) {
+	if ( isset( $_GET['action'] ) && $_GET['action'] === 'approve' && isset( $_GET['user'] ) && check_admin_referer( 'convoca_shifts_approve_user_' . $_GET['user'] ) ) {
 		$user_id = intval( $_GET['user'] );
 		$user    = get_userdata( $user_id );
 		if ( $user ) {
 			$user->set_role( 'voluntario_aprobado' );
-			delete_user_meta( $user_id, '_cst_aprobado' );
+			delete_user_meta( $user_id, '_convoca_shifts_aprobado' );
 			echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( __( 'Usuario %s aprobado como voluntario.', 'convoca-shifts' ), $user->display_name ) . '</p></div>';
 			do_action( 'conv_voluntario_aprobado', $user_id );
 			$attachments = apply_filters( 'conv_voluntario_aprobado_attachments', array(), $user_id );
 			wp_mail( $user->user_email, __( '¡Solicitud de voluntariado aprobada!', 'convoca-shifts' ), __( 'Hola, ya puedes acceder y gestionar turnos en el centro social. Adjunto a este correo encontrarás tu Acuerdo de Incorporación si procede.', 'convoca-shifts' ), '', $attachments );
 
 			// Log activity.
-			if ( function_exists( 'cst_log_activity' ) ) {
-				cst_log_activity( get_current_user_id(), 0, 'voluntario_aprobado', array( 'voluntario_id' => $user_id ) );
+			if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+				convoca_shifts_log_activity( get_current_user_id(), 0, 'voluntario_aprobado', array( 'voluntario_id' => $user_id ) );
 			}
 		}
 	}
 
 	// Handle revocation (Remove role).
-	if ( isset( $_GET['action'] ) && $_GET['action'] === 'revoke' && isset( $_GET['user'] ) && check_admin_referer( 'cst_revoke_user_' . $_GET['user'] ) ) {
+	if ( isset( $_GET['action'] ) && $_GET['action'] === 'revoke' && isset( $_GET['user'] ) && check_admin_referer( 'convoca_shifts_revoke_user_' . $_GET['user'] ) ) {
 		$user_id = intval( $_GET['user'] );
 
 		if ( $user_id === get_current_user_id() ) {
@@ -46,7 +46,7 @@ function cst_voluntarios_pendientes_page() {
 			$user = get_userdata( $user_id );
 			if ( $user ) {
 				$user->set_role( 'subscriber' );
-				update_user_meta( $user_id, '_cst_aprobado', -1 ); // Mark as revoked/rejected but keep meta for history.
+				update_user_meta( $user_id, '_convoca_shifts_aprobado', -1 ); // Mark as revoked/rejected but keep meta for history.
 
 				// Unassign future shifts.
 				$futuros = get_posts(
@@ -85,8 +85,8 @@ function cst_voluntarios_pendientes_page() {
 				}
 
 				// Log activity.
-				if ( function_exists( 'cst_log_activity' ) ) {
-					cst_log_activity( get_current_user_id(), 0, 'voluntario_revocado', array( 'voluntario_id' => $user_id ) );
+				if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+					convoca_shifts_log_activity( get_current_user_id(), 0, 'voluntario_revocado', array( 'voluntario_id' => $user_id ) );
 				}
 
 				echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( __( 'Permisos de voluntario revocados para %s y turnos futuros liberados.', 'convoca-shifts' ), $user->display_name ) . '</p></div>';
@@ -96,7 +96,7 @@ function cst_voluntarios_pendientes_page() {
 
 	// Get pending users.
 	$pending_args  = array(
-		'meta_key'   => '_cst_aprobado',
+		'meta_key'   => '_convoca_shifts_aprobado',
 		'meta_value' => '0',
 	);
 	$pending_query = new WP_User_Query( $pending_args );
@@ -119,9 +119,9 @@ function cst_voluntarios_pendientes_page() {
 		echo '<thead><tr><th>' . __( 'Nombre', 'convoca-shifts' ) . '</th><th>' . __( 'Email', 'convoca-shifts' ) . '</th><th>' . __( 'Teléfono', 'convoca-shifts' ) . '</th><th>' . __( 'Motivación', 'convoca-shifts' ) . '</th><th>' . __( 'Acciones', 'convoca-shifts' ) . '</th></tr></thead>';
 		echo '<tbody id="the-list">';
 		foreach ( $pending_users as $user ) {
-			$telefono    = get_user_meta( $user->ID, '_cst_telefono', true );
-			$motivacion  = get_user_meta( $user->ID, '_cst_motivacion', true );
-			$approve_url = wp_nonce_url( admin_url( 'edit.php?post_type=centro_turno&page=cst_voluntarios_pendientes&action=approve&user=' . $user->ID ), 'cst_approve_user_' . $user->ID );
+			$telefono    = get_user_meta( $user->ID, '_convoca_shifts_telefono', true );
+			$motivacion  = get_user_meta( $user->ID, '_convoca_shifts_motivacion', true );
+			$approve_url = wp_nonce_url( admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_voluntarios_pendientes&action=approve&user=' . $user->ID ), 'convoca_shifts_approve_user_' . $user->ID );
 
 			echo '<tr>';
 			echo '<td><strong>' . esc_html( ! empty( $user->first_name ) ? $user->first_name : $user->display_name ) . '</strong></td>';
@@ -145,8 +145,8 @@ function cst_voluntarios_pendientes_page() {
 		echo '<thead><tr><th>' . __( 'Nombre', 'convoca-shifts' ) . '</th><th>' . __( 'Email', 'convoca-shifts' ) . '</th><th>' . __( 'Teléfono', 'convoca-shifts' ) . '</th><th>' . __( 'Acciones', 'convoca-shifts' ) . '</th></tr></thead>';
 		echo '<tbody>';
 		foreach ( $active_users as $user ) {
-			$telefono   = get_user_meta( $user->ID, '_cst_telefono', true );
-			$revoke_url = wp_nonce_url( admin_url( 'edit.php?post_type=centro_turno&page=cst_voluntarios_pendientes&action=revoke&user=' . $user->ID ), 'cst_revoke_user_' . $user->ID );
+			$telefono   = get_user_meta( $user->ID, '_convoca_shifts_telefono', true );
+			$revoke_url = wp_nonce_url( admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_voluntarios_pendientes&action=revoke&user=' . $user->ID ), 'convoca_shifts_revoke_user_' . $user->ID );
 
 			echo '<tr>';
 			echo '<td><strong>' . esc_html( ! empty( $user->first_name ) ? $user->first_name : $user->display_name ) . '</strong></td>';

@@ -9,15 +9,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'rest_api_init', 'cst_register_rest_routes' );
+add_action( 'rest_api_init', 'convoca_shifts_register_rest_routes' );
 
-function cst_register_rest_routes() {
+function convoca_shifts_register_rest_routes() {
 	register_rest_route(
 		'centro/v1',
 		'/turnos',
 		array(
 			'methods'             => 'GET',
-			'callback'            => 'cst_rest_get_turnos',
+			'callback'            => 'convoca_shifts_rest_get_turnos',
 			'permission_callback' => '__return_true', // Publicly readable.
 		)
 	);
@@ -27,7 +27,7 @@ function cst_register_rest_routes() {
 		'/turnos/(?P<id>\d+)/apuntarse',
 		array(
 			'methods'             => 'POST',
-			'callback'            => 'cst_rest_apuntarse_turno',
+			'callback'            => 'convoca_shifts_rest_apuntarse_turno',
 			'permission_callback' => function () {
 				if ( is_user_logged_in() && ( current_user_can( 'gestionar_mis_turnos' ) || current_user_can( 'manage_options' ) ) ) {
 					return true;
@@ -42,7 +42,7 @@ function cst_register_rest_routes() {
 		'/turnos/(?P<id>\d+)/desapuntarse',
 		array(
 			'methods'             => 'POST',
-			'callback'            => 'cst_rest_desapuntarse_turno',
+			'callback'            => 'convoca_shifts_rest_desapuntarse_turno',
 			'permission_callback' => function () {
 				if ( is_user_logged_in() && ( current_user_can( 'gestionar_mis_turnos' ) || current_user_can( 'manage_options' ) ) ) {
 					return true;
@@ -57,7 +57,7 @@ function cst_register_rest_routes() {
 		'/turnos/apuntarse-proximo',
 		array(
 			'methods'             => 'POST',
-			'callback'            => 'cst_rest_apuntarse_proximo',
+			'callback'            => 'convoca_shifts_rest_apuntarse_proximo',
 			'permission_callback' => function () {
 				if ( is_user_logged_in() && ( current_user_can( 'gestionar_mis_turnos' ) || current_user_can( 'manage_options' ) ) ) {
 					return true;
@@ -72,7 +72,7 @@ function cst_register_rest_routes() {
 		'/turnos/proximo-libre',
 		array(
 			'methods'             => 'GET',
-			'callback'            => 'cst_rest_get_proximo_libre',
+			'callback'            => 'convoca_shifts_rest_get_proximo_libre',
 			'permission_callback' => '__return_true', // Public.
 		)
 	);
@@ -82,7 +82,7 @@ function cst_register_rest_routes() {
 		'/turnos/crear',
 		array(
 			'methods'             => 'POST',
-			'callback'            => 'cst_rest_crear_turno',
+			'callback'            => 'convoca_shifts_rest_crear_turno',
 			'permission_callback' => function () {
 				return is_user_logged_in() && ( current_user_can( 'gestionar_mis_turnos' ) || current_user_can( 'manage_options' ) );
 			},
@@ -90,8 +90,8 @@ function cst_register_rest_routes() {
 	);
 }
 
-function cst_rest_get_turnos( WP_REST_Request $request ) {
-	if ( class_exists( '\\Convoca\\Core\\Utils' ) && ! \Convoca\Core\Utils::check_rate_limit( 'cst_get_turnos', 30, 60 ) ) {
+function convoca_shifts_rest_get_turnos( WP_REST_Request $request ) {
+	if ( class_exists( '\\Convoca\\Core\\Utils' ) && ! \Convoca\Core\Utils::check_rate_limit( 'convoca_shifts_get_turnos', 30, 60 ) ) {
 		return new WP_Error( 'rest_rate_limit', 'Demasiadas peticiones. Inténtalo de nuevo en un minuto.', array( 'status' => 429 ) );
 	}
 	$start = $request->get_param( 'start' ); // Format: YYYY-MM-DD...
@@ -153,7 +153,7 @@ function cst_rest_get_turnos( WP_REST_Request $request ) {
 				$title = '🔴 Centro Cerrado';
 			} elseif ( $estado === 'abierto_ocupado' ) {
 				$color          = '#3498db'; // Blue.
-				$actividad_obj  = wp_get_post_terms( $post_id, 'cst_actividad' );
+				$actividad_obj  = wp_get_post_terms( $post_id, 'convoca_shifts_actividad' );
 				$actividad_name = ( ! empty( $actividad_obj ) && ! is_wp_error( $actividad_obj ) ) ? $actividad_obj[0]->name : 'Ocupado';
 				$title          = '🔵 ' . $actividad_name;
 			} elseif ( $estado === 'abierto_disponible' ) {
@@ -211,13 +211,13 @@ function cst_rest_get_turnos( WP_REST_Request $request ) {
 					'notas'              => get_post_meta( $post_id, '_notas', true ),
 					'necesita_apoyo'     => (int) get_post_meta( $post_id, '_necesita_apoyo', true ),
 					'actividad'          => ( function ( $pid ) {
-						$terms = wp_get_post_terms( $pid, 'cst_actividad' );
+						$terms = wp_get_post_terms( $pid, 'convoca_shifts_actividad' );
 						return ( ! empty( $terms ) && ! is_wp_error( $terms ) ) ? $terms[0]->name : '';
 					} )( $post_id ),
 					'actividad_url'      => ( function ( $pid ) {
-						$terms = wp_get_post_terms( $pid, 'cst_actividad' );
+						$terms = wp_get_post_terms( $pid, 'convoca_shifts_actividad' );
 						if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-							return get_term_meta( $terms[0]->term_id, 'cst_url_info', true );
+							return get_term_meta( $terms[0]->term_id, 'convoca_shifts_url_info', true );
 						}
 						return '';
 					} )( $post_id ),
@@ -238,8 +238,8 @@ function cst_rest_get_turnos( WP_REST_Request $request ) {
 	return rest_ensure_response( $events );
 }
 
-function cst_rest_apuntarse_turno( WP_REST_Request $request ) {
-	if ( class_exists( '\\Convoca\\Core\\Utils' ) && ! \Convoca\Core\Utils::check_rate_limit( 'cst_apuntarse', 10, 3600 ) ) {
+function convoca_shifts_rest_apuntarse_turno( WP_REST_Request $request ) {
+	if ( class_exists( '\\Convoca\\Core\\Utils' ) && ! \Convoca\Core\Utils::check_rate_limit( 'convoca_shifts_apuntarse', 10, 3600 ) ) {
 		return new WP_Error( 'rest_rate_limit', 'Demasiados intentos. Inténtalo de nuevo en una hora.', array( 'status' => 429 ) );
 	}
 	$post_id = $request->get_param( 'id' );
@@ -304,11 +304,11 @@ function cst_rest_apuntarse_turno( WP_REST_Request $request ) {
 	);
 
 	// Check for overlap INSIDE the transaction (with FOR UPDATE to lock conflicting rows).
-	$conflict_id = cst_check_user_overlap( $user_id, $fecha_inicio_turno, $hora_fin, $post_id, true );
+	$conflict_id = convoca_shifts_check_user_overlap( $user_id, $fecha_inicio_turno, $hora_fin, $post_id, true );
 	if ( $conflict_id ) {
 		$wpdb->query( 'ROLLBACK' );
-		if ( function_exists( 'cst_log_activity' ) ) {
-			cst_log_activity( $user_id, $post_id, 'conflicto_horario_detectado', array( 'conflict_id' => $conflict_id ) );
+		if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+			convoca_shifts_log_activity( $user_id, $post_id, 'conflicto_horario_detectado', array( 'conflict_id' => $conflict_id ) );
 		}
 		return new WP_Error( 'conflicto_horario', 'Ya tienes un turno asignado que se solapa con este horario.', array( 'status' => 400 ) );
 	}
@@ -369,8 +369,8 @@ function cst_rest_apuntarse_turno( WP_REST_Request $request ) {
 	$message = 'Turno asignado con éxito.';
 
 	// Log activity.
-	if ( function_exists( 'cst_log_activity' ) ) {
-		cst_log_activity( $user_id, $post_id, 'turno_cubierto' );
+	if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+		convoca_shifts_log_activity( $user_id, $post_id, 'turno_cubierto' );
 	}
 
 	// Notify admin.
@@ -397,8 +397,8 @@ function cst_rest_apuntarse_turno( WP_REST_Request $request ) {
 	);
 }
 
-function cst_rest_desapuntarse_turno( WP_REST_Request $request ) {
-	if ( class_exists( '\\Convoca\\Core\\Utils' ) && ! \Convoca\Core\Utils::check_rate_limit( 'cst_desapuntarse', 10, 3600 ) ) {
+function convoca_shifts_rest_desapuntarse_turno( WP_REST_Request $request ) {
+	if ( class_exists( '\\Convoca\\Core\\Utils' ) && ! \Convoca\Core\Utils::check_rate_limit( 'convoca_shifts_desapuntarse', 10, 3600 ) ) {
 		return new WP_Error( 'rest_rate_limit', 'Demasiados intentos. Inténtalo de nuevo en una hora.', array( 'status' => 429 ) );
 	}
 	$post_id = $request->get_param( 'id' );
@@ -426,7 +426,7 @@ function cst_rest_desapuntarse_turno( WP_REST_Request $request ) {
 		)
 	);
 
-	if ( (int) $current_responsable !== $user_id && ! current_user_can( 'manage_options' ) && ! current_user_can( 'cst_manage_turnos' ) ) {
+	if ( (int) $current_responsable !== $user_id && ! current_user_can( 'manage_options' ) && ! current_user_can( 'convoca_shifts_manage_turnos' ) ) {
 		$wpdb->query( 'ROLLBACK' );
 		return new WP_Error( 'not_yours', 'No eres el responsable de este turno.', array( 'status' => 400 ) );
 	}
@@ -449,8 +449,8 @@ function cst_rest_desapuntarse_turno( WP_REST_Request $request ) {
 	$wpdb->query( 'COMMIT' );
 
 	// Log activity.
-	if ( function_exists( 'cst_log_activity' ) ) {
-		cst_log_activity( $user_id, $post_id, 'turno_liberado' );
+	if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+		convoca_shifts_log_activity( $user_id, $post_id, 'turno_liberado' );
 	}
 
 	return rest_ensure_response(
@@ -461,8 +461,8 @@ function cst_rest_desapuntarse_turno( WP_REST_Request $request ) {
 	);
 }
 
-function cst_rest_apuntarse_proximo( WP_REST_Request $request ) {
-	if ( class_exists( '\\Convoca\\Core\\Utils' ) && ! \Convoca\Core\Utils::check_rate_limit( 'cst_apuntarse_proximo', 10, 3600 ) ) {
+function convoca_shifts_rest_apuntarse_proximo( WP_REST_Request $request ) {
+	if ( class_exists( '\\Convoca\\Core\\Utils' ) && ! \Convoca\Core\Utils::check_rate_limit( 'convoca_shifts_apuntarse_proximo', 10, 3600 ) ) {
 		return new WP_Error( 'rest_rate_limit', 'Demasiados intentos. Inténtalo de nuevo en una hora.', array( 'status' => 429 ) );
 	}
 	$user_id = get_current_user_id();
@@ -516,12 +516,12 @@ function cst_rest_apuntarse_proximo( WP_REST_Request $request ) {
 	// Check if user already has a shift that overlaps.
 	$hora_fin_candidate     = get_post_meta( $turno_id, '_hora_fin', true );
 	$fecha_inicio_candidate = get_post_meta( $turno_id, '_fecha_inicio', true );
-	$conflict_id            = cst_check_user_overlap( $user_id, $fecha_inicio_candidate, $hora_fin_candidate );
+	$conflict_id            = convoca_shifts_check_user_overlap( $user_id, $fecha_inicio_candidate, $hora_fin_candidate );
 
 	if ( $conflict_id ) {
 		$wpdb->query( 'ROLLBACK' );
-		if ( function_exists( 'cst_log_activity' ) ) {
-			cst_log_activity(
+		if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+			convoca_shifts_log_activity(
 				$user_id,
 				$turno_id,
 				'conflicto_horario_detectado',
@@ -591,8 +591,8 @@ function cst_rest_apuntarse_proximo( WP_REST_Request $request ) {
 	wp_publish_post( $post_id );
 
 	// Log activity.
-	if ( function_exists( 'cst_log_activity' ) ) {
-		cst_log_activity( $user_id, $post_id, 'turno_cubierto', array( 'automatico' => true ) );
+	if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+		convoca_shifts_log_activity( $user_id, $post_id, 'turno_cubierto', array( 'automatico' => true ) );
 	}
 
 	wp_reset_postdata();
@@ -605,8 +605,8 @@ function cst_rest_apuntarse_proximo( WP_REST_Request $request ) {
 	);
 }
 
-function cst_rest_get_proximo_libre( WP_REST_Request $request ) {
-	if ( class_exists( '\\Convoca\\Core\\Utils' ) && ! \Convoca\Core\Utils::check_rate_limit( 'cst_proximo_libre', 30, 60 ) ) {
+function convoca_shifts_rest_get_proximo_libre( WP_REST_Request $request ) {
+	if ( class_exists( '\\Convoca\\Core\\Utils' ) && ! \Convoca\Core\Utils::check_rate_limit( 'convoca_shifts_proximo_libre', 30, 60 ) ) {
 		return new WP_Error( 'rest_rate_limit', 'Demasiadas peticiones. Inténtalo de nuevo en un minuto.', array( 'status' => 429 ) );
 	}
 	$now = wp_date( 'Y-m-d H:i:s' );
@@ -661,7 +661,7 @@ function cst_rest_get_proximo_libre( WP_REST_Request $request ) {
 				$fecha = $fecha_inicio;
 			}
 		} else {
-			$fecha = cst_fecha_legible( get_post_timestamp() );
+			$fecha = convoca_shifts_fecha_legible( get_post_timestamp() );
 		}
 		wp_reset_postdata();
 
@@ -681,8 +681,8 @@ function cst_rest_get_proximo_libre( WP_REST_Request $request ) {
 	);
 }
 
-function cst_rest_crear_turno( WP_REST_Request $request ) {
-	if ( class_exists( '\\Convoca\\Core\\Utils' ) && ! \Convoca\Core\Utils::check_rate_limit( 'cst_crear_turno', 10, 3600 ) ) {
+function convoca_shifts_rest_crear_turno( WP_REST_Request $request ) {
+	if ( class_exists( '\\Convoca\\Core\\Utils' ) && ! \Convoca\Core\Utils::check_rate_limit( 'convoca_shifts_crear_turno', 10, 3600 ) ) {
 		return new WP_Error( 'rest_rate_limit', 'Demasiados intentos. Inténtalo de nuevo en una hora.', array( 'status' => 429 ) );
 	}
 	$date    = sanitize_text_field( $request->get_param( 'date' ) );
@@ -691,7 +691,7 @@ function cst_rest_crear_turno( WP_REST_Request $request ) {
 	$estado  = sanitize_text_field( $request->get_param( 'estado' ) );
 
 	// Safety check: Only admins can create "Ocupado" or "Cerrado".
-	if ( ! current_user_can( 'manage_options' ) && ! current_user_can( 'cst_manage_turnos' ) ) {
+	if ( ! current_user_can( 'manage_options' ) && ! current_user_can( 'convoca_shifts_manage_turnos' ) ) {
 		$estado = 'abierto_disponible';
 
 		// Safety check: Don't allow creating past turns for non-admins.
@@ -707,7 +707,7 @@ function cst_rest_crear_turno( WP_REST_Request $request ) {
 	$apoyo_raw = $request->get_param( 'apoyo' );
 	$apoyo     = ( $apoyo_raw === 'true' || $apoyo_raw === true || $apoyo_raw === 1 || $apoyo_raw === '1' );
 
-	$post_id = cst_insert_turno(
+	$post_id = convoca_shifts_insert_turno(
 		array(
 			'date'           => $date,
 			'h_start'        => $h_start,
@@ -722,8 +722,8 @@ function cst_rest_crear_turno( WP_REST_Request $request ) {
 	}
 
 	// Log activity.
-	if ( function_exists( 'cst_log_activity' ) ) {
-		cst_log_activity( get_current_user_id(), $post_id, 'turno_creado', array( 'origen' => 'frontend' ) );
+	if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+		convoca_shifts_log_activity( get_current_user_id(), $post_id, 'turno_creado', array( 'origen' => 'frontend' ) );
 	}
 
 	return rest_ensure_response(

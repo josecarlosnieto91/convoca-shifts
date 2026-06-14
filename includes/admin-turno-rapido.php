@@ -9,16 +9,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'admin_menu', 'cst_add_turno_rapido_menu', 1 );
-function cst_add_turno_rapido_menu() {
+add_action( 'admin_menu', 'convoca_shifts_add_turno_rapido_menu', 1 );
+function convoca_shifts_add_turno_rapido_menu() {
 	// 1. Add our custom page.
 	add_submenu_page(
 		'edit.php?post_type=centro_turno',
 		__( 'Añadir Turno Rápido', 'convoca-shifts' ),
 		__( 'Añadir Turno Rápido', 'convoca-shifts' ),
-		'cst_manage_turnos',
-		'cst_turno_rapido',
-		'cst_turno_rapido_page'
+		'convoca_shifts_manage_turnos',
+		'convoca_shifts_turno_rapido',
+		'convoca_shifts_turno_rapido_page'
 	);
 
 	// 2. Remove the standard "Add New" submenu to avoid confusion.
@@ -29,10 +29,10 @@ function cst_add_turno_rapido_menu() {
  * Filter admin URLs to point "Add New" links to our custom page.
  * This affects the button next to the title in the list and the admin bar.
  */
-add_filter( 'admin_url', 'cst_redirect_add_new_url', 10, 2 );
-function cst_redirect_add_new_url( $url, $path ) {
+add_filter( 'admin_url', 'convoca_shifts_redirect_add_new_url', 10, 2 );
+function convoca_shifts_redirect_add_new_url( $url, $path ) {
 	if ( $path === 'post-new.php?post_type=centro_turno' ) {
-		return admin_url( 'admin.php?page=cst_turno_rapido' );
+		return admin_url( 'admin.php?page=convoca_shifts_turno_rapido' );
 	}
 	return $url;
 }
@@ -40,11 +40,11 @@ function cst_redirect_add_new_url( $url, $path ) {
 /**
  * Force redirect if anyone accesses the standard post-new.php page directly via URL.
  */
-add_action( 'admin_init', 'cst_force_redirect_standard_editor' );
-function cst_force_redirect_standard_editor() {
+add_action( 'admin_init', 'convoca_shifts_force_redirect_standard_editor' );
+function convoca_shifts_force_redirect_standard_editor() {
 	global $pagenow;
 	if ( $pagenow === 'post-new.php' && isset( $_GET['post_type'] ) && $_GET['post_type'] === 'centro_turno' ) {
-		wp_redirect( admin_url( 'admin.php?page=cst_turno_rapido' ) );
+		wp_redirect( admin_url( 'admin.php?page=convoca_shifts_turno_rapido' ) );
 		exit;
 	}
 }
@@ -52,24 +52,24 @@ function cst_force_redirect_standard_editor() {
 /**
  * Handle the form submission for Quick Add Turno via admin-post.php.
  */
-add_action( 'admin_post_cst_quick_add_turno', 'cst_process_quick_add_turno' );
-function cst_process_quick_add_turno() {
-	if ( ! isset( $_POST['cst_quick_add_nonce'] ) || ! wp_verify_nonce( $_POST['cst_quick_add_nonce'], 'cst_quick_add_action' ) ) {
-		wp_safe_redirect( admin_url( 'edit.php?post_type=centro_turno&cst_msg=error&cst_err=' . urlencode( __( 'Nonce inválido.', 'convoca-shifts' ) ) ) );
+add_action( 'admin_post_convoca_shifts_quick_add_turno', 'convoca_shifts_process_quick_add_turno' );
+function convoca_shifts_process_quick_add_turno() {
+	if ( ! isset( $_POST['convoca_shifts_quick_add_nonce'] ) || ! wp_verify_nonce( $_POST['convoca_shifts_quick_add_nonce'], 'convoca_shifts_quick_add_action' ) ) {
+		wp_safe_redirect( admin_url( 'edit.php?post_type=centro_turno&convoca_shifts_msg=error&convoca_shifts_err=' . urlencode( __( 'Nonce inválido.', 'convoca-shifts' ) ) ) );
 		exit;
 	}
 
-	if ( ! current_user_can( 'cst_manage_turnos' ) ) {
+	if ( ! current_user_can( 'convoca_shifts_manage_turnos' ) ) {
 		wp_die( __( 'No tienes permisos para realizar esta acción.', 'convoca-shifts' ) );
 	}
 
-	$date    = sanitize_text_field( $_POST['cst_date'] );
-	$h_start = sanitize_text_field( $_POST['cst_h_start'] );
-	$h_end   = sanitize_text_field( $_POST['cst_h_end'] );
-	$estado  = sanitize_text_field( $_POST['cst_estado'] );
-	$apoyo   = isset( $_POST['cst_apoyo'] ) ? 1 : 0;
+	$date    = sanitize_text_field( $_POST['convoca_shifts_date'] );
+	$h_start = sanitize_text_field( $_POST['convoca_shifts_h_start'] );
+	$h_end   = sanitize_text_field( $_POST['convoca_shifts_h_end'] );
+	$estado  = sanitize_text_field( $_POST['convoca_shifts_estado'] );
+	$apoyo   = isset( $_POST['convoca_shifts_apoyo'] ) ? 1 : 0;
 
-	$post_id = cst_insert_turno(
+	$post_id = convoca_shifts_insert_turno(
 		array(
 			'date'           => $date,
 			'h_start'        => $h_start,
@@ -80,18 +80,18 @@ function cst_process_quick_add_turno() {
 	);
 
 	if ( ! is_wp_error( $post_id ) ) {
-		if ( function_exists( 'cst_log_activity' ) ) {
-			cst_log_activity( get_current_user_id(), $post_id, 'turno_creado', array( 'origen' => 'admin_rapido' ) );
+		if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+			convoca_shifts_log_activity( get_current_user_id(), $post_id, 'turno_creado', array( 'origen' => 'admin_rapido' ) );
 		}
 
 		if ( class_exists( 'Convoca\\Core\\Logger' ) ) {
 			\Convoca\Core\Logger::info( "Turno rápido creado para el día $date ($h_start - $h_end)", 'Turnos', $post_id );
 		}
 
-		wp_safe_redirect( admin_url( 'edit.php?post_type=centro_turno&cst_msg=created' ) );
+		wp_safe_redirect( admin_url( 'edit.php?post_type=centro_turno&convoca_shifts_msg=created' ) );
 		exit;
 	} else {
-		wp_safe_redirect( admin_url( 'edit.php?post_type=centro_turno&cst_msg=error&cst_err=' . urlencode( $post_id->get_error_message() ) ) );
+		wp_safe_redirect( admin_url( 'edit.php?post_type=centro_turno&convoca_shifts_msg=error&convoca_shifts_err=' . urlencode( $post_id->get_error_message() ) ) );
 		exit;
 	}
 }
@@ -99,14 +99,14 @@ function cst_process_quick_add_turno() {
 /**
  * Handle success message in the main list.
  */
-add_action( 'admin_notices', 'cst_turno_rapido_notices' );
-function cst_turno_rapido_notices() {
+add_action( 'admin_notices', 'convoca_shifts_turno_rapido_notices' );
+function convoca_shifts_turno_rapido_notices() {
 	$screen = get_current_screen();
-	if ( $screen && $screen->id === 'edit-centro_turno' && isset( $_GET['cst_msg'] ) ) {
-		if ( $_GET['cst_msg'] === 'created' ) {
+	if ( $screen && $screen->id === 'edit-centro_turno' && isset( $_GET['convoca_shifts_msg'] ) ) {
+		if ( $_GET['convoca_shifts_msg'] === 'created' ) {
 			echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . __( 'Turno creado correctamente.', 'convoca-shifts' ) . '</p></div>';
-		} elseif ( $_GET['cst_msg'] === 'error' ) {
-			$err = isset( $_GET['cst_err'] ) ? sanitize_text_field( $_GET['cst_err'] ) : __( 'Error desconocido', 'convoca-shifts' );
+		} elseif ( $_GET['convoca_shifts_msg'] === 'error' ) {
+			$err = isset( $_GET['convoca_shifts_err'] ) ? sanitize_text_field( $_GET['convoca_shifts_err'] ) : __( 'Error desconocido', 'convoca-shifts' );
 			echo '<div class="convoca-alert convoca-alert--danger" style="display:block;margin-bottom:20px;"><p><strong>Error:</strong> ' . esc_html( $err ) . '</p></div>';
 		}
 	}
@@ -115,7 +115,7 @@ function cst_turno_rapido_notices() {
 /**
  * Render the Quick Add page.
  */
-function cst_turno_rapido_page() {
+function convoca_shifts_turno_rapido_page() {
 	?>
 	<div class="wrap">
 		<h1><?php _e( 'Añadir Turno Rápido', 'convoca-shifts' ); ?></h1>
@@ -134,11 +134,11 @@ function cst_turno_rapido_page() {
 
 		</div>
 		<?php
-		add_action( 'admin_footer', 'cst_render_quick_add_modal' );
+		add_action( 'admin_footer', 'convoca_shifts_render_quick_add_modal' );
 		?>
 </div>
 		<?php
-		add_action( 'admin_footer', 'cst_render_quick_add_modal' );
+		add_action( 'admin_footer', 'convoca_shifts_render_quick_add_modal' );
 		?>
 	</div>
 
@@ -149,7 +149,7 @@ function cst_turno_rapido_page() {
 		const modal = document.getElementById('cst-quick-modal');
 		const closeBtn = document.querySelector('.cst-close');
 		const cancelBtn = document.querySelector('.cst-cancel-btn');
-		const dateInput = document.getElementById('cst_modal_date');
+		const dateInput = document.getElementById('convoca_shifts_modal_date');
 		const modalTitle = document.getElementById('cst-modal-title');
 
 		let viewDate = new Date();
@@ -246,8 +246,8 @@ function cst_turno_rapido_page() {
 						customFields.style.display = 'none';
 						let start = this.dataset.start;
 						let end = this.dataset.end;
-						const limitOpen = '<?php echo esc_js( get_option( 'cst_hora_apertura', '09:00' ) ); ?>';
-						const limitClose = '<?php echo esc_js( get_option( 'cst_hora_cierre', '22:00' ) ); ?>';
+						const limitOpen = '<?php echo esc_js( get_option( 'convoca_shifts_hora_apertura', '09:00' ) ); ?>';
+						const limitClose = '<?php echo esc_js( get_option( 'convoca_shifts_hora_cierre', '22:00' ) ); ?>';
 						
 						let adjusted = false;
 						if (start < limitOpen) { start = limitOpen; adjusted = true; }
@@ -283,8 +283,8 @@ function cst_turno_rapido_page() {
 		form.onsubmit = function(e) {
 			let h_start = document.getElementById('fe_h_start').value;
 			let h_end = document.getElementById('fe_h_end').value;
-			const limitOpen = '<?php echo esc_js( get_option( 'cst_hora_apertura', '09:00' ) ); ?>';
-			const limitClose = '<?php echo esc_js( get_option( 'cst_hora_cierre', '22:00' ) ); ?>';
+			const limitOpen = '<?php echo esc_js( get_option( 'convoca_shifts_hora_apertura', '09:00' ) ); ?>';
+			const limitClose = '<?php echo esc_js( get_option( 'convoca_shifts_hora_cierre', '22:00' ) ); ?>';
 			
 			let adjusted = false;
 			if (h_start < limitOpen) {
@@ -315,13 +315,13 @@ function cst_turno_rapido_page() {
 	});
 	</script>
 	<?php
-	add_action( 'admin_footer', 'cst_render_quick_add_modal' );
+	add_action( 'admin_footer', 'convoca_shifts_render_quick_add_modal' );
 }
 
 /**
  * Render the Quick Add modal in the footer.
  */
-function cst_render_quick_add_modal() {
+function convoca_shifts_render_quick_add_modal() {
 	?>
 	<!-- Modal Form (Moved to footer) -->
 	<div id="cst-quick-modal" class="cst-modal">
@@ -330,9 +330,9 @@ function cst_render_quick_add_modal() {
 			<h2 id="cst-modal-title"><?php _e( 'Crear Nuevo Turno', 'convoca-shifts' ); ?></h2>
 			<hr>
 			<form method="post" action="<?php echo admin_url( 'admin-post.php' ); ?>">
-				<?php wp_nonce_field( 'cst_quick_add_action', 'cst_quick_add_nonce' ); ?>
-				<input type="hidden" name="action" value="cst_quick_add_turno">
-				<input type="hidden" id="cst_modal_date" name="cst_date">
+				<?php wp_nonce_field( 'convoca_shifts_quick_add_action', 'convoca_shifts_quick_add_nonce' ); ?>
+				<input type="hidden" name="action" value="convoca_shifts_quick_add_turno">
+				<input type="hidden" id="convoca_shifts_modal_date" name="convoca_shifts_date">
 				
 				<div class="cst-form-group">
 					<label><?php _e( 'Seleccionar Horario', 'convoca-shifts' ); ?></label>
@@ -347,18 +347,18 @@ function cst_render_quick_add_modal() {
 					<div class="cst-form-row" style="margin-bottom:0;">
 						<div class="cst-form-group" style="margin-bottom:0;">
 							<label><?php _e( 'Hora Inicio', 'convoca-shifts' ); ?></label>
-							<input type="time" name="cst_h_start" id="fe_h_start" value="10:00" step="900">
+							<input type="time" name="convoca_shifts_h_start" id="fe_h_start" value="10:00" step="900">
 						</div>
 						<div class="cst-form-group" style="margin-bottom:0;">
 							<label><?php _e( 'Hora Fin', 'convoca-shifts' ); ?></label>
-							<input type="time" name="cst_h_end" id="fe_h_end" value="13:00" step="900">
+							<input type="time" name="convoca_shifts_h_end" id="fe_h_end" value="13:00" step="900">
 						</div>
 					</div>
 				</div>
 
 				<div class="cst-form-group">
 					<label><?php _e( 'Estado Inicial', 'convoca-shifts' ); ?></label>
-					<select name="cst_estado" style="width: 100%;">
+					<select name="convoca_shifts_estado" style="width: 100%;">
 						<option value="abierto_disponible">🟡 Pendiente (Disponible para voluntarios)</option>
 						<option value="abierto_ocupado">🔵 Ocupado (Actividad interna / No inscribible)</option>
 						<option value="cerrado">🔴 Cerrado (Festivo / Sin apertura)</option>
@@ -367,7 +367,7 @@ function cst_render_quick_add_modal() {
 
 				<div class="cst-form-group" style="margin-top: 15px;">
 					<label>
-						<input type="checkbox" name="cst_apoyo" value="1">
+						<input type="checkbox" name="convoca_shifts_apoyo" value="1">
 						<strong><?php _e( '🛟 Necesita apoyo', 'convoca-shifts' ); ?></strong>
 					</label>
 					<p class="description"><?php _e( 'Marca esto si el voluntario necesita acompañamiento (p.ej. no tiene llaves).', 'convoca-shifts' ); ?></p>

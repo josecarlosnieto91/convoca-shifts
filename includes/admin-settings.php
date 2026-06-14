@@ -6,15 +6,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Register settings and menu page.
  */
-add_action( 'admin_menu', 'cst_add_settings_menu', 25 );
-function cst_add_settings_menu() {
+add_action( 'admin_menu', 'convoca_shifts_add_settings_menu', 25 );
+function convoca_shifts_add_settings_menu() {
 	add_submenu_page(
 		'edit.php?post_type=centro_turno',
 		__( 'Ajustes del Sistema', 'convoca-shifts' ),
 		__( 'Ajustes', 'convoca-shifts' ),
 		'manage_inscripciones',
-		'cst_settings',
-		'cst_settings_page'
+		'convoca_shifts_settings',
+		'convoca_shifts_settings_page'
 	);
 
 	add_submenu_page(
@@ -22,26 +22,26 @@ function cst_add_settings_menu() {
 		__( 'Estado del Sistema', 'convoca-shifts' ),
 		__( 'Estado', 'convoca-shifts' ),
 		'manage_options',
-		'cst_status',
-		'cst_status_page'
+		'convoca_shifts_status',
+		'convoca_shifts_status_page'
 	);
 }
 
-function cst_status_page() {
-	if ( ! class_exists( 'CST_Admin_Status' ) ) {
+function convoca_shifts_status_page() {
+	if ( ! class_exists( 'Convoca_Shifts_Admin_Status' ) ) {
 		require_once __DIR__ . '/class-admin-status.php';
 	}
-	CST_Admin_Status::render_page();
+	Convoca_Shifts_Admin_Status::render_page();
 }
 
 /**
  * Register settings.
  */
-add_action( 'admin_init', 'cst_register_plugin_settings' );
-function cst_register_plugin_settings() {
-	register_setting( 'cst_settings_group', 'cst_calendar_page_url' );
-	register_setting( 'cst_settings_group', 'cst_hora_apertura' );
-	register_setting( 'cst_settings_group', 'cst_hora_cierre' );
+add_action( 'admin_init', 'convoca_shifts_register_plugin_settings' );
+function convoca_shifts_register_plugin_settings() {
+	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_calendar_page_url' );
+	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_hora_apertura' );
+	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_hora_cierre' );
 }
 
 /**
@@ -50,7 +50,7 @@ function cst_register_plugin_settings() {
 /**
  * Settings page HTML.
  */
-function cst_settings_page() {
+function convoca_shifts_settings_page() {
 	$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general';
 	?>
 	<div class="wrap cst-settings-wrap">
@@ -63,29 +63,29 @@ function cst_settings_page() {
 		</div>
 
 		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo admin_url( 'edit.php?post_type=centro_turno&page=cst_settings&tab=general' ); ?>" class="nav-tab <?php echo $active_tab == 'general' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Ajustes', 'convoca-shifts' ); ?></a>
-			<a href="<?php echo admin_url( 'edit.php?post_type=centro_turno&page=cst_settings&tab=status' ); ?>" class="nav-tab <?php echo $active_tab == 'status' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Estado', 'convoca-shifts' ); ?></a>
+			<a href="<?php echo admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_settings&tab=general' ); ?>" class="nav-tab <?php echo $active_tab == 'general' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Ajustes', 'convoca-shifts' ); ?></a>
+			<a href="<?php echo admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_settings&tab=status' ); ?>" class="nav-tab <?php echo $active_tab == 'status' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Estado', 'convoca-shifts' ); ?></a>
 		</h2>
 
 		<?php if ( $active_tab == 'general' ) : ?>
 			<p><?php _e( 'Configura las URLs de las páginas que contienen los shortcodes para que el plugin pueda generar enlaces correctos.', 'convoca-shifts' ); ?></p>
 
 			<form method="post" action="options.php" class="convoca-box" style="background:#fff;border-radius:12px;padding:30px;max-width:700px;margin-top:20px;">
-				<?php settings_fields( 'cst_settings_group' ); ?>
-				<?php do_settings_sections( 'cst_settings_group' ); ?>
+				<?php settings_fields( 'convoca_shifts_settings_group' ); ?>
+				<?php do_settings_sections( 'convoca_shifts_settings_group' ); ?>
 
 				<div class="convoca-field">
-					<label for="cst_calendar_page_url"><?php _e( 'URL de la página del Calendario', 'convoca-shifts' ); ?></label>
-					<input type="url" id="cst_calendar_page_url" name="cst_calendar_page_url" value="<?php echo esc_attr( get_option( 'cst_calendar_page_url' ) ); ?>" placeholder="https://tuweb.com/calendario">.
+					<label for="convoca_shifts_calendar_page_url"><?php _e( 'URL de la página del Calendario', 'convoca-shifts' ); ?></label>
+					<input type="url" id="convoca_shifts_calendar_page_url" name="convoca_shifts_calendar_page_url" value="<?php echo esc_attr( get_option( 'convoca_shifts_calendar_page_url' ) ); ?>" placeholder="https://tuweb.com/calendario">.
 					<small class="convoca-small"><?php _e( 'URL donde has pegado el shortcode [calendario_centro].', 'convoca-shifts' ); ?></small>
 				</div>
 
 				<div class="convoca-field">
-					<label for="cst_hora_apertura"><?php _e( 'Horario del Centro', 'convoca-shifts' ); ?></label>
+					<label for="convoca_shifts_hora_apertura"><?php _e( 'Horario del Centro', 'convoca-shifts' ); ?></label>
 					<div style="display:flex; align-items:center; gap:10px;">
-						<input type="time" id="cst_hora_apertura" name="cst_hora_apertura" value="<?php echo esc_attr( get_option( 'cst_hora_apertura', '09:00' ) ); ?>">
+						<input type="time" id="convoca_shifts_hora_apertura" name="convoca_shifts_hora_apertura" value="<?php echo esc_attr( get_option( 'convoca_shifts_hora_apertura', '09:00' ) ); ?>">
 						<span><?php _e( 'hasta las', 'convoca-shifts' ); ?></span>
-						<input type="time" id="cst_hora_cierre" name="cst_hora_cierre" value="<?php echo esc_attr( get_option( 'cst_hora_cierre', '22:00' ) ); ?>">
+						<input type="time" id="convoca_shifts_hora_cierre" name="convoca_shifts_hora_cierre" value="<?php echo esc_attr( get_option( 'convoca_shifts_hora_cierre', '22:00' ) ); ?>">
 					</div>
 					<small class="convoca-small"><?php _e( 'Restringe la creación de turnos fuera de este horario.', 'convoca-shifts' ); ?></small>
 				</div>
@@ -133,7 +133,7 @@ function cst_settings_page() {
 				</tbody>
 			</table>
 		<?php else : ?>
-			<?php cst_render_status_tab(); ?>
+			<?php convoca_shifts_render_status_tab(); ?>
 		<?php endif; ?>
 	</div>
 	<?php
@@ -142,8 +142,8 @@ function cst_settings_page() {
 /**
  * Render Status/Diagnostic tab.
  */
-function cst_render_status_tab() {
-	$checks       = cst_get_system_checks();
+function convoca_shifts_render_status_tab() {
+	$checks       = convoca_shifts_get_system_checks();
 	$has_errors   = array_filter( $checks, fn( $c ) => $c['status'] === 'error' );
 	$has_warnings = array_filter( $checks, fn( $c ) => $c['status'] === 'warning' );
 
@@ -199,7 +199,7 @@ function cst_render_status_tab() {
 /**
  * Get system checks for Turnos.
  */
-function cst_get_system_checks( bool $force = false ) {
+function convoca_shifts_get_system_checks( bool $force = false ) {
 	$checks = array();
 
 	// 1. Plugins.
@@ -228,7 +228,7 @@ function cst_get_system_checks( bool $force = false ) {
 	);
 
 	foreach ( $required_pages as $slug => $data ) {
-		$page     = cst_find_page_by_shortcode( $data['shortcode'] );
+		$page     = convoca_shifts_find_page_by_shortcode( $data['shortcode'] );
 		$checks[] = array(
 			'title'   => $data['title'],
 			'status'  => $page ? 'ok' : 'error',
@@ -243,7 +243,7 @@ function cst_get_system_checks( bool $force = false ) {
 /**
  * Helper to find page by shortcode.
  */
-function cst_find_page_by_shortcode( string $shortcode ) {
+function convoca_shifts_find_page_by_shortcode( string $shortcode ) {
 	global $wpdb;
 
 	$tag   = trim( $shortcode, '[]' );

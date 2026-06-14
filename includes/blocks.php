@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * In the editor: always load (SSR preview needs FullCalendar).
  * In the frontend: load if CST blocks/shortcodes are in content, widgets, or forced via filter.
  */
-function cst_enqueue_block_assets() {
+function convoca_shifts_enqueue_block_assets() {
 	// Always load in editor context (block previews need the scripts).
 	if ( is_admin() ) {
 		wp_enqueue_style( 'cst-estilo' );
@@ -18,43 +18,43 @@ function cst_enqueue_block_assets() {
 	}
 
 	// Frontend: robust detection.
-	if ( cst_should_load_assets() ) {
+	if ( convoca_shifts_should_load_assets() ) {
 		wp_enqueue_style( 'cst-estilo' );
 		wp_enqueue_script( 'cst-calendario' );
 	}
 }
-add_action( 'wp_enqueue_scripts', 'cst_enqueue_block_assets' ); // Changed from enqueue_block_assets for better frontend coverage.
+add_action( 'wp_enqueue_scripts', 'convoca_shifts_enqueue_block_assets' ); // Changed from enqueue_block_assets for better frontend coverage.
 
 /**
  * Robust detection of CST presence in current page.
  * Checks: Force filter, Post blocks, Post shortcodes, Widget shortcodes/blocks.
  */
-function cst_should_load_assets() {
+function convoca_shifts_should_load_assets() {
 	// 1. Force load via filter.
-	if ( apply_filters( 'cst_force_enqueue_assets', false ) ) {
+	if ( apply_filters( 'convoca_shifts_force_enqueue_assets', false ) ) {
 		return true;
 	}
 
-	$cst_blocks     = array(
+	$convoca_shifts_blocks     = array(
 		'centro-social/calendario',
 		'centro-social/boton-apuntarse',
 		'centro-social/resumen',
 		'centro-social/proximos-turnos',
 	);
-	$cst_shortcodes = array( 'calendario_centro', 'boton_apuntarse', 'resumen_turnos', 'proximos_turnos' );
+	$convoca_shifts_shortcodes = array( 'calendario_centro', 'boton_apuntarse', 'resumen_turnos', 'proximos_turnos' );
 
 	// 2. Check current post content (blocks and shortcodes).
 	if ( is_singular() ) {
 		$post = get_post();
 		if ( $post ) {
 			// Blocks.
-			foreach ( $cst_blocks as $block_name ) {
+			foreach ( $convoca_shifts_blocks as $block_name ) {
 				if ( has_block( $block_name, $post ) ) {
 					return true;
 				}
 			}
 			// Shortcodes.
-			foreach ( $cst_shortcodes as $sh ) {
+			foreach ( $convoca_shifts_shortcodes as $sh ) {
 				if ( has_shortcode( $post->post_content, $sh ) ) {
 					return true;
 				}
@@ -92,13 +92,13 @@ function cst_should_load_assets() {
 
 					if ( ! empty( $content ) ) {
 						// Shortcodes.
-						foreach ( $cst_shortcodes as $sh ) {
+						foreach ( $convoca_shifts_shortcodes as $sh ) {
 							if ( has_shortcode( $content, $sh ) ) {
 								return true;
 							}
 						}
 						// Blocks (strings).
-						foreach ( $cst_blocks as $bn ) {
+						foreach ( $convoca_shifts_blocks as $bn ) {
 							if ( strpos( $content, 'wp:' . $bn ) !== false || strpos( $content, $bn ) !== false ) {
 								return true;
 							}
@@ -115,21 +115,21 @@ function cst_should_load_assets() {
 /**
  * Enqueue block editor specific assets (registration)
  */
-function cst_enqueue_block_editor_assets() {
+function convoca_shifts_enqueue_block_editor_assets() {
 	wp_enqueue_script(
 		'cst-blocks-js',
-		CST_PLUGIN_URL . 'assets/js/blocks.js',
+		CONVOCA_SHIFTS_URL . 'assets/js/blocks.js',
 		array( 'wp-blocks', 'wp-element', 'wp-server-side-render', 'wp-block-editor', 'wp-components', 'jquery' ),
-		CST_PLUGIN_VERSION,
+		CONVOCA_SHIFTS_VERSION,
 		true
 	);
 }
-add_action( 'enqueue_block_editor_assets', 'cst_enqueue_block_editor_assets' );
+add_action( 'enqueue_block_editor_assets', 'convoca_shifts_enqueue_block_editor_assets' );
 
 /**
  * Register Gutenberg blocks for Centro Social Turnos
  */
-function cst_register_blocks() {
+function convoca_shifts_register_blocks() {
 
 	$common_args = array(
 		'apiVersion'    => 3,
@@ -143,7 +143,7 @@ function cst_register_blocks() {
 		array_merge(
 			$common_args,
 			array(
-				'render_callback' => 'cst_render_block_calendario',
+				'render_callback' => 'convoca_shifts_render_block_calendario',
 				'title'           => __( 'CST: Calendario', 'convoca-shifts' ),
 				'icon'            => 'calendar-alt',
 			)
@@ -156,7 +156,7 @@ function cst_register_blocks() {
 		array_merge(
 			$common_args,
 			array(
-				'render_callback' => 'cst_render_block_boton_apuntarse',
+				'render_callback' => 'convoca_shifts_render_block_boton_apuntarse',
 				'title'           => __( 'CST: Botón Apuntarse', 'convoca-shifts' ),
 				'icon'            => 'plus-alt',
 			)
@@ -169,7 +169,7 @@ function cst_register_blocks() {
 		array_merge(
 			$common_args,
 			array(
-				'render_callback' => 'cst_render_block_resumen',
+				'render_callback' => 'convoca_shifts_render_block_resumen',
 				'title'           => __( 'CST: Resumen Semanal', 'convoca-shifts' ),
 				'icon'            => 'chart-bar',
 			)
@@ -188,33 +188,33 @@ function cst_register_blocks() {
 						'default' => 5,
 					),
 				),
-				'render_callback' => 'cst_render_block_proximos_turnos',
+				'render_callback' => 'convoca_shifts_render_block_proximos_turnos',
 				'title'           => __( 'CST: Próximos Turnos', 'convoca-shifts' ),
 				'icon'            => 'list-view',
 			)
 		)
 	);
 }
-add_action( 'init', 'cst_register_blocks' );
+add_action( 'init', 'convoca_shifts_register_blocks' );
 
 /**
  * Render Callbacks
  */
-function cst_render_block_calendario() {
+function convoca_shifts_render_block_calendario() {
 	$output = convoca_shifts_calendario_centro();
 	// Fail-safe trigger for dynamic loading (Gutenberg/AJAX).
 	$output .= '<script>if(window.initCSTCalendar) { window.initCSTCalendar(document); } else if(window.parent && window.parent.initCSTCalendar) { window.parent.initCSTCalendar(document); }</script>';
 	return $output;
 }
 
-function cst_render_block_boton_apuntarse() {
+function convoca_shifts_render_block_boton_apuntarse() {
 	return convoca_shifts_boton_apuntarse();
 }
 
-function cst_render_block_resumen() {
+function convoca_shifts_render_block_resumen() {
 	return convoca_shifts_resumen_turnos();
 }
 
-function cst_render_block_proximos_turnos( $attributes ) {
+function convoca_shifts_render_block_proximos_turnos( $attributes ) {
 	return convoca_shifts_proximos_turnos( $attributes );
 }

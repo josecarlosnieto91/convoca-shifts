@@ -3,24 +3,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'admin_menu', 'cst_add_auditoria_menu', 25 );
-function cst_add_auditoria_menu() {
+add_action( 'admin_menu', 'convoca_shifts_add_auditoria_menu', 25 );
+function convoca_shifts_add_auditoria_menu() {
 	add_submenu_page(
 		'edit.php?post_type=centro_turno',
 		__( 'Auditoría de Horas', 'convoca-shifts' ),
 		__( 'Auditoría Horas', 'convoca-shifts' ),
-		'cst_audit_hours',
-		'cst_auditoria_horas',
-		'cst_auditoria_horas_page'
+		'convoca_shifts_audit_hours',
+		'convoca_shifts_auditoria_horas',
+		'convoca_shifts_auditoria_horas_page'
 	);
 }
 
-function cst_auditoria_horas_page() {
+function convoca_shifts_auditoria_horas_page() {
 	global $wpdb;
 
-	if ( isset( $_POST['cst_action'] ) && $_POST['cst_action'] === 'recalcular' && isset( $_POST['user_id'] ) ) {
-		check_admin_referer( 'cst_recalcular_' . (int) $_POST['user_id'] );
-		cst_recalcular_horas_usuario( (int) $_POST['user_id'] );
+	if ( isset( $_POST['convoca_shifts_action'] ) && $_POST['convoca_shifts_action'] === 'recalcular' && isset( $_POST['user_id'] ) ) {
+		check_admin_referer( 'convoca_shifts_recalcular_' . (int) $_POST['user_id'] );
+		convoca_shifts_recalcular_horas_usuario( (int) $_POST['user_id'] );
 		echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . __( 'Horas recalculadas correctamente.', 'convoca-shifts' ) . '</p></div>';
 	}
 
@@ -62,9 +62,9 @@ function cst_auditoria_horas_page() {
 						<td><?php echo (int) $turnos_realizados; ?></td>
 						<td>
 							<form method="post" style="display:inline;">
-								<?php wp_nonce_field( 'cst_recalcular_' . $u->ID ); ?>
+								<?php wp_nonce_field( 'convoca_shifts_recalcular_' . $u->ID ); ?>
 								<input type="hidden" name="user_id" value="<?php echo $u->ID; ?>">
-								<input type="hidden" name="cst_action" value="recalcular">
+								<input type="hidden" name="convoca_shifts_action" value="recalcular">
 								<button type="submit" class="button button-small" onclick="return confirm('<?php esc_attr_e( '¿Recalcular horas? Esta acción escaneará todos los turnos realizados y actualizará el contador.', 'convoca-shifts' ); ?>')"><?php _e( 'Recalcular', 'convoca-shifts' ); ?></button>
 							</form>
 						</td>
@@ -76,7 +76,7 @@ function cst_auditoria_horas_page() {
 	<?php
 }
 
-function cst_recalcular_horas_usuario( int $user_id ): void {
+function convoca_shifts_recalcular_horas_usuario( int $user_id ): void {
 	global $wpdb;
 
 	$turnos = $wpdb->get_results(

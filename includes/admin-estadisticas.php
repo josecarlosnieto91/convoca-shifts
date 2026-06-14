@@ -3,32 +3,32 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'admin_menu', 'cst_add_estadisticas_menu', 20 );
-function cst_add_estadisticas_menu() {
+add_action( 'admin_menu', 'convoca_shifts_add_estadisticas_menu', 20 );
+function convoca_shifts_add_estadisticas_menu() {
 	add_submenu_page(
 		'edit.php?post_type=centro_turno',
 		__( 'Estadísticas Voluntariado', 'convoca-shifts' ),
 		__( 'Estadísticas', 'convoca-shifts' ),
-		'cst_view_stats',
-		'cst_estadisticas',
-		'cst_estadisticas_page'
+		'convoca_shifts_view_stats',
+		'convoca_shifts_estadisticas',
+		'convoca_shifts_estadisticas_page'
 	);
 }
 
-function cst_estadisticas_page() {
+function convoca_shifts_estadisticas_page() {
 	global $wpdb;
 
 	// Diagnostic: Check if table exists.
-	$table_log    = $wpdb->prefix . 'cst_activity_log';
+	$table_log    = $wpdb->prefix . 'convoca_shifts_activity_log';
 	$table_exists = $wpdb->get_var( "SHOW TABLES LIKE '$table_log'" );
 
-	if ( isset( $_GET['cst_fix_logs'] ) ) {
-		cst_create_log_table();
+	if ( isset( $_GET['convoca_shifts_fix_logs'] ) ) {
+		convoca_shifts_create_log_table();
 		echo '<div class="updated"><p>' . __( 'Intento de creación de tabla realizado.', 'convoca-shifts' ) . '</p></div>';
 	}
 
 	if ( ! $table_exists ) {
-		echo '<div class="error"><p>' . sprintf( __( 'La tabla de logs (%s) no existe. El registro de actividad no funcionará.', 'convoca-shifts' ), $table_log ) . ' <a href="' . admin_url( 'edit.php?post_type=centro_turno&page=cst_estadisticas&cst_fix_logs=1' ) . '" class="convoca-btn convoca-btn-outline">' . __( 'Intentar crear ahora', 'convoca-shifts' ) . '</a></p></div>';
+		echo '<div class="error"><p>' . sprintf( __( 'La tabla de logs (%s) no existe. El registro de actividad no funcionará.', 'convoca-shifts' ), $table_log ) . ' <a href="' . admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_estadisticas&convoca_shifts_fix_logs=1' ) . '" class="convoca-btn convoca-btn-outline">' . __( 'Intentar crear ahora', 'convoca-shifts' ) . '</a></p></div>';
 	}
 
 	// Get all users who have the volunteer role or have done turns.
@@ -50,8 +50,8 @@ function cst_estadisticas_page() {
 		
 		<div style="margin-bottom: 20px;">
 			<form method="post" action="">
-				<?php wp_nonce_field( 'cst_exportar_stats_action' ); ?>
-				<input type="hidden" name="cst_action" value="exportar_stats_csv">
+				<?php wp_nonce_field( 'convoca_shifts_exportar_stats_action' ); ?>
+				<input type="hidden" name="convoca_shifts_action" value="exportar_stats_csv">
 				<button type="submit" class="convoca-btn convoca-btn-outline"><?php _e( '📥 Exportar Estadísticas a CSV', 'convoca-shifts' ); ?></button>
 			</form>
 		</div>
@@ -79,7 +79,7 @@ function cst_estadisticas_page() {
 							continue;
 						}
 
-						$stats = cst_get_voluntario_stats( $user_id );
+						$stats = convoca_shifts_get_voluntario_stats( $user_id );
 						?>
 						<tr>
 							<td><strong><?php echo esc_html( $user->display_name ); ?></strong></td>
@@ -99,7 +99,7 @@ function cst_estadisticas_page() {
 
 		<h2 style="margin-top: 40px;"><?php _e( 'Registro de Actividad Reciente', 'convoca-shifts' ); ?></h2>
 		<?php
-		$table_log = $wpdb->prefix . 'cst_activity_log';
+		$table_log = $wpdb->prefix . 'convoca_shifts_activity_log';
 
 		// Paginación para logs.
 		$per_page     = 50;
@@ -187,7 +187,7 @@ function cst_estadisticas_page() {
 /**
  * Preload stats for all volunteers in one query to avoid N+1.
  */
-function cst_preload_voluntario_stats(): array {
+function convoca_shifts_preload_voluntario_stats(): array {
 	global $wpdb;
 	$stats = array();
 
@@ -256,10 +256,10 @@ function cst_preload_voluntario_stats(): array {
 /**
  * Get volunteer stats for a single user (uses preloaded cache if available).
  */
-function cst_get_voluntario_stats( $user_id ) {
+function convoca_shifts_get_voluntario_stats( $user_id ) {
 	static $preloaded = null;
 	if ( $preloaded === null ) {
-		$preloaded = cst_preload_voluntario_stats();
+		$preloaded = convoca_shifts_preload_voluntario_stats();
 	}
 	return $preloaded[ $user_id ] ?? array(
 		'total_turnos' => 0,
@@ -270,7 +270,7 @@ function cst_get_voluntario_stats( $user_id ) {
 	);
 }
 
-function cst_get_action_label( $action ) {
+function convoca_shifts_get_action_label( $action ) {
 	$labels = array(
 		'turno_creado'        => __( 'Creado', 'convoca-shifts' ),
 		'turno_cubierto'      => __( 'Cubierto', 'convoca-shifts' ),
@@ -286,10 +286,10 @@ function cst_get_action_label( $action ) {
 }
 
 // --- Handler for Statistics CSV Export ---.
-add_action( 'admin_init', 'cst_exportar_stats_csv_handler' );
-function cst_exportar_stats_csv_handler() {
-	if ( isset( $_POST['cst_action'] ) && $_POST['cst_action'] === 'exportar_stats_csv' && check_admin_referer( 'cst_exportar_stats_action' ) ) {
-		if ( ! current_user_can( 'cst_view_stats' ) ) {
+add_action( 'admin_init', 'convoca_shifts_exportar_stats_csv_handler' );
+function convoca_shifts_exportar_stats_csv_handler() {
+	if ( isset( $_POST['convoca_shifts_action'] ) && $_POST['convoca_shifts_action'] === 'exportar_stats_csv' && check_admin_referer( 'convoca_shifts_exportar_stats_action' ) ) {
+		if ( ! current_user_can( 'convoca_shifts_view_stats' ) ) {
 			return;
 		}
 
@@ -327,7 +327,7 @@ function cst_exportar_stats_csv_handler() {
 				continue;
 			}
 
-			$stats = cst_get_voluntario_stats( $user_id );
+			$stats = convoca_shifts_get_voluntario_stats( $user_id );
 
 			$row = array(
 				$user->display_name,

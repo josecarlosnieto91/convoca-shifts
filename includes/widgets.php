@@ -12,21 +12,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Register all widgets for Centro Social Turnos
  */
-function cst_register_widgets() {
-	register_widget( 'CST_Calendario_Widget' );
-	register_widget( 'CST_Boton_Apuntarse_Widget' );
-	register_widget( 'CST_Resumen_Turnos_Widget' );
-	register_widget( 'CST_Proximos_Turnos_Widget' );
+function convoca_shifts_register_widgets() {
+	register_widget( 'Convoca_Shifts_Calendario_Widget' );
+	register_widget( 'Convoca_Shifts_Boton_Apuntarse_Widget' );
+	register_widget( 'Convoca_Shifts_Resumen_Turnos_Widget' );
+	register_widget( 'Convoca_Shifts_Proximos_Turnos_Widget' );
 }
-add_action( 'widgets_init', 'cst_register_widgets' );
+add_action( 'widgets_init', 'convoca_shifts_register_widgets' );
 
 /**
  * Widget: Calendario Centro
  */
-class CST_Calendario_Widget extends WP_Widget {
+class Convoca_Shifts_Calendario_Widget extends WP_Widget {
 	public function __construct() {
 		parent::__construct(
-			'cst_calendario_widget',
+			'convoca_shifts_calendario_widget',
 			__( 'CST: Calendario', 'convoca-shifts' ),
 			array( 'description' => __( 'Muestra el calendario de turnos.', 'convoca-shifts' ) )
 		);
@@ -61,10 +61,10 @@ class CST_Calendario_Widget extends WP_Widget {
 /**
  * Widget: Botón Apuntarse
  */
-class CST_Boton_Apuntarse_Widget extends WP_Widget {
+class Convoca_Shifts_Boton_Apuntarse_Widget extends WP_Widget {
 	public function __construct() {
 		parent::__construct(
-			'cst_boton_apuntarse_widget',
+			'convoca_shifts_boton_apuntarse_widget',
 			__( 'CST: Botón Apuntarse', 'convoca-shifts' ),
 			array( 'description' => __( 'Botón rápido para apuntarse al siguiente turno libre.', 'convoca-shifts' ) )
 		);
@@ -99,10 +99,10 @@ class CST_Boton_Apuntarse_Widget extends WP_Widget {
 /**
  * Widget: Resumen Turnos
  */
-class CST_Resumen_Turnos_Widget extends WP_Widget {
+class Convoca_Shifts_Resumen_Turnos_Widget extends WP_Widget {
 	public function __construct() {
 		parent::__construct(
-			'cst_resumen_turnos_widget',
+			'convoca_shifts_resumen_turnos_widget',
 			__( 'CST: Resumen Semanal', 'convoca-shifts' ),
 			array( 'description' => __( 'Muestra un resumen de los turnos de la semana.', 'convoca-shifts' ) )
 		);
@@ -137,10 +137,10 @@ class CST_Resumen_Turnos_Widget extends WP_Widget {
 /**
  * Widget: Próximos Turnos
  */
-class CST_Proximos_Turnos_Widget extends WP_Widget {
+class Convoca_Shifts_Proximos_Turnos_Widget extends WP_Widget {
 	public function __construct() {
 		parent::__construct(
-			'cst_proximos_turnos_widget',
+			'convoca_shifts_proximos_turnos_widget',
 			__( 'CST: Próximos Turnos', 'convoca-shifts' ),
 			array( 'description' => __( 'Muestra una lista de los próximos turnos.', 'convoca-shifts' ) )
 		);

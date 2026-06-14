@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class CST_Admin_Status {
+class Convoca_Shifts_Admin_Status {
 
 	const SEVERITY_OK      = 'ok';
 	const SEVERITY_WARNING = 'warning';
@@ -76,7 +76,7 @@ class CST_Admin_Status {
 	}
 
 	public static function check_cron(): array {
-		$hooks   = array( 'cst_hourly_event', 'cst_daily_event' );
+		$hooks   = array( 'convoca_shifts_hourly_event', 'convoca_shifts_daily_event' );
 		$missing = array();
 		foreach ( $hooks as $h ) {
 			$ts = wp_next_scheduled( $h );

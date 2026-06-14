@@ -27,7 +27,7 @@ class Admin_Turnos_List_Page {
 			null, // null = página oculta, sin entrada en el menú.
 			__( 'Turnos', 'convoca-shifts' ),
 			__( 'Turnos', 'convoca-shifts' ),
-			'cst_manage_turnos',
+			'convoca_shifts_manage_turnos',
 			'cst-turnos-list',
 			array( $this, 'render_page' )
 		);
@@ -68,7 +68,7 @@ class Admin_Turnos_List_Page {
 		?>
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php _e( 'Turnos', 'convoca-shifts' ); ?></h1>
-			<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=centro_turno&page=cst_turno_rapido' ) ); ?>" class="convoca-btn convoca-btn-primary" style="margin-left:10px;">
+			<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_turno_rapido' ) ); ?>" class="convoca-btn convoca-btn-primary" style="margin-left:10px;">
 				+ <?php _e( 'Añadir Turno Rápido', 'convoca-shifts' ); ?>
 			</a>
 			<hr class="wp-header-end">

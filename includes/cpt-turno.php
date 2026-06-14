@@ -14,8 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Centralized logic to sync shift Title and Status on every save.
  */
-add_action( 'save_post_centro_turno', 'cst_sync_turno_on_save', 20, 3 );
-function cst_sync_turno_on_save( $post_id, $post, $update ) {
+add_action( 'save_post_centro_turno', 'convoca_shifts_sync_turno_on_save', 20, 3 );
+function convoca_shifts_sync_turno_on_save( $post_id, $post, $update ) {
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 		return;
 	}
@@ -27,7 +27,7 @@ function cst_sync_turno_on_save( $post_id, $post, $update ) {
 	}
 
 	// Remove action to prevent infinite loop.
-	remove_action( 'save_post_centro_turno', 'cst_sync_turno_on_save', 20 );
+	remove_action( 'save_post_centro_turno', 'convoca_shifts_sync_turno_on_save', 20 );
 
 	try {
 		// 1. Identify the Responsible ID.
@@ -41,7 +41,7 @@ function cst_sync_turno_on_save( $post_id, $post, $update ) {
 			$new_title = '🔴 Centro Cerrado';
 		} elseif ( $estado === 'abierto_ocupado' ) {
 			$actividad_name = '';
-			$terms          = wp_get_post_terms( $post_id, 'cst_actividad' );
+			$terms          = wp_get_post_terms( $post_id, 'convoca_shifts_actividad' );
 			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 				$actividad_name = $terms[0]->name;
 			}
@@ -83,11 +83,11 @@ function cst_sync_turno_on_save( $post_id, $post, $update ) {
 		}
 	} finally {
 		// Re-add action regardless of errors.
-		add_action( 'save_post_centro_turno', 'cst_sync_turno_on_save', 20, 3 );
+		add_action( 'save_post_centro_turno', 'convoca_shifts_sync_turno_on_save', 20, 3 );
 	}
 }
 
-function cst_register_cpt_centro_turno() {
+function convoca_shifts_register_cpt_centro_turno() {
 	$labels = array(
 		'name'               => _x( 'Turnos', 'Post Type General Name', 'convoca-shifts' ),
 		'singular_name'      => _x( 'Turno', 'Post Type Singular Name', 'convoca-shifts' ),
@@ -132,7 +132,7 @@ function cst_register_cpt_centro_turno() {
 
 	// Register Taxonomies.
 	register_taxonomy(
-		'cst_actividad',
+		'convoca_shifts_actividad',
 		'centro_turno',
 		array(
 			'label'        => __( 'Actividades', 'convoca-shifts' ),
@@ -143,10 +143,10 @@ function cst_register_cpt_centro_turno() {
 	);
 
 	// Taxonomy Meta for Actividades.
-	add_action( 'cst_actividad_add_form_fields', 'cst_actividad_add_meta_fields', 10, 2 );
-	add_action( 'cst_actividad_edit_form_fields', 'cst_actividad_edit_meta_fields', 10, 2 );
-	add_action( 'created_cst_actividad', 'cst_save_actividad_meta', 10, 2 );
-	add_action( 'edited_cst_actividad', 'cst_save_actividad_meta', 10, 2 );
+	add_action( 'convoca_shifts_actividad_add_form_fields', 'convoca_shifts_actividad_add_meta_fields', 10, 2 );
+	add_action( 'convoca_shifts_actividad_edit_form_fields', 'convoca_shifts_actividad_edit_meta_fields', 10, 2 );
+	add_action( 'created_convoca_shifts_actividad', 'convoca_shifts_save_actividad_meta', 10, 2 );
+	add_action( 'edited_convoca_shifts_actividad', 'convoca_shifts_save_actividad_meta', 10, 2 );
 
 	// Monitor: Ahora se usa el rol monitor_actividad (WP user), no taxonomía.
 
@@ -228,28 +228,28 @@ function cst_register_cpt_centro_turno() {
 		)
 	);
 }
-add_action( 'init', 'cst_register_cpt_centro_turno' );
+add_action( 'init', 'convoca_shifts_register_cpt_centro_turno' );
 
 // Add metabox for UI configuration of Necesita Apoyo.
-add_action( 'add_meta_boxes', 'cst_add_turno_metaboxes' );
-function cst_add_turno_metaboxes() {
+add_action( 'add_meta_boxes', 'convoca_shifts_add_turno_metaboxes' );
+function convoca_shifts_add_turno_metaboxes() {
 	add_meta_box(
-		'cst_turno_opciones',
+		'convoca_shifts_turno_opciones',
 		__( 'Opciones de Turno', 'convoca-shifts' ),
-		'cst_turno_opciones_html',
+		'convoca_shifts_turno_opciones_html',
 		'centro_turno',
 		'side',
 		'default'
 	);
 }
 
-function cst_turno_opciones_html( $post ) {
+function convoca_shifts_turno_opciones_html( $post ) {
 	$apoyo       = get_post_meta( $post->ID, '_necesita_apoyo', true );
 	$estado_real = get_post_meta( $post->ID, '_estado_real', true );
 	$estado      = get_post_meta( $post->ID, '_estado', true );
 
 	// Get current taxonomy terms.
-	$term_actividad    = wp_get_post_terms( $post->ID, 'cst_actividad', array( 'fields' => 'ids' ) );
+	$term_actividad    = wp_get_post_terms( $post->ID, 'convoca_shifts_actividad', array( 'fields' => 'ids' ) );
 	$current_actividad = ! empty( $term_actividad ) ? $term_actividad[0] : 0;
 
 	$current_monitor = (int) get_post_meta( $post->ID, '_monitor', true );
@@ -267,11 +267,11 @@ function cst_turno_opciones_html( $post ) {
 		)
 	);
 
-	wp_nonce_field( 'cst_turno_meta_action', 'cst_turno_meta_nonce' );
+	wp_nonce_field( 'convoca_shifts_turno_meta_action', 'convoca_shifts_turno_meta_nonce' );
 	?>
 	<p>
-		<label for="cst_id_responsable"><strong><?php _e( '👤 Responsable Asignado:', 'convoca-shifts' ); ?></strong></label><br>
-		<select name="cst_id_responsable" id="cst_id_responsable" style="width:100%; margin-top:5px;">
+		<label for="convoca_shifts_id_responsable"><strong><?php _e( '👤 Responsable Asignado:', 'convoca-shifts' ); ?></strong></label><br>
+		<select name="convoca_shifts_id_responsable" id="convoca_shifts_id_responsable" style="width:100%; margin-top:5px;">
 			<option value="0"><?php _e( '— Sin asignar —', 'convoca-shifts' ); ?></option>
 			<?php
 			foreach ( $voluntarios as $v ) :
@@ -285,21 +285,21 @@ function cst_turno_opciones_html( $post ) {
 	</p>
 	<hr>
 	<p>
-		<label for="cst_estado"><strong><?php _e( 'Estado del Centro:', 'convoca-shifts' ); ?></strong></label><br>
-		<select name="cst_estado" id="cst_estado" style="width:100%; margin-top:5px;">
+		<label for="convoca_shifts_estado"><strong><?php _e( 'Estado del Centro:', 'convoca-shifts' ); ?></strong></label><br>
+		<select name="convoca_shifts_estado" id="convoca_shifts_estado" style="width:100%; margin-top:5px;">
 			<option value="abierto_disponible" <?php selected( $estado, 'abierto_disponible' ); ?>><?php _e( '🟡 Pendiente (Abierto)', 'convoca-shifts' ); ?></option>
 			<option value="abierto_ocupado" <?php selected( $estado, 'abierto_ocupado' ); ?>><?php _e( '🔵 Ocupado (Actividad)', 'convoca-shifts' ); ?></option>
 			<option value="cerrado" <?php selected( $estado, 'cerrado' ); ?>><?php _e( '🔴 Cerrado', 'convoca-shifts' ); ?></option>
 		</select>
 	</p>
-	<div id="cst_ocupado_fields" style="<?php echo ( $estado === 'abierto_ocupado' ) ? '' : 'display:none;'; ?> background:#f0f7ff; padding:10px; border-radius:4px; margin-top:5px;">
-		<label for="cst_actividad_term"><strong><?php _e( 'Actividad:', 'convoca-shifts' ); ?></strong></label>
+	<div id="convoca_shifts_ocupado_fields" style="<?php echo ( $estado === 'abierto_ocupado' ) ? '' : 'display:none;'; ?> background:#f0f7ff; padding:10px; border-radius:4px; margin-top:5px;">
+		<label for="convoca_shifts_actividad_term"><strong><?php _e( 'Actividad:', 'convoca-shifts' ); ?></strong></label>
 		<?php
 		wp_dropdown_categories(
 			array(
 				'show_option_none' => __( '— Seleccionar Actividad —', 'convoca-shifts' ),
-				'taxonomy'         => 'cst_actividad',
-				'name'             => 'cst_actividad_term',
+				'taxonomy'         => 'convoca_shifts_actividad',
+				'name'             => 'convoca_shifts_actividad_term',
 				'selected'         => $current_actividad,
 				'orderby'          => 'name',
 				'hierarchical'     => true,
@@ -310,8 +310,8 @@ function cst_turno_opciones_html( $post ) {
 		?>
 		<p class="description"><?php _e( 'Gestiona actividades desde el menú lateral.', 'convoca-shifts' ); ?></p>
 		
-		<label for="cst_monitor_select"><strong><?php _e( 'Monitor/a:', 'convoca-shifts' ); ?></strong></label>
-		<select id="cst_monitor_select" name="cst_monitor_user" style="width:100%;">
+		<label for="convoca_shifts_monitor_select"><strong><?php _e( 'Monitor/a:', 'convoca-shifts' ); ?></strong></label>
+		<select id="convoca_shifts_monitor_select" name="convoca_shifts_monitor_user" style="width:100%;">
 			<option value="0"><?php _e( '— Sin monitor —', 'convoca-shifts' ); ?></option>
 			<?php
 			$monitor_users = get_users(
@@ -333,9 +333,9 @@ function cst_turno_opciones_html( $post ) {
 	<?php
 }
 
-add_action( 'save_post_centro_turno', 'cst_save_turno_meta' );
-function cst_save_turno_meta( $post_id ) {
-	if ( ! isset( $_POST['cst_turno_meta_nonce'] ) || ! wp_verify_nonce( $_POST['cst_turno_meta_nonce'], 'cst_turno_meta_action' ) ) {
+add_action( 'save_post_centro_turno', 'convoca_shifts_save_turno_meta' );
+function convoca_shifts_save_turno_meta( $post_id ) {
+	if ( ! isset( $_POST['convoca_shifts_turno_meta_nonce'] ) || ! wp_verify_nonce( $_POST['convoca_shifts_turno_meta_nonce'], 'convoca_shifts_turno_meta_action' ) ) {
 		return;
 	}
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
@@ -345,29 +345,29 @@ function cst_save_turno_meta( $post_id ) {
 		return;
 	}
 
-	$apoyo = isset( $_POST['cst_necesita_apoyo'] ) ? 1 : 0;
+	$apoyo = isset( $_POST['convoca_shifts_necesita_apoyo'] ) ? 1 : 0;
 	update_post_meta( $post_id, '_necesita_apoyo', $apoyo );
 
-	if ( isset( $_POST['cst_estado_real'] ) ) {
-		update_post_meta( $post_id, '_estado_real', sanitize_text_field( $_POST['cst_estado_real'] ) );
+	if ( isset( $_POST['convoca_shifts_estado_real'] ) ) {
+		update_post_meta( $post_id, '_estado_real', sanitize_text_field( $_POST['convoca_shifts_estado_real'] ) );
 	}
 
-	if ( isset( $_POST['cst_estado'] ) ) {
-		update_post_meta( $post_id, '_estado', sanitize_text_field( $_POST['cst_estado'] ) );
+	if ( isset( $_POST['convoca_shifts_estado'] ) ) {
+		update_post_meta( $post_id, '_estado', sanitize_text_field( $_POST['convoca_shifts_estado'] ) );
 	}
 
-	if ( isset( $_POST['cst_actividad_term'] ) ) {
-		$term_id = (int) $_POST['cst_actividad_term'];
-		wp_set_post_terms( $post_id, $term_id > 0 ? array( $term_id ) : array(), 'cst_actividad' );
+	if ( isset( $_POST['convoca_shifts_actividad_term'] ) ) {
+		$term_id = (int) $_POST['convoca_shifts_actividad_term'];
+		wp_set_post_terms( $post_id, $term_id > 0 ? array( $term_id ) : array(), 'convoca_shifts_actividad' );
 	}
 
-	if ( isset( $_POST['cst_monitor_user'] ) ) {
-		$user_id = (int) $_POST['cst_monitor_user'];
+	if ( isset( $_POST['convoca_shifts_monitor_user'] ) ) {
+		$user_id = (int) $_POST['convoca_shifts_monitor_user'];
 		update_post_meta( $post_id, '_monitor', $user_id > 0 ? $user_id : '' );
 	}
 
-	if ( isset( $_POST['cst_id_responsable'] ) ) {
-		$new_id = (int) $_POST['cst_id_responsable'];
+	if ( isset( $_POST['convoca_shifts_id_responsable'] ) ) {
+		$new_id = (int) $_POST['convoca_shifts_id_responsable'];
 		$old_id = (int) get_post_meta( $post_id, '_id_responsable', true );
 
 		if ( $new_id !== $old_id ) {
@@ -381,9 +381,9 @@ function cst_save_turno_meta( $post_id ) {
 
 			update_post_meta( $post_id, '_estado_real', 'pendiente' );
 
-			if ( function_exists( 'cst_log_activity' ) ) {
+			if ( function_exists( 'convoca_shifts_log_activity' ) ) {
 				$action = ( $new_id > 0 ) ? 'turno_asignado' : 'turno_desasignado';
-				cst_log_activity( get_current_user_id(), $post_id, $action, array( 'voluntario_id' => $new_id ) );
+				convoca_shifts_log_activity( get_current_user_id(), $post_id, $action, array( 'voluntario_id' => $new_id ) );
 			}
 		}
 	}
@@ -391,8 +391,8 @@ function cst_save_turno_meta( $post_id ) {
 
 // --- Admin List Enhancements ---.
 
-add_filter( 'manage_centro_turno_posts_columns', 'cst_set_custom_edit_centro_turno_columns' );
-function cst_set_custom_edit_centro_turno_columns( $columns ) {
+add_filter( 'manage_centro_turno_posts_columns', 'convoca_shifts_set_custom_edit_centro_turno_columns' );
+function convoca_shifts_set_custom_edit_centro_turno_columns( $columns ) {
 	$new_columns = array();
 	foreach ( $columns as $key => $value ) {
 		if ( $key === 'date' ) {
@@ -404,8 +404,8 @@ function cst_set_custom_edit_centro_turno_columns( $columns ) {
 	return $new_columns;
 }
 
-add_action( 'manage_centro_turno_posts_custom_column', 'cst_custom_centro_turno_column', 10, 2 );
-function cst_custom_centro_turno_column( $column, $post_id ) {
+add_action( 'manage_centro_turno_posts_custom_column', 'convoca_shifts_custom_centro_turno_column', 10, 2 );
+function convoca_shifts_custom_centro_turno_column( $column, $post_id ) {
 	switch ( $column ) {
 		case 'responsable':
 			$id = get_post_meta( $post_id, '_id_responsable', true );
@@ -439,8 +439,8 @@ function cst_custom_centro_turno_column( $column, $post_id ) {
 
 			// Quick Actions only if someone is assigned.
 			if ( $id_responsable > 0 ) {
-				$base_url = admin_url( 'edit.php?post_type=centro_turno&cst_action=mark_attendance&post=' . $post_id );
-				$nonce    = wp_create_nonce( 'cst_attendance_' . $post_id );
+				$base_url = admin_url( 'edit.php?post_type=centro_turno&convoca_shifts_action=mark_attendance&post=' . $post_id );
+				$nonce    = wp_create_nonce( 'convoca_shifts_attendance_' . $post_id );
 
 				echo '<div class="cst-row-actions" style="font-size:11px; margin-top: 6px;">';
 				echo '<a href="' . esc_url(
@@ -467,27 +467,27 @@ function cst_custom_centro_turno_column( $column, $post_id ) {
 
 			// Hidden fields for Quick Edit.
 			echo '<div class="cst-quick-edit-data" style="display:none;">';
-			echo '<div class="cst_id_responsable">' . $id_responsable . '</div>';
-			echo '<div class="cst_estado_real">' . esc_attr( $estado ) . '</div>';
+			echo '<div class="convoca_shifts_id_responsable">' . $id_responsable . '</div>';
+			echo '<div class="convoca_shifts_estado_real">' . esc_attr( $estado ) . '</div>';
 			echo '</div>';
 			break;
 	}
 }
 
-add_action( 'admin_head', 'cst_admin_list_styles' );
-function cst_admin_list_styles() {
+add_action( 'admin_head', 'convoca_shifts_admin_list_styles' );
+function convoca_shifts_admin_list_styles() {
 	$screen = get_current_screen();
 	if ( $screen && $screen->id === 'edit-centro_turno' ) {
 		wp_enqueue_style( 'cst-estilo' );
 	}
 }
 
-add_action( 'admin_init', 'cst_handle_admin_attendance_action' );
-function cst_handle_admin_attendance_action() {
+add_action( 'admin_init', 'convoca_shifts_handle_admin_attendance_action' );
+function convoca_shifts_handle_admin_attendance_action() {
 	$get_data = wp_unslash( $_GET );
-	if ( isset( $get_data['cst_action'] ) && $get_data['cst_action'] === 'mark_attendance' && isset( $get_data['post'] ) ) {
+	if ( isset( $get_data['convoca_shifts_action'] ) && $get_data['convoca_shifts_action'] === 'mark_attendance' && isset( $get_data['post'] ) ) {
 		$post_id = intval( $get_data['post'] );
-		check_admin_referer( 'cst_attendance_' . $post_id );
+		check_admin_referer( 'convoca_shifts_attendance_' . $post_id );
 
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			wp_die( __( 'No tienes permisos para editar este turno.', 'convoca-shifts' ) );
@@ -520,20 +520,20 @@ function cst_handle_admin_attendance_action() {
 		}
 
 		// Log activity.
-		if ( function_exists( 'cst_log_activity' ) ) {
+		if ( function_exists( 'convoca_shifts_log_activity' ) ) {
 			$action = ( $status === 'realizado' ) ? 'asistencia_ok' : 'asistencia_no';
-			cst_log_activity( get_current_user_id(), $post_id, $action );
+			convoca_shifts_log_activity( get_current_user_id(), $post_id, $action );
 		}
 
-		wp_redirect( remove_query_arg( array( 'cst_action', 'status', 'post', '_wpnonce' ) ) );
+		wp_redirect( remove_query_arg( array( 'convoca_shifts_action', 'status', 'post', '_wpnonce' ) ) );
 		exit;
 	}
 }
 
 // --- Quick Edit Logic ---.
 
-add_action( 'quick_edit_custom_box', 'cst_display_quick_edit_turno', 10, 2 );
-function cst_display_quick_edit_turno( $column_name, $post_type ) {
+add_action( 'quick_edit_custom_box', 'convoca_shifts_display_quick_edit_turno', 10, 2 );
+function convoca_shifts_display_quick_edit_turno( $column_name, $post_type ) {
 	if ( $post_type !== 'centro_turno' || $column_name !== 'responsable' ) {
 		return;
 	}
@@ -550,7 +550,7 @@ function cst_display_quick_edit_turno( $column_name, $post_type ) {
 		<div class="inline-edit-col">
 		<label>
 			<span class="title"><?php _e( 'Responsable', 'convoca-shifts' ); ?></span>
-			<select name="cst_id_responsable" class="cst-quick-responsable">
+			<select name="convoca_shifts_id_responsable" class="cst-quick-responsable">
 				<option value="0"><?php _e( '— Sin asignar —', 'convoca-shifts' ); ?></option>
 				<?php
 				foreach ( $voluntarios as $v ) :
@@ -562,7 +562,7 @@ function cst_display_quick_edit_turno( $column_name, $post_type ) {
 		</label>
 		<label>
 			<span class="title"><?php _e( 'Asistencia', 'convoca-shifts' ); ?></span>
-			<select name="cst_estado_real" class="cst-quick-asistencia">
+			<select name="convoca_shifts_estado_real" class="cst-quick-asistencia">
 				<option value="pendiente"><?php _e( '⏳ Pendiente', 'convoca-shifts' ); ?></option>
 				<option value="realizado"><?php _e( '✅ Realizado', 'convoca-shifts' ); ?></option>
 				<option value="no_asistio"><?php _e( '❌ No asistió', 'convoca-shifts' ); ?></option>
@@ -573,8 +573,8 @@ function cst_display_quick_edit_turno( $column_name, $post_type ) {
 	<?php
 }
 
-add_action( 'admin_footer', 'cst_quick_edit_javascript' );
-function cst_quick_edit_javascript() {
+add_action( 'admin_footer', 'convoca_shifts_quick_edit_javascript' );
+function convoca_shifts_quick_edit_javascript() {
 	$current_screen = get_current_screen();
 	if ( ! $current_screen || $current_screen->id != 'edit-centro_turno' ) {
 		return;
@@ -591,12 +591,12 @@ function cst_quick_edit_javascript() {
 			const $edit_row = $( '#edit-' + post_id );
 			
 			if ( post_id > 0 ) {
-				const responsable = $row.find('.cst_id_responsable').text();
-				const asistencia = $row.find('.cst_estado_real').text();
+				const responsable = $row.find('.convoca_shifts_id_responsable').text();
+				const asistencia = $row.find('.convoca_shifts_estado_real').text();
 				
 				// Fill our custom selects.
-				$edit_row.find( 'select[name="cst_id_responsable"]' ).val( responsable );
-				$edit_row.find( 'select[name="cst_estado_real"]' ).val( asistencia );
+				$edit_row.find( 'select[name="convoca_shifts_id_responsable"]' ).val( responsable );
+				$edit_row.find( 'select[name="convoca_shifts_estado_real"]' ).val( asistencia );
 
 				// FIX STATUS SELECT: Ensure 'Published' is visible and selected.
 				const $statusSelect = $edit_row.find( 'select[name="_status"]' );
@@ -614,10 +614,10 @@ function cst_quick_edit_javascript() {
 	<?php
 }
 
-// Reuse the existing cst_save_turno_meta logic but ensure it works with Quick Edit.
+// Reuse the existing convoca_shifts_save_turno_meta logic but ensure it works with Quick Edit.
 // Quick edit doesn't send the same nonce as the full editor, so we need to check for Quick Edit action.
-add_action( 'save_post_centro_turno', 'cst_save_turno_quick_edit', 10, 2 );
-function cst_save_turno_quick_edit( $post_id, $post ) {
+add_action( 'save_post_centro_turno', 'convoca_shifts_save_turno_quick_edit', 10, 2 );
+function convoca_shifts_save_turno_quick_edit( $post_id, $post ) {
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 		return;
 	}
@@ -630,8 +630,8 @@ function cst_save_turno_quick_edit( $post_id, $post ) {
 		return;
 	}
 
-	if ( isset( $_POST['cst_id_responsable'] ) ) {
-		$new_id = (int) $_POST['cst_id_responsable'];
+	if ( isset( $_POST['convoca_shifts_id_responsable'] ) ) {
+		$new_id = (int) $_POST['convoca_shifts_id_responsable'];
 		$old_id = (int) get_post_meta( $post_id, '_id_responsable', true );
 
 		if ( $new_id !== $old_id ) {
@@ -646,15 +646,15 @@ function cst_save_turno_quick_edit( $post_id, $post ) {
 			update_post_meta( $post_id, '_estado_real', 'pendiente' );
 
 			// Log activity.
-			if ( function_exists( 'cst_log_activity' ) ) {
+			if ( function_exists( 'convoca_shifts_log_activity' ) ) {
 				$action = ( $new_id > 0 ) ? 'turno_asignado' : 'turno_desasignado';
-				cst_log_activity( get_current_user_id(), $post_id, $action, array( 'voluntario_id' => $new_id ) );
+				convoca_shifts_log_activity( get_current_user_id(), $post_id, $action, array( 'voluntario_id' => $new_id ) );
 			}
 		}
 	}
 
-	if ( isset( $_POST['cst_estado_real'] ) ) {
-		$new_status = sanitize_text_field( $_POST['cst_estado_real'] );
+	if ( isset( $_POST['convoca_shifts_estado_real'] ) ) {
+		$new_status = sanitize_text_field( $_POST['convoca_shifts_estado_real'] );
 		$old_status = get_post_meta( $post_id, '_estado_real', true );
 		if ( $new_status !== $old_status ) {
 			update_post_meta( $post_id, '_estado_real', $new_status );
@@ -666,19 +666,19 @@ function cst_save_turno_quick_edit( $post_id, $post ) {
 			}
 
 			// Log activity.
-			if ( function_exists( 'cst_log_activity' ) ) {
+			if ( function_exists( 'convoca_shifts_log_activity' ) ) {
 				$action = ( $new_status === 'realizado' ) ? 'asistencia_ok' : 'asistencia_no';
-				cst_log_activity( get_current_user_id(), $post_id, $action );
+				convoca_shifts_log_activity( get_current_user_id(), $post_id, $action );
 			}
 		}
 	}
 }
 
 // --- Exportador CSV ---.
-add_action( 'admin_init', 'cst_exportar_csv_turnos' );
-function cst_exportar_csv_turnos() {
-	if ( isset( $_POST['cst_action'] ) && $_POST['cst_action'] === 'exportar_csv' && check_admin_referer( 'cst_exportar_csv_action' ) ) {
-		if ( ! current_user_can( 'cst_manage_turnos' ) ) {
+add_action( 'admin_init', 'convoca_shifts_exportar_csv_turnos' );
+function convoca_shifts_exportar_csv_turnos() {
+	if ( isset( $_POST['convoca_shifts_action'] ) && $_POST['convoca_shifts_action'] === 'exportar_csv' && check_admin_referer( 'convoca_shifts_exportar_csv_action' ) ) {
+		if ( ! current_user_can( 'convoca_shifts_manage_turnos' ) ) {
 			return;
 		}
 
@@ -747,29 +747,29 @@ function cst_exportar_csv_turnos() {
 
 // --- Generador de turnos ---.
 
-add_action( 'admin_menu', 'cst_add_generar_turnos_menu', 2 );
-function cst_add_generar_turnos_menu() {
+add_action( 'admin_menu', 'convoca_shifts_add_generar_turnos_menu', 2 );
+function convoca_shifts_add_generar_turnos_menu() {
 	add_submenu_page(
 		'edit.php?post_type=centro_turno',
 		__( 'Generar Turnos', 'convoca-shifts' ),
 		__( 'Generar Turnos', 'convoca-shifts' ),
-		'cst_manage_turnos',
-		'cst_generar_turnos',
-		'cst_generar_turnos_page'
+		'convoca_shifts_manage_turnos',
+		'convoca_shifts_generar_turnos',
+		'convoca_shifts_generar_turnos_page'
 	);
 }
 
-function cst_generar_turnos_page() {
-	if ( isset( $_POST['cst_action'] ) && check_admin_referer( 'cst_generar_turnos_action' ) ) {
-		if ( $_POST['cst_action'] === 'duplicar_semana' ) {
-			$result = cst_duplicar_semana();
+function convoca_shifts_generar_turnos_page() {
+	if ( isset( $_POST['convoca_shifts_action'] ) && check_admin_referer( 'convoca_shifts_generar_turnos_action' ) ) {
+		if ( $_POST['convoca_shifts_action'] === 'duplicar_semana' ) {
+			$result = convoca_shifts_duplicar_semana();
 			if ( is_wp_error( $result ) ) {
 				echo '<div class="convoca-alert convoca-alert--danger" style="display:block;margin-bottom:20px;"><p>' . esc_html( $result->get_error_message() ) . '</p></div>';
 			} else {
 				echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( __( 'Se han duplicado %d turnos.', 'convoca-shifts' ), $result ) . '</p></div>';
 			}
-		} elseif ( $_POST['cst_action'] === 'generar_semana' ) {
-			$result = cst_crear_semana_tipo();
+		} elseif ( $_POST['convoca_shifts_action'] === 'generar_semana' ) {
+			$result = convoca_shifts_crear_semana_tipo();
 			if ( is_wp_error( $result ) ) {
 				echo '<div class="convoca-alert convoca-alert--danger" style="display:block;margin-bottom:20px;"><p>' . esc_html( $result->get_error_message() ) . '</p></div>';
 			} else {
@@ -786,8 +786,8 @@ function cst_generar_turnos_page() {
 			<h2><?php _e( 'Duplicar semana anterior', 'convoca-shifts' ); ?></h2>
 			<p><?php _e( 'Copia todos los turnos de los últimos 7 días y los reprograma exactamente una semana después, dejándolos pendientes.', 'convoca-shifts' ); ?></p>
 			<form method="post" action="">
-				<?php wp_nonce_field( 'cst_generar_turnos_action' ); ?>
-				<input type="hidden" name="cst_action" value="duplicar_semana">
+				<?php wp_nonce_field( 'convoca_shifts_generar_turnos_action' ); ?>
+				<input type="hidden" name="convoca_shifts_action" value="duplicar_semana">
 				<button type="submit" class="convoca-btn convoca-btn-primary"><?php _e( 'Duplicar Semana Anterior', 'convoca-shifts' ); ?></button>
 			</form>
 		</div>
@@ -795,8 +795,8 @@ function cst_generar_turnos_page() {
 		<div class="card" style="max-width: 800px; margin-top: 20px;">
 			<h2><?php _e( 'Crear semana tipo', 'convoca-shifts' ); ?></h2>
 			<form method="post" action="">
-				<?php wp_nonce_field( 'cst_generar_turnos_action' ); ?>
-				<input type="hidden" name="cst_action" value="generar_semana">
+				<?php wp_nonce_field( 'convoca_shifts_generar_turnos_action' ); ?>
+				<input type="hidden" name="convoca_shifts_action" value="generar_semana">
 				
 				<table class="form-table">
 					<tr>
@@ -832,7 +832,7 @@ function cst_generar_turnos_page() {
 								wp_dropdown_categories(
 									array(
 										'show_option_none' => __( '— Actividad —', 'convoca-shifts' ),
-										'taxonomy'         => 'cst_actividad',
+										'taxonomy'         => 'convoca_shifts_actividad',
 										'name'             => 'dias[' . $index . '][actividad_id]',
 										'orderby'          => 'name',
 										'hierarchical'     => true,
@@ -842,7 +842,7 @@ function cst_generar_turnos_page() {
 								wp_dropdown_categories(
 									array(
 										'show_option_none' => __( '— Monitor/a —', 'convoca-shifts' ),
-										'id'               => 'cst_monitor_select',
+										'id'               => 'convoca_shifts_monitor_select',
 										'name'             => 'dias[' . $index . '][monitor_id]',
 										'orderby'          => 'name',
 										'hierarchical'     => true,
@@ -879,8 +879,8 @@ function cst_generar_turnos_page() {
 			<h2><?php _e( 'Exportar datos (Copias de Seguridad / Estadísticas)', 'convoca-shifts' ); ?></h2>
 			<p><?php _e( 'Descarga un archivo CSV con el historial completo de turnos, estados y voluntarios asignados. Ideal para guardar estadísticas antes de desinstalar el plugin o limpiar el calendario.', 'convoca-shifts' ); ?></p>
 			<form method="post" action="">
-				<?php wp_nonce_field( 'cst_exportar_csv_action' ); ?>
-				<input type="hidden" name="cst_action" value="exportar_csv">
+				<?php wp_nonce_field( 'convoca_shifts_exportar_csv_action' ); ?>
+				<input type="hidden" name="convoca_shifts_action" value="exportar_csv">
 				<button type="submit" class="convoca-btn convoca-btn-outline"><?php _e( 'Exportar historial a CSV', 'convoca-shifts' ); ?></button>
 			</form>
 		</div>
@@ -888,9 +888,9 @@ function cst_generar_turnos_page() {
 	<?php
 }
 
-function cst_duplicar_semana() {
+function convoca_shifts_duplicar_semana() {
 	// Lock to prevent concurrent executions.
-	if ( ! \Convoca\Core\Utils::acquire_lock( 'cst_duplicating_week', 60 ) ) {
+	if ( ! \Convoca\Core\Utils::acquire_lock( 'convoca_shifts_duplicating_week', 60 ) ) {
 		return 0;
 	}
 
@@ -927,8 +927,8 @@ function cst_duplicar_semana() {
 			$h_end   = wp_date( 'H:i', strtotime( $old_hora_fin_val ) );
 
 			// Business hours enforcement.
-			$limit_open  = get_option( 'cst_hora_apertura', '09:00' );
-			$limit_close = get_option( 'cst_hora_cierre', '22:00' );
+			$limit_open  = get_option( 'convoca_shifts_hora_apertura', '09:00' );
+			$limit_close = get_option( 'convoca_shifts_hora_cierre', '22:00' );
 
 			if ( $h_start < $limit_open ) {
 				$h_start = $limit_open;
@@ -942,7 +942,7 @@ function cst_duplicar_semana() {
 			}
 
 			$original_estado = get_post_meta( $turno->ID, '_estado', true );
-			$actividad_ids   = wp_get_post_terms( $turno->ID, 'cst_actividad', array( 'fields' => 'ids' ) );
+			$actividad_ids   = wp_get_post_terms( $turno->ID, 'convoca_shifts_actividad', array( 'fields' => 'ids' ) );
 			$monitor_ids     = (int) get_post_meta( $turno->ID, '_monitor', true ) ? array( (int) get_post_meta( $turno->ID, '_monitor', true ) ) : array();
 			$apoyo           = get_post_meta( $turno->ID, '_necesita_apoyo', true );
 
@@ -974,7 +974,7 @@ function cst_duplicar_semana() {
 				continue;
 			}
 
-			$new_post_id = cst_insert_turno(
+			$new_post_id = convoca_shifts_insert_turno(
 				array(
 					'date'           => wp_date( 'Y-m-d', $new_date_ts ),
 					'h_start'        => $h_start,
@@ -991,31 +991,31 @@ function cst_duplicar_semana() {
 				update_post_meta( $new_post_id, '_notas', get_post_meta( $turno->ID, '_notas', true ) );
 
 				// Log activity.
-				if ( function_exists( 'cst_log_activity' ) ) {
-					cst_log_activity( get_current_user_id(), $new_post_id, 'turno_creado', array( 'origen' => 'duplicar_semana' ) );
+				if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+					convoca_shifts_log_activity( get_current_user_id(), $new_post_id, 'turno_creado', array( 'origen' => 'duplicar_semana' ) );
 				}
 				++$count;
 			}
 		}
 
 		$wpdb->query( 'COMMIT' );
-		delete_transient( 'cst_resumen_turnos_semana' );
+		delete_transient( 'convoca_shifts_resumen_turnos_semana' );
 		return $count;
 	} catch ( \Throwable $e ) {
 		$wpdb->query( 'ROLLBACK' );
 		throw $e;
 	} finally {
-		\Convoca\Core\Utils::release_lock( 'cst_duplicating_week' );
+		\Convoca\Core\Utils::release_lock( 'convoca_shifts_duplicating_week' );
 	}
 }
 
-function cst_crear_semana_tipo( $fecha_inicio, $dias ) {
+function convoca_shifts_crear_semana_tipo( $fecha_inicio, $dias ) {
 	if ( empty( $fecha_inicio ) ) {
 		return new WP_Error( 'no_date', 'Fecha de inicio requerida.' );
 	}
 
 	// Lock to prevent concurrent week generation.
-	if ( ! \Convoca\Core\Utils::acquire_lock( 'cst_creating_week', 120 ) ) {
+	if ( ! \Convoca\Core\Utils::acquire_lock( 'convoca_shifts_creating_week', 120 ) ) {
 		return 0;
 	}
 
@@ -1053,8 +1053,8 @@ function cst_crear_semana_tipo( $fecha_inicio, $dias ) {
 			$meta_hora_fin = $date_day . ' ' . $hora_fin . ':00';
 
 			// Business hours enforcement.
-			$limit_open  = get_option( 'cst_hora_apertura', '09:00' );
-			$limit_close = get_option( 'cst_hora_cierre', '22:00' );
+			$limit_open  = get_option( 'convoca_shifts_hora_apertura', '09:00' );
+			$limit_close = get_option( 'convoca_shifts_hora_cierre', '22:00' );
 
 			if ( $hora_inicio < $limit_open ) {
 				$hora_inicio = $limit_open;
@@ -1097,7 +1097,7 @@ function cst_crear_semana_tipo( $fecha_inicio, $dias ) {
 				continue;
 			}
 
-			$new_post_id = cst_insert_turno(
+			$new_post_id = convoca_shifts_insert_turno(
 				array(
 					'date'           => $date_day,
 					'h_start'        => $hora_inicio,
@@ -1111,67 +1111,67 @@ function cst_crear_semana_tipo( $fecha_inicio, $dias ) {
 
 			if ( ! is_wp_error( $new_post_id ) ) {
 				// Log activity.
-				if ( function_exists( 'cst_log_activity' ) ) {
-					cst_log_activity( get_current_user_id(), $new_post_id, 'turno_creado', array( 'origen' => 'generador_semana' ) );
+				if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+					convoca_shifts_log_activity( get_current_user_id(), $new_post_id, 'turno_creado', array( 'origen' => 'generador_semana' ) );
 				}
 				++$count;
 			}
 		}
 		$wpdb->query( 'COMMIT' );
-		delete_transient( 'cst_resumen_turnos_semana' );
+		delete_transient( 'convoca_shifts_resumen_turnos_semana' );
 		return $count;
 	} catch ( \Throwable $e ) {
 		$wpdb->query( 'ROLLBACK' );
 		throw $e;
 	} finally {
-		\Convoca\Core\Utils::release_lock( 'cst_creating_week' );
+		\Convoca\Core\Utils::release_lock( 'convoca_shifts_creating_week' );
 	}
 }
 
 /**
  * Actividad Taxonomy Meta Fields
  */
-function cst_actividad_add_meta_fields() {
-	wp_nonce_field( 'cst_actividad_meta_nonce', 'cst_actividad_meta_nonce_field' );
+function convoca_shifts_actividad_add_meta_fields() {
+	wp_nonce_field( 'convoca_shifts_actividad_meta_nonce', 'convoca_shifts_actividad_meta_nonce_field' );
 	?>
 	<div class="form-field">
-		<label for="cst_url_info"><?php _e( 'URL de Información', 'convoca-shifts' ); ?></label>
-		<input type="url" name="cst_url_info" id="cst_url_info" value="">
+		<label for="convoca_shifts_url_info"><?php _e( 'URL de Información', 'convoca-shifts' ); ?></label>
+		<input type="url" name="convoca_shifts_url_info" id="convoca_shifts_url_info" value="">
 		<p><?php _e( 'Enlace a la entrada del blog o página con más información e inscripciones.', 'convoca-shifts' ); ?></p>
 	</div>
 	<?php
 }
 
-function cst_actividad_edit_meta_fields( $term ) {
-	wp_nonce_field( 'cst_actividad_meta_nonce', 'cst_actividad_meta_nonce_field' );
-	$url = get_term_meta( $term->term_id, 'cst_url_info', true );
+function convoca_shifts_actividad_edit_meta_fields( $term ) {
+	wp_nonce_field( 'convoca_shifts_actividad_meta_nonce', 'convoca_shifts_actividad_meta_nonce_field' );
+	$url = get_term_meta( $term->term_id, 'convoca_shifts_url_info', true );
 	?>
 	<tr class="form-field">
-		<th scope="row" valign="top"><label for="cst_url_info"><?php _e( 'URL de Información', 'convoca-shifts' ); ?></label></th>
+		<th scope="row" valign="top"><label for="convoca_shifts_url_info"><?php _e( 'URL de Información', 'convoca-shifts' ); ?></label></th>
 		<td>
-			<input type="url" name="cst_url_info" id="cst_url_info" value="<?php echo esc_url( $url ); ?>">
+			<input type="url" name="convoca_shifts_url_info" id="convoca_shifts_url_info" value="<?php echo esc_url( $url ); ?>">
 			<p class="description"><?php _e( 'Enlace a la entrada del blog o página con más información e inscripciones.', 'convoca-shifts' ); ?></p>
 		</td>
 	</tr>
 	<?php
 }
 
-function cst_save_actividad_meta( $term_id ) {
-	if ( ! isset( $_POST['cst_actividad_meta_nonce_field'] ) || ! wp_verify_nonce( $_POST['cst_actividad_meta_nonce_field'], 'cst_actividad_meta_nonce' ) ) {
+function convoca_shifts_save_actividad_meta( $term_id ) {
+	if ( ! isset( $_POST['convoca_shifts_actividad_meta_nonce_field'] ) || ! wp_verify_nonce( $_POST['convoca_shifts_actividad_meta_nonce_field'], 'convoca_shifts_actividad_meta_nonce' ) ) {
 		return;
 	}
 	if ( ! current_user_can( 'manage_categories' ) ) {
 		return;
 	}
 
-	if ( isset( $_POST['cst_url_info'] ) ) {
-		update_term_meta( $term_id, 'cst_url_info', esc_url_raw( $_POST['cst_url_info'] ) );
+	if ( isset( $_POST['convoca_shifts_url_info'] ) ) {
+		update_term_meta( $term_id, 'convoca_shifts_url_info', esc_url_raw( $_POST['convoca_shifts_url_info'] ) );
 	}
 }
 /**
  * Helper to centralize turno creation logic.
  */
-function cst_insert_turno( $args ) {
+function convoca_shifts_insert_turno( $args ) {
 	$defaults = array(
 		'date'           => '',
 		'h_start'        => '09:00',
@@ -1185,8 +1185,8 @@ function cst_insert_turno( $args ) {
 	$a        = wp_parse_args( $args, $defaults );
 
 	// Enforce business hours.
-	$limit_open  = get_option( 'cst_hora_apertura', '09:00' );
-	$limit_close = get_option( 'cst_hora_cierre', '22:00' );
+	$limit_open  = get_option( 'convoca_shifts_hora_apertura', '09:00' );
+	$limit_close = get_option( 'convoca_shifts_hora_cierre', '22:00' );
 	if ( $a['h_start'] < $limit_open ) {
 		$a['h_start'] = $limit_open;
 	}
@@ -1207,7 +1207,7 @@ function cst_insert_turno( $args ) {
 	} elseif ( $a['estado'] === 'abierto_ocupado' ) {
 		$title = '🔵 Ocupado';
 		if ( $a['actividad_id'] ) {
-			$term = get_term( $a['actividad_id'], 'cst_actividad' );
+			$term = get_term( $a['actividad_id'], 'convoca_shifts_actividad' );
 			if ( $term && ! is_wp_error( $term ) ) {
 				$title = '🔵 ' . $term->name;
 			}
@@ -1237,7 +1237,7 @@ function cst_insert_turno( $args ) {
 		update_post_meta( $post_id, '_necesita_apoyo', $a['necesita_apoyo'] );
 
 		if ( $a['actividad_id'] ) {
-			wp_set_object_terms( $post_id, (int) $a['actividad_id'], 'cst_actividad' );
+			wp_set_object_terms( $post_id, (int) $a['actividad_id'], 'convoca_shifts_actividad' );
 		}
 		if ( $a['monitor_id'] ) {
 			update_post_meta( $post_id, '_monitor', (int) $a['monitor_id'] > 0 ? (int) $a['monitor_id'] : '' );
@@ -1257,7 +1257,7 @@ function cst_insert_turno( $args ) {
  * @param bool       $for_update Whether to lock rows with FOR UPDATE.
  * @return int|false Conflict post ID or false if no conflict.
  */
-function cst_check_user_overlap( $user_id, $start_time, $end_time, $exclude_post_id = 0, $for_update = false ) {
+function convoca_shifts_check_user_overlap( $user_id, $start_time, $end_time, $exclude_post_id = 0, $for_update = false ) {
 	global $wpdb;
 
 	// Normalize to Y-m-d H:i:s without shifting timezones.
@@ -1303,11 +1303,11 @@ function cst_check_user_overlap( $user_id, $start_time, $end_time, $exclude_post
 
 	$conflict_id = $wpdb->get_var( $sql );
 
-	if ( $conflict_id && function_exists( 'cst_log_activity' ) ) {
+	if ( $conflict_id && function_exists( 'convoca_shifts_log_activity' ) ) {
 		// Log the details of the conflict for debugging.
 		$existing_start = get_post_meta( $conflict_id, '_fecha_inicio', true ) ?: get_post( $conflict_id )->post_date;
 		$existing_end   = get_post_meta( $conflict_id, '_hora_fin', true );
-		cst_log_activity(
+		convoca_shifts_log_activity(
 			get_current_user_id(),
 			$conflict_id,
 			'log_debug_conflict',

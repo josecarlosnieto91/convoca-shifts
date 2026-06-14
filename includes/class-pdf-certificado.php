@@ -73,7 +73,7 @@ class PDF_Certificado {
 		$signature = new \Convoca\Core\CONV_Signature();
 
 		$nombre = $user->first_name ?: $user->display_name;
-		$dni    = get_user_meta( $user_id, '_cst_dni', true ) ?: ( get_user_meta( $user_id, '_conv_dni', true ) ?: 'N/A' );
+		$dni    = get_user_meta( $user_id, '_convoca_shifts_dni', true ) ?: ( get_user_meta( $user_id, '_conv_dni', true ) ?: 'N/A' );
 
 		$fecha_turno = wp_date( 'd/m/Y', get_post_timestamp( $turno ) );
 		$actividad   = 'Turno en Centro Social: ' . $turno->post_title;

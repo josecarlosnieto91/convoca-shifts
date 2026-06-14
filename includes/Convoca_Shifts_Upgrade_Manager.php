@@ -12,31 +12,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * CST_Upgrade_Manager
+ * Convoca_Shifts_Upgrade_Manager
  *
  * Extends the common Upgrade_Manager to handle CST-specific updates.
  */
-class CST_Upgrade_Manager extends \Convoca\Core\Upgrade_Manager {
+class Convoca_Shifts_Upgrade_Manager extends \Convoca\Core\Upgrade_Manager {
 
 	/**
 	 * Get the current database version constant for this plugin.
 	 */
 	protected function get_db_version(): string {
-		return defined( 'CST_PLUGIN_VERSION' ) ? CST_PLUGIN_VERSION : '0.0.0';
+		return defined( 'CONVOCA_SHIFTS_VERSION' ) ? CONVOCA_SHIFTS_VERSION : '0.0.0';
 	}
 
 	/**
 	 * Get the wp_options key where the DB version is stored.
 	 */
 	protected function get_option_name(): string {
-		return 'cst_plugin_version';
+		return 'convoca_shifts_version';
 	}
 
 	/**
 	 * Get the prefix for transients used by this plugin.
 	 */
 	protected function get_transient_prefix(): string {
-		return 'cst_upgrade';
+		return 'convoca_shifts_upgrade';
 	}
 
 	/**
@@ -53,8 +53,8 @@ class CST_Upgrade_Manager extends \Convoca\Core\Upgrade_Manager {
 	 * Upgrade to 1.6.3: Ensure log table exists.
 	 */
 	protected function upgrade_to_1_6_3(): void {
-		if ( function_exists( 'cst_create_log_table' ) ) {
-			cst_create_log_table();
+		if ( function_exists( 'convoca_shifts_create_log_table' ) ) {
+			convoca_shifts_create_log_table();
 		}
 	}
 

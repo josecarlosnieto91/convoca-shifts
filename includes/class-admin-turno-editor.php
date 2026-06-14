@@ -12,13 +12,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class CST_Admin_Turno_Editor {
+class Convoca_Shifts_Admin_Turno_Editor {
 
 	const SLUG = 'cst-editar-turno';
 
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'register_page' ) );
-		add_action( 'admin_post_cst_save_turno', array( $this, 'handle_save' ) );
+		add_action( 'admin_post_convoca_shifts_save_turno', array( $this, 'handle_save' ) );
 		add_action( 'load-post-new.php', array( $this, 'redirect_from_default' ) );
 		add_action( 'load-post.php', array( $this, 'redirect_from_default' ) );
 		add_action( 'add_meta_boxes', array( $this, 'remove_metabox' ), 20 );
@@ -29,7 +29,7 @@ class CST_Admin_Turno_Editor {
 			null, // Hidden from menu.
 			__( 'Editar Turno', 'convoca-shifts' ),
 			__( 'Editar Turno', 'convoca-shifts' ),
-			'cst_manage_turnos',
+			'convoca_shifts_manage_turnos',
 			self::SLUG,
 			array( $this, 'render' )
 		);
@@ -39,7 +39,7 @@ class CST_Admin_Turno_Editor {
 	 * Remove the default metabox from the classic editor.
 	 */
 	public function remove_metabox(): void {
-		remove_meta_box( 'cst_turno_opciones', 'centro_turno', 'normal' );
+		remove_meta_box( 'convoca_shifts_turno_opciones', 'centro_turno', 'normal' );
 	}
 
 	/**
@@ -54,7 +54,7 @@ class CST_Admin_Turno_Editor {
 		if ( $post_id > 0 ) {
 			wp_safe_redirect( admin_url( 'edit.php?post_type=centro_turno&page=' . self::SLUG . '&id=' . $post_id ) );
 		} else {
-			wp_safe_redirect( admin_url( 'edit.php?post_type=centro_turno&page=cst_turno_rapido' ) );
+			wp_safe_redirect( admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_turno_rapido' ) );
 		}
 		exit;
 	}
@@ -83,7 +83,7 @@ class CST_Admin_Turno_Editor {
 		$id_responsable = $is_edit ? (int) get_post_meta( $post_id, '_id_responsable', true ) : 0;
 
 		// Get current taxonomy terms.
-		$term_actividad    = $is_edit ? wp_get_post_terms( $post_id, 'cst_actividad', array( 'fields' => 'ids' ) ) : array();
+		$term_actividad    = $is_edit ? wp_get_post_terms( $post_id, 'convoca_shifts_actividad', array( 'fields' => 'ids' ) ) : array();
 		$current_actividad = ! empty( $term_actividad ) ? $term_actividad[0] : 0;
 		$current_monitor   = $is_edit ? (int) get_post_meta( $post_id, '_monitor', true ) : 0;
 
@@ -97,7 +97,7 @@ class CST_Admin_Turno_Editor {
 
 		$all_actividades = get_terms(
 			array(
-				'taxonomy'   => 'cst_actividad',
+				'taxonomy'   => 'convoca_shifts_actividad',
 				'hide_empty' => false,
 				'orderby'    => 'name',
 			)
@@ -110,13 +110,13 @@ class CST_Admin_Turno_Editor {
 			)
 		);
 
-		wp_nonce_field( 'cst_save_turno_' . $post_id, '_cst_nonce' );
+		wp_nonce_field( 'convoca_shifts_save_turno_' . $post_id, '_convoca_shifts_nonce' );
 		?>
 		<div class="wrap" style="max-width: 800px; margin: 20px auto;">
 			<h1><?php echo $is_edit ? esc_html__( 'Editar Turno', 'convoca-shifts' ) : esc_html__( 'Nuevo Turno', 'convoca-shifts' ); ?></h1>
 
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="convoca-box" style="background:#fff;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,0.05);padding:40px;margin-top:20px;">
-				<input type="hidden" name="action" value="cst_save_turno">
+				<input type="hidden" name="action" value="convoca_shifts_save_turno">
 				<input type="hidden" name="post_id" value="<?php echo $is_edit ? $post_id : 0; ?>">
 
 				<div class="convoca-grid-2">
@@ -126,23 +126,23 @@ class CST_Admin_Turno_Editor {
 					</h3>
 
 					<div class="convoca-field">
-						<label for="cst_fecha"><?php esc_html_e( 'Fecha', 'convoca-shifts' ); ?></label>
-						<input type="date" id="cst_fecha" name="cst_fecha" value="<?php echo esc_attr( $fecha ); ?>" required>
+						<label for="convoca_shifts_fecha"><?php esc_html_e( 'Fecha', 'convoca-shifts' ); ?></label>
+						<input type="date" id="convoca_shifts_fecha" name="convoca_shifts_fecha" value="<?php echo esc_attr( $fecha ); ?>" required>
 					</div>
 
 					<div class="convoca-field">
-						<label for="cst_hora_ini"><?php esc_html_e( 'Hora inicio', 'convoca-shifts' ); ?></label>
-						<input type="time" id="cst_hora_ini" name="cst_hora_ini" value="<?php echo esc_attr( $hora_ini ); ?>" required>
+						<label for="convoca_shifts_hora_ini"><?php esc_html_e( 'Hora inicio', 'convoca-shifts' ); ?></label>
+						<input type="time" id="convoca_shifts_hora_ini" name="convoca_shifts_hora_ini" value="<?php echo esc_attr( $hora_ini ); ?>" required>
 					</div>
 
 					<div class="convoca-field">
-						<label for="cst_hora_fin"><?php esc_html_e( 'Hora fin', 'convoca-shifts' ); ?></label>
-						<input type="time" id="cst_hora_fin" name="cst_hora_fin" value="<?php echo esc_attr( $hora_fin ); ?>">
+						<label for="convoca_shifts_hora_fin"><?php esc_html_e( 'Hora fin', 'convoca-shifts' ); ?></label>
+						<input type="time" id="convoca_shifts_hora_fin" name="convoca_shifts_hora_fin" value="<?php echo esc_attr( $hora_fin ); ?>">
 					</div>
 
 					<div class="convoca-field">
-						<label for="cst_id_responsable"><?php esc_html_e( 'Responsable', 'convoca-shifts' ); ?></label>
-						<select id="cst_id_responsable" name="cst_id_responsable">
+						<label for="convoca_shifts_id_responsable"><?php esc_html_e( 'Responsable', 'convoca-shifts' ); ?></label>
+						<select id="convoca_shifts_id_responsable" name="convoca_shifts_id_responsable">
 							<option value="0"><?php esc_html_e( '— Sin asignar —', 'convoca-shifts' ); ?></option>
 							<?php
 							foreach ( $voluntarios as $v ) :
@@ -160,8 +160,8 @@ class CST_Admin_Turno_Editor {
 					</h3>
 
 					<div class="convoca-field">
-						<label for="cst_estado"><?php esc_html_e( 'Estado del centro', 'convoca-shifts' ); ?></label>
-						<select id="cst_estado" name="cst_estado" onchange="document.getElementById('cst_ocupado_fields').style.display=this.value==='abierto_ocupado'?'':'none';">
+						<label for="convoca_shifts_estado"><?php esc_html_e( 'Estado del centro', 'convoca-shifts' ); ?></label>
+						<select id="convoca_shifts_estado" name="convoca_shifts_estado" onchange="document.getElementById('convoca_shifts_ocupado_fields').style.display=this.value==='abierto_ocupado'?'':'none';">
 							<option value="abierto_disponible" <?php selected( $estado, 'abierto_disponible' ); ?>><?php esc_html_e( '🟡 Pendiente (Abierto)', 'convoca-shifts' ); ?></option>
 							<option value="abierto_ocupado" <?php selected( $estado, 'abierto_ocupado' ); ?>><?php esc_html_e( '🔵 Ocupado (Actividad)', 'convoca-shifts' ); ?></option>
 							<option value="cerrado" <?php selected( $estado, 'cerrado' ); ?>><?php esc_html_e( '🔴 Cerrado', 'convoca-shifts' ); ?></option>
@@ -170,11 +170,11 @@ class CST_Admin_Turno_Editor {
 
 					<div></div>
 
-					<div id="cst_ocupado_fields" style="grid-column:1/-1;<?php echo $estado === 'abierto_ocupado' ? '' : 'display:none;'; ?> background:var(--wp--preset--color--gris-piedra,#f4f4f4);padding:20px;border-radius:8px;">
+					<div id="convoca_shifts_ocupado_fields" style="grid-column:1/-1;<?php echo $estado === 'abierto_ocupado' ? '' : 'display:none;'; ?> background:var(--wp--preset--color--gris-piedra,#f4f4f4);padding:20px;border-radius:8px;">
 						<div class="convoca-grid-2">
 							<div class="convoca-field">
-								<label for="cst_actividad_term"><?php esc_html_e( 'Actividad', 'convoca-shifts' ); ?></label>
-								<select id="cst_actividad_term" name="cst_actividad_term">
+								<label for="convoca_shifts_actividad_term"><?php esc_html_e( 'Actividad', 'convoca-shifts' ); ?></label>
+								<select id="convoca_shifts_actividad_term" name="convoca_shifts_actividad_term">
 									<option value="0"><?php esc_html_e( '— Seleccionar —', 'convoca-shifts' ); ?></option>
 									<?php foreach ( $all_actividades as $term ) : ?>
 										<option value="<?php echo (int) $term->term_id; ?>" <?php selected( $current_actividad, $term->term_id ); ?>>
@@ -184,8 +184,8 @@ class CST_Admin_Turno_Editor {
 								</select>
 							</div>
 							<div class="convoca-field">
-								<label for="cst_monitor_select"><?php esc_html_e( 'Monitor/a', 'convoca-shifts' ); ?></label>
-								<select id="cst_monitor_select" name="cst_monitor_user">
+								<label for="convoca_shifts_monitor_select"><?php esc_html_e( 'Monitor/a', 'convoca-shifts' ); ?></label>
+								<select id="convoca_shifts_monitor_select" name="convoca_shifts_monitor_user">
 									<option value="0"><?php esc_html_e( '— Sin monitor —', 'convoca-shifts' ); ?></option>
 									<?php foreach ( $all_monitores as $mu ) : ?>
 										<option value="<?php echo (int) $mu->ID; ?>" <?php selected( $current_monitor, $mu->ID ); ?>>
@@ -199,8 +199,8 @@ class CST_Admin_Turno_Editor {
 
 					<div class="convoca-field" style="grid-column:1/-1;">
 						<div class="convoca-check-group">
-							<input type="checkbox" id="cst_necesita_apoyo" name="cst_necesita_apoyo" value="1" <?php checked( $apoyo, 1 ); ?>>
-							<label for="cst_necesita_apoyo"><?php esc_html_e( '🛟 Necesita apoyo (sin llaves / acompañamiento)', 'convoca-shifts' ); ?></label>
+							<input type="checkbox" id="convoca_shifts_necesita_apoyo" name="convoca_shifts_necesita_apoyo" value="1" <?php checked( $apoyo, 1 ); ?>>
+							<label for="convoca_shifts_necesita_apoyo"><?php esc_html_e( '🛟 Necesita apoyo (sin llaves / acompañamiento)', 'convoca-shifts' ); ?></label>
 						</div>
 					</div>
 
@@ -209,8 +209,8 @@ class CST_Admin_Turno_Editor {
 					</h3>
 
 					<div class="convoca-field" style="grid-column:1/-1;">
-						<label for="cst_estado_real"><?php esc_html_e( 'Estado de asistencia', 'convoca-shifts' ); ?></label>
-						<select id="cst_estado_real" name="cst_estado_real">
+						<label for="convoca_shifts_estado_real"><?php esc_html_e( 'Estado de asistencia', 'convoca-shifts' ); ?></label>
+						<select id="convoca_shifts_estado_real" name="convoca_shifts_estado_real">
 							<option value="pendiente" <?php selected( $estado_real, 'pendiente' ); ?>><?php esc_html_e( '⏳ Pendiente', 'convoca-shifts' ); ?></option>
 							<option value="realizado" <?php selected( $estado_real, 'realizado' ); ?>><?php esc_html_e( '✅ Realizado', 'convoca-shifts' ); ?></option>
 							<option value="no_asistio" <?php selected( $estado_real, 'no_asistio' ); ?>><?php esc_html_e( '❌ No asistió', 'convoca-shifts' ); ?></option>
@@ -240,10 +240,10 @@ class CST_Admin_Turno_Editor {
 		$post_id = (int) ( $data['post_id'] ?? 0 );
 		$is_edit = $post_id > 0;
 
-		if ( ! isset( $data['_cst_nonce'] ) ) {
+		if ( ! isset( $data['_convoca_shifts_nonce'] ) ) {
 			wp_die( __( 'Acceso denegado.', 'convoca-shifts' ) );
 		}
-		if ( ! wp_verify_nonce( $data['_cst_nonce'], 'cst_save_turno_' . $post_id ) ) {
+		if ( ! wp_verify_nonce( $data['_convoca_shifts_nonce'], 'convoca_shifts_save_turno_' . $post_id ) ) {
 			wp_die( __( 'Nonce inválido.', 'convoca-shifts' ) );
 		}
 
@@ -253,13 +253,13 @@ class CST_Admin_Turno_Editor {
 			wp_die( __( 'No tienes permisos para crear turnos.', 'convoca-shifts' ) );
 		}
 
-		$fecha          = sanitize_text_field( $data['cst_fecha'] ?? '' );
-		$hora_ini       = sanitize_text_field( $data['cst_hora_ini'] ?? '' );
-		$hora_fin       = sanitize_text_field( $data['cst_hora_fin'] ?? '' );
-		$estado         = sanitize_text_field( $data['cst_estado'] ?? 'abierto_disponible' );
-		$estado_real    = sanitize_text_field( $data['cst_estado_real'] ?? 'pendiente' );
-		$id_responsable = (int) ( $data['cst_id_responsable'] ?? 0 );
-		$necesita_apoyo = isset( $data['cst_necesita_apoyo'] ) ? 1 : 0;
+		$fecha          = sanitize_text_field( $data['convoca_shifts_fecha'] ?? '' );
+		$hora_ini       = sanitize_text_field( $data['convoca_shifts_hora_ini'] ?? '' );
+		$hora_fin       = sanitize_text_field( $data['convoca_shifts_hora_fin'] ?? '' );
+		$estado         = sanitize_text_field( $data['convoca_shifts_estado'] ?? 'abierto_disponible' );
+		$estado_real    = sanitize_text_field( $data['convoca_shifts_estado_real'] ?? 'pendiente' );
+		$id_responsable = (int) ( $data['convoca_shifts_id_responsable'] ?? 0 );
+		$necesita_apoyo = isset( $data['convoca_shifts_necesita_apoyo'] ) ? 1 : 0;
 
 		$datetime_str = $fecha . ' ' . $hora_ini . ':00';
 
@@ -297,22 +297,22 @@ class CST_Admin_Turno_Editor {
 		update_post_meta( $post_id, '_id_responsable', $id_responsable );
 
 		// Save taxonomies.
-		$actividad_term = (int) ( $data['cst_actividad_term'] ?? 0 );
-		wp_set_post_terms( $post_id, $actividad_term > 0 ? array( $actividad_term ) : array(), 'cst_actividad' );
+		$actividad_term = (int) ( $data['convoca_shifts_actividad_term'] ?? 0 );
+		wp_set_post_terms( $post_id, $actividad_term > 0 ? array( $actividad_term ) : array(), 'convoca_shifts_actividad' );
 
-		$monitor_user = (int) ( $data['cst_monitor_user'] ?? 0 );
+		$monitor_user = (int) ( $data['convoca_shifts_monitor_user'] ?? 0 );
 		update_post_meta( $post_id, '_monitor', $monitor_user > 0 ? $monitor_user : '' );
 
 		// Sync the post (title, status) using existing function.
-		if ( function_exists( 'cst_sync_turno_on_save' ) ) {
+		if ( function_exists( 'convoca_shifts_sync_turno_on_save' ) ) {
 			$post = get_post( $post_id );
-			cst_sync_turno_on_save( $post_id, $post, $is_edit );
+			convoca_shifts_sync_turno_on_save( $post_id, $post, $is_edit );
 		}
 
 		// Log the activity.
-		if ( function_exists( 'cst_log_activity' ) ) {
+		if ( function_exists( 'convoca_shifts_log_activity' ) ) {
 			$action_type = $is_edit ? 'turno_actualizado' : 'turno_creado';
-			cst_log_activity(
+			convoca_shifts_log_activity(
 				get_current_user_id(),
 				$post_id,
 				$action_type,

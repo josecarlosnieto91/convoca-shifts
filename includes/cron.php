@@ -3,47 +3,47 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-function cst_schedule_cron() {
-	if ( ! wp_next_scheduled( 'cst_hourly_event' ) ) {
-		wp_schedule_event( time(), 'hourly', 'cst_hourly_event' );
+function convoca_shifts_schedule_cron() {
+	if ( ! wp_next_scheduled( 'convoca_shifts_hourly_event' ) ) {
+		wp_schedule_event( time(), 'hourly', 'convoca_shifts_hourly_event' );
 	}
-	if ( ! wp_next_scheduled( 'cst_daily_event' ) ) {
-		wp_schedule_event( time(), 'daily', 'cst_daily_event' );
+	if ( ! wp_next_scheduled( 'convoca_shifts_daily_event' ) ) {
+		wp_schedule_event( time(), 'daily', 'convoca_shifts_daily_event' );
 	}
 }
 
-function cst_clear_cron() {
-	$hourly_timestamp = wp_next_scheduled( 'cst_hourly_event' );
+function convoca_shifts_clear_cron() {
+	$hourly_timestamp = wp_next_scheduled( 'convoca_shifts_hourly_event' );
 	if ( $hourly_timestamp ) {
-		wp_unschedule_event( $hourly_timestamp, 'cst_hourly_event' );
+		wp_unschedule_event( $hourly_timestamp, 'convoca_shifts_hourly_event' );
 	}
-	$daily_timestamp = wp_next_scheduled( 'cst_daily_event' );
+	$daily_timestamp = wp_next_scheduled( 'convoca_shifts_daily_event' );
 	if ( $daily_timestamp ) {
-		wp_unschedule_event( $daily_timestamp, 'cst_daily_event' );
+		wp_unschedule_event( $daily_timestamp, 'convoca_shifts_daily_event' );
 	}
 }
 
-add_action( 'cst_hourly_event', 'cst_send_reminders' );
-add_action( 'cst_daily_event', 'cst_cleanup_old_meta' );
+add_action( 'convoca_shifts_hourly_event', 'convoca_shifts_send_reminders' );
+add_action( 'convoca_shifts_daily_event', 'convoca_shifts_cleanup_old_meta' );
 
-function cst_cleanup_old_meta() {
+function convoca_shifts_cleanup_old_meta() {
 	global $wpdb;
 	$two_days_ago = wp_date( 'Y-m-d H:i:s', time() - ( 2 * DAY_IN_SECONDS ) );
 
-	// Delete _cst_reminder_sent for old posts to keep db clean.
+	// Delete _convoca_shifts_reminder_sent for old posts to keep db clean.
 	$wpdb->query(
 		$wpdb->prepare(
 			"DELETE pm FROM {$wpdb->postmeta} pm
          JOIN {$wpdb->posts} p ON p.ID = pm.post_id
-         WHERE pm.meta_key = '_cst_reminder_sent'
+         WHERE pm.meta_key = '_convoca_shifts_reminder_sent'
            AND p.post_date < %s",
 			$two_days_ago
 		)
 	);
 }
 
-function cst_send_reminders() {
-	if ( ! \Convoca\Core\Utils::acquire_lock( 'cst_reminder_cron', 120 ) ) {
+function convoca_shifts_send_reminders() {
+	if ( ! \Convoca\Core\Utils::acquire_lock( 'convoca_shifts_reminder_cron', 120 ) ) {
 		return;
 	}
 	try {
@@ -98,7 +98,7 @@ function cst_send_reminders() {
 				$post_id = get_the_ID();
 
 				// Avoid sending multiple reminders for the same turno.
-				if ( get_post_meta( $post_id, '_cst_reminder_sent', true ) ) {
+				if ( get_post_meta( $post_id, '_convoca_shifts_reminder_sent', true ) ) {
 					continue;
 				}
 
@@ -126,12 +126,12 @@ function cst_send_reminders() {
 					wp_mail( $user->user_email, $subject, $message );
 
 					// Mark as sent.
-					update_post_meta( $post_id, '_cst_reminder_sent', 1 );
+					update_post_meta( $post_id, '_convoca_shifts_reminder_sent', 1 );
 				}
 			}
 			wp_reset_postdata();
 		}
 	} finally {
-		\Convoca\Core\Utils::release_lock( 'cst_reminder_cron' );
+		\Convoca\Core\Utils::release_lock( 'convoca_shifts_reminder_cron' );
 	}
 }
