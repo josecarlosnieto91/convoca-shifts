@@ -53,8 +53,8 @@ function convoca_shifts_register_plugin_settings() {
 function convoca_shifts_settings_page() {
 	$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general';
 	?>
-	<div class="wrap cst-settings-wrap">
-		<div class="cst-admin-header" style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+	<div class="wrap convoca-shifts-settings-wrap">
+		<div class="convoca-shifts-admin-header" style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
 			<img src="<?php echo esc_url( CONVOCA_IMAGES_URL . 'logo.png' ); ?>" alt="Convoca Shifts" style="width: 80px; height: 80px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
 			<div>
 				<h1 style="margin: 0; padding: 0;"><?php _e( 'Ajustes de Centro Social Turnos', 'convoca-shifts' ); ?></h1>
@@ -165,28 +165,28 @@ function convoca_shifts_render_status_tab() {
 	}
 	?>
 
-	<div class="cst-diagnostic-wrapper">
-		<div class="cst-summary">
-			<div class="cst-summary-icon cst-badge--<?php echo esc_attr( $summary_class ); ?>">
+	<div class="convoca-shifts-diagnostic-wrapper">
+		<div class="convoca-shifts-summary">
+			<div class="convoca-shifts-summary-icon convoca-shifts-badge--<?php echo esc_attr( $summary_class ); ?>">
 				<?php echo $summary_icon; ?>
 			</div>
-			<div class="cst-summary-text">
+			<div class="convoca-shifts-summary-text">
 				<h3><?php echo esc_html( $summary_title ); ?></h3>
 				<p><?php echo esc_html( $summary_text ); ?></p>
 			</div>
 		</div>
 
-		<div class="cst-diagnostic-results">
+		<div class="convoca-shifts-diagnostic-results">
 			<?php foreach ( $checks as $check ) : ?>
-				<div class="cst-diagnostic-row">
-					<span class="cst-severity-icon cst-severity-<?php echo esc_attr( $check['status'] === 'error' ? 'error' : ( $check['status'] === 'warning' ? 'warning' : 'ok' ) ); ?>">
+				<div class="convoca-shifts-diagnostic-row">
+					<span class="convoca-shifts-severity-icon convoca-shifts-severity-<?php echo esc_attr( $check['status'] === 'error' ? 'error' : ( $check['status'] === 'warning' ? 'warning' : 'ok' ) ); ?>">
 						<?php echo $check['status'] === 'error' ? '✗' : ( $check['status'] === 'warning' ? '⚠' : '✓' ); ?>
 					</span>
 					<strong><?php echo esc_html( $check['title'] ); ?></strong>
 					<div>
-						<span class="cst-message"><?php echo esc_html( $check['message'] ); ?></span>
+						<span class="convoca-shifts-message"><?php echo esc_html( $check['message'] ); ?></span>
 						<?php if ( ! empty( $check['fix'] ) ) : ?>
-							<span class="cst-fix-info">💡 <?php echo esc_html( $check['fix'] ); ?></span>
+							<span class="convoca-shifts-fix-info">💡 <?php echo esc_html( $check['fix'] ); ?></span>
 						<?php endif; ?>
 					</div>
 				</div>

@@ -13,9 +13,9 @@
             category: 'convoca-turnos',
             edit: function( props ) {
                 if ( ! serverSideRender ) {
-                    return el( 'div', { className: 'cst-block-editor-preview' }, 'Error: wp.serverSideRender no disponible.' );
+                    return el( 'div', { className: 'convoca-shifts-block-editor-preview' }, 'Error: wp.serverSideRender no disponible.' );
                 }
-                return el( 'div', { className: 'cst-block-editor-preview' },
+                return el( 'div', { className: 'convoca-shifts-block-editor-preview' },
                     el( serverSideRender, {
                         block: 'centro-social/' + name,
                         attributes: props.attributes,
@@ -62,7 +62,7 @@
                         } )
                     )
                 ),
-                el( 'div', { className: 'cst-block-editor-preview' },
+                el( 'div', { className: 'convoca-shifts-block-editor-preview' },
                     serverSideRender ?
                         el( serverSideRender, {
                             block: 'centro-social/resumen',
@@ -107,7 +107,7 @@
                         } )
                     )
                 ),
-                el( 'div', { className: 'cst-block-editor-preview' },
+                el( 'div', { className: 'convoca-shifts-block-editor-preview' },
                     serverSideRender ?
                         el( serverSideRender, {
                             block: 'centro-social/proximos-turnos',

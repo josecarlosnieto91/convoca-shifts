@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Convoca_Shifts_Admin_Turno_Editor {
 
-	const SLUG = 'cst-editar-turno';
+	const SLUG = 'convoca-shifts-editar-turno';
 
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'register_page' ) );

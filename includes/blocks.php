@@ -12,15 +12,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 function convoca_shifts_enqueue_block_assets() {
 	// Always load in editor context (block previews need the scripts).
 	if ( is_admin() ) {
-		wp_enqueue_style( 'cst-estilo' );
-		wp_enqueue_script( 'cst-calendario' );
+		wp_enqueue_style( 'convoca-shifts-style' );
+		wp_enqueue_script( 'convoca-shifts-calendario' );
 		return;
 	}
 
 	// Frontend: robust detection.
 	if ( convoca_shifts_should_load_assets() ) {
-		wp_enqueue_style( 'cst-estilo' );
-		wp_enqueue_script( 'cst-calendario' );
+		wp_enqueue_style( 'convoca-shifts-style' );
+		wp_enqueue_script( 'convoca-shifts-calendario' );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'convoca_shifts_enqueue_block_assets' ); // Changed from enqueue_block_assets for better frontend coverage.
@@ -117,7 +117,7 @@ function convoca_shifts_should_load_assets() {
  */
 function convoca_shifts_enqueue_block_editor_assets() {
 	wp_enqueue_script(
-		'cst-blocks-js',
+		'convoca-shifts-blocks-js',
 		CONVOCA_SHIFTS_URL . 'assets/js/blocks.js',
 		array( 'wp-blocks', 'wp-element', 'wp-server-side-render', 'wp-block-editor', 'wp-components', 'jquery' ),
 		CONVOCA_SHIFTS_VERSION,
@@ -134,7 +134,7 @@ function convoca_shifts_register_blocks() {
 	$common_args = array(
 		'apiVersion'    => 3,
 		'category'      => 'convoca-turnos',
-		'editor_script' => 'cst-blocks-js', // This links the JS to the blocks.
+		'editor_script' => 'convoca-shifts-blocks-js', // This links the JS to the blocks.
 	);
 
 	// 1. Calendario.

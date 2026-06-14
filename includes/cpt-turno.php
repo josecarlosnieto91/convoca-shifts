@@ -442,7 +442,7 @@ function convoca_shifts_custom_centro_turno_column( $column, $post_id ) {
 				$base_url = admin_url( 'edit.php?post_type=centro_turno&convoca_shifts_action=mark_attendance&post=' . $post_id );
 				$nonce    = wp_create_nonce( 'convoca_shifts_attendance_' . $post_id );
 
-				echo '<div class="cst-row-actions" style="font-size:11px; margin-top: 6px;">';
+				echo '<div class="convoca-shifts-row-actions" style="font-size:11px; margin-top: 6px;">';
 				echo '<a href="' . esc_url(
 					add_query_arg(
 						array(
@@ -466,7 +466,7 @@ function convoca_shifts_custom_centro_turno_column( $column, $post_id ) {
 			}
 
 			// Hidden fields for Quick Edit.
-			echo '<div class="cst-quick-edit-data" style="display:none;">';
+			echo '<div class="convoca-shifts-quick-edit-data" style="display:none;">';
 			echo '<div class="convoca_shifts_id_responsable">' . $id_responsable . '</div>';
 			echo '<div class="convoca_shifts_estado_real">' . esc_attr( $estado ) . '</div>';
 			echo '</div>';
@@ -478,7 +478,7 @@ add_action( 'admin_head', 'convoca_shifts_admin_list_styles' );
 function convoca_shifts_admin_list_styles() {
 	$screen = get_current_screen();
 	if ( $screen && $screen->id === 'edit-centro_turno' ) {
-		wp_enqueue_style( 'cst-estilo' );
+		wp_enqueue_style( 'convoca-shifts-style' );
 	}
 }
 
@@ -550,7 +550,7 @@ function convoca_shifts_display_quick_edit_turno( $column_name, $post_type ) {
 		<div class="inline-edit-col">
 		<label>
 			<span class="title"><?php _e( 'Responsable', 'convoca-shifts' ); ?></span>
-			<select name="convoca_shifts_id_responsable" class="cst-quick-responsable">
+			<select name="convoca_shifts_id_responsable" class="convoca-shifts-quick-responsable">
 				<option value="0"><?php _e( '— Sin asignar —', 'convoca-shifts' ); ?></option>
 				<?php
 				foreach ( $voluntarios as $v ) :
@@ -562,7 +562,7 @@ function convoca_shifts_display_quick_edit_turno( $column_name, $post_type ) {
 		</label>
 		<label>
 			<span class="title"><?php _e( 'Asistencia', 'convoca-shifts' ); ?></span>
-			<select name="convoca_shifts_estado_real" class="cst-quick-asistencia">
+			<select name="convoca_shifts_estado_real" class="convoca-shifts-quick-asistencia">
 				<option value="pendiente"><?php _e( '⏳ Pendiente', 'convoca-shifts' ); ?></option>
 				<option value="realizado"><?php _e( '✅ Realizado', 'convoca-shifts' ); ?></option>
 				<option value="no_asistio"><?php _e( '❌ No asistió', 'convoca-shifts' ); ?></option>
@@ -823,12 +823,12 @@ function convoca_shifts_generar_turnos_page() {
 								echo '<input type="time" name="dias[' . $index . '][hora_inicio]" placeholder="17:00">';
 								echo '<span>a</span>';
 								echo '<input type="time" name="dias[' . $index . '][hora_fin]" placeholder="21:00">';
-								echo '<select name="dias[' . $index . '][estado]" class="cst-estado-selector">';
+								echo '<select name="dias[' . $index . '][estado]" class="convoca-shifts-estado-selector">';
 								echo '<option value="abierto_disponible">🟡 Pendiente (Disponible)</option>';
 								echo '<option value="abierto_ocupado">🔵 Ocupado (Actividad)</option>';
 								echo '<option value="cerrado">🔴 Cerrado</option>';
 								echo '</select>';
-								echo '<div class="cst-ocupado-extra" style="display:none; flex-direction: column; gap: 5px; margin-top: 5px; background: #fff; padding: 5px; border: 1px solid #eee;">';
+								echo '<div class="convoca-shifts-ocupado-extra" style="display:none; flex-direction: column; gap: 5px; margin-top: 5px; background: #fff; padding: 5px; border: 1px solid #eee;">';
 								wp_dropdown_categories(
 									array(
 										'show_option_none' => __( '— Actividad —', 'convoca-shifts' ),
@@ -859,8 +859,8 @@ function convoca_shifts_generar_turnos_page() {
 				</table>
 				<script>
 				jQuery(document).ready(function($){
-					$('.cst-estado-selector').on('change', function(){
-						var $extra = $(this).siblings('.cst-ocupado-extra');
+					$('.convoca-shifts-estado-selector').on('change', function(){
+						var $extra = $(this).siblings('.convoca-shifts-ocupado-extra');
 						if ($(this).val() === 'abierto_ocupado') {
 							$extra.css('display', 'flex');
 						} else {

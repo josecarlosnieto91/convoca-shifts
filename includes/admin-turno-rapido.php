@@ -123,13 +123,13 @@ function convoca_shifts_turno_rapido_page() {
 			<p><?php _e( 'Selecciona un día en el calendario para crear un turno sin pasar por la pantalla de edición estándar.', 'convoca-shifts' ); ?></p>
 		</div>
 		
-		<div id="cst-admin-calendar-container" class="card" style="padding: 20px; max-width: 800px;">
-<div id="cst-calendar-controls" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-					<button type="button" id="cst-prev-month" class="convoca-btn convoca-btn-outline">&laquo; Mes anterior</button>
-					<h2 id="cst-calendar-month-year" style="margin:0;"></h2>
-					<button type="button" id="cst-next-month" class="convoca-btn convoca-btn-outline">Mes siguiente &raquo;</button>
+		<div id="convoca-shifts-admin-calendar-container" class="card" style="padding: 20px; max-width: 800px;">
+<div id="convoca-shifts-calendar-controls" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+					<button type="button" id="convoca-shifts-prev-month" class="convoca-btn convoca-btn-outline">&laquo; Mes anterior</button>
+					<h2 id="convoca-shifts-calendar-month-year" style="margin:0;"></h2>
+					<button type="button" id="convoca-shifts-next-month" class="convoca-btn convoca-btn-outline">Mes siguiente &raquo;</button>
 				</div>
-			<div id="cst-calendar-grid"></div>
+			<div id="convoca-shifts-calendar-grid"></div>
 		</div>
 
 		</div>
@@ -144,13 +144,13 @@ function convoca_shifts_turno_rapido_page() {
 
 	<script>
 	document.addEventListener('DOMContentLoaded', function() {
-		const grid = document.getElementById('cst-calendar-grid');
-		const monthYearLabel = document.getElementById('cst-calendar-month-year');
-		const modal = document.getElementById('cst-quick-modal');
-		const closeBtn = document.querySelector('.cst-close');
-		const cancelBtn = document.querySelector('.cst-cancel-btn');
+		const grid = document.getElementById('convoca-shifts-calendar-grid');
+		const monthYearLabel = document.getElementById('convoca-shifts-calendar-month-year');
+		const modal = document.getElementById('convoca-shifts-quick-modal');
+		const closeBtn = document.querySelector('.convoca-shifts-close');
+		const cancelBtn = document.querySelector('.convoca-shifts-cancel-btn');
 		const dateInput = document.getElementById('convoca_shifts_modal_date');
-		const modalTitle = document.getElementById('cst-modal-title');
+		const modalTitle = document.getElementById('convoca-shifts-modal-title');
 
 		let viewDate = new Date();
 		viewDate.setDate(1);
@@ -174,7 +174,7 @@ function convoca_shifts_turno_rapido_page() {
 			const todayTime = today.getTime();
 
 			for (let i = 0; i < firstDay; i++) {
-				html += '<td class="cst-empty"></td>';
+				html += '<td class="convoca-shifts-empty"></td>';
 			}
 
 			for (let day = 1; day <= daysInMonth; day++) {
@@ -192,17 +192,17 @@ function convoca_shifts_turno_rapido_page() {
 				const isFuture = dateTime > todayTime;
 				const isWeekend = (dateObj.getDay() === 0 || dateObj.getDay() === 6); // 0=Sun, 6=Sat
 
-				if (isToday) classes.push('cst-today');
-				else if (isPast) classes.push('cst-past-day');
-				else if (isFuture) classes.push('cst-future-day');
+				if (isToday) classes.push('convoca-shifts-today');
+				else if (isPast) classes.push('convoca-shifts-past-day');
+				else if (isFuture) classes.push('convoca-shifts-future-day');
 				
-				if (isWeekend) classes.push('cst-weekend');
+				if (isWeekend) classes.push('convoca-shifts-weekend');
 				
 				const isClickable = isToday || isFuture;
 				
 				html += `<td class="${classes.join(' ')}" data-date="${dateStr}" ${ !isClickable ? 'style="pointer-events:none;"' : '' }>
-							<span class="cst-day-num">${day}</span>
-							<div class="cst-day-content"></div>
+							<span class="convoca-shifts-day-num">${day}</span>
+							<div class="convoca-shifts-day-content"></div>
 						</td>`;
 
 				if ((day + firstDay) % 7 === 0) html += '</tr>';
@@ -212,7 +212,7 @@ function convoca_shifts_turno_rapido_page() {
 			grid.innerHTML = html;
 
 			// Add Click listeners.
-			grid.querySelectorAll('td:not(.cst-empty)').forEach(td => {
+			grid.querySelectorAll('td:not(.convoca-shifts-empty)').forEach(td => {
 				td.onclick = function() {
 					const date = this.dataset.date;
 					dateInput.value = date;
@@ -220,11 +220,11 @@ function convoca_shifts_turno_rapido_page() {
 					modalTitle.innerText = `Añadir Turno: ${d.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
 					
 					// Reset presets.
-					document.querySelectorAll('.cst-preset-btn').forEach(b => b.classList.remove('active'));
-					const morningBtn = document.querySelector('.cst-preset-btn[data-start="10:00"]');
+					document.querySelectorAll('.convoca-shifts-preset-btn').forEach(b => b.classList.remove('active'));
+					const morningBtn = document.querySelector('.convoca-shifts-preset-btn[data-start="10:00"]');
 					if (morningBtn) morningBtn.classList.add('active');
 					
-					document.getElementById('cst-custom-time-fields').style.display = 'none';
+					document.getElementById('convoca-shifts-custom-time-fields').style.display = 'none';
 					document.getElementById('fe_h_start').value = '10:00';
 					document.getElementById('fe_h_end').value = '13:00';
 
@@ -233,13 +233,13 @@ function convoca_shifts_turno_rapido_page() {
 			});
 
 			// Preset logic (Admin).
-			document.querySelectorAll('.cst-preset-btn').forEach(btn => {
+			document.querySelectorAll('.convoca-shifts-preset-btn').forEach(btn => {
 				btn.addEventListener('click', function() {
-					document.querySelectorAll('.cst-preset-btn').forEach(b => b.classList.remove('active'));
+					document.querySelectorAll('.convoca-shifts-preset-btn').forEach(b => b.classList.remove('active'));
 					this.classList.add('active');
 
 					const isCustom = this.dataset.custom;
-					const customFields = document.getElementById('cst-custom-time-fields');
+					const customFields = document.getElementById('convoca-shifts-custom-time-fields');
 					if (isCustom) {
 						customFields.style.display = 'block';
 					} else {
@@ -264,11 +264,11 @@ function convoca_shifts_turno_rapido_page() {
 			});
 		}
 
-		document.getElementById('cst-prev-month').onclick = () => {
+		document.getElementById('convoca-shifts-prev-month').onclick = () => {
 			viewDate.setMonth(viewDate.getMonth() - 1);
 			renderCalendar();
 		};
-		document.getElementById('cst-next-month').onclick = () => {
+		document.getElementById('convoca-shifts-next-month').onclick = () => {
 			viewDate.setMonth(viewDate.getMonth() + 1);
 			renderCalendar();
 		};
@@ -324,39 +324,39 @@ function convoca_shifts_turno_rapido_page() {
 function convoca_shifts_render_quick_add_modal() {
 	?>
 	<!-- Modal Form (Moved to footer) -->
-	<div id="cst-quick-modal" class="cst-modal">
-		<div class="cst-modal-content">
-			<span class="cst-close">&times;</span>
-			<h2 id="cst-modal-title"><?php _e( 'Crear Nuevo Turno', 'convoca-shifts' ); ?></h2>
+	<div id="convoca-shifts-quick-modal" class="convoca-shifts-modal">
+		<div class="convoca-shifts-modal-content">
+			<span class="convoca-shifts-close">&times;</span>
+			<h2 id="convoca-shifts-modal-title"><?php _e( 'Crear Nuevo Turno', 'convoca-shifts' ); ?></h2>
 			<hr>
 			<form method="post" action="<?php echo admin_url( 'admin-post.php' ); ?>">
 				<?php wp_nonce_field( 'convoca_shifts_quick_add_action', 'convoca_shifts_quick_add_nonce' ); ?>
 				<input type="hidden" name="action" value="convoca_shifts_quick_add_turno">
 				<input type="hidden" id="convoca_shifts_modal_date" name="convoca_shifts_date">
 				
-				<div class="cst-form-group">
+				<div class="convoca-shifts-form-group">
 					<label><?php _e( 'Seleccionar Horario', 'convoca-shifts' ); ?></label>
-					<div class="cst-presets">
-						<button type="button" class="cst-preset-btn" data-start="10:00" data-end="13:00">☀️ <?php _e( 'Mañana (10-13h)', 'convoca-shifts' ); ?></button>
-						<button type="button" class="cst-preset-btn" data-start="17:00" data-end="20:00">🌇 <?php _e( 'Tarde (17-20h)', 'convoca-shifts' ); ?></button>
-						<button type="button" class="cst-preset-btn" data-custom="1">⚙️ <?php _e( 'Personalizado', 'convoca-shifts' ); ?></button>
+					<div class="convoca-shifts-presets">
+						<button type="button" class="convoca-shifts-preset-btn" data-start="10:00" data-end="13:00">☀️ <?php _e( 'Mañana (10-13h)', 'convoca-shifts' ); ?></button>
+						<button type="button" class="convoca-shifts-preset-btn" data-start="17:00" data-end="20:00">🌇 <?php _e( 'Tarde (17-20h)', 'convoca-shifts' ); ?></button>
+						<button type="button" class="convoca-shifts-preset-btn" data-custom="1">⚙️ <?php _e( 'Personalizado', 'convoca-shifts' ); ?></button>
 					</div>
 				</div>
 
-				<div id="cst-custom-time-fields" style="display:none; margin-top:15px; padding:15px; background:var(--wp--preset--color--blanco, #ffffff); border-radius:8px; border:1px solid var(--wp--preset--color--gris-medio, #e0e0e0);">
-					<div class="cst-form-row" style="margin-bottom:0;">
-						<div class="cst-form-group" style="margin-bottom:0;">
+				<div id="convoca-shifts-custom-time-fields" style="display:none; margin-top:15px; padding:15px; background:var(--wp--preset--color--blanco, #ffffff); border-radius:8px; border:1px solid var(--wp--preset--color--gris-medio, #e0e0e0);">
+					<div class="convoca-shifts-form-row" style="margin-bottom:0;">
+						<div class="convoca-shifts-form-group" style="margin-bottom:0;">
 							<label><?php _e( 'Hora Inicio', 'convoca-shifts' ); ?></label>
 							<input type="time" name="convoca_shifts_h_start" id="fe_h_start" value="10:00" step="900">
 						</div>
-						<div class="cst-form-group" style="margin-bottom:0;">
+						<div class="convoca-shifts-form-group" style="margin-bottom:0;">
 							<label><?php _e( 'Hora Fin', 'convoca-shifts' ); ?></label>
 							<input type="time" name="convoca_shifts_h_end" id="fe_h_end" value="13:00" step="900">
 						</div>
 					</div>
 				</div>
 
-				<div class="cst-form-group">
+				<div class="convoca-shifts-form-group">
 					<label><?php _e( 'Estado Inicial', 'convoca-shifts' ); ?></label>
 					<select name="convoca_shifts_estado" style="width: 100%;">
 						<option value="abierto_disponible">🟡 Pendiente (Disponible para voluntarios)</option>
@@ -365,7 +365,7 @@ function convoca_shifts_render_quick_add_modal() {
 					</select>
 				</div>
 
-				<div class="cst-form-group" style="margin-top: 15px;">
+				<div class="convoca-shifts-form-group" style="margin-top: 15px;">
 					<label>
 						<input type="checkbox" name="convoca_shifts_apoyo" value="1">
 						<strong><?php _e( '🛟 Necesita apoyo', 'convoca-shifts' ); ?></strong>
@@ -373,8 +373,8 @@ function convoca_shifts_render_quick_add_modal() {
 					<p class="description"><?php _e( 'Marca esto si el voluntario necesita acompañamiento (p.ej. no tiene llaves).', 'convoca-shifts' ); ?></p>
 				</div>
 
-<div class="cst-modal-footer">
-					<button type="button" class="convoca-btn convoca-btn-outline cst-cancel-btn"><?php _e( 'Cancelar', 'convoca-shifts' ); ?></button>
+<div class="convoca-shifts-modal-footer">
+					<button type="button" class="convoca-btn convoca-btn-outline convoca-shifts-cancel-btn"><?php _e( 'Cancelar', 'convoca-shifts' ); ?></button>
 					<button type="submit" class="convoca-btn convoca-btn-primary"><?php _e( 'Guardar Turno', 'convoca-shifts' ); ?></button>
 				</div>
 			</form>

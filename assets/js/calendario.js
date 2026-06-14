@@ -5,7 +5,7 @@ jQuery(document).ready(function ($) {
             console.error('FullCalendar is not loaded.');
             return;
         }
-        var $el = $(container).find('#cst-calendario');
+        var $el = $(container).find('#convoca-shifts-calendario');
 
         // Overlap check helper
         function hasOverlap(newEvent) {
@@ -101,7 +101,7 @@ jQuery(document).ready(function ($) {
                         },
                         success: function (response) {
                             successCallback(response);
-                            var $resumen = $('.cst-resumen-turnos');
+                            var $resumen = $('.convoca-shifts-resumen-turnos');
                             if ($resumen.length > 0) {
                                 var total = 0;
                                 var sin_cubrir = 0;
@@ -136,7 +136,7 @@ jQuery(document).ready(function ($) {
                     if (props.necesita_apoyo === 1) {
                         var titleEl = $el.find('.fc-event-title, .fc-list-event-title');
                         if (titleEl.length) {
-                            titleEl.append(' <span class="cst-badge-apoyo" title="Este turno necesita apoyo (sin llaves / acompañamiento)">🛟 Apoyo</span>');
+                            titleEl.append(' <span class="convoca-shifts-badge-apoyo" title="Este turno necesita apoyo (sin llaves / acompañamiento)">🛟 Apoyo</span>');
                         }
                     }
 
@@ -146,36 +146,36 @@ jQuery(document).ready(function ($) {
                             if (props.actividad) details.push('<b>Actividad:</b> ' + props.actividad);
                             if (props.monitor) details.push('<b>Monitor:</b> ' + props.monitor);
                             if (details.length) {
-                                $el.find('.fc-list-event-title').append(' <span class="cst-resp-inline">(' + details.join(' | ') + ')</span>');
+                                $el.find('.fc-list-event-title').append(' <span class="convoca-shifts-resp-inline">(' + details.join(' | ') + ')</span>');
                             }
                         } else if (!isMonth) {
                             if (props.actividad) {
-                                $el.find('.fc-event-main').append('<div class="cst-event-resp">📝 ' + props.actividad + '</div>');
+                                $el.find('.fc-event-main').append('<div class="convoca-shifts-event-resp">📝 ' + props.actividad + '</div>');
                             }
                             if (props.monitor) {
-                                $el.find('.fc-event-main').append('<div class="cst-event-resp">👤 ' + props.monitor + '</div>');
+                                $el.find('.fc-event-main').append('<div class="convoca-shifts-event-resp">👤 ' + props.monitor + '</div>');
                             }
                         }
                     } else {
                         if (props.responsable_nombre) {
                             if (isList) {
-                                $el.find('.fc-list-event-title').append(' <span class="cst-resp-inline">(👤 ' + props.responsable_nombre + ')</span>');
+                                $el.find('.fc-list-event-title').append(' <span class="convoca-shifts-resp-inline">(👤 ' + props.responsable_nombre + ')</span>');
                             } else if (!isMonth) {
-                                var respHtml = '<div class="cst-event-resp">👤 ' + props.responsable_nombre + '</div>';
+                                var respHtml = '<div class="convoca-shifts-event-resp">👤 ' + props.responsable_nombre + '</div>';
                                 $el.find('.fc-event-main').append(respHtml);
                             }
                         } else if (props.monitor) {
                             if (isList) {
-                                $el.find('.fc-list-event-title').append(' <span class="cst-resp-inline">(👤 ' + props.monitor + ')</span>');
+                                $el.find('.fc-list-event-title').append(' <span class="convoca-shifts-resp-inline">(👤 ' + props.monitor + ')</span>');
                             } else if (!isMonth) {
-                                var monitorHtml = '<div class="cst-event-resp">👤 ' + props.monitor + '</div>';
+                                var monitorHtml = '<div class="convoca-shifts-event-resp">👤 ' + props.monitor + '</div>';
                                 $el.find('.fc-event-main').append(monitorHtml);
                             }
                         }
                     }
 
                     if (props.actividad_url) {
-                        var linkHtml = '<a href="' + props.actividad_url + '" target="_blank" class="cst-event-link" onclick="event.stopPropagation();">🌐 Más información</a>';
+                        var linkHtml = '<a href="' + props.actividad_url + '" target="_blank" class="convoca-shifts-event-link" onclick="event.stopPropagation();">🌐 Más información</a>';
                         if (isList) {
                             $el.find('.fc-list-event-title').append(' ' + linkHtml);
                         } else {
@@ -184,24 +184,24 @@ jQuery(document).ready(function ($) {
                     }
 
                     if (props.notas) {
-                        var notesHtml = '<span class="cst-notes-icon" title="' + props.notas.replace(/"/g, '&quot;') + '"> 📝</span>';
+                        var notesHtml = '<span class="convoca-shifts-notes-icon" title="' + props.notas.replace(/"/g, '&quot;') + '"> 📝</span>';
                         $el.find('.fc-event-title, .fc-list-event-title').append(notesHtml);
                     }
 
                     if (!isList && !isTimeGrid) {
                         var timeStr = event.start.getHours() + ':' + (event.start.getMinutes() < 10 ? '0' : '') + event.start.getMinutes();
-                        $el.find('.fc-event-main').prepend('<span class="cst-event-time-top">' + timeStr + '</span>');
+                        $el.find('.fc-event-main').prepend('<span class="convoca-shifts-event-time-top">' + timeStr + '</span>');
                     }
 
                     if (cstData.canManage && props.estado === 'abierto_disponible' && props.responsable_id == cstData.userId) {
-                        var btnHtml = '<button class="cst-event-action cst-btn-liberar" title="Liberar mi turno">Liberar mi turno</button>';
+                        var btnHtml = '<button class="convoca-shifts-event-action convoca-shifts-btn-liberar" title="Liberar mi turno">Liberar mi turno</button>';
                         if (isList) {
                             $el.find('.fc-list-event-title').append(btnHtml);
                         } else {
                             $el.find('.fc-event-main').append(btnHtml);
                         }
 
-                        $el.find('.cst-btn-liberar').on('click', function (e) {
+                        $el.find('.convoca-shifts-btn-liberar').on('click', function (e) {
                             e.stopPropagation(); e.preventDefault();
                             if (!confirm(cstData.confirmLiberar)) return;
                             var $btn = $(this);
@@ -268,12 +268,12 @@ jQuery(document).ready(function ($) {
                     if (!cstData.canManage) return;
                     const today = new Date(); today.setHours(0, 0, 0, 0);
                     if (info.date < today) return;
-                    const modal = $('#cst-frontend-modal');
+                    const modal = $('#convoca-shifts-frontend-modal');
                     const dateStr = info.dateStr;
-                    $('#cst-fe-modal-title').text('Crear Turno: ' + info.date.toLocaleDateString());
-                    $('.cst-preset-btn').removeClass('active');
-                    $('.cst-preset-btn[data-start="10:00"]').addClass('active');
-                    $('#cst-custom-time-fields').hide();
+                    $('#convoca-shifts-fe-modal-title').text('Crear Turno: ' + info.date.toLocaleDateString());
+                    $('.convoca-shifts-preset-btn').removeClass('active');
+                    $('.convoca-shifts-preset-btn[data-start="10:00"]').addClass('active');
+                    $('#convoca-shifts-custom-time-fields').hide();
                     $('#fe_h_start').val('10:00'); $('#fe_h_end').val('13:00');
                     modal.data('date', dateStr).addClass('is-active');
                 }
@@ -284,11 +284,11 @@ jQuery(document).ready(function ($) {
             window.cstCalendarInstance = calendar;
 
             // Load Proximo Libre for summary
-            if ($('.cst-proximo-libre').length > 0) {
+            if ($('.convoca-shifts-proximo-libre').length > 0) {
                 $.ajax({
                     url: cstData.restUrl + '/proximo-libre',
                     type: 'GET',
-                    success: function (response) { $('.cst-proximo-libre').html(response.texto); }
+                    success: function (response) { $('.convoca-shifts-proximo-libre').html(response.texto); }
                 });
             }
         });
@@ -308,17 +308,17 @@ jQuery(document).ready(function ($) {
     });
 
     // Frontend Modal Logic (already bound once is enough)
-    $(document).on('click', '.cst-close-frontend, .cst-fe-cancel', function () {
-        $('#cst-frontend-modal').removeClass('is-active');
+    $(document).on('click', '.convoca-shifts-close-frontend, .convoca-shifts-fe-cancel', function () {
+        $('#convoca-shifts-frontend-modal').removeClass('is-active');
     });
 
-    $(document).on('click', '.cst-preset-btn', function () {
-        $('.cst-preset-btn').removeClass('active');
+    $(document).on('click', '.convoca-shifts-preset-btn', function () {
+        $('.convoca-shifts-preset-btn').removeClass('active');
         $(this).addClass('active');
         const isCustom = $(this).data('custom');
-        if (isCustom) { $('#cst-custom-time-fields').slideDown(); } 
+        if (isCustom) { $('#convoca-shifts-custom-time-fields').slideDown(); } 
         else {
-            $('#cst-custom-time-fields').slideUp();
+            $('#convoca-shifts-custom-time-fields').slideUp();
             let start = $(this).data('start'); let end = $(this).data('end');
             const limitOpen = cstData.horaApertura; const limitClose = cstData.horaCierre;
             let adjusted = false;
@@ -329,9 +329,9 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(document).on('click', '#cst-fe-save', function () {
+    $(document).on('click', '#convoca-shifts-fe-save', function () {
         const $btn = $(this);
-        const modal = $('#cst-frontend-modal');
+        const modal = $('#convoca-shifts-frontend-modal');
         let h_start = $('#fe_h_start').val(); let h_end = $('#fe_h_end').val();
         const limitOpen = cstData.horaApertura; const limitClose = cstData.horaCierre;
         let adjusted = false;

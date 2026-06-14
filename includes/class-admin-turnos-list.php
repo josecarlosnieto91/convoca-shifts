@@ -21,7 +21,7 @@ class Admin_Turnos_List extends \WP_List_Table {
 				'singular' => 'turno',
 				'plural'   => 'turnos',
 				'ajax'     => false,
-				'screen'   => 'cst-turnos-list',
+				'screen'   => 'convoca-shifts-turnos-list',
 			)
 		);
 	}
@@ -116,7 +116,7 @@ class Admin_Turnos_List extends \WP_List_Table {
 	}
 
 	protected function column_acciones( $item ): string {
-		$edit_url = admin_url( 'edit.php?post_type=centro_turno&page=cst-editar-turno&id=' . $item->ID );
+		$edit_url = admin_url( 'edit.php?post_type=centro_turno&page=convoca-shifts-editar-turno&id=' . $item->ID );
 
 		$actions   = array();
 		$actions[] = '<a href="' . esc_url( $edit_url ) . '" class="convoca-btn convoca-btn-outline" style="padding:3px 8px;font-size:12px;">✏️ ' . __( 'Editar', 'convoca-shifts' ) . '</a>';

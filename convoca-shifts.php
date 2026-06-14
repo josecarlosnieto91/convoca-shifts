@@ -85,13 +85,13 @@ if ( ! class_exists( '\\Convoca\\Core\\Utils' ) ) {
 add_action(
 	'admin_enqueue_scripts',
 	function ( string $hook ): void {
-		wp_register_style( 'cst-estilo', CONVOCA_SHIFTS_URL . 'assets/css/estilo.css', array(), CONVOCA_SHIFTS_VERSION );
+		wp_register_style( 'convoca-shifts-style', CONVOCA_SHIFTS_URL . 'assets/css/estilo.css', array(), CONVOCA_SHIFTS_VERSION );
 		$screen = get_current_screen();
 		if ( $screen && in_array( $screen->post_type, array( 'centro_turno' ), true ) ) {
-			wp_enqueue_style( 'cst-estilo' );
+			wp_enqueue_style( 'convoca-shifts-style' );
 		}
 		if ( strpos( $hook, 'convoca_shifts_' ) !== false || strpos( $hook, 'centro_turno' ) !== false ) {
-			wp_enqueue_style( 'cst-estilo' );
+			wp_enqueue_style( 'convoca-shifts-style' );
 		}
 	}
 );
