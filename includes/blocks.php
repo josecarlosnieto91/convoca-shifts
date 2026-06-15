@@ -1,4 +1,6 @@
 <?php
+namespace Convoca\Shifts;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -23,7 +25,7 @@ function convoca_shifts_enqueue_block_assets() {
 		wp_enqueue_script( 'convoca-shifts-calendario' );
 	}
 }
-add_action( 'wp_enqueue_scripts', 'convoca_shifts_enqueue_block_assets' ); // Changed from enqueue_block_assets for better frontend coverage.
+add_action( 'wp_enqueue_scripts', 'Convoca\Shifts\convoca_shifts_enqueue_block_assets' ); // Changed from enqueue_block_assets for better frontend coverage.
 
 /**
  * Robust detection of CST presence in current page.
@@ -124,7 +126,7 @@ function convoca_shifts_enqueue_block_editor_assets() {
 		true
 	);
 }
-add_action( 'enqueue_block_editor_assets', 'convoca_shifts_enqueue_block_editor_assets' );
+add_action( 'enqueue_block_editor_assets', 'Convoca\Shifts\convoca_shifts_enqueue_block_editor_assets' );
 
 /**
  * Register Gutenberg blocks for Convoca Shifts
@@ -143,7 +145,7 @@ function convoca_shifts_register_blocks() {
 		array_merge(
 			$common_args,
 			array(
-				'render_callback' => 'convoca_shifts_render_block_calendario',
+				'render_callback' => 'Convoca\Shifts\convoca_shifts_render_block_calendario',
 				'title'           => __( 'CST: Calendario', 'convoca-shifts' ),
 				'icon'            => 'calendar-alt',
 			)
@@ -156,7 +158,7 @@ function convoca_shifts_register_blocks() {
 		array_merge(
 			$common_args,
 			array(
-				'render_callback' => 'convoca_shifts_render_block_boton_apuntarse',
+				'render_callback' => 'Convoca\Shifts\convoca_shifts_render_block_boton_apuntarse',
 				'title'           => __( 'CST: Botón Apuntarse', 'convoca-shifts' ),
 				'icon'            => 'plus-alt',
 			)
@@ -169,7 +171,7 @@ function convoca_shifts_register_blocks() {
 		array_merge(
 			$common_args,
 			array(
-				'render_callback' => 'convoca_shifts_render_block_resumen',
+				'render_callback' => 'Convoca\Shifts\convoca_shifts_render_block_resumen',
 				'title'           => __( 'CST: Resumen Semanal', 'convoca-shifts' ),
 				'icon'            => 'chart-bar',
 			)
@@ -188,14 +190,14 @@ function convoca_shifts_register_blocks() {
 						'default' => 5,
 					),
 				),
-				'render_callback' => 'convoca_shifts_render_block_proximos_turnos',
+				'render_callback' => 'Convoca\Shifts\convoca_shifts_render_block_proximos_turnos',
 				'title'           => __( 'CST: Próximos Turnos', 'convoca-shifts' ),
 				'icon'            => 'list-view',
 			)
 		)
 	);
 }
-add_action( 'init', 'convoca_shifts_register_blocks' );
+add_action( 'init', 'Convoca\Shifts\convoca_shifts_register_blocks' );
 
 /**
  * Render Callbacks

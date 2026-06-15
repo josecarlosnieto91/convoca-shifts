@@ -1,10 +1,11 @@
 <?php
+namespace Convoca\Shifts;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 // Add menu page.
-add_action( 'admin_menu', 'convoca_shifts_add_admin_menu', 10 );
+add_action( 'admin_menu', 'Convoca\Shifts\convoca_shifts_add_admin_menu', 10 );
 function convoca_shifts_add_admin_menu() {
 	add_submenu_page(
 		'edit.php?post_type=centro_turno',
@@ -30,7 +31,7 @@ function convoca_shifts_voluntarios_pendientes_page() {
 			wp_mail( $user->user_email, __( '¡Solicitud de voluntariado aprobada!', 'convoca-shifts' ), __( 'Hola, ya puedes acceder y gestionar turnos en el centro social. Adjunto a este correo encontrarás tu Acuerdo de Incorporación si procede.', 'convoca-shifts' ), '', $attachments );
 
 			// Log activity.
-			if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+			if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
 				convoca_shifts_log_activity( get_current_user_id(), 0, 'voluntario_aprobado', array( 'voluntario_id' => $user_id ) );
 			}
 		}
@@ -85,7 +86,7 @@ function convoca_shifts_voluntarios_pendientes_page() {
 				}
 
 				// Log activity.
-				if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+				if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
 					convoca_shifts_log_activity( get_current_user_id(), 0, 'voluntario_revocado', array( 'voluntario_id' => $user_id ) );
 				}
 

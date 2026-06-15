@@ -5,6 +5,8 @@
  * @package CentroSocialTurnos
  */
 
+namespace Convoca\Shifts;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }

@@ -5,6 +5,8 @@
  * @package Convoca_Shifts
  */
 
+namespace Convoca\Shifts;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -13,17 +15,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Register all widgets for Convoca Shifts
  */
 function convoca_shifts_register_widgets() {
-	register_widget( 'Convoca_Shifts_Calendario_Widget' );
-	register_widget( 'Convoca_Shifts_Boton_Apuntarse_Widget' );
-	register_widget( 'Convoca_Shifts_Resumen_Turnos_Widget' );
-	register_widget( 'Convoca_Shifts_Proximos_Turnos_Widget' );
+	register_widget( 'Convoca\Shifts\Convoca_Shifts_Calendario_Widget' );
+	register_widget( 'Convoca\Shifts\Convoca_Shifts_Boton_Apuntarse_Widget' );
+	register_widget( 'Convoca\Shifts\Convoca_Shifts_Resumen_Turnos_Widget' );
+	register_widget( 'Convoca\Shifts\Convoca_Shifts_Proximos_Turnos_Widget' );
 }
-add_action( 'widgets_init', 'convoca_shifts_register_widgets' );
+add_action( 'widgets_init', 'Convoca\Shifts\convoca_shifts_register_widgets' );
 
 /**
  * Widget: Calendario Centro
  */
-class Convoca_Shifts_Calendario_Widget extends WP_Widget {
+class Convoca_Shifts_Calendario_Widget extends \WP_Widget {
 	public function __construct() {
 		parent::__construct(
 			'convoca_shifts_calendario_widget',
@@ -61,7 +63,7 @@ class Convoca_Shifts_Calendario_Widget extends WP_Widget {
 /**
  * Widget: Botón Apuntarse
  */
-class Convoca_Shifts_Boton_Apuntarse_Widget extends WP_Widget {
+class Convoca_Shifts_Boton_Apuntarse_Widget extends \WP_Widget {
 	public function __construct() {
 		parent::__construct(
 			'convoca_shifts_boton_apuntarse_widget',
@@ -99,7 +101,7 @@ class Convoca_Shifts_Boton_Apuntarse_Widget extends WP_Widget {
 /**
  * Widget: Resumen Turnos
  */
-class Convoca_Shifts_Resumen_Turnos_Widget extends WP_Widget {
+class Convoca_Shifts_Resumen_Turnos_Widget extends \WP_Widget {
 	public function __construct() {
 		parent::__construct(
 			'convoca_shifts_resumen_turnos_widget',
@@ -137,7 +139,7 @@ class Convoca_Shifts_Resumen_Turnos_Widget extends WP_Widget {
 /**
  * Widget: Próximos Turnos
  */
-class Convoca_Shifts_Proximos_Turnos_Widget extends WP_Widget {
+class Convoca_Shifts_Proximos_Turnos_Widget extends \WP_Widget {
 	public function __construct() {
 		parent::__construct(
 			'convoca_shifts_proximos_turnos_widget',

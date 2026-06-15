@@ -5,11 +5,13 @@
  * @package Convoca_Shifts
  */
 
+namespace Convoca\Shifts;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'rest_api_init', 'convoca_shifts_register_rest_routes' );
+add_action( 'rest_api_init', 'Convoca\Shifts\convoca_shifts_register_rest_routes' );
 
 function convoca_shifts_register_rest_routes() {
 	register_rest_route(
@@ -17,7 +19,7 @@ function convoca_shifts_register_rest_routes() {
 		'/turnos',
 		array(
 			'methods'             => 'GET',
-			'callback'            => 'convoca_shifts_rest_get_turnos',
+			'callback' => 'Convoca\Shifts\convoca_shifts_rest_get_turnos',
 			'permission_callback' => '__return_true', // Publicly readable.
 		)
 	);
@@ -27,12 +29,12 @@ function convoca_shifts_register_rest_routes() {
 		'/turnos/(?P<id>\d+)/apuntarse',
 		array(
 			'methods'             => 'POST',
-			'callback'            => 'convoca_shifts_rest_apuntarse_turno',
+			'callback' => 'Convoca\Shifts\convoca_shifts_rest_apuntarse_turno',
 			'permission_callback' => function () {
 				if ( is_user_logged_in() && ( current_user_can( 'gestionar_mis_turnos' ) || current_user_can( 'manage_options' ) ) ) {
 					return true;
 				}
-				return new WP_Error( 'rest_cannot_access', __( 'Lo siento, no tienes permisos para realizar esta acción.', 'convoca-shifts' ), array( 'status' => 403 ) );
+				return new \WP_Error( 'rest_cannot_access', __( 'Lo siento, no tienes permisos para realizar esta acción.', 'convoca-shifts' ), array( 'status' => 403 ) );
 			},
 		)
 	);
@@ -42,12 +44,12 @@ function convoca_shifts_register_rest_routes() {
 		'/turnos/(?P<id>\d+)/desapuntarse',
 		array(
 			'methods'             => 'POST',
-			'callback'            => 'convoca_shifts_rest_desapuntarse_turno',
+			'callback' => 'Convoca\Shifts\convoca_shifts_rest_desapuntarse_turno',
 			'permission_callback' => function () {
 				if ( is_user_logged_in() && ( current_user_can( 'gestionar_mis_turnos' ) || current_user_can( 'manage_options' ) ) ) {
 					return true;
 				}
-				return new WP_Error( 'rest_cannot_access', __( 'Lo siento, no tienes permisos para realizar esta acción.', 'convoca-shifts' ), array( 'status' => 403 ) );
+				return new \WP_Error( 'rest_cannot_access', __( 'Lo siento, no tienes permisos para realizar esta acción.', 'convoca-shifts' ), array( 'status' => 403 ) );
 			},
 		)
 	);
@@ -57,12 +59,12 @@ function convoca_shifts_register_rest_routes() {
 		'/turnos/apuntarse-proximo',
 		array(
 			'methods'             => 'POST',
-			'callback'            => 'convoca_shifts_rest_apuntarse_proximo',
+			'callback' => 'Convoca\Shifts\convoca_shifts_rest_apuntarse_proximo',
 			'permission_callback' => function () {
 				if ( is_user_logged_in() && ( current_user_can( 'gestionar_mis_turnos' ) || current_user_can( 'manage_options' ) ) ) {
 					return true;
 				}
-				return new WP_Error( 'rest_cannot_access', __( 'Lo siento, no tienes permisos para realizar esta acción.', 'convoca-shifts' ), array( 'status' => 403 ) );
+				return new \WP_Error( 'rest_cannot_access', __( 'Lo siento, no tienes permisos para realizar esta acción.', 'convoca-shifts' ), array( 'status' => 403 ) );
 			},
 		)
 	);
@@ -72,7 +74,7 @@ function convoca_shifts_register_rest_routes() {
 		'/turnos/proximo-libre',
 		array(
 			'methods'             => 'GET',
-			'callback'            => 'convoca_shifts_rest_get_proximo_libre',
+			'callback' => 'Convoca\Shifts\convoca_shifts_rest_get_proximo_libre',
 			'permission_callback' => '__return_true', // Public.
 		)
 	);
@@ -82,7 +84,7 @@ function convoca_shifts_register_rest_routes() {
 		'/turnos/crear',
 		array(
 			'methods'             => 'POST',
-			'callback'            => 'convoca_shifts_rest_crear_turno',
+			'callback' => 'Convoca\Shifts\convoca_shifts_rest_crear_turno',
 			'permission_callback' => function () {
 				return is_user_logged_in() && ( current_user_can( 'gestionar_mis_turnos' ) || current_user_can( 'manage_options' ) );
 			},
@@ -92,7 +94,7 @@ function convoca_shifts_register_rest_routes() {
 
 function convoca_shifts_rest_get_turnos( WP_REST_Request $request ) {
 	if ( class_exists( '\\Convoca\\Core\\Utils' ) && ! \Convoca\Core\Utils::check_rate_limit( 'convoca_shifts_get_turnos', 30, 60 ) ) {
-		return new WP_Error( 'rest_rate_limit', 'Demasiadas peticiones. Inténtalo de nuevo en un minuto.', array( 'status' => 429 ) );
+		return new \WP_Error( 'rest_rate_limit', 'Demasiadas peticiones. Inténtalo de nuevo en un minuto.', array( 'status' => 429 ) );
 	}
 	$start = $request->get_param( 'start' ); // Format: YYYY-MM-DD...
 	$end   = $request->get_param( 'end' );
@@ -108,9 +110,9 @@ function convoca_shifts_rest_get_turnos( WP_REST_Request $request ) {
 	if ( $start && $end ) {
 		try {
 			$tz       = new DateTimeZone( wp_timezone_string() );
-			$dt_start = new DateTime( $start );
+			$dt_start = new \DateTime( $start );
 			$dt_start->setTimezone( $tz );
-			$dt_end = new DateTime( $end );
+			$dt_end = new \DateTime( $end );
 			$dt_end->setTimezone( $tz );
 
 			$args['meta_query'] = array(
@@ -133,7 +135,7 @@ function convoca_shifts_rest_get_turnos( WP_REST_Request $request ) {
 		}
 	}
 
-	$turnos = new WP_Query( $args );
+	$turnos = new \WP_Query( $args );
 	$events = array();
 
 	if ( $turnos->have_posts() ) {
@@ -184,7 +186,7 @@ function convoca_shifts_rest_get_turnos( WP_REST_Request $request ) {
 			if ( $fecha_inicio ) {
 				try {
 					$tz          = new DateTimeZone( wp_timezone_string() );
-					$dt          = new DateTime( $fecha_inicio, $tz );
+					$dt          = new \DateTime( $fecha_inicio, $tz );
 					$event_start = $dt->format( 'Y-m-d\TH:i:s' );
 
 					if ( $hora_fin ) {
@@ -240,20 +242,20 @@ function convoca_shifts_rest_get_turnos( WP_REST_Request $request ) {
 
 function convoca_shifts_rest_apuntarse_turno( WP_REST_Request $request ) {
 	if ( class_exists( '\\Convoca\\Core\\Utils' ) && ! \Convoca\Core\Utils::check_rate_limit( 'convoca_shifts_apuntarse', 10, 3600 ) ) {
-		return new WP_Error( 'rest_rate_limit', 'Demasiados intentos. Inténtalo de nuevo en una hora.', array( 'status' => 429 ) );
+		return new \WP_Error( 'rest_rate_limit', 'Demasiados intentos. Inténtalo de nuevo en una hora.', array( 'status' => 429 ) );
 	}
 	$post_id = $request->get_param( 'id' );
 	$user_id = get_current_user_id();
 
 	$post = get_post( $post_id );
 	if ( ! $post || $post->post_type !== 'centro_turno' ) {
-		return new WP_Error( 'not_found', 'Turno no encontrado', array( 'status' => 404 ) );
+		return new \WP_Error( 'not_found', 'Turno no encontrado', array( 'status' => 404 ) );
 	}
 
 	$estado = get_post_meta( $post_id, '_estado', true );
 
 	if ( $estado !== 'abierto_disponible' ) {
-		return new WP_Error( 'not_available', 'El turno ya está ocupado. Por favor, elige otro horario.', array( 'status' => 400 ) );
+		return new \WP_Error( 'not_available', 'El turno ya está ocupado. Por favor, elige otro horario.', array( 'status' => 400 ) );
 	}
 
 	// Prevención: No permitir apuntarse a turnos pasados (usar _fecha_inicio, no post_date).
@@ -261,7 +263,7 @@ function convoca_shifts_rest_apuntarse_turno( WP_REST_Request $request ) {
 	if ( $fecha_inicio_turno ) {
 		$fecha_inicio_ts = strtotime( $fecha_inicio_turno );
 		if ( $fecha_inicio_ts < time() ) {
-			return new WP_Error( 'past_turno', 'No puedes apuntarte a un turno que ya ha pasado.', array( 'status' => 400 ) );
+			return new \WP_Error( 'past_turno', 'No puedes apuntarte a un turno que ya ha pasado.', array( 'status' => 400 ) );
 		}
 	}
 
@@ -279,7 +281,7 @@ function convoca_shifts_rest_apuntarse_turno( WP_REST_Request $request ) {
 
 	if ( $current_responsable !== null && (int) $current_responsable !== 0 ) {
 		$wpdb->query( 'ROLLBACK' );
-		return new WP_Error( 'ya_cubierto', 'Alguien se ha adelantado 😅 Este turno ya está cubierto.', array( 'status' => 409 ) );
+		return new \WP_Error( 'ya_cubierto', 'Alguien se ha adelantado 😅 Este turno ya está cubierto.', array( 'status' => 409 ) );
 	}
 
 	// Lock user's existing shifts to prevent concurrent overlaps.
@@ -307,10 +309,10 @@ function convoca_shifts_rest_apuntarse_turno( WP_REST_Request $request ) {
 	$conflict_id = convoca_shifts_check_user_overlap( $user_id, $fecha_inicio_turno, $hora_fin, $post_id, true );
 	if ( $conflict_id ) {
 		$wpdb->query( 'ROLLBACK' );
-		if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+		if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
 			convoca_shifts_log_activity( $user_id, $post_id, 'conflicto_horario_detectado', array( 'conflict_id' => $conflict_id ) );
 		}
-		return new WP_Error( 'conflicto_horario', 'Ya tienes un turno asignado que se solapa con este horario.', array( 'status' => 400 ) );
+		return new \WP_Error( 'conflicto_horario', 'Ya tienes un turno asignado que se solapa con este horario.', array( 'status' => 400 ) );
 	}
 
 	// Atomic assignment: UPDATE si existe, INSERT si no existe.
@@ -343,7 +345,7 @@ function convoca_shifts_rest_apuntarse_turno( WP_REST_Request $request ) {
 
 		if ( ! $inserted ) {
 			$wpdb->query( 'ROLLBACK' );
-			return new WP_Error( 'ya_cubierto', 'Alguien se ha adelantado 😅 Este turno ya está cubierto.', array( 'status' => 409 ) );
+			return new \WP_Error( 'ya_cubierto', 'Alguien se ha adelantado 😅 Este turno ya está cubierto.', array( 'status' => 409 ) );
 		}
 	}
 
@@ -369,7 +371,7 @@ function convoca_shifts_rest_apuntarse_turno( WP_REST_Request $request ) {
 	$message = 'Turno asignado con éxito.';
 
 	// Log activity.
-	if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+	if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
 		convoca_shifts_log_activity( $user_id, $post_id, 'turno_cubierto' );
 	}
 
@@ -379,7 +381,7 @@ function convoca_shifts_rest_apuntarse_turno( WP_REST_Request $request ) {
 	if ( $fecha_inicio_turno ) {
 		try {
 			$tz               = new DateTimeZone( wp_timezone_string() );
-			$dt               = new DateTime( $fecha_inicio_turno, $tz );
+			$dt               = new \DateTime( $fecha_inicio_turno, $tz );
 			$fecha_para_email = $dt->format( 'd/m/Y H:i' );
 		} catch ( Exception $e ) {
 			$fecha_para_email = $fecha_inicio_turno;
@@ -399,19 +401,19 @@ function convoca_shifts_rest_apuntarse_turno( WP_REST_Request $request ) {
 
 function convoca_shifts_rest_desapuntarse_turno( WP_REST_Request $request ) {
 	if ( class_exists( '\\Convoca\\Core\\Utils' ) && ! \Convoca\Core\Utils::check_rate_limit( 'convoca_shifts_desapuntarse', 10, 3600 ) ) {
-		return new WP_Error( 'rest_rate_limit', 'Demasiados intentos. Inténtalo de nuevo en una hora.', array( 'status' => 429 ) );
+		return new \WP_Error( 'rest_rate_limit', 'Demasiados intentos. Inténtalo de nuevo en una hora.', array( 'status' => 429 ) );
 	}
 	$post_id = $request->get_param( 'id' );
 	$user_id = get_current_user_id();
 
 	$post = get_post( $post_id );
 	if ( ! $post || $post->post_type !== 'centro_turno' ) {
-		return new WP_Error( 'not_found', 'Turno no encontrado', array( 'status' => 404 ) );
+		return new \WP_Error( 'not_found', 'Turno no encontrado', array( 'status' => 404 ) );
 	}
 
 	$estado = get_post_meta( $post_id, '_estado', true );
 	if ( $estado === 'cerrado' ) {
-		return new WP_Error( 'not_available', 'El turno está cerrado.', array( 'status' => 400 ) );
+		return new \WP_Error( 'not_available', 'El turno está cerrado.', array( 'status' => 400 ) );
 	}
 
 	// Atomic release with transaction to prevent race conditions.
@@ -428,7 +430,7 @@ function convoca_shifts_rest_desapuntarse_turno( WP_REST_Request $request ) {
 
 	if ( (int) $current_responsable !== $user_id && ! current_user_can( 'manage_options' ) && ! current_user_can( 'convoca_shifts_manage_turnos' ) ) {
 		$wpdb->query( 'ROLLBACK' );
-		return new WP_Error( 'not_yours', 'No eres el responsable de este turno.', array( 'status' => 400 ) );
+		return new \WP_Error( 'not_yours', 'No eres el responsable de este turno.', array( 'status' => 400 ) );
 	}
 
 	// Release the turn.
@@ -449,7 +451,7 @@ function convoca_shifts_rest_desapuntarse_turno( WP_REST_Request $request ) {
 	$wpdb->query( 'COMMIT' );
 
 	// Log activity.
-	if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+	if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
 		convoca_shifts_log_activity( $user_id, $post_id, 'turno_liberado' );
 	}
 
@@ -463,7 +465,7 @@ function convoca_shifts_rest_desapuntarse_turno( WP_REST_Request $request ) {
 
 function convoca_shifts_rest_apuntarse_proximo( WP_REST_Request $request ) {
 	if ( class_exists( '\\Convoca\\Core\\Utils' ) && ! \Convoca\Core\Utils::check_rate_limit( 'convoca_shifts_apuntarse_proximo', 10, 3600 ) ) {
-		return new WP_Error( 'rest_rate_limit', 'Demasiados intentos. Inténtalo de nuevo en una hora.', array( 'status' => 429 ) );
+		return new \WP_Error( 'rest_rate_limit', 'Demasiados intentos. Inténtalo de nuevo en una hora.', array( 'status' => 429 ) );
 	}
 	$user_id = get_current_user_id();
 	$now     = wp_date( 'Y-m-d H:i:s' );
@@ -493,7 +495,7 @@ function convoca_shifts_rest_apuntarse_proximo( WP_REST_Request $request ) {
 
 	if ( ! $turno_id ) {
 		$wpdb->query( 'ROLLBACK' );
-		return new WP_Error( 'no_disponible', 'No hay turnos disponibles.', array( 'status' => 404 ) );
+		return new \WP_Error( 'no_disponible', 'No hay turnos disponibles.', array( 'status' => 404 ) );
 	}
 
 	// Lock user's future shifts to prevent overlap race conditions.
@@ -520,7 +522,7 @@ function convoca_shifts_rest_apuntarse_proximo( WP_REST_Request $request ) {
 
 	if ( $conflict_id ) {
 		$wpdb->query( 'ROLLBACK' );
-		if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+		if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
 			convoca_shifts_log_activity(
 				$user_id,
 				$turno_id,
@@ -532,7 +534,7 @@ function convoca_shifts_rest_apuntarse_proximo( WP_REST_Request $request ) {
 			);
 		}
 		$conflict_title = get_the_title( $conflict_id );
-		return new WP_Error( 'conflicto_horario', 'Ya tienes un turno asignado que se solapa con este (' . $conflict_title . ').', array( 'status' => 400 ) );
+		return new \WP_Error( 'conflicto_horario', 'Ya tienes un turno asignado que se solapa con este (' . $conflict_title . ').', array( 'status' => 400 ) );
 	}
 
 	// Atomic assignment: UPDATE si existe, INSERT si no existe.
@@ -562,7 +564,7 @@ function convoca_shifts_rest_apuntarse_proximo( WP_REST_Request $request ) {
 
 		if ( ! $inserted ) {
 			$wpdb->query( 'ROLLBACK' );
-			return new WP_Error( 'ya_cubierto', 'Alguien se ha adelantado 😅', array( 'status' => 409 ) );
+			return new \WP_Error( 'ya_cubierto', 'Alguien se ha adelantado 😅', array( 'status' => 409 ) );
 		}
 	}
 
@@ -591,7 +593,7 @@ function convoca_shifts_rest_apuntarse_proximo( WP_REST_Request $request ) {
 	wp_publish_post( $post_id );
 
 	// Log activity.
-	if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+	if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
 		convoca_shifts_log_activity( $user_id, $post_id, 'turno_cubierto', array( 'automatico' => true ) );
 	}
 
@@ -607,7 +609,7 @@ function convoca_shifts_rest_apuntarse_proximo( WP_REST_Request $request ) {
 
 function convoca_shifts_rest_get_proximo_libre( WP_REST_Request $request ) {
 	if ( class_exists( '\\Convoca\\Core\\Utils' ) && ! \Convoca\Core\Utils::check_rate_limit( 'convoca_shifts_proximo_libre', 30, 60 ) ) {
-		return new WP_Error( 'rest_rate_limit', 'Demasiadas peticiones. Inténtalo de nuevo en un minuto.', array( 'status' => 429 ) );
+		return new \WP_Error( 'rest_rate_limit', 'Demasiadas peticiones. Inténtalo de nuevo en un minuto.', array( 'status' => 429 ) );
 	}
 	$now = wp_date( 'Y-m-d H:i:s' );
 
@@ -647,7 +649,7 @@ function convoca_shifts_rest_get_proximo_libre( WP_REST_Request $request ) {
 		),
 	);
 
-	$turnos = new WP_Query( $args );
+	$turnos = new \WP_Query( $args );
 	if ( $turnos->have_posts() ) {
 		$turnos->the_post();
 
@@ -655,7 +657,7 @@ function convoca_shifts_rest_get_proximo_libre( WP_REST_Request $request ) {
 		if ( $fecha_inicio ) {
 			try {
 				$tz    = new DateTimeZone( wp_timezone_string() );
-				$dt    = new DateTime( $fecha_inicio, $tz );
+				$dt    = new \DateTime( $fecha_inicio, $tz );
 				$fecha = $dt->format( 'd/m/Y H:i' );
 			} catch ( Exception $e ) {
 				$fecha = $fecha_inicio;
@@ -683,7 +685,7 @@ function convoca_shifts_rest_get_proximo_libre( WP_REST_Request $request ) {
 
 function convoca_shifts_rest_crear_turno( WP_REST_Request $request ) {
 	if ( class_exists( '\\Convoca\\Core\\Utils' ) && ! \Convoca\Core\Utils::check_rate_limit( 'convoca_shifts_crear_turno', 10, 3600 ) ) {
-		return new WP_Error( 'rest_rate_limit', 'Demasiados intentos. Inténtalo de nuevo en una hora.', array( 'status' => 429 ) );
+		return new \WP_Error( 'rest_rate_limit', 'Demasiados intentos. Inténtalo de nuevo en una hora.', array( 'status' => 429 ) );
 	}
 	$date    = sanitize_text_field( $request->get_param( 'date' ) );
 	$h_start = sanitize_text_field( $request->get_param( 'h_start' ) );
@@ -700,7 +702,7 @@ function convoca_shifts_rest_crear_turno( WP_REST_Request $request ) {
 		$requested_start = $date . ' ' . $h_start . ':00';
 
 		if ( $date < $fecha_actual || ( $date === $fecha_actual && $requested_start < $ahora_mysql ) ) {
-			return new WP_Error( 'past_date', 'No puedes crear un turno en el pasado.', array( 'status' => 400 ) );
+			return new \WP_Error( 'past_date', 'No puedes crear un turno en el pasado.', array( 'status' => 400 ) );
 		}
 	}
 
@@ -718,11 +720,11 @@ function convoca_shifts_rest_crear_turno( WP_REST_Request $request ) {
 	);
 
 	if ( is_wp_error( $post_id ) ) {
-		return new WP_Error( 'create_failed', 'No se pudo crear el turno.', array( 'status' => 500 ) );
+		return new \WP_Error( 'create_failed', 'No se pudo crear el turno.', array( 'status' => 500 ) );
 	}
 
 	// Log activity.
-	if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+	if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
 		convoca_shifts_log_activity( get_current_user_id(), $post_id, 'turno_creado', array( 'origen' => 'frontend' ) );
 	}
 
@@ -742,7 +744,7 @@ function apuntarse_proximo_format_date( $fecha_turno, $turno_post ): string {
 	if ( $fecha_turno ) {
 		try {
 			$tz = new DateTimeZone( wp_timezone_string() );
-			$dt = new DateTime( $fecha_turno, $tz );
+			$dt = new \DateTime( $fecha_turno, $tz );
 			return $dt->format( 'd/m/Y' ) . ' ' . __( 'a las', 'convoca-shifts' ) . ' ' . $dt->format( 'H:i' );
 		} catch ( Exception $e ) {
 			return $fecha_turno;

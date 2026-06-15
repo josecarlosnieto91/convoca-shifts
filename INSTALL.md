@@ -17,8 +17,8 @@ Para que el sistema sea funcional, debes crear dos páginas:
 
 ### A. Página de Calendario
 - Crea una página (ej. "Cuadrante de Turnos").
-- Pega el shortcode: `[calendario_centro]`
-- (Opcional) Añade `[resumen_turnos]` arriba para un resumen rápido.
+- Pega el shortcode: `[convoca_calendario]`
+- (Opcional) Añade `[convoca_resumen_turnos]` arriba para un resumen rápido.
 
 ### B. Página de Registro (Members)
 - Crea una página (ej. "Registro de Voluntariado").
@@ -32,11 +32,11 @@ Para que el sistema sea funcional, debes crear dos páginas:
 4. **Paso 4**: Ve a **Turnos Centro > Gestionar Voluntarios** para activar a los usuarios que se registren.
 
 ## 5. Shortcodes Detallados
-- `[calendario_centro]`: El componente principal.
+- `[convoca_calendario]`: El componente principal.
 - `[convoca_voluntariado]` (Plugin Members): Imprescindible para el flujo de alta.
-- `[boton_apuntarse]`: Ideal para la barra lateral o páginas de inicio.
-- `[resumen_turnos]`: Muestra visualmente cuántos huecos quedan esta semana.
-- `[proximos_turnos]`: Lista simple de fechas y horas.
+- `[convoca_boton_apuntarse]`: Ideal para la barra lateral o páginas de inicio.
+- `[convoca_resumen_turnos]`: Muestra visualmente cuántos huecos quedan esta semana.
+- `[convoca_proximos_turnos]`: Lista simple de fechas y horas.
 
 ## 6. Resolución de Problemas
 - **El calendario no carga**: Asegúrate de que los Permalinks (Ajustes > Enlaces permanentes) NO estén en "Simple". Usa "Nombre de la entrada".

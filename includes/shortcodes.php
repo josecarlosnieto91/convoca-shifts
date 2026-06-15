@@ -5,12 +5,14 @@
  * @package Convoca_Shifts
  */
 
+namespace Convoca\Shifts;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 // Hook to register scripts properly.
-add_action( 'init', 'convoca_shifts_register_scripts' );
+add_action( 'init', 'Convoca\Shifts\convoca_shifts_register_scripts' );
 
 function convoca_shifts_register_scripts() {
 	wp_register_style( 'convoca-shifts-style', CONVOCA_SHIFTS_URL . 'assets/css/estilo.css', array(), CONVOCA_SHIFTS_VERSION );
@@ -42,7 +44,7 @@ function convoca_shifts_register_scripts() {
 }
 
 // Shortcode: [calendario_centro].
-add_shortcode( 'convoca_calendario', 'convoca_shifts_calendario_centro' );
+add_shortcode( 'convoca_calendario', 'Convoca\Shifts\convoca_shifts_calendario_centro' );
 function convoca_shifts_calendario_centro() {
 	wp_enqueue_style( 'convoca-shifts-style' );
 	wp_enqueue_script( 'convoca-shifts-calendario' );
@@ -74,7 +76,7 @@ function convoca_shifts_calendario_centro() {
 	static $modal_added = false;
 	if ( ! $modal_added ) {
 		$modal_added = true;
-		add_action( 'wp_footer', 'convoca_shifts_render_frontend_modal' );
+		add_action( 'wp_footer', 'Convoca\Shifts\convoca_shifts_render_frontend_modal' );
 	}
 
 	return ob_get_clean();
@@ -145,7 +147,7 @@ function convoca_shifts_render_frontend_modal() {
 }
 
 // Shortcode: [boton_apuntarse].
-add_shortcode( 'convoca_boton_apuntarse', 'convoca_shifts_boton_apuntarse' );
+add_shortcode( 'convoca_boton_apuntarse', 'Convoca\Shifts\convoca_shifts_boton_apuntarse' );
 function convoca_shifts_boton_apuntarse() {
 	if ( ! is_user_logged_in() || ( ! current_user_can( 'gestionar_mis_turnos' ) && ! current_user_can( 'manage_options' ) ) ) {
 		return '';
@@ -204,7 +206,7 @@ function convoca_shifts_boton_apuntarse() {
 }
 
 // Shortcode: [resumen_turnos].
-add_shortcode( 'convoca_resumen_turnos', 'convoca_shifts_resumen_turnos' );
+add_shortcode( 'convoca_resumen_turnos', 'Convoca\Shifts\convoca_shifts_resumen_turnos' );
 function convoca_shifts_resumen_turnos( $atts = array() ) {
 	$atts = shortcode_atts( array( 'semana' => 'this' ), $atts );
 	wp_enqueue_style( 'convoca-shifts-style' );
@@ -323,7 +325,7 @@ function convoca_shifts_resumen_turnos( $atts = array() ) {
 }
 
 // Shortcode: [proximos_turnos cantidad="5"].
-add_shortcode( 'convoca_proximos_turnos', 'convoca_shifts_proximos_turnos' );
+add_shortcode( 'convoca_proximos_turnos', 'Convoca\Shifts\convoca_shifts_proximos_turnos' );
 function convoca_shifts_proximos_turnos( $atts ) {
 	$atts = shortcode_atts(
 		array(
@@ -387,7 +389,7 @@ function convoca_shifts_proximos_turnos( $atts ) {
 }
 
 // Clear transient when a turno is saved/assigned.
-add_action( 'save_post_centro_turno', 'convoca_shifts_clear_resumen_transient' );
+add_action( 'save_post_centro_turno', 'Convoca\Shifts\convoca_shifts_clear_resumen_transient' );
 function convoca_shifts_clear_resumen_transient() {
 	delete_transient( 'convoca_shifts_resumen_turnos_semana' );
 }
@@ -396,7 +398,7 @@ function convoca_shifts_clear_resumen_transient() {
 add_action(
 	'rest_api_init',
 	function () {
-		add_action( 'rest_after_insert_centro_turno', 'convoca_shifts_clear_resumen_transient' );
+		add_action( 'rest_after_insert_centro_turno', 'Convoca\Shifts\convoca_shifts_clear_resumen_transient' );
 	}
 );
 // Since we manually update meta in REST, let's hook onto the update meta action to clear transient.

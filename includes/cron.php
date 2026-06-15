@@ -1,4 +1,6 @@
 <?php
+namespace Convoca\Shifts;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -23,8 +25,8 @@ function convoca_shifts_clear_cron() {
 	}
 }
 
-add_action( 'convoca_shifts_hourly_event', 'convoca_shifts_send_reminders' );
-add_action( 'convoca_shifts_daily_event', 'convoca_shifts_cleanup_old_meta' );
+add_action( 'convoca_shifts_hourly_event', 'Convoca\Shifts\convoca_shifts_send_reminders' );
+add_action( 'convoca_shifts_daily_event', 'Convoca\Shifts\convoca_shifts_cleanup_old_meta' );
 
 function convoca_shifts_cleanup_old_meta() {
 	global $wpdb;
@@ -90,7 +92,7 @@ function convoca_shifts_send_reminders() {
 			),
 		);
 
-		$turnos = new WP_Query( $args );
+		$turnos = new \WP_Query( $args );
 
 		if ( $turnos->have_posts() ) {
 			while ( $turnos->have_posts() ) {

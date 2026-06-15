@@ -1,4 +1,6 @@
 <?php
+namespace Convoca\Shifts;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -6,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Register settings and menu page.
  */
-add_action( 'admin_menu', 'convoca_shifts_add_settings_menu', 25 );
+add_action( 'admin_menu', 'Convoca\Shifts\convoca_shifts_add_settings_menu', 25 );
 function convoca_shifts_add_settings_menu() {
 	add_submenu_page(
 		'edit.php?post_type=centro_turno',
@@ -28,7 +30,7 @@ function convoca_shifts_add_settings_menu() {
 }
 
 function convoca_shifts_status_page() {
-	if ( ! class_exists( 'Convoca_Shifts_Admin_Status' ) ) {
+	if ( ! class_exists('Convoca\Shifts$1') ) {
 		require_once __DIR__ . '/class-admin-status.php';
 	}
 	Convoca_Shifts_Admin_Status::render_page();
@@ -37,7 +39,7 @@ function convoca_shifts_status_page() {
 /**
  * Register settings.
  */
-add_action( 'admin_init', 'convoca_shifts_register_plugin_settings' );
+add_action( 'admin_init', 'Convoca\Shifts\convoca_shifts_register_plugin_settings' );
 function convoca_shifts_register_plugin_settings() {
 	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_calendar_page_url' );
 	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_hora_apertura' );

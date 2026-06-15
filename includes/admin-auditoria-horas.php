@@ -1,9 +1,11 @@
 <?php
+namespace Convoca\Shifts;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'admin_menu', 'convoca_shifts_add_auditoria_menu', 25 );
+add_action( 'admin_menu', 'Convoca\Shifts\convoca_shifts_add_auditoria_menu', 25 );
 function convoca_shifts_add_auditoria_menu() {
 	add_submenu_page(
 		'edit.php?post_type=centro_turno',

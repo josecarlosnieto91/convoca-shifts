@@ -14,6 +14,8 @@
  * Requires Plugins: convoca-core, convoca-members
  */
 
+namespace Convoca\Shifts;
+
 if ( ! defined( 'ABSPATH' ) ) {
 
 // Load translations.
@@ -118,7 +120,7 @@ spl_autoload_register(
 /**
  * Activation hook
  */
-register_activation_hook( __FILE__, 'convoca_shifts_activate_plugin' );
+register_activation_hook( __FILE__, 'Convoca\Shifts\convoca_shifts_activate_plugin' );
 function convoca_shifts_activate_plugin() {
 	convoca_shifts_register_cpt_centro_turno();
 	convoca_shifts_create_log_table();
@@ -183,7 +185,7 @@ function convoca_shifts_log_activity( $user_id, $turno_id, $action, $data = arra
 /**
  * Deactivation hook
  */
-register_deactivation_hook( __FILE__, 'convoca_shifts_deactivate_plugin' );
+register_deactivation_hook( __FILE__, 'Convoca\Shifts\convoca_shifts_deactivate_plugin' );
 function convoca_shifts_deactivate_plugin() {
 	convoca_shifts_clear_cron();
 }
@@ -242,7 +244,7 @@ add_action(
 /**
  * Admin notice if the required role is missing
  */
-add_action( 'admin_notices', 'convoca_shifts_check_required_role' );
+add_action( 'admin_notices', 'Convoca\Shifts\convoca_shifts_check_required_role' );
 function convoca_shifts_check_required_role() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;

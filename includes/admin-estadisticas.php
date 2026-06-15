@@ -1,9 +1,11 @@
 <?php
+namespace Convoca\Shifts;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'admin_menu', 'convoca_shifts_add_estadisticas_menu', 20 );
+add_action( 'admin_menu', 'Convoca\Shifts\convoca_shifts_add_estadisticas_menu', 20 );
 function convoca_shifts_add_estadisticas_menu() {
 	add_submenu_page(
 		'edit.php?post_type=centro_turno',
@@ -286,7 +288,7 @@ function convoca_shifts_get_action_label( $action ) {
 }
 
 // --- Handler for Statistics CSV Export ---.
-add_action( 'admin_init', 'convoca_shifts_exportar_stats_csv_handler' );
+add_action( 'admin_init', 'Convoca\Shifts\convoca_shifts_exportar_stats_csv_handler' );
 function convoca_shifts_exportar_stats_csv_handler() {
 	if ( isset( $_POST['convoca_shifts_action'] ) && $_POST['convoca_shifts_action'] === 'exportar_stats_csv' && check_admin_referer( 'convoca_shifts_exportar_stats_action' ) ) {
 		if ( ! current_user_can( 'convoca_shifts_view_stats' ) ) {

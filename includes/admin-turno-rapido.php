@@ -5,11 +5,13 @@
  * @package CentroSocialTurnos
  */
 
+namespace Convoca\Shifts;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'admin_menu', 'convoca_shifts_add_turno_rapido_menu', 1 );
+add_action( 'admin_menu', 'Convoca\Shifts\convoca_shifts_add_turno_rapido_menu', 1 );
 function convoca_shifts_add_turno_rapido_menu() {
 	// 1. Add our custom page.
 	add_submenu_page(
@@ -29,7 +31,7 @@ function convoca_shifts_add_turno_rapido_menu() {
  * Filter admin URLs to point "Add New" links to our custom page.
  * This affects the button next to the title in the list and the admin bar.
  */
-add_filter( 'admin_url', 'convoca_shifts_redirect_add_new_url', 10, 2 );
+add_filter( 'admin_url', 'Convoca\Shifts\convoca_shifts_redirect_add_new_url', 10, 2 );
 function convoca_shifts_redirect_add_new_url( $url, $path ) {
 	if ( $path === 'post-new.php?post_type=centro_turno' ) {
 		return admin_url( 'admin.php?page=convoca_shifts_turno_rapido' );
@@ -40,7 +42,7 @@ function convoca_shifts_redirect_add_new_url( $url, $path ) {
 /**
  * Force redirect if anyone accesses the standard post-new.php page directly via URL.
  */
-add_action( 'admin_init', 'convoca_shifts_force_redirect_standard_editor' );
+add_action( 'admin_init', 'Convoca\Shifts\convoca_shifts_force_redirect_standard_editor' );
 function convoca_shifts_force_redirect_standard_editor() {
 	global $pagenow;
 	if ( $pagenow === 'post-new.php' && isset( $_GET['post_type'] ) && $_GET['post_type'] === 'centro_turno' ) {
@@ -52,7 +54,7 @@ function convoca_shifts_force_redirect_standard_editor() {
 /**
  * Handle the form submission for Quick Add Turno via admin-post.php.
  */
-add_action( 'admin_post_convoca_shifts_quick_add_turno', 'convoca_shifts_process_quick_add_turno' );
+add_action( 'admin_post_convoca_shifts_quick_add_turno', 'Convoca\Shifts\convoca_shifts_process_quick_add_turno' );
 function convoca_shifts_process_quick_add_turno() {
 	if ( ! isset( $_POST['convoca_shifts_quick_add_nonce'] ) || ! wp_verify_nonce( $_POST['convoca_shifts_quick_add_nonce'], 'convoca_shifts_quick_add_action' ) ) {
 		wp_safe_redirect( admin_url( 'edit.php?post_type=centro_turno&convoca_shifts_msg=error&convoca_shifts_err=' . urlencode( __( 'Nonce inválido.', 'convoca-shifts' ) ) ) );
@@ -80,7 +82,7 @@ function convoca_shifts_process_quick_add_turno() {
 	);
 
 	if ( ! is_wp_error( $post_id ) ) {
-		if ( function_exists( 'convoca_shifts_log_activity' ) ) {
+		if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
 			convoca_shifts_log_activity( get_current_user_id(), $post_id, 'turno_creado', array( 'origen' => 'admin_rapido' ) );
 		}
 
@@ -99,7 +101,7 @@ function convoca_shifts_process_quick_add_turno() {
 /**
  * Handle success message in the main list.
  */
-add_action( 'admin_notices', 'convoca_shifts_turno_rapido_notices' );
+add_action( 'admin_notices', 'Convoca\Shifts\convoca_shifts_turno_rapido_notices' );
 function convoca_shifts_turno_rapido_notices() {
 	$screen = get_current_screen();
 	if ( $screen && $screen->id === 'edit-centro_turno' && isset( $_GET['convoca_shifts_msg'] ) ) {
@@ -134,11 +136,11 @@ function convoca_shifts_turno_rapido_page() {
 
 		</div>
 		<?php
-		add_action( 'admin_footer', 'convoca_shifts_render_quick_add_modal' );
+		add_action( 'admin_footer', 'Convoca\Shifts\convoca_shifts_render_quick_add_modal' );
 		?>
 </div>
 		<?php
-		add_action( 'admin_footer', 'convoca_shifts_render_quick_add_modal' );
+		add_action( 'admin_footer', 'Convoca\Shifts\convoca_shifts_render_quick_add_modal' );
 		?>
 	</div>
 
@@ -315,7 +317,7 @@ function convoca_shifts_turno_rapido_page() {
 	});
 	</script>
 	<?php
-	add_action( 'admin_footer', 'convoca_shifts_render_quick_add_modal' );
+	add_action( 'admin_footer', 'Convoca\Shifts\convoca_shifts_render_quick_add_modal' );
 }
 
 /**
