@@ -3,7 +3,7 @@
  * Plugin Name: Convoca Shifts
  * Plugin URI: https://convoca.org.
  * Description: Volunteer shift management for community centers.
- * Version: 2.5.0
+ * Version: 2.5.1
  * Author: Jose Carlos Nieto Ramos
  * Text Domain: convoca-shifts
  * Requires at least: 6.4
