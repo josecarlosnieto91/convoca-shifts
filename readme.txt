@@ -4,7 +4,7 @@ Tags: shifts, volunteers, calendar, scheduling, centro social
 Requires at least: 6.4
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 2.5.0
+Stable tag: 2.5.1
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,11 @@ Para ejercer estos derechos, contacte con el administrador del sitio.
 
 == Changelog ==
 
+
+= 2.5.1 =
+* Added: MANUAL_USUARIO.md with calendar and shifts guide
+* Removed: 7 duplicate/dead include files
+* Dev: Updated phpstan.neon to level 5
 = 2.5.0 =
 * Fix: Timezone Europe/Madrid, asignación de turnos, hour sync
 
