@@ -27,6 +27,11 @@ WordPress 6.4+, PHP 8.1+, convoca-core (optional but recommended)
 
 ## Changelog
 
+### 2.5.1
+- docs: add MANUAL_USUARIO.md with calendar and shifts guide
+- refactor: remove 7 duplicate/dead include files
+- dev: update phpstan.neon to level 5
+
 ### 2.4.0
 - Seguridad: cst_process_quick_add_turno movido de admin_init a admin_post_cst_quick_add_turno
 - Formulario envía a admin-post.php con action oculto
