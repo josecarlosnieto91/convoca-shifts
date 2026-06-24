@@ -46,7 +46,7 @@ class PDF_Certificado {
 		// Check if certificate already exists.
 		$existing = get_posts(
 			array(
-				'post_type'      => 'conv_documento',
+				'post_type'      => 'convoca_documento',
 				'meta_query'     => array(
 					'relation' => 'AND',
 					array(
@@ -83,7 +83,7 @@ class PDF_Certificado {
 
 		$content_for_hash = $user_id . $post_id . 'certificado' . $timestamp;
 
-		$templates     = get_option( 'conv_pdf_templates', array() );
+		$templates     = get_option( 'convoca_pdf_templates', array() );
 		$template_html = isset( $templates['certificado'] ) ? $templates['certificado']['content'] : '<h1>Certificado</h1><p>Nombre: {{nombre}}</p><p>DNI: {{dni}}</p><p>Actividad: {{actividad}}</p><p>Fecha: {{fecha}}</p>';
 
 		$stamp_html = $signature->get_acceptance_stamp_html( 'Asociación Convoca', $ip, $timestamp, $content_for_hash );
@@ -121,7 +121,7 @@ class PDF_Certificado {
 
 		$doc_id = wp_insert_post(
 			array(
-				'post_type'   => 'conv_documento',
+				'post_type'   => 'convoca_documento',
 				'post_title'  => 'Certificado Turno ' . $post_id . ' - ' . $nombre,
 				'post_status' => 'publish',
 				'post_author' => 1,

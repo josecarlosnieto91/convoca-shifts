@@ -26,8 +26,8 @@ function convoca_shifts_voluntarios_pendientes_page() {
 			$user->set_role( 'voluntario_aprobado' );
 			delete_user_meta( $user_id, '_convoca_shifts_aprobado' );
 			echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( __( 'Usuario %s aprobado como voluntario.', 'convoca-shifts' ), $user->display_name ) . '</p></div>';
-			do_action( 'conv_voluntario_aprobado', $user_id );
-			$attachments = apply_filters( 'conv_voluntario_aprobado_attachments', array(), $user_id );
+			do_action( 'convoca_voluntario_aprobado', $user_id );
+			$attachments = apply_filters( 'convoca_voluntario_aprobado_attachments', array(), $user_id );
 			wp_mail( $user->user_email, __( '¡Solicitud de voluntariado aprobada!', 'convoca-shifts' ), __( 'Hola, ya puedes acceder y gestionar turnos en el centro social. Adjunto a este correo encontrarás tu Acuerdo de Incorporación si procede.', 'convoca-shifts' ), '', $attachments );
 
 			// Log activity.

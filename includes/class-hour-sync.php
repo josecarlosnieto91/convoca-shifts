@@ -114,7 +114,7 @@ class Hour_Sync {
 
 			// Fire hook only after successful commit.
 			if ( $should_hook ) {
-				\Convoca\Core\Utils::do_action( 'conv_after_horas_voluntario_actualizadas', 'conv_horas_voluntario_actualizadas', $user_id, $diff_hours );
+				\Convoca\Core\Utils::do_action( 'convoca_after_horas_voluntario_actualizadas', 'convoca_horas_voluntario_actualizadas', $user_id, $diff_hours );
 			}
 		} catch ( \Throwable $e ) {
 			$wpdb->query( 'ROLLBACK' );
