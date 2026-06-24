@@ -61,14 +61,7 @@ require_once CONVOCA_SHIFTS_DIR . 'includes/widgets.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/blocks.php';
 
 /* ── Convoca Core fallback ────────────────────────── */
-if ( ! class_exists( '\\Convoca\\Core\\Utils' ) ) {
-	$core_path = WP_PLUGIN_DIR . '/convoca-core/includes';
-	if ( is_dir( $core_path ) ) {
-		foreach ( glob( $core_path . '/class-*.php' ) as $file ) {
-			require_once $file;
-		}
-	}
-}
+// Core classes auto-loaded via Convoca Core's Composer PSR-4
 
 /* ── Dependency Check ──────────────────────────────────── */
 if ( ! class_exists( '\\Convoca\\Core\\Utils' ) ) {
@@ -99,21 +92,7 @@ add_action(
 );
 
 
-spl_autoload_register(
-	function ( string $class ): void {
-		$prefix = 'Assoc\\Shifts\\';
-		if ( ! str_starts_with( $class, $prefix ) ) {
-			return;
-		}
-		$relative = str_replace( $prefix, '', $class );
-		$relative = strtolower( str_replace( '_', '-', $relative ) );
-
-		$file = CONVOCA_SHIFTS_DIR . 'includes/class-' . $relative . '.php';
-		if ( file_exists( $file ) ) {
-			require_once $file;
-		}
-	}
-);
+// PSR-4 autoloading handled by Composer (vendor/autoload.php)
 
 /* ── Activation Hook ──────────────────────────────────────── */
 
