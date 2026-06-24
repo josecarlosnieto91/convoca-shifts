@@ -17,8 +17,8 @@ class PDF_Certificado {
 	 * Genera el certificado para un turno y devuelve el ID del documento.
 	 */
 	public static function generar( int $post_id ): ?int {
-		if ( ! class_exists( '\\Convoca\\Core\\CONV_Signature' ) ) {
-			error_log( 'Convoca Shifts: CONV_Signature class not found.' );
+		if ( ! class_exists( '\\Convoca\\Core\\Signature' ) ) {
+			error_log( 'Convoca Shifts: Signature class not found.' );
 			return null;
 		}
 
@@ -50,15 +50,15 @@ class PDF_Certificado {
 				'meta_query'     => array(
 					'relation' => 'AND',
 					array(
-						'key'   => '_conv_usuario_id',
+						'key'   => '_convoca_usuario_id',
 						'value' => $user_id,
 					),
 					array(
-						'key'   => '_conv_turno_id',
+						'key'   => '_convoca_turno_id',
 						'value' => $post_id,
 					),
 					array(
-						'key'   => '_conv_tipo_documento',
+						'key'   => '_convoca_tipo_documento',
 						'value' => 'certificado',
 					),
 				),
@@ -70,10 +70,10 @@ class PDF_Certificado {
 			return $existing[0]->ID;
 		}
 
-		$signature = new \Convoca\Core\CONV_Signature();
+		$signature = new \Convoca\Core\Signature();
 
 		$nombre = $user->first_name ?: $user->display_name;
-		$dni    = get_user_meta( $user_id, '_convoca_shifts_dni', true ) ?: ( get_user_meta( $user_id, '_conv_dni', true ) ?: 'N/A' );
+		$dni    = get_user_meta( $user_id, '_convoca_shifts_dni', true ) ?: ( get_user_meta( $user_id, '_convoca_dni', true ) ?: 'N/A' );
 
 		$fecha_turno = wp_date( 'd/m/Y', get_post_timestamp( $turno ) );
 		$actividad   = 'Turno en Centro Social: ' . $turno->post_title;
@@ -88,8 +88,8 @@ class PDF_Certificado {
 
 		$stamp_html = $signature->get_acceptance_stamp_html( 'Asociación Convoca', $ip, $timestamp, $content_for_hash );
 
-		if ( strpos( $template_html, '<!-- FIRMA DIGITAL SERÁ AÑADIDA POR LA CLASE CONV_Signature -->' ) !== false ) {
-			$template_html = str_replace( '<!-- FIRMA DIGITAL SERÁ AÑADIDA POR LA CLASE CONV_Signature -->', $stamp_html, $template_html );
+		if ( strpos( $template_html, '<!-- FIRMA DIGITAL SERÁ AÑADIDA POR LA CLASE Signature -->' ) !== false ) {
+			$template_html = str_replace( '<!-- FIRMA DIGITAL SERÁ AÑADIDA POR LA CLASE Signature -->', $stamp_html, $template_html );
 		} else {
 			$template_html .= $stamp_html;
 		}
@@ -129,12 +129,12 @@ class PDF_Certificado {
 		);
 
 		if ( ! is_wp_error( $doc_id ) ) {
-			update_post_meta( $doc_id, '_conv_usuario_id', $user_id );
-			update_post_meta( $doc_id, '_conv_turno_id', $post_id );
-			update_post_meta( $doc_id, '_conv_tipo_documento', 'certificado' );
-			update_post_meta( $doc_id, '_conv_hash', $hash );
-			update_post_meta( $doc_id, '_conv_documento_url', rest_url( 'convoca/v1/documentos/' . $doc_id ) );
-			update_post_meta( $doc_id, '_conv_documento_path', $filepath );
+			update_post_meta( $doc_id, '_convoca_usuario_id', $user_id );
+			update_post_meta( $doc_id, '_convoca_turno_id', $post_id );
+			update_post_meta( $doc_id, '_convoca_tipo_documento', 'certificado' );
+			update_post_meta( $doc_id, '_convoca_hash', $hash );
+			update_post_meta( $doc_id, '_convoca_documento_url', rest_url( 'convoca/v1/documentos/' . $doc_id ) );
+			update_post_meta( $doc_id, '_convoca_documento_path', $filepath );
 			return $doc_id;
 		}
 

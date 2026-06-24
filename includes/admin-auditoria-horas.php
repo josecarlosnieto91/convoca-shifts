@@ -44,7 +44,7 @@ function convoca_shifts_auditoria_horas_page() {
 			<tbody>
 				<?php
 				foreach ( $users as $u ) :
-					$horas_meta        = (float) get_user_meta( $u->ID, '_conv_horas_voluntariado_total', true );
+					$horas_meta        = (float) get_user_meta( $u->ID, '_convoca_horas_voluntariado_total', true );
 					$turnos_realizados = $wpdb->get_var(
 						$wpdb->prepare(
 							"SELECT COUNT(*) FROM {$wpdb->postmeta} pm
@@ -105,7 +105,7 @@ function convoca_shifts_recalcular_horas_usuario( int $user_id ): void {
 		}
 	}
 
-	update_user_meta( $user_id, '_conv_horas_voluntariado_total', $total_horas );
+	update_user_meta( $user_id, '_convoca_horas_voluntariado_total', $total_horas );
 
 	\Convoca\Core\Logger::info(
 		"Horas recalculadas para usuario #$user_id: $total_horas horas en " . count( $turnos ) . ' turnos.',
