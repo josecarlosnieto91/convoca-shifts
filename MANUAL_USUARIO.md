@@ -1,4 +1,4 @@
-# MANUAL_USUARIO.md — Convoca Shifts v2.5.0
+# MANUAL_USUARIO.md — Convoca Shifts v2.5.1
 
 > Guía para administradores: gestión de turnos de voluntariado.
 
