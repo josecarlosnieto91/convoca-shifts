@@ -34,7 +34,7 @@ class ShiftsStructureTest extends TestCase
     public function test_admin_turno_editor_class_loads(): void
     {
         $this->loadFile('class-admin-turno-editor.php');
-        $this->assertTrue(class_exists('Convoca\Shifts\Admin_Turno_Editor'));
+        $this->assertTrue(class_exists('Convoca\\Shifts\\Convoca_Shifts_Admin_Turno_Editor'));
     }
 
     public function test_admin_turnos_list_class_loads(): void

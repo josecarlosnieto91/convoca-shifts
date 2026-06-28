@@ -154,7 +154,7 @@ function convoca_shifts_voluntarios_pendientes_page() {
 			echo '<td>' . esc_html( $user->user_email ) . '</td>';
 			echo '<td>' . esc_html( $telefono ) . '</td>';
 			echo '<td>
-                <a href="' . esc_url( $revoke_url ) . '" class="convoca-btn convoca-btn-outline convoca-btn--danger" onclick="return confirm(\'¿Estás seguro de que quieres revocar los permisos a este voluntario?\');">' . __( 'Revocar Permisos', 'convoca-shifts' ) . '</a>
+                <a href="' . esc_url( $revoke_url ) . '" class="convoca-btn convoca-btn-outline convoca-btn--danger" onclick="return confirm(\'' . esc_js( __( '¿Estás seguro de que quieres revocar los permisos a este voluntario?', 'convoca-shifts' ) ) . '\');">' . __( 'Revocar Permisos', 'convoca-shifts' ) . '</a>
               </td>';
 			echo '</tr>';
 		}

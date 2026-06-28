@@ -169,7 +169,7 @@ function convoca_shifts_boton_apuntarse() {
 	jQuery(document).ready(function($) {
 		$('#convoca-shifts-btn-proximo').on('click', function(e) {
 			e.preventDefault();
-			if (cstData.confirmSignup && !confirm('¿Te apuntas a este turno? Serás responsable de abrir el centro.')) {
+			if (cstData.confirmSignup && !confirm('<?php echo esc_js( __( '¿Te apuntas a este turno? Serás responsable de abrir el centro.', 'convoca-shifts' ) ); ?>')) {
 				return;
 			}
 
