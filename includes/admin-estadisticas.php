@@ -49,6 +49,13 @@ function convoca_shifts_estadisticas_page() {
 	<div class="wrap">
 		<h1><?php _e( 'Estadísticas de Voluntariado', 'convoca-shifts' ); ?></h1>
 		<p><?php _e( 'Resumen de actividad y horas dedicadas por cada voluntario.', 'convoca-shifts' ); ?></p>
+
+		<?php if ( ! \Convoca\Core\License_Manager::has_pro( 'analytics' ) ) : ?>
+		<div class="convoca-alert convoca-alert--info" style="display:block;margin-bottom:20px;padding:12px 16px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;">
+			<p style="margin:0;">📊 <strong>Analytics Avanzados</strong> es una funcionalidad PRO que incluye gráficos de evolución, distribución por turnos, tendencias temporales y exportación avanzada. 
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=convoca-license' ) ); ?>" style="font-weight:600;">Activa tu licencia</a> para desbloquearlos.</p>
+		</div>
+		<?php endif; ?>
 		
 		<div style="margin-bottom: 20px;">
 			<form method="post" action="">

@@ -93,11 +93,24 @@ function convoca_shifts_settings_page() {
 				</div>
 
 				<div style="margin-top:30px;">
-					<button type="submit" class="convoca-btn convoca-btn-primary"><?php _e( 'Guardar ajustes', 'convoca-shifts' ); ?></button>
-				</div>
-			</form>
+						<button type="submit" class="convoca-btn convoca-btn-primary"><?php _e( 'Guardar ajustes', 'convoca-shifts' ); ?></button>
+					</div>
+				</form>
 
-			<div class="convoca-alert convoca-alert--info" style="display:block;margin-top:20px;margin-bottom:20px;">
+				<!-- PRO Features Section -->
+				<div class="conv-pro-section" style="margin-top:40px;padding:25px;background:#fefce8;border:2px dashed #eab308;border-radius:12px;">
+					<h2 style="margin-top:0;color:#a16207;">✨ Funcionalidades PRO</h2>
+					<p style="color:#713f12;">Las siguientes funcionalidades están disponibles con una licencia PRO. <a href="<?php echo admin_url( 'admin.php?page=convoca-license' ); ?>">Activa tu licencia</a> para desbloquearlas.</p>
+					<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:15px;">
+						<div style="background:#fff;border-radius:8px;padding:15px;border:1px solid #e2e8f0;opacity:0.7;">
+							<span style="font-size:1.2rem;">📊</span>
+							<span style="font-weight:600;margin-left:8px;">Analytics Avanzados</span>
+							<span style="display:block;font-size:11px;color:#94a3b8;margin-top:4px;">Gráficos, tendencias y exportación avanzada</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="convoca-alert convoca-alert--info" style="display:block;margin-top:20px;margin-bottom:20px;">
 				<p><strong>💡 <?php _e( '¡Novedad!', 'convoca-shifts' ); ?></strong>: <?php _e( 'Ahora tienes dos nuevas formas de insertar el contenido: mediante **Bloques de Gutenberg** (recomendado para el editor moderno) o mediante **Widgets** (para barras laterales y pie de página). Ambos son más fáciles de configurar que los shortcodes.', 'convoca-shifts' ); ?></p>
 			</div>
 
