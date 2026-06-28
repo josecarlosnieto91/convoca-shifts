@@ -757,7 +757,7 @@ function convoca_shifts_add_generar_turnos_menu() {
 		__( 'Generar Turnos', 'convoca-shifts' ),
 		'convoca_shifts_manage_turnos',
 		'convoca_shifts_generar_turnos',
-		'convoca_shifts_generar_turnos_page'
+		'Convoca\\Shifts\\convoca_shifts_generar_turnos_page'
 	);
 }
 
