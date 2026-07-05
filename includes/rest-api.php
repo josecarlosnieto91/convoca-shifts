@@ -618,7 +618,8 @@ function convoca_shifts_rest_apuntarse_proximo( WP_REST_Request $request ) {
 	return rest_ensure_response(
 		array(
 			'success' => true,
-			'message' => sprintf( __( '¡Te has apuntado al turno del %s!', 'convoca-shifts' ), $date ),
+			/* translators: %s: date of the shift */
+		'message' => sprintf( __( '¡Te has apuntado al turno del %s!', 'convoca-shifts' ), $date ),
 		)
 	);
 }

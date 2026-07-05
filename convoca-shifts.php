@@ -247,7 +247,7 @@ function convoca_shifts_check_required_role() {
 	if ( ! get_role( 'voluntario_aprobado' ) ) {
 		?>
 		<div class="convoca-alert convoca-alert--warning" style="display:block;margin-bottom:20px;">
-			<p><?php _e( '<strong>Atención:</strong> El rol "Voluntario Aprobado" no existe. Este rol es necesario para el funcionamiento de Centro Social Turnos y debería ser creado por el plugin Convoca Members. Por favor, asegúrate de que Convoca Members está activo y ha sido reactivado recientemente.', 'convoca-shifts' ); ?>
+			<p><?php esc_html_e( '<strong>Atención:</strong> El rol "Voluntario Aprobado" no existe. Este rol es necesario para el funcionamiento de Centro Social Turnos y debería ser creado por el plugin Convoca Members. Por favor, asegúrate de que Convoca Members está activo y ha sido reactivado recientemente.', 'convoca-shifts' ); ?>
 			<a href="?convoca_shifts_dismiss_role_notice=1" style="float:right;text-decoration:none;color:#999;">✕</a></p>
 		</div>
 		<?php

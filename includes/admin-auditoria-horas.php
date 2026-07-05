@@ -45,16 +45,16 @@ function convoca_shifts_auditoria_horas_page() {
 	$users = get_users( array( 'role__in' => array( 'voluntario_aprobado', 'administrator' ) ) );
 	?>
 	<div class="wrap">
-		<h1><?php _e( 'Auditoría de Horas - Voluntariado', 'convoca-shifts' ); ?></h1>
-		<p><?php _e( 'Listado de voluntarios con el total de horas acumuladas desde turnos realizados.', 'convoca-shifts' ); ?></p>
+		<h1><?php esc_html_e( 'Auditoría de Horas - Voluntariado', 'convoca-shifts' ); ?></h1>
+		<p><?php esc_html_e( 'Listado de voluntarios con el total de horas acumuladas desde turnos realizados.', 'convoca-shifts' ); ?></p>
 		<table class="wp-list-table widefat fixed striped">
 			<thead>
 				<tr>
-					<th><?php _e( 'Usuario', 'convoca-shifts' ); ?></th>
-					<th><?php _e( 'Email', 'convoca-shifts' ); ?></th>
-					<th><?php _e( 'Horas Totales (meta)', 'convoca-shifts' ); ?></th>
-					<th><?php _e( 'Turnos Realizados', 'convoca-shifts' ); ?></th>
-					<th><?php _e( 'Acciones', 'convoca-shifts' ); ?></th>
+					<th><?php esc_html_e( 'Usuario', 'convoca-shifts' ); ?></th>
+					<th><?php esc_html_e( 'Email', 'convoca-shifts' ); ?></th>
+					<th><?php esc_html_e( 'Horas Totales (meta)', 'convoca-shifts' ); ?></th>
+					<th><?php esc_html_e( 'Turnos Realizados', 'convoca-shifts' ); ?></th>
+					<th><?php esc_html_e( 'Acciones', 'convoca-shifts' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -83,7 +83,7 @@ function convoca_shifts_auditoria_horas_page() {
 								<?php wp_nonce_field( 'convoca_shifts_recalcular_' . $u->ID ); ?>
 								<input type="hidden" name="user_id" value="<?php echo esc_attr( $u->ID ); ?>">
 								<input type="hidden" name="convoca_shifts_action" value="recalcular">
-								<button type="submit" class="button button-small" onclick="return confirm('<?php esc_attr_e( '¿Recalcular horas? Esta acción escaneará todos los turnos realizados y actualizará el contador.', 'convoca-shifts' ); ?>')"><?php _e( 'Recalcular', 'convoca-shifts' ); ?></button>
+								<button type="submit" class="button button-small" onclick="return confirm('<?php esc_attr_e( '¿Recalcular horas? Esta acción escaneará todos los turnos realizados y actualizará el contador.', 'convoca-shifts' ); ?>')"><?php esc_html_e( 'Recalcular', 'convoca-shifts' ); ?></button>
 							</form>
 						</td>
 					</tr>

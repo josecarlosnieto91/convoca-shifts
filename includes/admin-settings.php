@@ -57,9 +57,9 @@ function convoca_shifts_status_page() {
  */
 add_action( 'admin_init', 'Convoca\Shifts\convoca_shifts_register_plugin_settings' );
 function convoca_shifts_register_plugin_settings() {
-	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_calendar_page_url' );
-	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_hora_apertura' );
-	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_hora_cierre' );
+	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_calendar_page_url', 'sanitize_text_field' );
+	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_hora_apertura', 'sanitize_text_field' );
+	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_hora_cierre', 'sanitize_text_field' );
 }
 
 /**
@@ -75,8 +75,8 @@ function convoca_shifts_settings_page() {
 		<div class="convoca-shifts-admin-header" style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
 			<img src="<?php echo esc_url( CONVOCA_IMAGES_URL . 'logo.png' ); ?>" alt="Convoca Shifts" style="width: 80px; height: 80px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
 			<div>
-				<h1 style="margin: 0; padding: 0;"><?php _e( 'Ajustes de Centro Social Turnos', 'convoca-shifts' ); ?></h1>
-				<p style="margin: 5px 0 0; color: #666; font-size: 1.1em;"><?php _e( 'Configuración del sistema de turnos y apertura', 'convoca-shifts' ); ?></p>
+				<h1 style="margin: 0; padding: 0;"><?php esc_html_e( 'Ajustes de Centro Social Turnos', 'convoca-shifts' ); ?></h1>
+				<p style="margin: 5px 0 0; color: #666; font-size: 1.1em;"><?php esc_html_e( 'Configuración del sistema de turnos y apertura', 'convoca-shifts' ); ?></p>
 			</div>
 		</div>
 
@@ -86,30 +86,30 @@ function convoca_shifts_settings_page() {
 		</h2>
 
 		<?php if ( $active_tab == 'general' ) : ?>
-			<p><?php _e( 'Configura las URLs de las páginas que contienen los shortcodes para que el plugin pueda generar enlaces correctos.', 'convoca-shifts' ); ?></p>
+			<p><?php esc_html_e( 'Configura las URLs de las páginas que contienen los shortcodes para que el plugin pueda generar enlaces correctos.', 'convoca-shifts' ); ?></p>
 
 			<form method="post" action="options.php" class="convoca-box" style="background:#fff;border-radius:12px;padding:30px;max-width:700px;margin-top:20px;">
 				<?php settings_fields( 'convoca_shifts_settings_group' ); ?>
 				<?php do_settings_sections( 'convoca_shifts_settings_group' ); ?>
 
 				<div class="convoca-field">
-					<label for="convoca_shifts_calendar_page_url"><?php _e( 'URL de la página del Calendario', 'convoca-shifts' ); ?></label>
+					<label for="convoca_shifts_calendar_page_url"><?php esc_html_e( 'URL de la página del Calendario', 'convoca-shifts' ); ?></label>
 					<input type="url" id="convoca_shifts_calendar_page_url" name="convoca_shifts_calendar_page_url" value="<?php echo esc_attr( get_option( 'convoca_shifts_calendar_page_url' ) ); ?>" placeholder="https://tuweb.com/calendario">.
-					<small class="convoca-small"><?php _e( 'URL donde has pegado el shortcode [calendario_centro].', 'convoca-shifts' ); ?></small>
+					<small class="convoca-small"><?php esc_html_e( 'URL donde has pegado el shortcode [calendario_centro].', 'convoca-shifts' ); ?></small>
 				</div>
 
 				<div class="convoca-field">
-					<label for="convoca_shifts_hora_apertura"><?php _e( 'Horario del Centro', 'convoca-shifts' ); ?></label>
+					<label for="convoca_shifts_hora_apertura"><?php esc_html_e( 'Horario del Centro', 'convoca-shifts' ); ?></label>
 					<div style="display:flex; align-items:center; gap:10px;">
 						<input type="time" id="convoca_shifts_hora_apertura" name="convoca_shifts_hora_apertura" value="<?php echo esc_attr( get_option( 'convoca_shifts_hora_apertura', '09:00' ) ); ?>">
-						<span><?php _e( 'hasta las', 'convoca-shifts' ); ?></span>
+						<span><?php esc_html_e( 'hasta las', 'convoca-shifts' ); ?></span>
 						<input type="time" id="convoca_shifts_hora_cierre" name="convoca_shifts_hora_cierre" value="<?php echo esc_attr( get_option( 'convoca_shifts_hora_cierre', '22:00' ) ); ?>">
 					</div>
-					<small class="convoca-small"><?php _e( 'Restringe la creación de turnos fuera de este horario.', 'convoca-shifts' ); ?></small>
+					<small class="convoca-small"><?php esc_html_e( 'Restringe la creación de turnos fuera de este horario.', 'convoca-shifts' ); ?></small>
 				</div>
 
 				<div style="margin-top:30px;">
-						<button type="submit" class="convoca-btn convoca-btn-primary"><?php _e( 'Guardar ajustes', 'convoca-shifts' ); ?></button>
+						<button type="submit" class="convoca-btn convoca-btn-primary"><?php esc_html_e( 'Guardar ajustes', 'convoca-shifts' ); ?></button>
 					</div>
 				</form>
 
@@ -127,11 +127,11 @@ function convoca_shifts_settings_page() {
 				</div>
 
 				<div class="convoca-alert convoca-alert--info" style="display:block;margin-top:20px;margin-bottom:20px;">
-				<p><strong>💡 <?php _e( '¡Novedad!', 'convoca-shifts' ); ?></strong>: <?php _e( 'Ahora tienes dos nuevas formas de insertar el contenido: mediante **Bloques de Gutenberg** (recomendado para el editor moderno) o mediante **Widgets** (para barras laterales y pie de página). Ambos son más fáciles de configurar que los shortcodes.', 'convoca-shifts' ); ?></p>
+				<p><strong>💡 <?php esc_html_e( '¡Novedad!', 'convoca-shifts' ); ?></strong>: <?php esc_html_e( 'Ahora tienes dos nuevas formas de insertar el contenido: mediante **Bloques de Gutenberg** (recomendado para el editor moderno) o mediante **Widgets** (para barras laterales y pie de página). Ambos son más fáciles de configurar que los shortcodes.', 'convoca-shifts' ); ?></p>
 			</div>
 
-			<h2><?php _e( 'Guía de Bloques / Widgets / Shortcodes', 'convoca-shifts' ); ?></h2>
-			<p><?php _e( 'Puedes usar estos elementos como bloques de Gutenberg, widgets o mediante shortcodes:', 'convoca-shifts' ); ?></p>
+			<h2><?php esc_html_e( 'Guía de Bloques / Widgets / Shortcodes', 'convoca-shifts' ); ?></h2>
+			<p><?php esc_html_e( 'Puedes usar estos elementos como bloques de Gutenberg, widgets o mediante shortcodes:', 'convoca-shifts' ); ?></p>
 			<table class="widefat fixed striped">
 				<thead>
 					<tr>
@@ -142,24 +142,24 @@ function convoca_shifts_settings_page() {
 				</thead>
 				<tbody>
 					<tr>
-						<td><strong><?php _e( 'CST: Calendario', 'convoca-shifts' ); ?></strong><br><small><code>centro-social/calendario</code></small></td>
+						<td><strong><?php esc_html_e( 'CST: Calendario', 'convoca-shifts' ); ?></strong><br><small><code>centro-social/calendario</code></small></td>
 						<td><code>[calendario_centro]</code></td>
-						<td><?php _e( 'Muestra el calendario interactivo (FullCalendar).', 'convoca-shifts' ); ?></td>
+						<td><?php esc_html_e( 'Muestra el calendario interactivo (FullCalendar).', 'convoca-shifts' ); ?></td>
 					</tr>
 					<tr>
-						<td><strong><?php _e( 'CST: Próximos Turnos', 'convoca-shifts' ); ?></strong><br><small><code>centro-social/proximos-turnos</code></small></td>
+						<td><strong><?php esc_html_e( 'CST: Próximos Turnos', 'convoca-shifts' ); ?></strong><br><small><code>centro-social/proximos-turnos</code></small></td>
 						<td><code>[proximos_turnos cantidad="5"]</code></td>
-						<td><?php _e( 'Lista simple de los próximos turnos programados.', 'convoca-shifts' ); ?></td>
+						<td><?php esc_html_e( 'Lista simple de los próximos turnos programados.', 'convoca-shifts' ); ?></td>
 					</tr>
 					<tr>
-						<td><strong><?php _e( 'CST: Resumen Semanal', 'convoca-shifts' ); ?></strong><br><small><code>centro-social/resumen</code></small></td>
+						<td><strong><?php esc_html_e( 'CST: Resumen Semanal', 'convoca-shifts' ); ?></strong><br><small><code>centro-social/resumen</code></small></td>
 						<td><code>[resumen_turnos]</code></td>
-						<td><?php _e( 'Resumen semanal con contador de huecos libres y botón de acción rápida.', 'convoca-shifts' ); ?></td>
+						<td><?php esc_html_e( 'Resumen semanal con contador de huecos libres y botón de acción rápida.', 'convoca-shifts' ); ?></td>
 					</tr>
 					<tr>
-						<td><strong><?php _e( 'CST: Botón Apuntarse', 'convoca-shifts' ); ?></strong><br><small><code>centro-social/boton-apuntarse</code></small></td>
+						<td><strong><?php esc_html_e( 'CST: Botón Apuntarse', 'convoca-shifts' ); ?></strong><br><small><code>centro-social/boton-apuntarse</code></small></td>
 						<td><code>[boton_apuntarse]</code></td>
-						<td><?php _e( 'Botón directo "Me apunto al siguiente turno libre".', 'convoca-shifts' ); ?></td>
+						<td><?php esc_html_e( 'Botón directo "Me apunto al siguiente turno libre".', 'convoca-shifts' ); ?></td>
 					</tr>
 				</tbody>
 			</table>
@@ -241,10 +241,12 @@ function convoca_shifts_get_system_checks( bool $force = false ) {
 
 	foreach ( $required_plugins as $path => $name ) {
 		$is_active = \Convoca\Core\Utils::is_plugin_active_safe( $path );
+		/* translators: %s: plugin name */
 		$checks[]  = array(
 			'title'   => sprintf( __( 'Plugin: %s', 'convoca-shifts' ), $name ),
 			'status'  => $is_active ? 'ok' : 'warning',
 			'message' => $is_active ? __( 'Activo y funcionando.', 'convoca-shifts' ) : __( 'Plugin no detectado o inactivo.', 'convoca-shifts' ),
+			/* translators: %s: plugin name */
 			'fix'     => ! $is_active ? sprintf( __( 'Se recomienda instalar y activar el plugin %s.', 'convoca-shifts' ), $name ) : '',
 		);
 	}
@@ -263,7 +265,8 @@ function convoca_shifts_get_system_checks( bool $force = false ) {
 		$checks[] = array(
 			'title'   => $data['title'],
 			'status'  => $page ? 'ok' : 'error',
-			'message' => $page ? sprintf( __( 'Detectada: %s', 'convoca-shifts' ), get_the_title( $page ) ) : __( 'No se ha encontrado ninguna página con este shortcode.', 'convoca-shifts' ),
+			/* translators: %s: page title */
+		'message' => $page ? sprintf( __( 'Detectada: %s', 'convoca-shifts' ), get_the_title( $page ) ) : __( 'No se ha encontrado ninguna página con este shortcode.', 'convoca-shifts' ),
 			'fix'     => ! $page ? $data['fix'] : '',
 		);
 	}

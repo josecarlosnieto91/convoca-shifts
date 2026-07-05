@@ -136,7 +136,10 @@ class Convoca_Shifts_Admin_Status {
 					</div>
 					<div class="convoca-diagnostic-summary">
 						<h3><?php echo $has_errors ? esc_html__( 'Se encontraron errores', 'convoca-shifts' ) : ( $has_warnings ? esc_html__( 'Atención: algunas comprobaciones requieren revisión', 'convoca-shifts' ) : esc_html__( 'Todo correcto', 'convoca-shifts' ) ); ?></h3>
-						<p><?php printf( esc_html__( '%d comprobaciones realizadas.', 'convoca-shifts' ), count( $results ) ); ?></p>
+						<p><?php
+							/* translators: %d: number of checks run */
+							printf( esc_html__( '%d comprobaciones realizadas.', 'convoca-shifts' ), count( $results ) );
+						?></p>
 					</div>
 				</div>
 				<div class="convoca-diagnostic-results">

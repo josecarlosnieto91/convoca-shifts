@@ -41,7 +41,8 @@ function convoca_shifts_voluntarios_pendientes_page() {
 		if ( $user ) {
 			$user->set_role( 'voluntario_aprobado' );
 			delete_user_meta( $user_id, '_convoca_shifts_aprobado' );
-			echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( esc_html__( 'Usuario %s aprobado como voluntario.', 'convoca-shifts' ), $user->display_name ) . '</p></div>';
+			/* translators: %s: user display name */
+		echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . esc_html( sprintf( __( 'Usuario %s aprobado como voluntario.', 'convoca-shifts' ), $user->display_name ) ) . '</p></div>';
 			do_action( 'convoca_voluntario_aprobado', $user_id );
 			$attachments = apply_filters( 'convoca_voluntario_aprobado_attachments', array(), $user_id );
 			wp_mail( $user->user_email, __( '¡Solicitud de voluntariado aprobada!', 'convoca-shifts' ), __( 'Hola, ya puedes acceder y gestionar turnos en el centro social. Adjunto a este correo encontrarás tu Acuerdo de Incorporación si procede.', 'convoca-shifts' ), '', $attachments );
@@ -106,7 +107,8 @@ function convoca_shifts_voluntarios_pendientes_page() {
 					convoca_shifts_log_activity( get_current_user_id(), 0, 'voluntario_revocado', array( 'voluntario_id' => $user_id ) );
 				}
 
-				echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( esc_html__( 'Permisos de voluntario revocados para %s y turnos futuros liberados.', 'convoca-shifts' ), $user->display_name ) . '</p></div>';
+				/* translators: %s: user display name */
+			echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . esc_html( sprintf( __( 'Permisos de voluntario revocados para %s y turnos futuros liberados.', 'convoca-shifts' ), $user->display_name ) ) . '</p></div>';
 			}
 		}
 	}

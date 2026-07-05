@@ -70,11 +70,11 @@ function convoca_shifts_calendario_centro() {
 	if ( ! is_user_logged_in() ) {
 		$access_url = get_option( 'convoca_shifts_access_page_url', '#' );
 		echo '<div class="convoca-shifts-public-notice">';
-		echo '<p>💡 ' . __( 'Este es el cuadrante actual. Si eres voluntario/a, inicia sesión para apuntarte a un turno.', 'convoca-shifts' ) . ' <a href="' . esc_url( $access_url ) . '">' . __( 'Ir a Acceso', 'convoca-shifts' ) . '</a></p>';
+		echo '<p>💡 ' . esc_html__( 'Este es el cuadrante actual. Si eres voluntario/a, inicia sesión para apuntarte a un turno.', 'convoca-shifts' ) . ' <a href="' . esc_url( $access_url ) . '">' . esc_html__( 'Ir a Acceso', 'convoca-shifts' ) . '</a></p>';
 		echo '</div>';
 	} elseif ( is_user_logged_in() && ( ! current_user_can( 'gestionar_mis_turnos' ) && ! current_user_can( 'manage_options' ) ) ) {
 		echo '<div class="convoca-shifts-public-notice warning">';
-		echo '<p>⏳ ' . __( 'Tu cuenta está pendiente de aprobación. Podrás apuntarte a turnos en cuanto un administrador te active.', 'convoca-shifts' ) . '</p>';
+		echo '<p>⏳ ' . esc_html__( 'Tu cuenta está pendiente de aprobación. Podrás apuntarte a turnos en cuanto un administrador te active.', 'convoca-shifts' ) . '</p>';
 		echo '</div>';
 	}
 	?>
@@ -110,52 +110,52 @@ function convoca_shifts_render_frontend_modal() {
 	<div id="convoca-shifts-frontend-modal" class="convoca-shifts-modal" style="display:none;">
 		<div class="convoca-shifts-modal-content">
 			<span class="convoca-shifts-close-frontend" style="float:right; cursor:pointer; font-size:24px;">&times;</span>
-			<h2 id="convoca-shifts-fe-modal-title"><?php _e( 'Crear Nuevo Turno', 'convoca-shifts' ); ?></h2>
+			<h2 id="convoca-shifts-fe-modal-title"><?php esc_html_e( 'Crear Nuevo Turno', 'convoca-shifts' ); ?></h2>
 			<hr>
 			<div class="convoca-shifts-form-group">
-				<label><?php _e( 'Seleccionar Horario', 'convoca-shifts' ); ?></label>
+				<label><?php esc_html_e( 'Seleccionar Horario', 'convoca-shifts' ); ?></label>
 				<div class="convoca-shifts-presets">
-					<button type="button" class="convoca-shifts-preset-btn" data-start="10:00" data-end="13:00">☀️ <?php _e( 'Mañana (10-13h)', 'convoca-shifts' ); ?></button>
-					<button type="button" class="convoca-shifts-preset-btn" data-start="17:00" data-end="20:00">🌇 <?php _e( 'Tarde (17-20h)', 'convoca-shifts' ); ?></button>
-					<button type="button" class="convoca-shifts-preset-btn" data-custom="1">⚙️ <?php _e( 'Personalizado', 'convoca-shifts' ); ?></button>
+					<button type="button" class="convoca-shifts-preset-btn" data-start="10:00" data-end="13:00">☀️ <?php esc_html_e( 'Mañana (10-13h)', 'convoca-shifts' ); ?></button>
+					<button type="button" class="convoca-shifts-preset-btn" data-start="17:00" data-end="20:00">🌇 <?php esc_html_e( 'Tarde (17-20h)', 'convoca-shifts' ); ?></button>
+					<button type="button" class="convoca-shifts-preset-btn" data-custom="1">⚙️ <?php esc_html_e( 'Personalizado', 'convoca-shifts' ); ?></button>
 				</div>
 			</div>
 
 			<div id="convoca-shifts-custom-time-fields" style="display:none; margin-top:15px; padding:15px; background:#f8fafc; border-radius:8px; border:1px solid #e2e8f0;">
 				<div class="convoca-shifts-form-row" style="margin-bottom:0;">
 					<div class="convoca-shifts-form-group" style="margin-bottom:0;">
-						<label><?php _e( 'Hora Inicio', 'convoca-shifts' ); ?></label>
+						<label><?php esc_html_e( 'Hora Inicio', 'convoca-shifts' ); ?></label>
 						<input type="time" id="fe_h_start" value="10:00" step="900">
 					</div>
 					<div class="convoca-shifts-form-group" style="margin-bottom:0;">
-						<label><?php _e( 'Hora Fin', 'convoca-shifts' ); ?></label>
+						<label><?php esc_html_e( 'Hora Fin', 'convoca-shifts' ); ?></label>
 						<input type="time" id="fe_h_end" value="13:00" step="900">
 					</div>
 				</div>
 			</div>
 
 			<div class="convoca-shifts-form-group">
-				<label><?php _e( 'Estado', 'convoca-shifts' ); ?></label>
+				<label><?php esc_html_e( 'Estado', 'convoca-shifts' ); ?></label>
 				<?php if ( current_user_can( 'manage_options' ) ) : ?>
 				<select id="fe_estado" style="width:100%;">
-					<option value="abierto_disponible">🟡 <?php _e( 'Pendiente', 'convoca-shifts' ); ?></option>
-					<option value="cerrado">🔴 <?php _e( 'Cerrado', 'convoca-shifts' ); ?></option>
+					<option value="abierto_disponible">🟡 <?php esc_html_e( 'Pendiente', 'convoca-shifts' ); ?></option>
+					<option value="cerrado">🔴 <?php esc_html_e( 'Cerrado', 'convoca-shifts' ); ?></option>
 				</select>
 				<?php else : ?>
 				<select id="fe_estado" style="width:100%; pointer-events: none; background: #f1f5f9;">
-					<option value="abierto_disponible">🟡 <?php _e( 'Pendiente (Disponible para voluntarios)', 'convoca-shifts' ); ?></option>
+					<option value="abierto_disponible">🟡 <?php esc_html_e( 'Pendiente (Disponible para voluntarios)', 'convoca-shifts' ); ?></option>
 				</select>
 				<?php endif; ?>
 			</div>
 			<div class="convoca-shifts-form-group">
 				<label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
 					<input type="checkbox" id="fe_apoyo"> 
-					<span>🛟 <?php _e( 'Necesita apoyo', 'convoca-shifts' ); ?></span>
+					<span>🛟 <?php esc_html_e( 'Necesita apoyo', 'convoca-shifts' ); ?></span>
 				</label>
 			</div>
 			<div class="convoca-shifts-modal-footer">
-				<button type="button" class="convoca-shifts-fe-cancel convoca-btn convoca-btn-outline"><?php _e( 'Cancelar', 'convoca-shifts' ); ?></button>
-				<button type="button" id="convoca-shifts-fe-save" class="convoca-btn convoca-btn-primary"><?php _e( 'Guardar Turno', 'convoca-shifts' ); ?></button>
+				<button type="button" class="convoca-shifts-fe-cancel convoca-btn convoca-btn-outline"><?php esc_html_e( 'Cancelar', 'convoca-shifts' ); ?></button>
+				<button type="button" id="convoca-shifts-fe-save" class="convoca-btn convoca-btn-primary"><?php esc_html_e( 'Guardar Turno', 'convoca-shifts' ); ?></button>
 			</div>
 		</div>
 	</div>
@@ -177,7 +177,7 @@ function convoca_shifts_boton_apuntarse() {
 	<div class="convoca-shifts-boton-apuntarse-container">
 		<button id="convoca-shifts-btn-proximo" class="convoca-shifts-btn-proximo">
 			<span class="dashicons dashicons-calendar-alt"></span>
-			<?php _e( 'Me apunto al siguiente turno libre', 'convoca-shifts' ); ?>
+			<?php esc_html_e( 'Me apunto al siguiente turno libre', 'convoca-shifts' ); ?>
 		</button>
 		<div id="convoca-shifts-proximo-msg" class="convoca-shifts-msg" style="display:none;"></div>
 	</div>
@@ -280,7 +280,7 @@ function convoca_shifts_resumen_turnos( $atts = array() ) {
 	<div class="convoca-shifts-resumen-wrapper">
 		<div class="convoca-shifts-resumen-turnos">
 			<?php if ( $resumen['total'] > 0 ) : ?>
-				📅 Esta semana hay <strong><?php echo $resumen['sin_cubrir']; ?> turnos sin cubrir</strong> de <?php echo $resumen['total']; ?> en total.
+				📅 <?php echo esc_html( sprintf( __( 'Esta semana hay %1$d turnos sin cubrir de %2$d en total.', 'convoca-shifts' ), $resumen['sin_cubrir'], $resumen['total'] ) ); ?>
 			<?php else : ?>
 				📅 No hay turnos definidos para esta semana.
 			<?php endif; ?>
@@ -321,12 +321,12 @@ function convoca_shifts_resumen_turnos( $atts = array() ) {
 		);
 
 		if ( ! empty( $gaps ) ) :
-			echo '<div class="convoca-shifts-resumen-gaps"><strong>' . __( 'Huecos libres:', 'convoca-shifts' ) . '</strong> ';
+			echo '<div class="convoca-shifts-resumen-gaps"><strong>' . esc_html__( 'Huecos libres:', 'convoca-shifts' ) . '</strong> ';
 			$gap_strings = array();
 			foreach ( $gaps as $gap ) {
 				$gap_strings[] = convoca_shifts_fecha_corta( get_post_timestamp( $gap ) ) . ' (' . esc_html( get_the_time( 'H:i', $gap ) ) . ')';
 			}
-			echo implode( ', ', $gap_strings );
+			echo esc_html( implode( ', ', $gap_strings ) );
 			echo '</div>';
 		endif;
 		?>

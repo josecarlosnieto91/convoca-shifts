@@ -46,7 +46,8 @@ function convoca_shifts_estadisticas_page() {
 	}
 
 	if ( ! $table_exists ) {
-		echo '<div class="error"><p>' . sprintf( esc_html__( 'La tabla de logs (%s) no existe. El registro de actividad no funcionará.', 'convoca-shifts' ), $table_log ) . ' <a href="' . esc_url( admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_estadisticas&convoca_shifts_fix_logs=1' ) ) . '" class="convoca-btn convoca-btn-outline">' . esc_html__( 'Intentar crear ahora', 'convoca-shifts' ) . '</a></p></div>';
+		/* translators: %s: database table name */
+		echo '<div class="error"><p>' . esc_html( sprintf( __( 'La tabla de logs (%s) no existe. El registro de actividad no funcionará.', 'convoca-shifts' ), $table_log ) ) . ' <a href="' . esc_url( admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_estadisticas&convoca_shifts_fix_logs=1' ) ) . '" class="convoca-btn convoca-btn-outline">' . esc_html__( 'Intentar crear ahora', 'convoca-shifts' ) . '</a></p></div>';
 	}
 
 	// Get all users who have the volunteer role or have done turns.
@@ -63,8 +64,8 @@ function convoca_shifts_estadisticas_page() {
 
 	?>
 	<div class="wrap">
-		<h1><?php _e( 'Estadísticas de Voluntariado', 'convoca-shifts' ); ?></h1>
-		<p><?php _e( 'Resumen de actividad y horas dedicadas por cada voluntario.', 'convoca-shifts' ); ?></p>
+		<h1><?php esc_html_e( 'Estadísticas de Voluntariado', 'convoca-shifts' ); ?></h1>
+		<p><?php esc_html_e( 'Resumen de actividad y horas dedicadas por cada voluntario.', 'convoca-shifts' ); ?></p>
 
 		<?php if ( ! \Convoca\Core\License_Manager::has_pro( 'analytics' ) ) : ?>
 		<div class="convoca-alert convoca-alert--info" style="display:block;margin-bottom:20px;padding:12px 16px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;">
@@ -77,20 +78,20 @@ function convoca_shifts_estadisticas_page() {
 			<form method="post" action="">
 				<?php wp_nonce_field( 'convoca_shifts_exportar_stats_action' ); ?>
 				<input type="hidden" name="convoca_shifts_action" value="exportar_stats_csv">
-				<button type="submit" class="convoca-btn convoca-btn-outline"><?php _e( '📥 Exportar Estadísticas a CSV', 'convoca-shifts' ); ?></button>
+				<button type="submit" class="convoca-btn convoca-btn-outline"><?php esc_html_e( '📥 Exportar Estadísticas a CSV', 'convoca-shifts' ); ?></button>
 			</form>
 		</div>
 
 		<table class="wp-list-table widefat fixed striped">
 			<thead>
 				<tr>
-					<th><?php _e( 'Voluntario', 'convoca-shifts' ); ?></th>
-					<th><?php _e( 'Email', 'convoca-shifts' ); ?></th>
-					<th><?php _e( 'Turnos (Total)', 'convoca-shifts' ); ?></th>
-					<th><?php _e( 'Realizados', 'convoca-shifts' ); ?></th>
-					<th><?php _e( 'Faltas', 'convoca-shifts' ); ?></th>
-					<th><?php _e( 'Horas (Aprobadas)', 'convoca-shifts' ); ?></th>
-					<th><?php _e( 'Último Turno', 'convoca-shifts' ); ?></th>
+					<th><?php esc_html_e( 'Voluntario', 'convoca-shifts' ); ?></th>
+					<th><?php esc_html_e( 'Email', 'convoca-shifts' ); ?></th>
+					<th><?php esc_html_e( 'Turnos (Total)', 'convoca-shifts' ); ?></th>
+					<th><?php esc_html_e( 'Realizados', 'convoca-shifts' ); ?></th>
+					<th><?php esc_html_e( 'Faltas', 'convoca-shifts' ); ?></th>
+					<th><?php esc_html_e( 'Horas (Aprobadas)', 'convoca-shifts' ); ?></th>
+					<th><?php esc_html_e( 'Último Turno', 'convoca-shifts' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -122,7 +123,7 @@ function convoca_shifts_estadisticas_page() {
 			</tbody>
 		</table>
 
-		<h2 style="margin-top: 40px;"><?php _e( 'Registro de Actividad Reciente', 'convoca-shifts' ); ?></h2>
+		<h2 style="margin-top: 40px;"><?php esc_html_e( 'Registro de Actividad Reciente', 'convoca-shifts' ); ?></h2>
 		<?php
 		$table_log = $wpdb->prefix . 'convoca_shifts_activity_log';
 
@@ -145,15 +146,15 @@ function convoca_shifts_estadisticas_page() {
 		<table class="wp-list-table widefat fixed striped">
 			<thead>
 				<tr>
-					<th style="width: 150px;"><?php _e( 'Fecha/Hora', 'convoca-shifts' ); ?></th>
-					<th style="width: 150px;"><?php _e( 'Usuario', 'convoca-shifts' ); ?></th>
-					<th style="width: 120px;"><?php _e( 'Acción', 'convoca-shifts' ); ?></th>
-					<th><?php _e( 'Detalles', 'convoca-shifts' ); ?></th>
+					<th style="width: 150px;"><?php esc_html_e( 'Fecha/Hora', 'convoca-shifts' ); ?></th>
+					<th style="width: 150px;"><?php esc_html_e( 'Usuario', 'convoca-shifts' ); ?></th>
+					<th style="width: 120px;"><?php esc_html_e( 'Acción', 'convoca-shifts' ); ?></th>
+					<th><?php esc_html_e( 'Detalles', 'convoca-shifts' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php if ( empty( $logs ) ) : ?>
-					<tr><td colspan="4"><?php _e( 'No hay actividad registrada aún.', 'convoca-shifts' ); ?></td></tr>
+					<tr><td colspan="4"><?php esc_html_e( 'No hay actividad registrada aún.', 'convoca-shifts' ); ?></td></tr>
 				<?php else : ?>
 					<?php
 					foreach ( $logs as $log ) :
@@ -189,7 +190,10 @@ function convoca_shifts_estadisticas_page() {
 		<?php if ( $total_pages > 1 ) : ?>
 			<div class="tablenav" style="margin-top: 10px;">
 				<div class="tablenav-pages">
-					<span class="displaying-num"><?php printf( esc_html__( '%d elementos', 'convoca-shifts' ), $total_logs ); ?></span>
+					<span class="displaying-num"><?php
+					/* translators: %d: total number of log entries */
+					echo esc_html( sprintf( __( '%d elementos', 'convoca-shifts' ), $total_logs ) );
+				?></span>
 					<span class="pagination-links">
 						<?php if ( $current_page > 1 ) : ?>
 							<a class="prev-page button" href="<?php echo esc_url( add_query_arg( 'paged_logs', $current_page - 1 ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Página anterior', 'convoca-shifts' ); ?></span>‹</a>
@@ -375,7 +379,8 @@ function convoca_shifts_exportar_stats_csv_handler() {
 			fputcsv( $output, $row );
 		}
 
-		fclose( $output );
+	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- php://output is not a real file
+	fclose( $output );
 		exit;
 	}
 }

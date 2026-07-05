@@ -134,6 +134,7 @@ function convoca_shifts_send_reminders() {
 
 				if ( $user ) {
 					$subject = __( 'Recordatorio de turno en Centro Social', 'convoca-shifts' );
+					/* translators: 1: first name, 2: turn title, 3: start time */
 					$message = sprintf(
 						__( 'Hola %1$s,\n\nTe recordamos que tienes un turno asignado para abrir el centro pronto:\n\nTurno: %2$s\nHora de inicio: %3$s\n\n¡Gracias por tu voluntariado!', 'convoca-shifts' ),
 						$user->first_name,

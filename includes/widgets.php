@@ -55,7 +55,7 @@ class Convoca_Shifts_Calendario_Widget extends \WP_Widget {
 		if ( ! empty( $instance['title'] ) ) {
 			echo wp_kses_post( $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'] );
 		}
-		echo convoca_shifts_calendario_centro();
+		echo wp_kses_post( convoca_shifts_calendario_centro() );
 		echo wp_kses_post( $args['after_widget'] );
 	}
 
@@ -93,7 +93,7 @@ class Convoca_Shifts_Boton_Apuntarse_Widget extends \WP_Widget {
 		if ( ! empty( $instance['title'] ) ) {
 			echo wp_kses_post( $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'] );
 		}
-		echo convoca_shifts_boton_apuntarse();
+		echo wp_kses_post( convoca_shifts_boton_apuntarse() );
 		echo wp_kses_post( $args['after_widget'] );
 	}
 

@@ -136,9 +136,9 @@ function convoca_shifts_turno_rapido_notices() {
 function convoca_shifts_turno_rapido_page() {
 	?>
 	<div class="wrap">
-		<h1><?php _e( 'Añadir Turno Rápido', 'convoca-shifts' ); ?></h1>
+		<h1><?php esc_html_e( 'Añadir Turno Rápido', 'convoca-shifts' ); ?></h1>
 		<div class="convoca-alert convoca-alert--info" style="display:block;margin-bottom:20px;">
-			<p><?php _e( 'Selecciona un día en el calendario para crear un turno sin pasar por la pantalla de edición estándar.', 'convoca-shifts' ); ?></p>
+			<p><?php esc_html_e( 'Selecciona un día en el calendario para crear un turno sin pasar por la pantalla de edición estándar.', 'convoca-shifts' ); ?></p>
 		</div>
 		
 		<div id="convoca-shifts-admin-calendar-container" class="card" style="padding: 20px; max-width: 800px;">
@@ -345,7 +345,7 @@ function convoca_shifts_render_quick_add_modal() {
 	<div id="convoca-shifts-quick-modal" class="convoca-shifts-modal">
 		<div class="convoca-shifts-modal-content">
 			<span class="convoca-shifts-close">&times;</span>
-			<h2 id="convoca-shifts-modal-title"><?php _e( 'Crear Nuevo Turno', 'convoca-shifts' ); ?></h2>
+			<h2 id="convoca-shifts-modal-title"><?php esc_html_e( 'Crear Nuevo Turno', 'convoca-shifts' ); ?></h2>
 			<hr>
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<?php wp_nonce_field( 'convoca_shifts_quick_add_action', 'convoca_shifts_quick_add_nonce' ); ?>
@@ -353,29 +353,29 @@ function convoca_shifts_render_quick_add_modal() {
 				<input type="hidden" id="convoca_shifts_modal_date" name="convoca_shifts_date">
 				
 				<div class="convoca-shifts-form-group">
-					<label><?php _e( 'Seleccionar Horario', 'convoca-shifts' ); ?></label>
+					<label><?php esc_html_e( 'Seleccionar Horario', 'convoca-shifts' ); ?></label>
 					<div class="convoca-shifts-presets">
-						<button type="button" class="convoca-shifts-preset-btn" data-start="10:00" data-end="13:00">☀️ <?php _e( 'Mañana (10-13h)', 'convoca-shifts' ); ?></button>
-						<button type="button" class="convoca-shifts-preset-btn" data-start="17:00" data-end="20:00">🌇 <?php _e( 'Tarde (17-20h)', 'convoca-shifts' ); ?></button>
-						<button type="button" class="convoca-shifts-preset-btn" data-custom="1">⚙️ <?php _e( 'Personalizado', 'convoca-shifts' ); ?></button>
+						<button type="button" class="convoca-shifts-preset-btn" data-start="10:00" data-end="13:00">☀️ <?php esc_html_e( 'Mañana (10-13h)', 'convoca-shifts' ); ?></button>
+						<button type="button" class="convoca-shifts-preset-btn" data-start="17:00" data-end="20:00">🌇 <?php esc_html_e( 'Tarde (17-20h)', 'convoca-shifts' ); ?></button>
+						<button type="button" class="convoca-shifts-preset-btn" data-custom="1">⚙️ <?php esc_html_e( 'Personalizado', 'convoca-shifts' ); ?></button>
 					</div>
 				</div>
 
 				<div id="convoca-shifts-custom-time-fields" style="display:none; margin-top:15px; padding:15px; background:var(--wp--preset--color--blanco, #ffffff); border-radius:8px; border:1px solid var(--wp--preset--color--gris-medio, #e0e0e0);">
 					<div class="convoca-shifts-form-row" style="margin-bottom:0;">
 						<div class="convoca-shifts-form-group" style="margin-bottom:0;">
-							<label><?php _e( 'Hora Inicio', 'convoca-shifts' ); ?></label>
+							<label><?php esc_html_e( 'Hora Inicio', 'convoca-shifts' ); ?></label>
 							<input type="time" name="convoca_shifts_h_start" id="fe_h_start" value="10:00" step="900">
 						</div>
 						<div class="convoca-shifts-form-group" style="margin-bottom:0;">
-							<label><?php _e( 'Hora Fin', 'convoca-shifts' ); ?></label>
+							<label><?php esc_html_e( 'Hora Fin', 'convoca-shifts' ); ?></label>
 							<input type="time" name="convoca_shifts_h_end" id="fe_h_end" value="13:00" step="900">
 						</div>
 					</div>
 				</div>
 
 				<div class="convoca-shifts-form-group">
-					<label><?php _e( 'Estado Inicial', 'convoca-shifts' ); ?></label>
+					<label><?php esc_html_e( 'Estado Inicial', 'convoca-shifts' ); ?></label>
 					<select name="convoca_shifts_estado" style="width: 100%;">
 						<option value="abierto_disponible">🟡 Pendiente (Disponible para voluntarios)</option>
 						<option value="abierto_ocupado">🔵 Ocupado (Actividad interna / No inscribible)</option>
@@ -386,14 +386,14 @@ function convoca_shifts_render_quick_add_modal() {
 				<div class="convoca-shifts-form-group" style="margin-top: 15px;">
 					<label>
 						<input type="checkbox" name="convoca_shifts_apoyo" value="1">
-						<strong><?php _e( '🛟 Necesita apoyo', 'convoca-shifts' ); ?></strong>
+						<strong><?php esc_html_e( '🛟 Necesita apoyo', 'convoca-shifts' ); ?></strong>
 					</label>
-					<p class="description"><?php _e( 'Marca esto si el voluntario necesita acompañamiento (p.ej. no tiene llaves).', 'convoca-shifts' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Marca esto si el voluntario necesita acompañamiento (p.ej. no tiene llaves).', 'convoca-shifts' ); ?></p>
 				</div>
 
 <div class="convoca-shifts-modal-footer">
-					<button type="button" class="convoca-btn convoca-btn-outline convoca-shifts-cancel-btn"><?php _e( 'Cancelar', 'convoca-shifts' ); ?></button>
-					<button type="submit" class="convoca-btn convoca-btn-primary"><?php _e( 'Guardar Turno', 'convoca-shifts' ); ?></button>
+					<button type="button" class="convoca-btn convoca-btn-outline convoca-shifts-cancel-btn"><?php esc_html_e( 'Cancelar', 'convoca-shifts' ); ?></button>
+					<button type="submit" class="convoca-btn convoca-btn-primary"><?php esc_html_e( 'Guardar Turno', 'convoca-shifts' ); ?></button>
 				</div>
 			</form>
 		</div>
