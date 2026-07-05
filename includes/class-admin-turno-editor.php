@@ -1,4 +1,20 @@
 <?php
+
+/**
+ * Convoca Shifts
+ *
+ * @package    Convoca\Shifts
+ * @subpackage Includes
+ *
+ * @copyright  Copyright (C) 2026 Jose Carlos Nieto Ramos
+ * @license    GPL-2.0-or-later
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+
 /**
  * Custom editor for centro_turno (shifts).
  *
@@ -69,7 +85,7 @@ class Convoca_Shifts_Admin_Turno_Editor {
 		$is_edit = $post_id > 0 && get_post_type( $post_id ) === 'centro_turno';
 
 		if ( $is_edit && ! current_user_can( 'edit_post', $post_id ) ) {
-			wp_die( __( 'No tienes permisos para editar este turno.', 'convoca-shifts' ) );
+			wp_die( esc_html__( 'No tienes permisos para editar este turno.', 'convoca-shifts' ) );
 		}
 
 		$post = $is_edit ? get_post( $post_id ) : null;
@@ -119,7 +135,7 @@ class Convoca_Shifts_Admin_Turno_Editor {
 
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="convoca-box" style="background:#fff;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,0.05);padding:40px;margin-top:20px;">
 				<input type="hidden" name="action" value="convoca_shifts_save_turno">
-				<input type="hidden" name="post_id" value="<?php echo $is_edit ? $post_id : 0; ?>">
+				<input type="hidden" name="post_id" value="<?php echo $is_edit ? esc_attr( $post_id ) : 0; ?>">
 
 				<div class="convoca-grid-2">
 
@@ -243,16 +259,16 @@ class Convoca_Shifts_Admin_Turno_Editor {
 		$is_edit = $post_id > 0;
 
 		if ( ! isset( $data['_convoca_shifts_nonce'] ) ) {
-			wp_die( __( 'Acceso denegado.', 'convoca-shifts' ) );
+			wp_die( esc_html__( 'Acceso denegado.', 'convoca-shifts' ) );
 		}
 		if ( ! wp_verify_nonce( $data['_convoca_shifts_nonce'], 'convoca_shifts_save_turno_' . $post_id ) ) {
-			wp_die( __( 'Nonce inválido.', 'convoca-shifts' ) );
+			wp_die( esc_html__( 'Nonce inválido.', 'convoca-shifts' ) );
 		}
 
 		if ( $is_edit && ! current_user_can( 'edit_post', $post_id ) ) {
-			wp_die( __( 'No tienes permisos para editar este turno.', 'convoca-shifts' ) );
+			wp_die( esc_html__( 'No tienes permisos para editar este turno.', 'convoca-shifts' ) );
 		} elseif ( ! $is_edit && ! current_user_can( 'edit_posts' ) ) {
-			wp_die( __( 'No tienes permisos para crear turnos.', 'convoca-shifts' ) );
+			wp_die( esc_html__( 'No tienes permisos para crear turnos.', 'convoca-shifts' ) );
 		}
 
 		$fecha          = sanitize_text_field( $data['convoca_shifts_fecha'] ?? '' );
@@ -287,7 +303,7 @@ class Convoca_Shifts_Admin_Turno_Editor {
 				)
 			);
 			if ( is_wp_error( $post_id ) ) {
-				wp_die( __( 'Error al crear el turno.', 'convoca-shifts' ) );
+				wp_die( esc_html__( 'Error al crear el turno.', 'convoca-shifts' ) );
 			}
 		}
 

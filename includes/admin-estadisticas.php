@@ -1,4 +1,20 @@
 <?php
+
+/**
+ * Convoca Shifts
+ *
+ * @package    Convoca\Shifts
+ * @subpackage Includes
+ *
+ * @copyright  Copyright (C) 2026 Jose Carlos Nieto Ramos
+ * @license    GPL-2.0-or-later
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+
 namespace Convoca\Shifts;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -26,11 +42,11 @@ function convoca_shifts_estadisticas_page() {
 
 	if ( isset( $_GET['convoca_shifts_fix_logs'] ) ) {
 		convoca_shifts_create_log_table();
-		echo '<div class="updated"><p>' . __( 'Intento de creación de tabla realizado.', 'convoca-shifts' ) . '</p></div>';
+		echo '<div class="updated"><p>' . esc_html__( 'Intento de creación de tabla realizado.', 'convoca-shifts' ) . '</p></div>';
 	}
 
 	if ( ! $table_exists ) {
-		echo '<div class="error"><p>' . sprintf( __( 'La tabla de logs (%s) no existe. El registro de actividad no funcionará.', 'convoca-shifts' ), $table_log ) . ' <a href="' . admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_estadisticas&convoca_shifts_fix_logs=1' ) . '" class="convoca-btn convoca-btn-outline">' . __( 'Intentar crear ahora', 'convoca-shifts' ) . '</a></p></div>';
+		echo '<div class="error"><p>' . sprintf( esc_html__( 'La tabla de logs (%s) no existe. El registro de actividad no funcionará.', 'convoca-shifts' ), $table_log ) . ' <a href="' . esc_url( admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_estadisticas&convoca_shifts_fix_logs=1' ) ) . '" class="convoca-btn convoca-btn-outline">' . esc_html__( 'Intentar crear ahora', 'convoca-shifts' ) . '</a></p></div>';
 	}
 
 	// Get all users who have the volunteer role or have done turns.
@@ -80,7 +96,7 @@ function convoca_shifts_estadisticas_page() {
 			<tbody>
 				<?php
 				if ( empty( $all_uids ) ) {
-					echo '<tr><td colspan="5">' . __( 'No hay voluntarios registrados aún.', 'convoca-shifts' ) . '</td></tr>';
+					echo '<tr><td colspan="5">' . esc_html__( 'No hay voluntarios registrados aún.', 'convoca-shifts' ) . '</td></tr>';
 				} else {
 					foreach ( $all_uids as $user_id ) {
 						$user = get_userdata( $user_id );
@@ -173,16 +189,16 @@ function convoca_shifts_estadisticas_page() {
 		<?php if ( $total_pages > 1 ) : ?>
 			<div class="tablenav" style="margin-top: 10px;">
 				<div class="tablenav-pages">
-					<span class="displaying-num"><?php printf( __( '%d elementos', 'convoca-shifts' ), $total_logs ); ?></span>
+					<span class="displaying-num"><?php printf( esc_html__( '%d elementos', 'convoca-shifts' ), $total_logs ); ?></span>
 					<span class="pagination-links">
 						<?php if ( $current_page > 1 ) : ?>
-							<a class="prev-page button" href="<?php echo add_query_arg( 'paged_logs', $current_page - 1 ); ?>"><span class="screen-reader-text"><?php _e( 'Página anterior', 'convoca-shifts' ); ?></span>‹</a>
+							<a class="prev-page button" href="<?php echo esc_url( add_query_arg( 'paged_logs', $current_page - 1 ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Página anterior', 'convoca-shifts' ); ?></span>‹</a>
 						<?php endif; ?>
 						<span class="paging-input">
-							<span class="tablenav-paging-text"><?php echo $current_page; ?> <?php _e( 'de', 'convoca-shifts' ); ?> <span class="total-pages"><?php echo $total_pages; ?></span></span>
+							<span class="tablenav-paging-text"><?php echo esc_html( $current_page ); ?> <?php esc_html_e( 'de', 'convoca-shifts' ); ?> <span class="total-pages"><?php echo esc_html( $total_pages ); ?></span></span>
 						</span>
 						<?php if ( $current_page < $total_pages ) : ?>
-							<a class="next-page button" href="<?php echo add_query_arg( 'paged_logs', $current_page + 1 ); ?>"><span class="screen-reader-text"><?php _e( 'Página siguiente', 'convoca-shifts' ); ?></span>›</a>
+							<a class="next-page button" href="<?php echo esc_url( add_query_arg( 'paged_logs', $current_page + 1 ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Página siguiente', 'convoca-shifts' ); ?></span>›</a>
 						<?php endif; ?>
 					</span>
 				</div>

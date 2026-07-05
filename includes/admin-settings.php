@@ -1,4 +1,20 @@
 <?php
+
+/**
+ * Convoca Shifts
+ *
+ * @package    Convoca\Shifts
+ * @subpackage Includes
+ *
+ * @copyright  Copyright (C) 2026 Jose Carlos Nieto Ramos
+ * @license    GPL-2.0-or-later
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+
 namespace Convoca\Shifts;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -53,7 +69,7 @@ function convoca_shifts_register_plugin_settings() {
  * Settings page HTML.
  */
 function convoca_shifts_settings_page() {
-	$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general';
+	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'general';
 	?>
 	<div class="wrap convoca-shifts-settings-wrap">
 		<div class="convoca-shifts-admin-header" style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
@@ -65,8 +81,8 @@ function convoca_shifts_settings_page() {
 		</div>
 
 		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_settings&tab=general' ); ?>" class="nav-tab <?php echo $active_tab == 'general' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Ajustes', 'convoca-shifts' ); ?></a>
-			<a href="<?php echo admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_settings&tab=status' ); ?>" class="nav-tab <?php echo $active_tab == 'status' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Estado', 'convoca-shifts' ); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_settings&tab=general' ) ); ?>" class="nav-tab <?php echo $active_tab == 'general' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Ajustes', 'convoca-shifts' ); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_settings&tab=status' ) ); ?>" class="nav-tab <?php echo $active_tab == 'status' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Estado', 'convoca-shifts' ); ?></a>
 		</h2>
 
 		<?php if ( $active_tab == 'general' ) : ?>
@@ -100,7 +116,7 @@ function convoca_shifts_settings_page() {
 				<!-- PRO Features Section -->
 				<div class="conv-pro-section" style="margin-top:40px;padding:25px;background:#fefce8;border:2px dashed #eab308;border-radius:12px;">
 					<h2 style="margin-top:0;color:#a16207;">✨ Funcionalidades PRO</h2>
-					<p style="color:#713f12;">Las siguientes funcionalidades están disponibles con una licencia PRO. <a href="<?php echo admin_url( 'admin.php?page=convoca-license' ); ?>">Activa tu licencia</a> para desbloquearlas.</p>
+					<p style="color:#713f12;">Las siguientes funcionalidades están disponibles con una licencia PRO. <a href="<?php echo esc_url( admin_url( 'admin.php?page=convoca-license' ) ); ?>">Activa tu licencia</a> para desbloquearlas.</p>
 					<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:15px;">
 						<div style="background:#fff;border-radius:8px;padding:15px;border:1px solid #e2e8f0;opacity:0.7;">
 							<span style="font-size:1.2rem;">📊</span>
@@ -183,7 +199,7 @@ function convoca_shifts_render_status_tab() {
 	<div class="convoca-shifts-diagnostic-wrapper">
 		<div class="convoca-shifts-summary">
 			<div class="convoca-shifts-summary-icon convoca-shifts-badge--<?php echo esc_attr( $summary_class ); ?>">
-				<?php echo $summary_icon; ?>
+				<?php echo esc_html( $summary_icon ); ?>
 			</div>
 			<div class="convoca-shifts-summary-text">
 				<h3><?php echo esc_html( $summary_title ); ?></h3>

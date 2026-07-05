@@ -1,4 +1,20 @@
 <?php
+
+/**
+ * Convoca Shifts
+ *
+ * @package    Convoca\Shifts
+ * @subpackage Includes
+ *
+ * @copyright  Copyright (C) 2026 Jose Carlos Nieto Ramos
+ * @license    GPL-2.0-or-later
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+
 /**
  * Custom WP_List_Table for centro_turno with Convoca styling.
  *
@@ -138,8 +154,8 @@ class Admin_Turnos_List extends \WP_List_Table {
 		$current_page = $this->get_pagenum();
 
 		// Ordenación: por _fecha_inicio por defecto.
-		$orderby = sanitize_text_field( $_GET['orderby'] ?? '_fecha_inicio' );
-		$order   = strtoupper( sanitize_text_field( $_GET['order'] ?? 'DESC' ) ) === 'ASC' ? 'ASC' : 'DESC';
+		$orderby = sanitize_text_field( wp_unslash( $_GET['orderby'] ?? '_fecha_inicio' ) );
+		$order   = strtoupper( sanitize_text_field( wp_unslash( $_GET['order'] ?? 'DESC' ) ) ) === 'ASC' ? 'ASC' : 'DESC';
 
 		$args = array(
 			'post_type'      => 'centro_turno',
@@ -160,10 +176,10 @@ class Admin_Turnos_List extends \WP_List_Table {
 		}
 
 		// Filters.
-		$filter_estado     = $_GET['filter_estado'] ?? '';
-		$filter_asistencia = $_GET['filter_asistencia'] ?? '';
-		$filter_apoyo      = $_GET['filter_apoyo'] ?? '';
-		$s                 = $_GET['s'] ?? '';
+		$filter_estado     = isset( $_GET['filter_estado'] ) ? sanitize_text_field( wp_unslash( $_GET['filter_estado'] ) ) : '';
+		$filter_asistencia = isset( $_GET['filter_asistencia'] ) ? sanitize_text_field( wp_unslash( $_GET['filter_asistencia'] ) ) : '';
+		$filter_apoyo      = isset( $_GET['filter_apoyo'] ) ? sanitize_text_field( wp_unslash( $_GET['filter_apoyo'] ) ) : '';
+		$s                 = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
 
 		$meta_query = array();
 		if ( $filter_estado ) {
@@ -209,32 +225,32 @@ class Admin_Turnos_List extends \WP_List_Table {
 		if ( $which !== 'top' ) {
 			return;
 		}
-		$filter_estado     = $_GET['filter_estado'] ?? '';
-		$filter_asistencia = $_GET['filter_asistencia'] ?? '';
-		$filter_apoyo      = $_GET['filter_apoyo'] ?? '';
+		$filter_estado     = isset( $_GET['filter_estado'] ) ? sanitize_text_field( wp_unslash( $_GET['filter_estado'] ) ) : '';
+		$filter_asistencia = isset( $_GET['filter_asistencia'] ) ? sanitize_text_field( wp_unslash( $_GET['filter_asistencia'] ) ) : '';
+		$filter_apoyo      = isset( $_GET['filter_apoyo'] ) ? sanitize_text_field( wp_unslash( $_GET['filter_apoyo'] ) ) : '';
 		?>
 		<div class="alignleft actions" style="display:flex;gap:10px;align-items:center;">
 			<select name="filter_estado">
-				<option value=""><?php _e( 'Todos los estados', 'convoca-shifts' ); ?></option>
-				<option value="abierto_disponible" <?php selected( $filter_estado, 'abierto_disponible' ); ?>><?php _e( '🟡 Pendiente', 'convoca-shifts' ); ?></option>
-				<option value="abierto_ocupado" <?php selected( $filter_estado, 'abierto_ocupado' ); ?>><?php _e( '🔵 Ocupado', 'convoca-shifts' ); ?></option>
-				<option value="cerrado" <?php selected( $filter_estado, 'cerrado' ); ?>><?php _e( '🔴 Cerrado', 'convoca-shifts' ); ?></option>
+				<option value=""><?php esc_html_e( 'Todos los estados', 'convoca-shifts' ); ?></option>
+				<option value="abierto_disponible" <?php selected( $filter_estado, 'abierto_disponible' ); ?>><?php esc_html_e( '🟡 Pendiente', 'convoca-shifts' ); ?></option>
+				<option value="abierto_ocupado" <?php selected( $filter_estado, 'abierto_ocupado' ); ?>><?php esc_html_e( '🔵 Ocupado', 'convoca-shifts' ); ?></option>
+				<option value="cerrado" <?php selected( $filter_estado, 'cerrado' ); ?>><?php esc_html_e( '🔴 Cerrado', 'convoca-shifts' ); ?></option>
 			</select>
 
 			<select name="filter_asistencia">
-				<option value=""><?php _e( 'Todas asistencias', 'convoca-shifts' ); ?></option>
-				<option value="pendiente" <?php selected( $filter_asistencia, 'pendiente' ); ?>><?php _e( '⏳ Pendiente', 'convoca-shifts' ); ?></option>
-				<option value="realizado" <?php selected( $filter_asistencia, 'realizado' ); ?>><?php _e( '✅ Realizado', 'convoca-shifts' ); ?></option>
-				<option value="no_asistio" <?php selected( $filter_asistencia, 'no_asistio' ); ?>><?php _e( '❌ No asistió', 'convoca-shifts' ); ?></option>
+				<option value=""><?php esc_html_e( 'Todas asistencias', 'convoca-shifts' ); ?></option>
+				<option value="pendiente" <?php selected( $filter_asistencia, 'pendiente' ); ?>><?php esc_html_e( '⏳ Pendiente', 'convoca-shifts' ); ?></option>
+				<option value="realizado" <?php selected( $filter_asistencia, 'realizado' ); ?>><?php esc_html_e( '✅ Realizado', 'convoca-shifts' ); ?></option>
+				<option value="no_asistio" <?php selected( $filter_asistencia, 'no_asistio' ); ?>><?php esc_html_e( '❌ No asistió', 'convoca-shifts' ); ?></option>
 			</select>
 
 			<select name="filter_apoyo">
-				<option value=""><?php _e( 'Apoyo: Todos', 'convoca-shifts' ); ?></option>
-				<option value="1" <?php selected( $filter_apoyo, '1' ); ?>><?php _e( '🛟 Necesita apoyo', 'convoca-shifts' ); ?></option>
-				<option value="0" <?php selected( $filter_apoyo, '0' ); ?>><?php _e( 'Sin apoyo', 'convoca-shifts' ); ?></option>
+				<option value=""><?php esc_html_e( 'Apoyo: Todos', 'convoca-shifts' ); ?></option>
+				<option value="1" <?php selected( $filter_apoyo, '1' ); ?>><?php esc_html_e( '🛟 Necesita apoyo', 'convoca-shifts' ); ?></option>
+				<option value="0" <?php selected( $filter_apoyo, '0' ); ?>><?php esc_html_e( 'Sin apoyo', 'convoca-shifts' ); ?></option>
 			</select>
 
-			<?php submit_button( __( 'Filtrar', 'convoca-shifts' ), 'convoca-btn convoca-btn-outline', 'filter_action', false ); ?>
+			<?php submit_button( esc_html__( 'Filtrar', 'convoca-shifts' ), 'convoca-btn convoca-btn-outline', 'filter_action', false ); ?>
 		</div>
 		<?php
 	}

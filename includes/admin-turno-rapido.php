@@ -1,4 +1,20 @@
 <?php
+
+/**
+ * Convoca Shifts
+ *
+ * @package    Convoca\Shifts
+ * @subpackage Includes
+ *
+ * @copyright  Copyright (C) 2026 Jose Carlos Nieto Ramos
+ * @license    GPL-2.0-or-later
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+
 /**
  * Quick Turno Addition Interface (Backend Calendar).
  *
@@ -56,19 +72,19 @@ function convoca_shifts_force_redirect_standard_editor() {
  */
 add_action( 'admin_post_convoca_shifts_quick_add_turno', 'Convoca\Shifts\convoca_shifts_process_quick_add_turno' );
 function convoca_shifts_process_quick_add_turno() {
-	if ( ! isset( $_POST['convoca_shifts_quick_add_nonce'] ) || ! wp_verify_nonce( $_POST['convoca_shifts_quick_add_nonce'], 'convoca_shifts_quick_add_action' ) ) {
+	if ( ! isset( $_POST['convoca_shifts_quick_add_nonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['convoca_shifts_quick_add_nonce'] ), 'convoca_shifts_quick_add_action' ) ) {
 		wp_safe_redirect( admin_url( 'edit.php?post_type=centro_turno&convoca_shifts_msg=error&convoca_shifts_err=' . urlencode( __( 'Nonce inválido.', 'convoca-shifts' ) ) ) );
 		exit;
 	}
 
 	if ( ! current_user_can( 'convoca_shifts_manage_turnos' ) ) {
-		wp_die( __( 'No tienes permisos para realizar esta acción.', 'convoca-shifts' ) );
+		wp_die( esc_html__( 'No tienes permisos para realizar esta acción.', 'convoca-shifts' ) );
 	}
 
-	$date    = sanitize_text_field( $_POST['convoca_shifts_date'] );
-	$h_start = sanitize_text_field( $_POST['convoca_shifts_h_start'] );
-	$h_end   = sanitize_text_field( $_POST['convoca_shifts_h_end'] );
-	$estado  = sanitize_text_field( $_POST['convoca_shifts_estado'] );
+	$date    = sanitize_text_field( wp_unslash( $_POST['convoca_shifts_date'] ) );
+	$h_start = sanitize_text_field( wp_unslash( $_POST['convoca_shifts_h_start'] ) );
+	$h_end   = sanitize_text_field( wp_unslash( $_POST['convoca_shifts_h_end'] ) );
+	$estado  = sanitize_text_field( wp_unslash( $_POST['convoca_shifts_estado'] ) );
 	$apoyo   = isset( $_POST['convoca_shifts_apoyo'] ) ? 1 : 0;
 
 	$post_id = convoca_shifts_insert_turno(
@@ -106,9 +122,9 @@ function convoca_shifts_turno_rapido_notices() {
 	$screen = get_current_screen();
 	if ( $screen && $screen->id === 'edit-centro_turno' && isset( $_GET['convoca_shifts_msg'] ) ) {
 		if ( $_GET['convoca_shifts_msg'] === 'created' ) {
-			echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . __( 'Turno creado correctamente.', 'convoca-shifts' ) . '</p></div>';
+			echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . esc_html__( 'Turno creado correctamente.', 'convoca-shifts' ) . '</p></div>';
 		} elseif ( $_GET['convoca_shifts_msg'] === 'error' ) {
-			$err = isset( $_GET['convoca_shifts_err'] ) ? sanitize_text_field( $_GET['convoca_shifts_err'] ) : __( 'Error desconocido', 'convoca-shifts' );
+			$err = isset( $_GET['convoca_shifts_err'] ) ? sanitize_text_field( wp_unslash( $_GET['convoca_shifts_err'] ) ) : esc_html__( 'Error desconocido', 'convoca-shifts' );
 			echo '<div class="convoca-alert convoca-alert--danger" style="display:block;margin-bottom:20px;"><p><strong>Error:</strong> ' . esc_html( $err ) . '</p></div>';
 		}
 	}
@@ -331,7 +347,7 @@ function convoca_shifts_render_quick_add_modal() {
 			<span class="convoca-shifts-close">&times;</span>
 			<h2 id="convoca-shifts-modal-title"><?php _e( 'Crear Nuevo Turno', 'convoca-shifts' ); ?></h2>
 			<hr>
-			<form method="post" action="<?php echo admin_url( 'admin-post.php' ); ?>">
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<?php wp_nonce_field( 'convoca_shifts_quick_add_action', 'convoca_shifts_quick_add_nonce' ); ?>
 				<input type="hidden" name="action" value="convoca_shifts_quick_add_turno">
 				<input type="hidden" id="convoca_shifts_modal_date" name="convoca_shifts_date">

@@ -1,4 +1,20 @@
 <?php
+
+/**
+ * Convoca Shifts
+ *
+ * @package    Convoca\Shifts
+ * @subpackage Includes
+ *
+ * @copyright  Copyright (C) 2026 Jose Carlos Nieto Ramos
+ * @license    GPL-2.0-or-later
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+
 namespace Convoca\Shifts;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -23,7 +39,7 @@ function convoca_shifts_auditoria_horas_page() {
 	if ( isset( $_POST['convoca_shifts_action'] ) && $_POST['convoca_shifts_action'] === 'recalcular' && isset( $_POST['user_id'] ) ) {
 		check_admin_referer( 'convoca_shifts_recalcular_' . (int) $_POST['user_id'] );
 		convoca_shifts_recalcular_horas_usuario( (int) $_POST['user_id'] );
-		echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . __( 'Horas recalculadas correctamente.', 'convoca-shifts' ) . '</p></div>';
+		echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . esc_html__( 'Horas recalculadas correctamente.', 'convoca-shifts' ) . '</p></div>';
 	}
 
 	$users = get_users( array( 'role__in' => array( 'voluntario_aprobado', 'administrator' ) ) );
@@ -65,7 +81,7 @@ function convoca_shifts_auditoria_horas_page() {
 						<td>
 							<form method="post" style="display:inline;">
 								<?php wp_nonce_field( 'convoca_shifts_recalcular_' . $u->ID ); ?>
-								<input type="hidden" name="user_id" value="<?php echo $u->ID; ?>">
+								<input type="hidden" name="user_id" value="<?php echo esc_attr( $u->ID ); ?>">
 								<input type="hidden" name="convoca_shifts_action" value="recalcular">
 								<button type="submit" class="button button-small" onclick="return confirm('<?php esc_attr_e( '¿Recalcular horas? Esta acción escaneará todos los turnos realizados y actualizará el contador.', 'convoca-shifts' ); ?>')"><?php _e( 'Recalcular', 'convoca-shifts' ); ?></button>
 							</form>

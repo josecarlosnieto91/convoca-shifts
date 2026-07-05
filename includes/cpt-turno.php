@@ -1,4 +1,20 @@
 <?php
+
+/**
+ * Convoca Shifts
+ *
+ * @package    Convoca\Shifts
+ * @subpackage Includes
+ *
+ * @copyright  Copyright (C) 2026 Jose Carlos Nieto Ramos
+ * @license    GPL-2.0-or-later
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+
 namespace Convoca\Shifts;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -279,7 +295,7 @@ function convoca_shifts_turno_opciones_html( $post ) {
 			foreach ( $voluntarios as $v ) :
 				$nombre = ! empty( $v->first_name ) ? $v->first_name : $v->display_name;
 				?>
-				<option value="<?php echo $v->ID; ?>" <?php selected( $id_responsable, $v->ID ); ?>>
+				<option value="<?php echo esc_attr( $v->ID ); ?>" <?php selected( $id_responsable, $v->ID ); ?>>
 					<?php echo esc_html( $nombre . ' (@' . $v->user_login . ')' ); ?>
 				</option>
 			<?php endforeach; ?>
@@ -325,7 +341,7 @@ function convoca_shifts_turno_opciones_html( $post ) {
 			foreach ( $monitor_users as $mu ) :
 				$sel = $current_monitor == $mu->ID ? 'selected="selected"' : '';
 				?>
-				<option value="<?php echo esc_attr( $mu->ID ); ?>" <?php echo $sel; ?>>
+				<option value="<?php echo esc_attr( $mu->ID ); ?>" <?php echo esc_attr( $sel ); ?>>
 					<?php echo esc_html( $mu->display_name ); ?>
 				</option>
 			<?php endforeach; ?>
@@ -337,7 +353,7 @@ function convoca_shifts_turno_opciones_html( $post ) {
 
 add_action( 'save_post_centro_turno', 'Convoca\Shifts\convoca_shifts_save_turno_meta' );
 function convoca_shifts_save_turno_meta( $post_id ) {
-	if ( ! isset( $_POST['convoca_shifts_turno_meta_nonce'] ) || ! wp_verify_nonce( $_POST['convoca_shifts_turno_meta_nonce'], 'convoca_shifts_turno_meta_action' ) ) {
+	if ( ! isset( $_POST['convoca_shifts_turno_meta_nonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['convoca_shifts_turno_meta_nonce'] ), 'convoca_shifts_turno_meta_action' ) ) {
 		return;
 	}
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
@@ -351,11 +367,11 @@ function convoca_shifts_save_turno_meta( $post_id ) {
 	update_post_meta( $post_id, '_necesita_apoyo', $apoyo );
 
 	if ( isset( $_POST['convoca_shifts_estado_real'] ) ) {
-		update_post_meta( $post_id, '_estado_real', sanitize_text_field( $_POST['convoca_shifts_estado_real'] ) );
+		update_post_meta( $post_id, '_estado_real', sanitize_text_field( wp_unslash( $_POST['convoca_shifts_estado_real'] ) ) );
 	}
 
 	if ( isset( $_POST['convoca_shifts_estado'] ) ) {
-		update_post_meta( $post_id, '_estado', sanitize_text_field( $_POST['convoca_shifts_estado'] ) );
+		update_post_meta( $post_id, '_estado', sanitize_text_field( wp_unslash( $_POST['convoca_shifts_estado'] ) ) );
 	}
 
 	if ( isset( $_POST['convoca_shifts_actividad_term'] ) ) {
@@ -420,7 +436,7 @@ function convoca_shifts_custom_centro_turno_column( $column, $post_id ) {
 					echo '—';
 				}
 			} else {
-				echo '<span style="color:#94a3b8;">' . __( 'Sin asignar', 'convoca-shifts' ) . '</span>';
+				echo '<span style="color:#94a3b8;">' . esc_html__( 'Sin asignar', 'convoca-shifts' ) . '</span>';
 			}
 			break;
 		case 'estado_real':
@@ -435,7 +451,8 @@ function convoca_shifts_custom_centro_turno_column( $column, $post_id ) {
 				'no_asistio' => '<span class="badge-cst badge-danger">❌ No asistió</span>',
 			);
 
-			echo '<div style="margin-bottom:8px;">' . ( isset( $badges[ $estado ] ) ? $badges[ $estado ] : esc_html( $estado ) ) . '</div>';
+			$badge_html = isset( $badges[ $estado ] ) ? $badges[ $estado ] : esc_html( $estado );
+			echo '<div style="margin-bottom:8px;">' . wp_kses_post( $badge_html ) . '</div>';
 
 			$id_responsable = (int) get_post_meta( $post_id, '_id_responsable', true );
 
@@ -469,7 +486,7 @@ function convoca_shifts_custom_centro_turno_column( $column, $post_id ) {
 
 			// Hidden fields for Quick Edit.
 			echo '<div class="convoca-shifts-quick-edit-data" style="display:none;">';
-			echo '<div class="convoca_shifts_id_responsable">' . $id_responsable . '</div>';
+			echo '<div class="convoca_shifts_id_responsable">' . esc_html( $id_responsable ) . '</div>';
 			echo '<div class="convoca_shifts_estado_real">' . esc_attr( $estado ) . '</div>';
 			echo '</div>';
 			break;
@@ -492,7 +509,7 @@ function convoca_shifts_handle_admin_attendance_action() {
 		check_admin_referer( 'convoca_shifts_attendance_' . $post_id );
 
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			wp_die( __( 'No tienes permisos para editar este turno.', 'convoca-shifts' ) );
+			wp_die( esc_html__( 'No tienes permisos para editar este turno.', 'convoca-shifts' ) );
 		}
 
 		$status         = sanitize_text_field( $get_data['status'] );
@@ -500,7 +517,7 @@ function convoca_shifts_handle_admin_attendance_action() {
 
 		if ( $status === 'realizado' && $id_responsable === 0 ) {
 			// Cannot mark as done if nobody is assigned.
-			wp_die( __( 'No se puede marcar como realizado un turno sin responsable asignado.', 'convoca-shifts' ) );
+			wp_die( esc_html__( 'No se puede marcar como realizado un turno sin responsable asignado.', 'convoca-shifts' ) );
 		}
 
 		global $wpdb;
@@ -518,7 +535,7 @@ function convoca_shifts_handle_admin_attendance_action() {
 		} catch ( \Throwable $e ) {
 			$wpdb->query( 'ROLLBACK' );
 			\Convoca\Core\Logger::error( 'Error al marcar asistencia: ' . $e->getMessage(), 'Turnos/Admin', $post_id );
-			wp_die( __( 'Error al procesar la asistencia.', 'convoca-shifts' ) );
+			wp_die( esc_html__( 'Error al procesar la asistencia.', 'convoca-shifts' ) );
 		}
 
 		// Log activity.
@@ -558,7 +575,7 @@ function convoca_shifts_display_quick_edit_turno( $column_name, $post_type ) {
 				foreach ( $voluntarios as $v ) :
 					$nombre = ! empty( $v->first_name ) ? $v->first_name : $v->display_name;
 					?>
-					<option value="<?php echo $v->ID; ?>"><?php echo esc_html( $nombre . ' (@' . $v->user_login . ')' ); ?></option>
+					<option value="<?php echo esc_attr( $v->ID ); ?>"><?php echo esc_html( $nombre . ' (@' . $v->user_login . ')' ); ?></option>
 				<?php endforeach; ?>
 			</select>
 		</label>
@@ -656,7 +673,7 @@ function convoca_shifts_save_turno_quick_edit( $post_id, $post ) {
 	}
 
 	if ( isset( $_POST['convoca_shifts_estado_real'] ) ) {
-		$new_status = sanitize_text_field( $_POST['convoca_shifts_estado_real'] );
+		$new_status = sanitize_text_field( wp_unslash( $_POST['convoca_shifts_estado_real'] ) );
 		$old_status = get_post_meta( $post_id, '_estado_real', true );
 		if ( $new_status !== $old_status ) {
 			update_post_meta( $post_id, '_estado_real', $new_status );
@@ -768,14 +785,14 @@ function convoca_shifts_generar_turnos_page() {
 			if ( is_wp_error( $result ) ) {
 				echo '<div class="convoca-alert convoca-alert--danger" style="display:block;margin-bottom:20px;"><p>' . esc_html( $result->get_error_message() ) . '</p></div>';
 			} else {
-				echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( __( 'Se han duplicado %d turnos.', 'convoca-shifts' ), $result ) . '</p></div>';
+				echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( esc_html__( 'Se han duplicado %d turnos.', 'convoca-shifts' ), $result ) . '</p></div>';
 			}
 		} elseif ( $_POST['convoca_shifts_action'] === 'generar_semana' ) {
 			$result = convoca_shifts_crear_semana_tipo();
 			if ( is_wp_error( $result ) ) {
 				echo '<div class="convoca-alert convoca-alert--danger" style="display:block;margin-bottom:20px;"><p>' . esc_html( $result->get_error_message() ) . '</p></div>';
 			} else {
-				echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( __( 'Se han generado %d turnos nuevos.', 'convoca-shifts' ), $result ) . '</p></div>';
+				echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( esc_html__( 'Se han generado %d turnos nuevos.', 'convoca-shifts' ), $result ) . '</p></div>';
 			}
 		}
 	}
@@ -819,13 +836,15 @@ function convoca_shifts_generar_turnos_page() {
 								6 => 'Domingo',
 							);
 							foreach ( $dias_semana as $index => $nombre ) {
+								$esc_index = esc_attr( $index );
+								$esc_nombre = esc_html( $nombre );
 								echo '<div style="margin-bottom: 10px; padding: 10px; background: #f9f9f9; border: 1px solid #ddd; display: flex; flex-direction: column; gap: 5px;">';
-								echo '<label><input type="checkbox" name="dias[' . $index . '][activo]" value="1"> <strong>' . $nombre . '</strong></label>';
+								echo '<label><input type="checkbox" name="dias[' . $esc_index . '][activo]" value="1"> <strong>' . $esc_nombre . '</strong></label>';
 								echo '<div style="margin-left: 20px; display: flex; align-items: center; gap: 10px;">';
-								echo '<input type="time" name="dias[' . $index . '][hora_inicio]" placeholder="17:00">';
+								echo '<input type="time" name="dias[' . $esc_index . '][hora_inicio]" placeholder="17:00">';
 								echo '<span>a</span>';
-								echo '<input type="time" name="dias[' . $index . '][hora_fin]" placeholder="21:00">';
-								echo '<select name="dias[' . $index . '][estado]" class="convoca-shifts-estado-selector">';
+								echo '<input type="time" name="dias[' . $esc_index . '][hora_fin]" placeholder="21:00">';
+								echo '<select name="dias[' . $esc_index . '][estado]" class="convoca-shifts-estado-selector">';
 								echo '<option value="abierto_disponible">🟡 Pendiente (Disponible)</option>';
 								echo '<option value="abierto_ocupado">🔵 Ocupado (Actividad)</option>';
 								echo '<option value="cerrado">🔴 Cerrado</option>';
@@ -835,7 +854,7 @@ function convoca_shifts_generar_turnos_page() {
 									array(
 										'show_option_none' => __( '— Actividad —', 'convoca-shifts' ),
 										'taxonomy'         => 'convoca_shifts_actividad',
-										'name'             => 'dias[' . $index . '][actividad_id]',
+										'name'             => 'dias[' . $esc_index . '][actividad_id]',
 										'orderby'          => 'name',
 										'hierarchical'     => true,
 										'hide_empty'       => false,
@@ -845,14 +864,14 @@ function convoca_shifts_generar_turnos_page() {
 									array(
 										'show_option_none' => __( '— Monitor/a —', 'convoca-shifts' ),
 										'id'               => 'convoca_shifts_monitor_select',
-										'name'             => 'dias[' . $index . '][monitor_id]',
+										'name'             => 'dias[' . $esc_index . '][monitor_id]',
 										'orderby'          => 'name',
 										'hierarchical'     => true,
 										'hide_empty'       => false,
 									)
 								);
 								echo '</div>';
-								echo '<label><input type="checkbox" name="dias[' . $index . '][apoyo]" value="1"> 🛟 Necesita apoyo</label>';
+								echo '<label><input type="checkbox" name="dias[' . $esc_index . '][apoyo]" value="1"> 🛟 Necesita apoyo</label>';
 								echo '</div></div>';
 							}
 							?>

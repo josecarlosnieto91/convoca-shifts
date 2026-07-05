@@ -1,4 +1,20 @@
 <?php
+
+/**
+ * Convoca Shifts
+ *
+ * @package    Convoca\Shifts
+ * @subpackage Includes
+ *
+ * @copyright  Copyright (C) 2026 Jose Carlos Nieto Ramos
+ * @license    GPL-2.0-or-later
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+
 namespace Convoca\Shifts;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -19,13 +35,13 @@ function convoca_shifts_add_admin_menu() {
 
 function convoca_shifts_voluntarios_pendientes_page() {
 	// Handle approval.
-	if ( isset( $_GET['action'] ) && $_GET['action'] === 'approve' && isset( $_GET['user'] ) && check_admin_referer( 'convoca_shifts_approve_user_' . $_GET['user'] ) ) {
-		$user_id = intval( $_GET['user'] );
+	if ( isset( $_GET['action'] ) && $_GET['action'] === 'approve' && isset( $_GET['user'] ) && check_admin_referer( 'convoca_shifts_approve_user_' . intval( wp_unslash( $_GET['user'] ) ) ) ) {
+		$user_id = intval( wp_unslash( $_GET['user'] ) );
 		$user    = get_userdata( $user_id );
 		if ( $user ) {
 			$user->set_role( 'voluntario_aprobado' );
 			delete_user_meta( $user_id, '_convoca_shifts_aprobado' );
-			echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( __( 'Usuario %s aprobado como voluntario.', 'convoca-shifts' ), $user->display_name ) . '</p></div>';
+			echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( esc_html__( 'Usuario %s aprobado como voluntario.', 'convoca-shifts' ), $user->display_name ) . '</p></div>';
 			do_action( 'convoca_voluntario_aprobado', $user_id );
 			$attachments = apply_filters( 'convoca_voluntario_aprobado_attachments', array(), $user_id );
 			wp_mail( $user->user_email, __( '¡Solicitud de voluntariado aprobada!', 'convoca-shifts' ), __( 'Hola, ya puedes acceder y gestionar turnos en el centro social. Adjunto a este correo encontrarás tu Acuerdo de Incorporación si procede.', 'convoca-shifts' ), '', $attachments );
@@ -38,11 +54,11 @@ function convoca_shifts_voluntarios_pendientes_page() {
 	}
 
 	// Handle revocation (Remove role).
-	if ( isset( $_GET['action'] ) && $_GET['action'] === 'revoke' && isset( $_GET['user'] ) && check_admin_referer( 'convoca_shifts_revoke_user_' . $_GET['user'] ) ) {
-		$user_id = intval( $_GET['user'] );
+	if ( isset( $_GET['action'] ) && $_GET['action'] === 'revoke' && isset( $_GET['user'] ) && check_admin_referer( 'convoca_shifts_revoke_user_' . intval( wp_unslash( $_GET['user'] ) ) ) ) {
+		$user_id = intval( wp_unslash( $_GET['user'] ) );
 
 		if ( $user_id === get_current_user_id() ) {
-			echo '<div class="convoca-alert convoca-alert--danger" style="display:block;margin-bottom:20px;"><p>' . __( 'No puedes revocarte tus propios permisos.', 'convoca-shifts' ) . '</p></div>';
+			echo '<div class="convoca-alert convoca-alert--danger" style="display:block;margin-bottom:20px;"><p>' . esc_html__( 'No puedes revocarte tus propios permisos.', 'convoca-shifts' ) . '</p></div>';
 		} else {
 			$user = get_userdata( $user_id );
 			if ( $user ) {
@@ -90,7 +106,7 @@ function convoca_shifts_voluntarios_pendientes_page() {
 					convoca_shifts_log_activity( get_current_user_id(), 0, 'voluntario_revocado', array( 'voluntario_id' => $user_id ) );
 				}
 
-				echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( __( 'Permisos de voluntario revocados para %s y turnos futuros liberados.', 'convoca-shifts' ), $user->display_name ) . '</p></div>';
+				echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . sprintf( esc_html__( 'Permisos de voluntario revocados para %s y turnos futuros liberados.', 'convoca-shifts' ), $user->display_name ) . '</p></div>';
 			}
 		}
 	}
@@ -111,13 +127,13 @@ function convoca_shifts_voluntarios_pendientes_page() {
 	$active_users = $active_query->get_results();
 
 	echo '<div class="wrap">';
-	echo '<h1>' . __( 'Gestión de Voluntariado', 'convoca-shifts' ) . '</h1>';
+	echo '<h1>' . esc_html__( 'Gestión de Voluntariado', 'convoca-shifts' ) . '</h1>';
 
 	// --- SECTION: PENDING ---.
-	echo '<h2 class="title">' . __( 'Solicitudes Pendientes', 'convoca-shifts' ) . '</h2>';
+	echo '<h2 class="title">' . esc_html__( 'Solicitudes Pendientes', 'convoca-shifts' ) . '</h2>';
 	if ( ! empty( $pending_users ) ) {
 		echo '<table class="wp-list-table widefat fixed striped table-view-list users">';
-		echo '<thead><tr><th>' . __( 'Nombre', 'convoca-shifts' ) . '</th><th>' . __( 'Email', 'convoca-shifts' ) . '</th><th>' . __( 'Teléfono', 'convoca-shifts' ) . '</th><th>' . __( 'Motivación', 'convoca-shifts' ) . '</th><th>' . __( 'Acciones', 'convoca-shifts' ) . '</th></tr></thead>';
+		echo '<thead><tr><th>' . esc_html__( 'Nombre', 'convoca-shifts' ) . '</th><th>' . esc_html__( 'Email', 'convoca-shifts' ) . '</th><th>' . esc_html__( 'Teléfono', 'convoca-shifts' ) . '</th><th>' . esc_html__( 'Motivación', 'convoca-shifts' ) . '</th><th>' . esc_html__( 'Acciones', 'convoca-shifts' ) . '</th></tr></thead>';
 		echo '<tbody id="the-list">';
 		foreach ( $pending_users as $user ) {
 			$telefono    = get_user_meta( $user->ID, '_convoca_shifts_telefono', true );
@@ -129,21 +145,21 @@ function convoca_shifts_voluntarios_pendientes_page() {
 			echo '<td><a href="mailto:' . esc_attr( $user->user_email ) . '">' . esc_html( $user->user_email ) . '</a></td>';
 			echo '<td>' . esc_html( $telefono ) . '</td>';
 			echo '<td>' . nl2br( esc_html( $motivacion ) ) . '</td>';
-			echo '<td><a href="' . esc_url( $approve_url ) . '" class="convoca-btn convoca-btn-primary">' . __( 'Aprobar Voluntario', 'convoca-shifts' ) . '</a></td>';
+			echo '<td><a href="' . esc_url( $approve_url ) . '" class="convoca-btn convoca-btn-primary">' . esc_html__( 'Aprobar Voluntario', 'convoca-shifts' ) . '</a></td>';
 			echo '</tr>';
 		}
 		echo '</tbody></table>';
 	} else {
-		echo '<p>' . __( 'No hay solicitudes pendientes.', 'convoca-shifts' ) . '</p>';
+		echo '<p>' . esc_html__( 'No hay solicitudes pendientes.', 'convoca-shifts' ) . '</p>';
 	}
 
 	echo '<hr style="margin: 40px 0;">';
 
 	// --- SECTION: ACTIVE ---.
-	echo '<h2 class="title">' . __( 'Voluntarios Activos', 'convoca-shifts' ) . '</h2>';
+	echo '<h2 class="title">' . esc_html__( 'Voluntarios Activos', 'convoca-shifts' ) . '</h2>';
 	if ( ! empty( $active_users ) ) {
 		echo '<table class="wp-list-table widefat fixed striped table-view-list users">';
-		echo '<thead><tr><th>' . __( 'Nombre', 'convoca-shifts' ) . '</th><th>' . __( 'Email', 'convoca-shifts' ) . '</th><th>' . __( 'Teléfono', 'convoca-shifts' ) . '</th><th>' . __( 'Acciones', 'convoca-shifts' ) . '</th></tr></thead>';
+		echo '<thead><tr><th>' . esc_html__( 'Nombre', 'convoca-shifts' ) . '</th><th>' . esc_html__( 'Email', 'convoca-shifts' ) . '</th><th>' . esc_html__( 'Teléfono', 'convoca-shifts' ) . '</th><th>' . esc_html__( 'Acciones', 'convoca-shifts' ) . '</th></tr></thead>';
 		echo '<tbody>';
 		foreach ( $active_users as $user ) {
 			$telefono   = get_user_meta( $user->ID, '_convoca_shifts_telefono', true );
@@ -154,13 +170,13 @@ function convoca_shifts_voluntarios_pendientes_page() {
 			echo '<td>' . esc_html( $user->user_email ) . '</td>';
 			echo '<td>' . esc_html( $telefono ) . '</td>';
 			echo '<td>
-                <a href="' . esc_url( $revoke_url ) . '" class="convoca-btn convoca-btn-outline convoca-btn--danger" onclick="return confirm(\'' . esc_js( __( '¿Estás seguro de que quieres revocar los permisos a este voluntario?', 'convoca-shifts' ) ) . '\');">' . __( 'Revocar Permisos', 'convoca-shifts' ) . '</a>
+                <a href="' . esc_url( $revoke_url ) . '" class="convoca-btn convoca-btn-outline convoca-btn--danger" onclick="return confirm(\'' . esc_js( esc_html__( '¿Estás seguro de que quieres revocar los permisos a este voluntario?', 'convoca-shifts' ) ) . '\');">' . esc_html__( 'Revocar Permisos', 'convoca-shifts' ) . '</a>
               </td>';
 			echo '</tr>';
 		}
 		echo '</tbody></table>';
 	} else {
-		echo '<p>' . __( 'No hay voluntarios activos registrados.', 'convoca-shifts' ) . '</p>';
+		echo '<p>' . esc_html__( 'No hay voluntarios activos registrados.', 'convoca-shifts' ) . '</p>';
 	}
 
 	echo '</div>';

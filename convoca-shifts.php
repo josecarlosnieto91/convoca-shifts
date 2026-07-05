@@ -1,23 +1,31 @@
 <?php
 /**
- * Plugin Name: Convoca Shifts
- * Plugin URI: https://convoca.org.
- * Description: Volunteer shift management for community centers.
- * Version: 2.5.1
- * Author: Jose Carlos Nieto Ramos
- * Text Domain: convoca-shifts
+ * Plugin Name:       Convoca Shifts
+ * Plugin URI:        https://getconvoca.app
+ * Description:       Volunteer shift management for community centers.
+ * Version:           2.5.1
  * Requires at least: 6.4
- * Requires PHP: 8.1
- * Tested up to: 7.0
- * License: GPL2
- * License URI: https://www.gnu.org/licenses/gpl-2.0.html.
- * Requires Plugins: convoca-core, convoca-members
+ * Requires PHP:      8.1
+ * Tested up to:      7.0
+ * Author:            Jose Carlos Nieto Ramos
+ * Author URI:        https://getconvoca.app
+ * License:           GPL-2.0-or-later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       convoca-shifts
+ * Domain Path:       /languages
+ * Requires Plugins:  convoca-core, convoca-members
  */
 
 namespace Convoca\Shifts;
 
 if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
+
+namespace Convoca\Shifts;
+
+if ( ! defined( 'ABSPATH' ) ) {
 // Load translations.
 add_action( 'init', function () {
 	wp_set_script_translations( 'convoca-shifts-scripts', 'convoca-shifts', plugin_dir_path( __FILE__ ) . 'languages/' );
