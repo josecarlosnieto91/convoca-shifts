@@ -241,8 +241,8 @@ function convoca_shifts_get_system_checks( bool $force = false ) {
 
 	foreach ( $required_plugins as $path => $name ) {
 		$is_active = \Convoca\Core\Utils::is_plugin_active_safe( $path );
-		/* translators: %s: plugin name */
 		$checks[]  = array(
+			/* translators: %s: plugin name */
 			'title'   => sprintf( __( 'Plugin: %s', 'convoca-shifts' ), $name ),
 			'status'  => $is_active ? 'ok' : 'warning',
 			'message' => $is_active ? __( 'Activo y funcionando.', 'convoca-shifts' ) : __( 'Plugin no detectado o inactivo.', 'convoca-shifts' ),
@@ -283,7 +283,7 @@ function convoca_shifts_find_page_by_shortcode( string $shortcode ) {
 	global $wpdb;
 
 	$tag   = trim( $shortcode, '[]' );
-	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is prepared above.
+	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is prepared below.
 	$query = $wpdb->prepare(
 		"SELECT ID, post_content FROM $wpdb->posts 
          WHERE post_content LIKE %s 
@@ -293,6 +293,7 @@ function convoca_shifts_find_page_by_shortcode( string $shortcode ) {
 		'%' . $wpdb->esc_like( $shortcode ) . '%'
 	);
 
+	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is prepared above.
 	$results = $wpdb->get_results( $query );
 
 	if ( empty( $results ) ) {

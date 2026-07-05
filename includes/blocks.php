@@ -81,6 +81,7 @@ function convoca_shifts_should_load_assets() {
 	}
 
 	// 3. Check active widgets (Text and Custom HTML).
+	// phpcs:ignore Generic.PHP.ForbiddenFunctions.Found -- wp_get_sidebars_widgets is needed for widget detection.
 	$sidebars_widgets = wp_get_sidebars_widgets();
 	if ( is_array( $sidebars_widgets ) ) {
 		foreach ( $sidebars_widgets as $sidebar_id => $widgets ) {

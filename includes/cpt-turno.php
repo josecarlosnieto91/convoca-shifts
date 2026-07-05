@@ -1318,7 +1318,7 @@ function convoca_shifts_check_user_overlap( $user_id, $start_time, $end_time, $e
 		$base_sql .= ' FOR UPDATE';
 	}
 
-	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $base_sql is prepared below.
+	// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- $base_sql is the SQL template; placeholders in prepare().
 	$sql = $wpdb->prepare(
 		$base_sql,
 		$user_id,
@@ -1326,6 +1326,7 @@ function convoca_shifts_check_user_overlap( $user_id, $start_time, $end_time, $e
 		$end_str,
 		$start_str
 	);
+	// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
 
 	$conflict_id = $wpdb->get_var( $sql );
 

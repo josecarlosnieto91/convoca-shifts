@@ -33,6 +33,7 @@ add_action( 'init', 'Convoca\Shifts\convoca_shifts_register_scripts' );
 function convoca_shifts_register_scripts() {
 	wp_register_style( 'convoca-shifts-style', CONVOCA_SHIFTS_URL . 'assets/css/estilo.css', array(), CONVOCA_SHIFTS_VERSION );
 	wp_enqueue_style( 'dashicons' ); // Needed for buttons/icons.
+	// phpcs:ignore PluginCheck.CodeAnalysis.EnqueuedResourceOffloading.OffloadedContent -- FullCalendar CDN is required for the calendar feature.
 	wp_register_script( 'fullcalendar-core', 'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js', array(), '6.1.15', true );
 	wp_register_script( 'convoca-shifts-calendario', CONVOCA_SHIFTS_URL . 'assets/js/calendario.js', array( 'fullcalendar-core', 'jquery' ), CONVOCA_SHIFTS_VERSION, true );
 
