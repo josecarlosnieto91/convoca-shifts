@@ -1296,11 +1296,8 @@ function convoca_shifts_check_user_overlap( $user_id, $start_time, $end_time, $e
 		return 0;
 	}
 
-	$for_update_clause = $for_update ? 'FOR UPDATE' : '';
-
 	// Conflict exists if existing_start < requested_end AND existing_end > requested_start.
-	$sql = $wpdb->prepare(
-		"SELECT p.ID 
+	$base_sql = "SELECT p.ID 
          FROM {$wpdb->posts} p
          JOIN {$wpdb->postmeta} pm_ini ON p.ID = pm_ini.post_id AND pm_ini.meta_key = '_fecha_inicio'
          JOIN {$wpdb->postmeta} pm_fin ON p.ID = pm_fin.post_id AND pm_fin.meta_key = '_hora_fin'
@@ -1315,8 +1312,15 @@ function convoca_shifts_check_user_overlap( $user_id, $start_time, $end_time, $e
            AND pm_fin.meta_value > %s
            AND (pm_est.meta_value IS NULL OR pm_est.meta_value != 'cerrado')
            AND (pm_real.meta_value IS NULL OR pm_real.meta_value != 'no_asistio')
-         LIMIT 1
-         $for_update_clause",
+         LIMIT 1";
+
+	if ( $for_update ) {
+		$base_sql .= ' FOR UPDATE';
+	}
+
+	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $base_sql is prepared below.
+	$sql = $wpdb->prepare(
+		$base_sql,
 		$user_id,
 		$exclude_post_id,
 		$end_str,

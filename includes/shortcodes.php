@@ -280,6 +280,7 @@ function convoca_shifts_resumen_turnos( $atts = array() ) {
 	<div class="convoca-shifts-resumen-wrapper">
 		<div class="convoca-shifts-resumen-turnos">
 			<?php if ( $resumen['total'] > 0 ) : ?>
+				<?php /* translators: 1: number of uncovered shifts, 2: total number of shifts */ ?>
 				📅 <?php echo esc_html( sprintf( __( 'Esta semana hay %1$d turnos sin cubrir de %2$d en total.', 'convoca-shifts' ), $resumen['sin_cubrir'], $resumen['total'] ) ); ?>
 			<?php else : ?>
 				📅 No hay turnos definidos para esta semana.

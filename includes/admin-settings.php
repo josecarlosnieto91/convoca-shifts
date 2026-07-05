@@ -265,8 +265,10 @@ function convoca_shifts_get_system_checks( bool $force = false ) {
 		$checks[] = array(
 			'title'   => $data['title'],
 			'status'  => $page ? 'ok' : 'error',
-			/* translators: %s: page title */
-		'message' => $page ? sprintf( __( 'Detectada: %s', 'convoca-shifts' ), get_the_title( $page ) ) : __( 'No se ha encontrado ninguna página con este shortcode.', 'convoca-shifts' ),
+			'message' => $page
+		/* translators: %s: page title */
+		? sprintf( __( 'Detectada: %s', 'convoca-shifts' ), get_the_title( $page ) )
+		: __( 'No se ha encontrado ninguna página con este shortcode.', 'convoca-shifts' ),
 			'fix'     => ! $page ? $data['fix'] : '',
 		);
 	}
@@ -281,6 +283,7 @@ function convoca_shifts_find_page_by_shortcode( string $shortcode ) {
 	global $wpdb;
 
 	$tag   = trim( $shortcode, '[]' );
+	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is prepared above.
 	$query = $wpdb->prepare(
 		"SELECT ID, post_content FROM $wpdb->posts 
          WHERE post_content LIKE %s 

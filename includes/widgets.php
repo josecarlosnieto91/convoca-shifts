@@ -131,7 +131,7 @@ class Convoca_Shifts_Resumen_Turnos_Widget extends \WP_Widget {
 		if ( ! empty( $instance['title'] ) ) {
 			echo wp_kses_post( $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'] );
 		}
-		echo convoca_shifts_resumen_turnos();
+		echo wp_kses_post( convoca_shifts_resumen_turnos() );
 		echo wp_kses_post( $args['after_widget'] );
 	}
 
@@ -171,7 +171,7 @@ class Convoca_Shifts_Proximos_Turnos_Widget extends \WP_Widget {
 		if ( ! empty( $instance['title'] ) ) {
 			echo wp_kses_post( $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'] );
 		}
-		echo convoca_shifts_proximos_turnos( array( 'cantidad' => $cantidad ) );
+		echo wp_kses_post( convoca_shifts_proximos_turnos( array( 'cantidad' => $cantidad ) ) );
 		echo wp_kses_post( $args['after_widget'] );
 	}
 
