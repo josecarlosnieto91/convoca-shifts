@@ -22,17 +22,11 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-
-namespace Convoca\Shifts;
-
-if ( ! defined( 'ABSPATH' ) ) {
 // Load translations.
 add_action( 'init', function () {
 	wp_set_script_translations( 'convoca-shifts-scripts', 'convoca-shifts', plugin_dir_path( __FILE__ ) . 'languages/' );
 	load_plugin_textdomain( 'convoca-shifts', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 } );
-	exit; // Exit if accessed directly.
-}
 
 if ( ! defined( 'CONVOCA_SHIFTS_DIR' ) ) {
 	define( 'CONVOCA_SHIFTS_DIR', plugin_dir_path( __FILE__ ) );
