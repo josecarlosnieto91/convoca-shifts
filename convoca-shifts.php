@@ -139,8 +139,7 @@ function convoca_shifts_create_log_table() {
     ) $charset_collate;";
 
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-	dbDelta( $sql );
-	$wpdb->query( '// Index already created by CREATE TABLE' );
+		dbDelta( $sql );
 }
 
 /**
