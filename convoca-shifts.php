@@ -41,7 +41,7 @@ if ( ! defined( 'CONVOCA_SHIFTS_URL' ) ) {
 	define( 'CONVOCA_SHIFTS_URL', plugin_dir_url( __FILE__ ) );
 }
 if ( ! defined( 'CONVOCA_SHIFTS_VERSION' ) ) {
-	define( 'CONVOCA_SHIFTS_VERSION', '2.5.0' );
+	define( 'CONVOCA_SHIFTS_VERSION', '2.5.1' );
 }
 
 /* ── Composer autoload ─────────────────────────────── */
@@ -64,10 +64,12 @@ require_once CONVOCA_SHIFTS_DIR . 'includes/class-admin-turnos-list-page.php';
 if ( is_admin() ) {
 	new Convoca_Shifts_Admin_Turno_Editor();
 	new Admin_Turnos_List_Page();
+	Admin_Auditoria_Horas::init();
 }
 require_once CONVOCA_SHIFTS_DIR . 'includes/cron.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/widgets.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/blocks.php';
+require_once CONVOCA_SHIFTS_DIR . 'includes/Admin_Auditoria_Horas.php';
 
 /* ── Convoca Core fallback ────────────────────────── */
 // Core classes auto-loaded via Convoca Core's Composer PSR-4
