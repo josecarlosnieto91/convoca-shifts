@@ -1,19 +1,12 @@
 <?php
+namespace Convoca\Shifts;
 
-/**
- * Convoca Shifts
- *
- * @package    Convoca\Shifts
- * @subpackage Includes
- *
- * @copyright  Copyright (C) 2026 Jose Carlos Nieto Ramos
- * @license    GPL-2.0-or-later
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- */
+use WP_REST_Request;
+use DateTimeZone;
+use DateTime;
+use WP_Query;
+use WP_Error;
+
 
 /**
  * Convoca Shifts - rest-api
@@ -21,13 +14,11 @@
  * @package Convoca_Shifts
  */
 
-namespace Convoca\Shifts;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'rest_api_init', 'Convoca\Shifts\convoca_shifts_register_rest_routes' );
+add_action( 'rest_api_init', __NAMESPACE__ . '\\convoca_shifts_register_rest_routes' );
 
 function convoca_shifts_register_rest_routes() {
 	register_rest_route(
@@ -35,7 +26,7 @@ function convoca_shifts_register_rest_routes() {
 		'/turnos',
 		array(
 			'methods'             => 'GET',
-			'callback' => 'Convoca\Shifts\convoca_shifts_rest_get_turnos',
+			'callback' => __NAMESPACE__ . '\\convoca_shifts_rest_get_turnos',
 			'permission_callback' => '__return_true', // Publicly readable.
 		)
 	);
@@ -45,7 +36,7 @@ function convoca_shifts_register_rest_routes() {
 		'/turnos/(?P<id>\d+)/apuntarse',
 		array(
 			'methods'             => 'POST',
-			'callback' => 'Convoca\Shifts\convoca_shifts_rest_apuntarse_turno',
+			'callback' => __NAMESPACE__ . '\\convoca_shifts_rest_apuntarse_turno',
 			'permission_callback' => function () {
 				if ( is_user_logged_in() && ( current_user_can( 'gestionar_mis_turnos' ) || current_user_can( 'manage_options' ) ) ) {
 					return true;
@@ -60,7 +51,7 @@ function convoca_shifts_register_rest_routes() {
 		'/turnos/(?P<id>\d+)/desapuntarse',
 		array(
 			'methods'             => 'POST',
-			'callback' => 'Convoca\Shifts\convoca_shifts_rest_desapuntarse_turno',
+			'callback' => __NAMESPACE__ . '\\convoca_shifts_rest_desapuntarse_turno',
 			'permission_callback' => function () {
 				if ( is_user_logged_in() && ( current_user_can( 'gestionar_mis_turnos' ) || current_user_can( 'manage_options' ) ) ) {
 					return true;
@@ -75,7 +66,7 @@ function convoca_shifts_register_rest_routes() {
 		'/turnos/apuntarse-proximo',
 		array(
 			'methods'             => 'POST',
-			'callback' => 'Convoca\Shifts\convoca_shifts_rest_apuntarse_proximo',
+			'callback' => __NAMESPACE__ . '\\convoca_shifts_rest_apuntarse_proximo',
 			'permission_callback' => function () {
 				if ( is_user_logged_in() && ( current_user_can( 'gestionar_mis_turnos' ) || current_user_can( 'manage_options' ) ) ) {
 					return true;
@@ -90,7 +81,7 @@ function convoca_shifts_register_rest_routes() {
 		'/turnos/proximo-libre',
 		array(
 			'methods'             => 'GET',
-			'callback' => 'Convoca\Shifts\convoca_shifts_rest_get_proximo_libre',
+			'callback' => __NAMESPACE__ . '\\convoca_shifts_rest_get_proximo_libre',
 			'permission_callback' => '__return_true', // Public.
 		)
 	);
@@ -100,7 +91,7 @@ function convoca_shifts_register_rest_routes() {
 		'/turnos/crear',
 		array(
 			'methods'             => 'POST',
-			'callback' => 'Convoca\Shifts\convoca_shifts_rest_crear_turno',
+			'callback' => __NAMESPACE__ . '\\convoca_shifts_rest_crear_turno',
 			'permission_callback' => function () {
 				return is_user_logged_in() && ( current_user_can( 'gestionar_mis_turnos' ) || current_user_can( 'manage_options' ) );
 			},
@@ -474,7 +465,7 @@ function convoca_shifts_rest_desapuntarse_turno( WP_REST_Request $request ) {
 	return rest_ensure_response(
 		array(
 			'success' => true,
-			'message' => __( 'Turno liberado con éxito.', 'convoca-shifts' ),
+			'message' => 'Turno liberado con éxito.',
 		)
 	);
 }
@@ -618,8 +609,7 @@ function convoca_shifts_rest_apuntarse_proximo( WP_REST_Request $request ) {
 	return rest_ensure_response(
 		array(
 			'success' => true,
-			/* translators: %s: date of the shift */
-		'message' => sprintf( __( '¡Te has apuntado al turno del %s!', 'convoca-shifts' ), $date ),
+			'message' => '¡Te has apuntado al turno del ' . $date . '!',
 		)
 	);
 }
@@ -748,7 +738,7 @@ function convoca_shifts_rest_crear_turno( WP_REST_Request $request ) {
 	return rest_ensure_response(
 		array(
 			'success' => true,
-			'message' => __( 'Turno creado correctamente.', 'convoca-shifts' ),
+			'message' => 'Turno creado correctamente.',
 			'id'      => $post_id,
 		)
 	);
