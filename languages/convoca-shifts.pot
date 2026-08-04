@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-04T22:40:37+00:00\n"
+"POT-Creation-Date: 2026-08-04T23:00:57+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: convoca-shifts\n"
@@ -476,6 +476,7 @@ msgid "No tienes permisos para realizar esta acción."
 msgstr ""
 
 #: includes/admin-turno-rapido.php:125
+#: includes/rest-api.php:741
 msgid "Turno creado correctamente."
 msgstr ""
 
@@ -666,12 +667,14 @@ msgstr ""
 
 #: includes/class-admin-turno-editor.php:184
 #: includes/cpt-turno.php:309
+#: includes/cpt-turno.php:850
 msgid "🔵 Ocupado (Actividad)"
 msgstr ""
 
 #: includes/class-admin-turno-editor.php:185
 #: includes/class-admin-turnos-list.php:237
 #: includes/cpt-turno.php:310
+#: includes/cpt-turno.php:851
 msgid "🔴 Cerrado"
 msgstr ""
 
@@ -755,6 +758,10 @@ msgstr ""
 
 #: includes/class-admin-turnos-list-page.php:95
 msgid "Buscar turno..."
+msgstr ""
+
+#: includes/class-admin-turnos-list.php:49
+msgid "<input type=\"checkbox\">"
 msgstr ""
 
 #: includes/class-admin-turnos-list.php:51
@@ -922,6 +929,18 @@ msgstr ""
 msgid "Sin asignar"
 msgstr ""
 
+#: includes/cpt-turno.php:449
+msgid "<span class=\"badge-cst badge-pending\">⏳ Pendiente</span>"
+msgstr ""
+
+#: includes/cpt-turno.php:450
+msgid "<span class=\"badge-cst badge-success\">✅ Realizado</span>"
+msgstr ""
+
+#: includes/cpt-turno.php:451
+msgid "<span class=\"badge-cst badge-danger\">❌ No asistió</span>"
+msgstr ""
+
 #: includes/cpt-turno.php:520
 msgid "No se puede marcar como realizado un turno sin responsable asignado."
 msgstr ""
@@ -975,6 +994,10 @@ msgstr ""
 msgid "Configuración diaria"
 msgstr ""
 
+#: includes/cpt-turno.php:849
+msgid "🟡 Pendiente (Disponible)"
+msgstr ""
+
 #: includes/cpt-turno.php:856
 msgid "— Actividad —"
 msgstr ""
@@ -1025,9 +1048,25 @@ msgstr ""
 msgid "Lo siento, no tienes permisos para realizar esta acción."
 msgstr ""
 
+#: includes/rest-api.php:468
+msgid "Turno liberado con éxito."
+msgstr ""
+
 #: includes/rest-api.php:591
 #: includes/rest-api.php:755
 msgid "a las"
+msgstr ""
+
+#: includes/rest-api.php:612
+msgid "¡Te has apuntado al turno del "
+msgstr ""
+
+#: includes/rest-api.php:680
+msgid "Próximo turno sin cubrir: "
+msgstr ""
+
+#: includes/rest-api.php:688
+msgid "¡Todos los turnos están cubiertos! 🎉"
 msgstr ""
 
 #: includes/shortcodes.php:49

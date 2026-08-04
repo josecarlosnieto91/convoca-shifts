@@ -465,7 +465,7 @@ function convoca_shifts_rest_desapuntarse_turno( WP_REST_Request $request ) {
 	return rest_ensure_response(
 		array(
 			'success' => true,
-			'message' => 'Turno liberado con éxito.',
+			'message' => __( 'Turno liberado con éxito.', 'convoca-shifts' ),
 		)
 	);
 }
@@ -609,7 +609,7 @@ function convoca_shifts_rest_apuntarse_proximo( WP_REST_Request $request ) {
 	return rest_ensure_response(
 		array(
 			'success' => true,
-			'message' => '¡Te has apuntado al turno del ' . $date . '!',
+			'message' => __( '¡Te has apuntado al turno del ', 'convoca-shifts' ) . $date . '!',
 		)
 	);
 }
@@ -677,7 +677,7 @@ function convoca_shifts_rest_get_proximo_libre( WP_REST_Request $request ) {
 		return rest_ensure_response(
 			array(
 				'encontrado' => true,
-				'texto'      => 'Próximo turno sin cubrir: ' . $fecha,
+				'texto'      => __( 'Próximo turno sin cubrir: ', 'convoca-shifts' ) . $fecha,
 			)
 		);
 	}
@@ -685,7 +685,7 @@ function convoca_shifts_rest_get_proximo_libre( WP_REST_Request $request ) {
 	return rest_ensure_response(
 		array(
 			'encontrado' => false,
-			'texto'      => '¡Todos los turnos están cubiertos! 🎉',
+			'texto'      => __( '¡Todos los turnos están cubiertos! 🎉', 'convoca-shifts' ),
 		)
 	);
 }
@@ -738,7 +738,7 @@ function convoca_shifts_rest_crear_turno( WP_REST_Request $request ) {
 	return rest_ensure_response(
 		array(
 			'success' => true,
-			'message' => 'Turno creado correctamente.',
+			'message' => __( 'Turno creado correctamente.', 'convoca-shifts' ),
 			'id'      => $post_id,
 		)
 	);

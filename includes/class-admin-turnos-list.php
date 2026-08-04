@@ -46,7 +46,7 @@ class Admin_Turnos_List extends \WP_List_Table {
 
 	public function get_columns(): array {
 		return array(
-			'cb'          => '<input type="checkbox">',
+			'cb'          => __( '<input type="checkbox">', 'convoca-shifts' ),
 			'fecha'       => __( 'Fecha', 'convoca-shifts' ),
 			'hora'        => __( 'Horario', 'convoca-shifts' ),
 			'estado'      => __( 'Estado', 'convoca-shifts' ),

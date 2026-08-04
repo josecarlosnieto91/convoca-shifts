@@ -446,9 +446,9 @@ function convoca_shifts_custom_centro_turno_column( $column, $post_id ) {
 			}
 
 			$badges = array(
-				'pendiente'  => '<span class="badge-cst badge-pending">⏳ Pendiente</span>',
-				'realizado'  => '<span class="badge-cst badge-success">✅ Realizado</span>',
-				'no_asistio' => '<span class="badge-cst badge-danger">❌ No asistió</span>',
+				'pendiente'  => __( '<span class="badge-cst badge-pending">⏳ Pendiente</span>', 'convoca-shifts' ),
+				'realizado'  => __( '<span class="badge-cst badge-success">✅ Realizado</span>', 'convoca-shifts' ),
+				'no_asistio' => __( '<span class="badge-cst badge-danger">❌ No asistió</span>', 'convoca-shifts' ),
 			);
 
 			$badge_html = isset( $badges[ $estado ] ) ? $badges[ $estado ] : esc_html( $estado );
@@ -846,9 +846,9 @@ function convoca_shifts_generar_turnos_page() {
 								echo '<span>a</span>';
 								echo '<input type="time" name="dias[' . esc_attr( $index ) . '][hora_fin]" placeholder="21:00">';
 								echo '<select name="dias[' . esc_attr( $index ) . '][estado]" class="convoca-shifts-estado-selector">';
-								echo '<option value="abierto_disponible">🟡 Pendiente (Disponible)</option>';
-								echo '<option value="abierto_ocupado">🔵 Ocupado (Actividad)</option>';
-								echo '<option value="cerrado">🔴 Cerrado</option>';
+								echo '<option value="abierto_disponible">' . esc_html__( '🟡 Pendiente (Disponible)', 'convoca-shifts' ) . '</option>';
+								echo '<option value="abierto_ocupado">' . esc_html__( '🔵 Ocupado (Actividad)', 'convoca-shifts' ) . '</option>';
+								echo '<option value="cerrado">' . esc_html__( '🔴 Cerrado', 'convoca-shifts' ) . '</option>';
 								echo '</select>';
 								echo '<div class="convoca-shifts-ocupado-extra" style="display:none; flex-direction: column; gap: 5px; margin-top: 5px; background: #fff; padding: 5px; border: 1px solid #eee;">';
 								wp_dropdown_categories(
