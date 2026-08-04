@@ -8,7 +8,7 @@ Convoca Shifts gestiona turnos de voluntariado para centros sociales y asociacio
 
 **Requiere:** convoca-core (recomendado).
 
-**Integración con biodevas.org / lugg.biodevas.org:** Perfecto para el Centro Social Los Lugg. El shortcode `[convoca_turnos]` muestra el calendario en cualquier página.
+**Integración en cualquier sitio:** Perfecto para centros sociales, asociaciones o espacios comunitarios. El shortcode `[convoca_turnos]` muestra el calendario en cualquier página.
 
 ## 2. Crear un turno
 
