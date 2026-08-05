@@ -830,13 +830,13 @@ function convoca_shifts_generar_turnos_page() {
 						<td>
 							<?php
 							$dias_semana = array(
-								0 => 'Lunes',
-								1 => 'Martes',
-								2 => 'Miércoles',
-								3 => 'Jueves',
-								4 => 'Viernes',
-								5 => 'Sábado',
-								6 => 'Domingo',
+								0 => __( 'Lunes', 'convoca-shifts' ),
+								1 => __( 'Martes', 'convoca-shifts' ),
+								2 => __( 'Miércoles', 'convoca-shifts' ),
+								3 => __( 'Jueves', 'convoca-shifts' ),
+								4 => __( 'Viernes', 'convoca-shifts' ),
+								5 => __( 'Sábado', 'convoca-shifts' ),
+								6 => __( 'Domingo', 'convoca-shifts' ),
 							);
 							foreach ( $dias_semana as $index => $nombre ) {
 								echo '<div style="margin-bottom: 10px; padding: 10px; background: #f9f9f9; border: 1px solid #ddd; display: flex; flex-direction: column; gap: 5px;">';
