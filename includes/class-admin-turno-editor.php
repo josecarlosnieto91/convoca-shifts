@@ -322,13 +322,13 @@ class Convoca_Shifts_Admin_Turno_Editor {
 		update_post_meta( $post_id, '_monitor', $monitor_user > 0 ? $monitor_user : '' );
 
 		// Sync the post (title, status) using existing function.
-		if ( function_exists('Convoca\Shifts\convoca_shifts_sync_turno_on_save') ) {
+		if ( function_exists( 'Convoca\Shifts\convoca_shifts_sync_turno_on_save' ) ) {
 			$post = get_post( $post_id );
 			convoca_shifts_sync_turno_on_save( $post_id, $post, $is_edit );
 		}
 
 		// Log the activity.
-		if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
+		if ( function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
 			$action_type = $is_edit ? 'turno_actualizado' : 'turno_creado';
 			convoca_shifts_log_activity(
 				get_current_user_id(),

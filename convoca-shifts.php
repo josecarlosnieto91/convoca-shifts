@@ -19,14 +19,17 @@
 namespace Convoca\Shifts;
 
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+	exit;
 }
 
 // Load translations.
-add_action( 'init', function () {
-	wp_set_script_translations( 'convoca-shifts-scripts', 'convoca-shifts', plugin_dir_path( __FILE__ ) . 'languages/' );
-	load_plugin_textdomain( 'convoca-shifts', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
-} );
+add_action(
+	'init',
+	function () {
+		wp_set_script_translations( 'convoca-shifts-scripts', 'convoca-shifts', plugin_dir_path( __FILE__ ) . 'languages/' );
+		load_plugin_textdomain( 'convoca-shifts', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+	} 
+);
 
 if ( ! defined( 'CONVOCA_SHIFTS_DIR' ) ) {
 	define( 'CONVOCA_SHIFTS_DIR', plugin_dir_path( __FILE__ ) );
@@ -65,7 +68,8 @@ require_once CONVOCA_SHIFTS_DIR . 'includes/widgets.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/blocks.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/Admin_Auditoria_Horas.php';
 
-/* ── Convoca Core fallback ────────────────────────── */
+/*
+── Convoca Core fallback ────────────────────────── */
 // Core classes auto-loaded via Convoca Core's Composer PSR-4
 
 /* ── Dependency Check ──────────────────────────────────── */

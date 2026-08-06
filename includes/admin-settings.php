@@ -46,7 +46,7 @@ function convoca_shifts_add_settings_menu() {
 }
 
 function convoca_shifts_status_page() {
-	if ( ! class_exists('Convoca\Shifts$1') ) {
+	if ( ! class_exists( 'Convoca\Shifts$1' ) ) {
 		require_once __DIR__ . '/class-admin-status.php';
 	}
 	Convoca_Shifts_Admin_Status::render_page();
@@ -266,9 +266,9 @@ function convoca_shifts_get_system_checks( bool $force = false ) {
 			'title'   => $data['title'],
 			'status'  => $page ? 'ok' : 'error',
 			'message' => $page
-		/* translators: %s: page title */
-		? sprintf( __( 'Detectada: %s', 'convoca-shifts' ), get_the_title( $page ) )
-		: __( 'No se ha encontrado ninguna página con este shortcode.', 'convoca-shifts' ),
+			/* translators: %s: page title */
+			? sprintf( __( 'Detectada: %s', 'convoca-shifts' ), get_the_title( $page ) )
+			: __( 'No se ha encontrado ninguna página con este shortcode.', 'convoca-shifts' ),
 			'fix'     => ! $page ? $data['fix'] : '',
 		);
 	}
@@ -282,7 +282,7 @@ function convoca_shifts_get_system_checks( bool $force = false ) {
 function convoca_shifts_find_page_by_shortcode( string $shortcode ) {
 	global $wpdb;
 
-	$tag   = trim( $shortcode, '[]' );
+	$tag = trim( $shortcode, '[]' );
 	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is prepared below.
 	$query = $wpdb->prepare(
 		"SELECT ID, post_content FROM $wpdb->posts 

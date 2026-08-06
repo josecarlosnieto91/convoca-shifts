@@ -26,7 +26,7 @@ function convoca_shifts_register_rest_routes() {
 		'/turnos',
 		array(
 			'methods'             => 'GET',
-			'callback' => __NAMESPACE__ . '\\convoca_shifts_rest_get_turnos',
+			'callback'            => __NAMESPACE__ . '\\convoca_shifts_rest_get_turnos',
 			'permission_callback' => '__return_true', // Publicly readable.
 		)
 	);
@@ -36,7 +36,7 @@ function convoca_shifts_register_rest_routes() {
 		'/turnos/(?P<id>\d+)/apuntarse',
 		array(
 			'methods'             => 'POST',
-			'callback' => __NAMESPACE__ . '\\convoca_shifts_rest_apuntarse_turno',
+			'callback'            => __NAMESPACE__ . '\\convoca_shifts_rest_apuntarse_turno',
 			'permission_callback' => function () {
 				if ( is_user_logged_in() && ( current_user_can( 'gestionar_mis_turnos' ) || current_user_can( 'manage_options' ) ) ) {
 					return true;
@@ -51,7 +51,7 @@ function convoca_shifts_register_rest_routes() {
 		'/turnos/(?P<id>\d+)/desapuntarse',
 		array(
 			'methods'             => 'POST',
-			'callback' => __NAMESPACE__ . '\\convoca_shifts_rest_desapuntarse_turno',
+			'callback'            => __NAMESPACE__ . '\\convoca_shifts_rest_desapuntarse_turno',
 			'permission_callback' => function () {
 				if ( is_user_logged_in() && ( current_user_can( 'gestionar_mis_turnos' ) || current_user_can( 'manage_options' ) ) ) {
 					return true;
@@ -66,7 +66,7 @@ function convoca_shifts_register_rest_routes() {
 		'/turnos/apuntarse-proximo',
 		array(
 			'methods'             => 'POST',
-			'callback' => __NAMESPACE__ . '\\convoca_shifts_rest_apuntarse_proximo',
+			'callback'            => __NAMESPACE__ . '\\convoca_shifts_rest_apuntarse_proximo',
 			'permission_callback' => function () {
 				if ( is_user_logged_in() && ( current_user_can( 'gestionar_mis_turnos' ) || current_user_can( 'manage_options' ) ) ) {
 					return true;
@@ -81,7 +81,7 @@ function convoca_shifts_register_rest_routes() {
 		'/turnos/proximo-libre',
 		array(
 			'methods'             => 'GET',
-			'callback' => __NAMESPACE__ . '\\convoca_shifts_rest_get_proximo_libre',
+			'callback'            => __NAMESPACE__ . '\\convoca_shifts_rest_get_proximo_libre',
 			'permission_callback' => '__return_true', // Public.
 		)
 	);
@@ -91,7 +91,7 @@ function convoca_shifts_register_rest_routes() {
 		'/turnos/crear',
 		array(
 			'methods'             => 'POST',
-			'callback' => __NAMESPACE__ . '\\convoca_shifts_rest_crear_turno',
+			'callback'            => __NAMESPACE__ . '\\convoca_shifts_rest_crear_turno',
 			'permission_callback' => function () {
 				return is_user_logged_in() && ( current_user_can( 'gestionar_mis_turnos' ) || current_user_can( 'manage_options' ) );
 			},
@@ -316,7 +316,7 @@ function convoca_shifts_rest_apuntarse_turno( WP_REST_Request $request ) {
 	$conflict_id = convoca_shifts_check_user_overlap( $user_id, $fecha_inicio_turno, $hora_fin, $post_id, true );
 	if ( $conflict_id ) {
 		$wpdb->query( 'ROLLBACK' );
-		if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
+		if ( function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
 			convoca_shifts_log_activity( $user_id, $post_id, 'conflicto_horario_detectado', array( 'conflict_id' => $conflict_id ) );
 		}
 		return new \WP_Error( 'conflicto_horario', 'Ya tienes un turno asignado que se solapa con este horario.', array( 'status' => 400 ) );
@@ -378,7 +378,7 @@ function convoca_shifts_rest_apuntarse_turno( WP_REST_Request $request ) {
 	$message = 'Turno asignado con éxito.';
 
 	// Log activity.
-	if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
+	if ( function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
 		convoca_shifts_log_activity( $user_id, $post_id, 'turno_cubierto' );
 	}
 
@@ -458,7 +458,7 @@ function convoca_shifts_rest_desapuntarse_turno( WP_REST_Request $request ) {
 	$wpdb->query( 'COMMIT' );
 
 	// Log activity.
-	if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
+	if ( function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
 		convoca_shifts_log_activity( $user_id, $post_id, 'turno_liberado' );
 	}
 
@@ -529,7 +529,7 @@ function convoca_shifts_rest_apuntarse_proximo( WP_REST_Request $request ) {
 
 	if ( $conflict_id ) {
 		$wpdb->query( 'ROLLBACK' );
-		if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
+		if ( function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
 			convoca_shifts_log_activity(
 				$user_id,
 				$turno_id,
@@ -600,7 +600,7 @@ function convoca_shifts_rest_apuntarse_proximo( WP_REST_Request $request ) {
 	wp_publish_post( $post_id );
 
 	// Log activity.
-	if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
+	if ( function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
 		convoca_shifts_log_activity( $user_id, $post_id, 'turno_cubierto', array( 'automatico' => true ) );
 	}
 
@@ -731,7 +731,7 @@ function convoca_shifts_rest_crear_turno( WP_REST_Request $request ) {
 	}
 
 	// Log activity.
-	if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
+	if ( function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
 		convoca_shifts_log_activity( get_current_user_id(), $post_id, 'turno_creado', array( 'origen' => 'frontend' ) );
 	}
 

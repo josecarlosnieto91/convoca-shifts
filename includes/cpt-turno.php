@@ -399,7 +399,7 @@ function convoca_shifts_save_turno_meta( $post_id ) {
 
 			update_post_meta( $post_id, '_estado_real', 'pendiente' );
 
-			if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
+			if ( function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
 				$action = ( $new_id > 0 ) ? 'turno_asignado' : 'turno_desasignado';
 				convoca_shifts_log_activity( get_current_user_id(), $post_id, $action, array( 'voluntario_id' => $new_id ) );
 			}
@@ -539,7 +539,7 @@ function convoca_shifts_handle_admin_attendance_action() {
 		}
 
 		// Log activity.
-		if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
+		if ( function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
 			$action = ( $status === 'realizado' ) ? 'asistencia_ok' : 'asistencia_no';
 			convoca_shifts_log_activity( get_current_user_id(), $post_id, $action );
 		}
@@ -665,7 +665,7 @@ function convoca_shifts_save_turno_quick_edit( $post_id, $post ) {
 			update_post_meta( $post_id, '_estado_real', 'pendiente' );
 
 			// Log activity.
-			if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
+			if ( function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
 				$action = ( $new_id > 0 ) ? 'turno_asignado' : 'turno_desasignado';
 				convoca_shifts_log_activity( get_current_user_id(), $post_id, $action, array( 'voluntario_id' => $new_id ) );
 			}
@@ -685,7 +685,7 @@ function convoca_shifts_save_turno_quick_edit( $post_id, $post ) {
 			}
 
 			// Log activity.
-			if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
+			if ( function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
 				$action = ( $new_status === 'realizado' ) ? 'asistencia_ok' : 'asistencia_no';
 				convoca_shifts_log_activity( get_current_user_id(), $post_id, $action );
 			}
@@ -760,7 +760,7 @@ function convoca_shifts_exportar_csv_turnos() {
 		}
 
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- php://output is not a real file
-	fclose( $output );
+		fclose( $output );
 		exit;
 	}
 }
@@ -1013,7 +1013,7 @@ function convoca_shifts_duplicar_semana() {
 				update_post_meta( $new_post_id, '_notas', get_post_meta( $turno->ID, '_notas', true ) );
 
 				// Log activity.
-				if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
+				if ( function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
 					convoca_shifts_log_activity( get_current_user_id(), $new_post_id, 'turno_creado', array( 'origen' => 'duplicar_semana' ) );
 				}
 				++$count;
@@ -1133,7 +1133,7 @@ function convoca_shifts_crear_semana_tipo( $fecha_inicio, $dias ) {
 
 			if ( ! is_wp_error( $new_post_id ) ) {
 				// Log activity.
-				if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
+				if ( function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
 					convoca_shifts_log_activity( get_current_user_id(), $new_post_id, 'turno_creado', array( 'origen' => 'generador_semana' ) );
 				}
 				++$count;
@@ -1330,7 +1330,7 @@ function convoca_shifts_check_user_overlap( $user_id, $start_time, $end_time, $e
 
 	$conflict_id = $wpdb->get_var( $sql );
 
-	if ( $conflict_id && function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
+	if ( $conflict_id && function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
 		// Log the details of the conflict for debugging.
 		$existing_start = get_post_meta( $conflict_id, '_fecha_inicio', true ) ?: get_post( $conflict_id )->post_date;
 		$existing_end   = get_post_meta( $conflict_id, '_hora_fin', true );

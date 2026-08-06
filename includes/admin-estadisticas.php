@@ -190,10 +190,12 @@ function convoca_shifts_estadisticas_page() {
 		<?php if ( $total_pages > 1 ) : ?>
 			<div class="tablenav" style="margin-top: 10px;">
 				<div class="tablenav-pages">
-					<span class="displaying-num"><?php
+					<span class="displaying-num">
+					<?php
 					/* translators: %d: total number of log entries */
 					echo esc_html( sprintf( __( '%d elementos', 'convoca-shifts' ), $total_logs ) );
-				?></span>
+					?>
+				</span>
 					<span class="pagination-links">
 						<?php if ( $current_page > 1 ) : ?>
 							<a class="prev-page button" href="<?php echo esc_url( add_query_arg( 'paged_logs', $current_page - 1 ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Página anterior', 'convoca-shifts' ); ?></span>‹</a>
@@ -380,7 +382,7 @@ function convoca_shifts_exportar_stats_csv_handler() {
 		}
 
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- php://output is not a real file
-	fclose( $output );
+		fclose( $output );
 		exit;
 	}
 }

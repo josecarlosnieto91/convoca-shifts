@@ -98,7 +98,7 @@ function convoca_shifts_process_quick_add_turno() {
 	);
 
 	if ( ! is_wp_error( $post_id ) ) {
-		if ( function_exists('Convoca\Shifts\convoca_shifts_log_activity') ) {
+		if ( function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
 			convoca_shifts_log_activity( get_current_user_id(), $post_id, 'turno_creado', array( 'origen' => 'admin_rapido' ) );
 		}
 
