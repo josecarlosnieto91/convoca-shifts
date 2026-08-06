@@ -22,7 +22,7 @@ add_action( 'rest_api_init', __NAMESPACE__ . '\\convoca_shifts_register_rest_rou
 
 function convoca_shifts_register_rest_routes() {
 	register_rest_route(
-		'centro/v1',
+		'convoca-shifts/v1',
 		'/turnos',
 		array(
 			'methods'             => 'GET',
@@ -32,7 +32,7 @@ function convoca_shifts_register_rest_routes() {
 	);
 
 	register_rest_route(
-		'centro/v1',
+		'convoca-shifts/v1',
 		'/turnos/(?P<id>\d+)/apuntarse',
 		array(
 			'methods'             => 'POST',
@@ -47,7 +47,7 @@ function convoca_shifts_register_rest_routes() {
 	);
 
 	register_rest_route(
-		'centro/v1',
+		'convoca-shifts/v1',
 		'/turnos/(?P<id>\d+)/desapuntarse',
 		array(
 			'methods'             => 'POST',
@@ -62,7 +62,7 @@ function convoca_shifts_register_rest_routes() {
 	);
 
 	register_rest_route(
-		'centro/v1',
+		'convoca-shifts/v1',
 		'/turnos/apuntarse-proximo',
 		array(
 			'methods'             => 'POST',
@@ -77,7 +77,7 @@ function convoca_shifts_register_rest_routes() {
 	);
 
 	register_rest_route(
-		'centro/v1',
+		'convoca-shifts/v1',
 		'/turnos/proximo-libre',
 		array(
 			'methods'             => 'GET',
@@ -87,7 +87,7 @@ function convoca_shifts_register_rest_routes() {
 	);
 
 	register_rest_route(
-		'centro/v1',
+		'convoca-shifts/v1',
 		'/turnos/crear',
 		array(
 			'methods'             => 'POST',

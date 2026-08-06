@@ -41,7 +41,7 @@ function convoca_shifts_register_scripts() {
 		'convoca-shifts-calendario',
 		'convocaShiftsData',
 		array(
-			'restUrl'        => esc_url_raw( rest_url( 'centro/v1/turnos' ) ),
+			'restUrl'        => esc_url_raw( rest_url( 'convoca-shifts/v1/turnos' ) ),
 			'nonce'          => wp_create_nonce( 'wp_rest' ),
 			'isLogged'       => is_user_logged_in(),
 			'userId'         => get_current_user_id(),
