@@ -8,7 +8,7 @@ Convoca Shifts gestiona turnos de voluntariado para centros sociales y asociacio
 
 **Requiere:** convoca-core (recomendado).
 
-**Integración en cualquier sitio:** Perfecto para centros sociales, asociaciones o espacios comunitarios. El shortcode `[convoca_turnos]` muestra el calendario en cualquier página.
+**Integración en cualquier sitio:** Perfecto para centros sociales, asociaciones o espacios comunitarios. El shortcode `[convoca_calendario]` muestra el calendario en cualquier página.
 
 ## 2. Crear un turno
 
@@ -48,10 +48,18 @@ Accede desde **Turnos → Calendario**:
 ### Shortcode
 
 ```
-[convoca_turnos]
+[convoca_calendario]
 ```
 
 Atributos: `vista="mes"`, `categoria="recepcion"`.
+
+Otros shortcodes disponibles:
+
+```
+[convoca_proximos_turnos]   Lista de los próximos turnos
+[convoca_resumen_turnos]    Resumen de turnos
+[convoca_boton_apuntarse]   Botón de apuntarse a un turno
+```
 
 ## 4. Duplicar semana
 

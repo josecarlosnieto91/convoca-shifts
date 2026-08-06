@@ -19,7 +19,10 @@ Manage volunteer shifts with a visual calendar (FullCalendar), quick creation, w
 * Full week duplication
 * Volunteer assignment and approval
 * Hour sync with Convoca Members
-* `[convoca_turnos]` shortcode for frontend
+* `[convoca_calendario]` shortcode for the interactive shift calendar (FullCalendar)
+* `[convoca_proximos_turnos]` shortcode for the next shifts list
+* `[convoca_resumen_turnos]` shortcode for the shift summary
+* `[convoca_boton_apuntarse]` shortcode for the sign-up button
 * PDF certificates for completed shifts
 
 = External Services =
