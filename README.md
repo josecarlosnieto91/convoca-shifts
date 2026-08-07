@@ -17,6 +17,13 @@ Gestión de turnos de voluntariado para el Centro Social.
 - REST API
 - Cron recordatorios
 
+
+## 📖 Documentación
+
+La documentación completa (manual de usuario, API REST, hooks, instalación) vive en la wiki:
+
+👉 **[Convoca shifts](https://docs.getconvoca.app/plugins/convoca-shifts/)**
+
 ## Dependencies
 
 WordPress 6.4+, PHP 8.1+, convoca-core (optional but recommended)
