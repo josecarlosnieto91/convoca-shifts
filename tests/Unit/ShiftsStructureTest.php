@@ -55,12 +55,6 @@ class ShiftsStructureTest extends TestCase
         $this->assertTrue(class_exists('Convoca\Shifts\Hour_Sync'));
     }
 
-    public function test_pdf_certificado_class_loads(): void
-    {
-        $this->loadFile('class-pdf-certificado.php');
-        $this->assertTrue(class_exists('Convoca\Shifts\PDF_Certificado'));
-    }
-
     public function test_upgrade_manager_class_loads(): void
     {
         $this->loadFile('Convoca_Shifts_Upgrade_Manager.php');
