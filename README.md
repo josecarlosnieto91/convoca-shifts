@@ -1,6 +1,6 @@
 # Convoca Shifts
 
-Gestión de turnos de voluntariado para el Centro Social.
+Gestión de turnos de voluntariado para organizaciones y centros.
 
 ## Requirements
 

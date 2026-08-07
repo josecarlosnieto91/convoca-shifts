@@ -16,7 +16,7 @@
  */
 
 /**
- * Upgrade Manager for Centro Social Turnos.
+ * Upgrade Manager for Convoca Shifts.
  *
  * @package CentroSocialTurnos
  */

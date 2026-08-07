@@ -70,7 +70,7 @@ delete_option( 'convoca_shifts_calendar_page_url' );
 delete_option( 'convoca_shifts_access_page_url' );
 
 // 4. Note: User meta with _convoca_shifts_ prefix (_convoca_shifts_aprobado, _convoca_shifts_telefono, _convoca_shifts_motivacion).
-// is created by Convoca Members plugin, NOT by Centro Social Turnos.
+// is created by Convoca Members plugin, NOT by Convoca Shifts.
 // Therefore, we do NOT delete it here to preserve Member functionality.
 
 // 5. Clear scheduled CRON events.

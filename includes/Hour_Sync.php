@@ -16,7 +16,7 @@
  */
 
 /**
- * Hour synchronization for volunteers in Centro Social.
+ * Hour synchronization for volunteers.
  *
  * @package Convoca\Shifts
  */
@@ -206,7 +206,7 @@ class Hour_Sync {
 			// We use 'turno' as activity or just project ID 0. Turno post ID is not an actividad, but we link it here.
 			update_post_meta( $log_id, '_convoca_actividad_id', 0 );
 			update_post_meta( $log_id, '_convoca_estado', 'aprobada' );
-			update_post_meta( $log_id, '_convoca_tareas', 'Turno en Centro Social: ' . $post->post_title );
+			update_post_meta( $log_id, '_convoca_tareas', 'Turno: ' . $post->post_title );
 		}
 	}
 }
