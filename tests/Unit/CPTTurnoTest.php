@@ -85,13 +85,14 @@ class CPTTurnoTest extends TestCase
     {
         $post = $this->makePost(10);
         update_post_meta(10, '_estado', 'abierto_ocupado');
+        // Configurar el término de actividad explícitamente (mock neutral por defecto).
+        $GLOBALS['_wp_stores']['post_terms'][10] = [(object) ['name' => 'Actividad Test']];
 
         $this->syncTurno($post);
 
         $data = get_post_meta(10, '_wp_update_data', true);
         $this->assertIsArray($data);
-        // wp_get_post_terms stub returns 'Taller de Yoga'
-        $this->assertStringContainsString('Taller de Yoga', $data['post_title'] ?? '');
+        $this->assertStringContainsString('Actividad Test', $data['post_title'] ?? '');
         $this->assertStringContainsString('🔵', $data['post_title'] ?? '');
     }
 
