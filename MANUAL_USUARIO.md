@@ -95,7 +95,21 @@ Cuando un turno se marca como "Completado", las horas trabajadas se registran au
 
 Genera un PDF con el historial de turnos de un voluntario desde **Turnos → [voluntario] → Certificado**.
 
-## 9. Problemas comunes
+## 9. API REST
+
+Namespace: `convoca-shifts/v1`.
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/turnos` | Lista de turnos (filtros: fecha, estado) |
+| GET | `/turnos/{id}` | Detalle de un turno |
+| POST | `/turnos/{id}/apuntarse` | Inscribir voluntario en un turno |
+| POST | `/turnos/{id}/desapuntarse` | Desinscribir voluntario de un turno |
+| POST | `/turnos/apuntarse-proximo` | Inscribirse en el próximo turno disponible |
+| POST | `/turnos/crear` | Crear un turno (admin) |
+| GET | `/turnos/proximo-libre` | Próximo turno con plazas libres |
+
+## 10. Problemas comunes
 
 | Problema | Solución |
 |----------|----------|
