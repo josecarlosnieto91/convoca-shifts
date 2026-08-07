@@ -36,7 +36,7 @@ class HourSyncTest extends TestCase
         Hour_Sync::sync_hours_to_volunteer_global(1, 0, 'realizado');
 
         // No error should have been logged (early return)
-        $this->assertEmpty(\Convoca\Core\Logger::$logs);
+        $this->assertEmpty(\Convoca\Core\Logger::get_logs());
     }
 
     public function test_sync_with_nonexistent_user_does_nothing(): void
@@ -44,7 +44,7 @@ class HourSyncTest extends TestCase
         // user_id = -1 returns false from get_userdata
         Hour_Sync::sync_hours_to_volunteer_global(1, -1, 'realizado');
 
-        $this->assertEmpty(\Convoca\Core\Logger::$logs);
+        $this->assertEmpty(\Convoca\Core\Logger::get_logs());
     }
 
     // ── Class existence ─────────────────────────────────
@@ -73,6 +73,6 @@ class HourSyncTest extends TestCase
         Hour_Sync::sync_hours_to_volunteer_global(99, 1, 'realizado');
 
         // Should not log errors (just returns early)
-        $this->assertEmpty(\Convoca\Core\Logger::$logs);
+        $this->assertEmpty(\Convoca\Core\Logger::get_logs());
     }
 }
