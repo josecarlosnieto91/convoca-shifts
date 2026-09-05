@@ -23,9 +23,8 @@ jobs:
         with:
           dependency-versions: highest
           composer-options: '--ignore-platform-req=ext-iconv'
-      # deuda preexistente: 3 errores y 153 warnings (WordPress Coding Standards)
       - name: PHPCS
-        run: vendor/bin/phpcs --standard=.phpcs.xml.dist --runtime-set ignore_warnings_on_exit 1 || true
+        run: vendor/bin/phpcs --standard=.phpcs.xml.dist --runtime-set ignore_warnings_on_exit 1
 
   phpstan:
     name: PHPStan
