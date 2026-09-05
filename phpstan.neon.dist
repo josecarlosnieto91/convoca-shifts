@@ -42,3 +42,16 @@ parameters:
 			message: '#Call to function is_array.*always evaluate to true#'
 			identifier: function.alreadyNarrowedType
 			path: includes/blocks.php
+		# check_admin_referer() hace wp_die si el nonce falla: con stubs recientes
+		# se tipa como siempre-true. El patrón isset($_POST)&&check_admin_referer()
+		# es el estándar WP de verificación de nonce en POST/admin_post; aparece en
+		# múltiples admin handlers del plugin. (Global sin path: mismo FP real.)
+		-
+			message: '#Right side of && is always true#'
+			identifier: booleanAnd.rightAlwaysTrue
+		# WP_Widget::form() en widgets clásicos hace echo directamente (patrón WP
+		# canónico); el stub reciente exige return string|null. No hay return real.
+		-
+			message: '#Method.*::form\(\) should return string\|null but return statement is missing#'
+			identifier: return.missing
+			path: includes/widgets.php
