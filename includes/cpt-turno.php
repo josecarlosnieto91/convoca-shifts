@@ -1300,13 +1300,18 @@ function convoca_shifts_check_user_overlap( $user_id, $start_time, $end_time, $e
 	}
 
 	// Conflict exists if existing_start < requested_end AND existing_end > requested_start.
-	$base_sql = "SELECT p.ID 
-         FROM {$wpdb->posts} p
-         JOIN {$wpdb->postmeta} pm_ini ON p.ID = pm_ini.post_id AND pm_ini.meta_key = '_fecha_inicio'
-         JOIN {$wpdb->postmeta} pm_fin ON p.ID = pm_fin.post_id AND pm_fin.meta_key = '_hora_fin'
-         JOIN {$wpdb->postmeta} pm_resp ON p.ID = pm_resp.post_id AND pm_resp.meta_key = '_id_responsable'
-         LEFT JOIN {$wpdb->postmeta} pm_est ON p.ID = pm_est.post_id AND pm_est.meta_key = '_estado'
-         LEFT JOIN {$wpdb->postmeta} pm_real ON p.ID = pm_real.post_id AND pm_real.meta_key = '_estado_real'
+	// SQL literal inline en prepare() (PCP/DirectDB exige consulta directa, sin
+	// variable intermedia ni operadores en el primer argumento). Nombres de tabla %i.
+	if ( $for_update ) {
+		$conflict_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT p.ID 
+         FROM %i p
+         JOIN %i pm_ini ON p.ID = pm_ini.post_id AND pm_ini.meta_key = '_fecha_inicio'
+         JOIN %i pm_fin ON p.ID = pm_fin.post_id AND pm_fin.meta_key = '_hora_fin'
+         JOIN %i pm_resp ON p.ID = pm_resp.post_id AND pm_resp.meta_key = '_id_responsable'
+         LEFT JOIN %i pm_est ON p.ID = pm_est.post_id AND pm_est.meta_key = '_estado'
+         LEFT JOIN %i pm_real ON p.ID = pm_real.post_id AND pm_real.meta_key = '_estado_real'
          WHERE p.post_type = 'centro_turno' 
            AND p.post_status = 'publish'
            AND pm_resp.meta_value = %d
@@ -1315,23 +1320,51 @@ function convoca_shifts_check_user_overlap( $user_id, $start_time, $end_time, $e
            AND pm_fin.meta_value > %s
            AND (pm_est.meta_value IS NULL OR pm_est.meta_value != 'cerrado')
            AND (pm_real.meta_value IS NULL OR pm_real.meta_value != 'no_asistio')
-         LIMIT 1";
-
-	if ( $for_update ) {
-		$base_sql .= ' FOR UPDATE';
+         LIMIT 1 FOR UPDATE",
+				$wpdb->posts,
+				$wpdb->postmeta,
+				$wpdb->postmeta,
+				$wpdb->postmeta,
+				$wpdb->postmeta,
+				$wpdb->postmeta,
+				$user_id,
+				$exclude_post_id,
+				$end_str,
+				$start_str
+			)
+		);
+	} else {
+		$conflict_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT p.ID 
+         FROM %i p
+         JOIN %i pm_ini ON p.ID = pm_ini.post_id AND pm_ini.meta_key = '_fecha_inicio'
+         JOIN %i pm_fin ON p.ID = pm_fin.post_id AND pm_fin.meta_key = '_hora_fin'
+         JOIN %i pm_resp ON p.ID = pm_resp.post_id AND pm_resp.meta_key = '_id_responsable'
+         LEFT JOIN %i pm_est ON p.ID = pm_est.post_id AND pm_est.meta_key = '_estado'
+         LEFT JOIN %i pm_real ON p.ID = pm_real.post_id AND pm_real.meta_key = '_estado_real'
+         WHERE p.post_type = 'centro_turno' 
+           AND p.post_status = 'publish'
+           AND pm_resp.meta_value = %d
+           AND p.ID != %d
+           AND pm_ini.meta_value < %s
+           AND pm_fin.meta_value > %s
+           AND (pm_est.meta_value IS NULL OR pm_est.meta_value != 'cerrado')
+           AND (pm_real.meta_value IS NULL OR pm_real.meta_value != 'no_asistio')
+         LIMIT 1",
+				$wpdb->posts,
+				$wpdb->postmeta,
+				$wpdb->postmeta,
+				$wpdb->postmeta,
+				$wpdb->postmeta,
+				$wpdb->postmeta,
+				$user_id,
+				$exclude_post_id,
+				$end_str,
+				$start_str
+			)
+		);
 	}
-
-	// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- $base_sql is the SQL template; placeholders in prepare().
-	$sql = $wpdb->prepare(
-		$base_sql,
-		$user_id,
-		$exclude_post_id,
-		$end_str,
-		$start_str
-	);
-	// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
-
-	$conflict_id = $wpdb->get_var( $sql );
 
 	if ( $conflict_id && function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
 		// Log the details of the conflict for debugging.
