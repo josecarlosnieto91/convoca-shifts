@@ -135,7 +135,7 @@ class Convoca_Shifts_Admin_Turno_Editor {
 
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="convoca-box" style="background:#fff;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,0.05);padding:40px;margin-top:20px;">
 				<input type="hidden" name="action" value="convoca_shifts_save_turno">
-				<input type="hidden" name="post_id" value="<?php echo $is_edit ? esc_attr( $post_id ) : 0; ?>">
+				<input type="hidden" name="post_id" value="<?php echo $is_edit ? esc_attr( (string) $post_id ) : 0; ?>">
 
 				<div class="convoca-grid-2">
 
@@ -302,7 +302,7 @@ class Convoca_Shifts_Admin_Turno_Editor {
 					'post_status'   => 'publish',
 				)
 			);
-			if ( is_wp_error( $post_id ) ) {
+			if ( ! $post_id ) {
 				wp_die( esc_html__( 'Error al crear el turno.', 'convoca-shifts' ) );
 			}
 		}

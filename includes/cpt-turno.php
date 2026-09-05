@@ -486,7 +486,7 @@ function convoca_shifts_custom_centro_turno_column( $column, $post_id ) {
 
 			// Hidden fields for Quick Edit.
 			echo '<div class="convoca-shifts-quick-edit-data" style="display:none;">';
-			echo '<div class="convoca_shifts_id_responsable">' . esc_html( $id_responsable ) . '</div>';
+			echo '<div class="convoca_shifts_id_responsable">' . esc_html( (string) $id_responsable ) . '</div>';
 			echo '<div class="convoca_shifts_estado_real">' . esc_attr( $estado ) . '</div>';
 			echo '</div>';
 			break;
@@ -790,7 +790,10 @@ function convoca_shifts_generar_turnos_page() {
 				echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . esc_html( sprintf( __( 'Se han duplicado %d turnos.', 'convoca-shifts' ), $result ) ) . '</p></div>';
 			}
 		} elseif ( $_POST['convoca_shifts_action'] === 'generar_semana' ) {
-			$result = convoca_shifts_crear_semana_tipo();
+			// Los datos vienen del form: fecha_inicio (date) + dias[0..6][...].
+			$fecha_inicio = sanitize_text_field( wp_unslash( $_POST['fecha_inicio'] ?? '' ) );
+			$dias         = isset( $_POST['dias'] ) && is_array( $_POST['dias'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['dias'] ) ) : array();
+			$result       = convoca_shifts_crear_semana_tipo( $fecha_inicio, $dias );
 			if ( is_wp_error( $result ) ) {
 				echo '<div class="convoca-alert convoca-alert--danger" style="display:block;margin-bottom:20px;"><p>' . esc_html( $result->get_error_message() ) . '</p></div>';
 			} else {
@@ -840,12 +843,12 @@ function convoca_shifts_generar_turnos_page() {
 							);
 							foreach ( $dias_semana as $index => $nombre ) {
 								echo '<div style="margin-bottom: 10px; padding: 10px; background: #f9f9f9; border: 1px solid #ddd; display: flex; flex-direction: column; gap: 5px;">';
-								echo '<label><input type="checkbox" name="dias[' . esc_attr( $index ) . '][activo]" value="1"> <strong>' . esc_html( $nombre ) . '</strong></label>';
+								echo '<label><input type="checkbox" name="dias[' . esc_attr( (string) $index ) . '][activo]" value="1"> <strong>' . esc_html( $nombre ) . '</strong></label>';
 								echo '<div style="margin-left: 20px; display: flex; align-items: center; gap: 10px;">';
-								echo '<input type="time" name="dias[' . esc_attr( $index ) . '][hora_inicio]" placeholder="17:00">';
+								echo '<input type="time" name="dias[' . esc_attr( (string) $index ) . '][hora_inicio]" placeholder="17:00">';
 								echo '<span>a</span>';
-								echo '<input type="time" name="dias[' . esc_attr( $index ) . '][hora_fin]" placeholder="21:00">';
-								echo '<select name="dias[' . esc_attr( $index ) . '][estado]" class="convoca-shifts-estado-selector">';
+								echo '<input type="time" name="dias[' . esc_attr( (string) $index ) . '][hora_fin]" placeholder="21:00">';
+								echo '<select name="dias[' . esc_attr( (string) $index ) . '][estado]" class="convoca-shifts-estado-selector">';
 								echo '<option value="abierto_disponible">' . esc_html__( '🟡 Pendiente (Disponible)', 'convoca-shifts' ) . '</option>';
 								echo '<option value="abierto_ocupado">' . esc_html__( '🔵 Ocupado (Actividad)', 'convoca-shifts' ) . '</option>';
 								echo '<option value="cerrado">' . esc_html__( '🔴 Cerrado', 'convoca-shifts' ) . '</option>';
@@ -855,7 +858,7 @@ function convoca_shifts_generar_turnos_page() {
 									array(
 										'show_option_none' => __( '— Actividad —', 'convoca-shifts' ),
 										'taxonomy'         => 'convoca_shifts_actividad',
-										'name'             => 'dias[' . esc_attr( $index ) . '][actividad_id]',
+										'name'             => 'dias[' . esc_attr( (string) $index ) . '][actividad_id]',
 										'orderby'          => 'name',
 										'hierarchical'     => true,
 										'hide_empty'       => false,
@@ -865,14 +868,14 @@ function convoca_shifts_generar_turnos_page() {
 									array(
 										'show_option_none' => __( '— Monitor/a —', 'convoca-shifts' ),
 										'id'               => 'convoca_shifts_monitor_select',
-										'name'             => 'dias[' . esc_attr( $index ) . '][monitor_id]',
+										'name'             => 'dias[' . esc_attr( (string) $index ) . '][monitor_id]',
 										'orderby'          => 'name',
 										'hierarchical'     => true,
 										'hide_empty'       => false,
 									)
 								);
 								echo '</div>';
-								echo '<label><input type="checkbox" name="dias[' . esc_attr( $index ) . '][apoyo]" value="1"> 🛟 Necesita apoyo</label>';
+								echo '<label><input type="checkbox" name="dias[' . esc_attr( (string) $index ) . '][apoyo]" value="1"> 🛟 Necesita apoyo</label>';
 								echo '</div></div>';
 							}
 							?>
@@ -1251,7 +1254,7 @@ function convoca_shifts_insert_turno( $args ) {
 		)
 	);
 
-	if ( ! is_wp_error( $post_id ) ) {
+	if ( $post_id ) {
 		wp_publish_post( $post_id );
 		update_post_meta( $post_id, '_estado', $a['estado'] );
 		update_post_meta( $post_id, '_id_responsable', $a['id_responsable'] );

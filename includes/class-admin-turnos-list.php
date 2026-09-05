@@ -64,10 +64,20 @@ class Admin_Turnos_List extends \WP_List_Table {
 		);
 	}
 
+	/**
+	 * Column renderer.
+	 *
+	 * @param \WP_Post $item Row item (WP_Post from WP_Query).
+	 */
 	protected function column_cb( $item ): string {
 		return sprintf( '<input type="checkbox" name="turno[]" value="%d">', $item->ID );
 	}
 
+	/**
+	 * Column renderer.
+	 *
+	 * @param \WP_Post $item Row item (WP_Post from WP_Query).
+	 */
 	protected function column_fecha( $item ): string {
 		$fecha = get_post_meta( $item->ID, '_fecha_inicio', true );
 		if ( $fecha ) {
@@ -76,6 +86,11 @@ class Admin_Turnos_List extends \WP_List_Table {
 		return '—';
 	}
 
+	/**
+	 * Column renderer.
+	 *
+	 * @param \WP_Post $item Row item (WP_Post from WP_Query).
+	 */
 	protected function column_hora( $item ): string {
 		$fecha_ini = get_post_meta( $item->ID, '_fecha_inicio', true );
 		$hora_fin  = get_post_meta( $item->ID, '_hora_fin', true );
@@ -86,6 +101,11 @@ class Admin_Turnos_List extends \WP_List_Table {
 		return '—';
 	}
 
+	/**
+	 * Column renderer.
+	 *
+	 * @param \WP_Post $item Row item (WP_Post from WP_Query).
+	 */
 	protected function column_estado( $item ): string {
 		$estado = get_post_meta( $item->ID, '_estado', true );
 		$badges = array(
@@ -103,6 +123,11 @@ class Admin_Turnos_List extends \WP_List_Table {
 		return '<span class="convoca-badge ' . esc_attr( $class ) . '">' . esc_html( $label ) . '</span>';
 	}
 
+	/**
+	 * Column renderer.
+	 *
+	 * @param \WP_Post $item Row item (WP_Post from WP_Query).
+	 */
 	protected function column_responsable( $item ): string {
 		$user_id = (int) get_post_meta( $item->ID, '_id_responsable', true );
 		if ( ! $user_id ) {
@@ -112,11 +137,21 @@ class Admin_Turnos_List extends \WP_List_Table {
 		return $user ? esc_html( $user->display_name ) : '<span style="color:#94a3b8;">—</span>';
 	}
 
+	/**
+	 * Column renderer.
+	 *
+	 * @param \WP_Post $item Row item (WP_Post from WP_Query).
+	 */
 	protected function column_apoyo( $item ): string {
 		$apoyo = (int) get_post_meta( $item->ID, '_necesita_apoyo', true );
 		return $apoyo ? '<span class="convoca-badge convoca-badge--warning">🛟 Sí</span>' : '<span style="color:#94a3b8;">No</span>';
 	}
 
+	/**
+	 * Column renderer.
+	 *
+	 * @param \WP_Post $item Row item (WP_Post from WP_Query).
+	 */
 	protected function column_estado_real( $item ): string {
 		$estado  = get_post_meta( $item->ID, '_estado_real', true ) ?: 'pendiente';
 		$classes = array(
@@ -133,6 +168,11 @@ class Admin_Turnos_List extends \WP_List_Table {
 		return '<span class="convoca-badge ' . esc_attr( $class ) . '">' . esc_html( $labels[ $estado ] ?? $estado ) . '</span>';
 	}
 
+	/**
+	 * Column renderer.
+	 *
+	 * @param \WP_Post $item Row item (WP_Post from WP_Query).
+	 */
 	protected function column_acciones( $item ): string {
 		$edit_url = admin_url( 'edit.php?post_type=centro_turno&page=convoca-shifts-editar-turno&id=' . $item->ID );
 

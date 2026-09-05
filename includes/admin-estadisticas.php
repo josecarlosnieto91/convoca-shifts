@@ -201,7 +201,7 @@ function convoca_shifts_estadisticas_page() {
 							<a class="prev-page button" href="<?php echo esc_url( add_query_arg( 'paged_logs', $current_page - 1 ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Página anterior', 'convoca-shifts' ); ?></span>‹</a>
 						<?php endif; ?>
 						<span class="paging-input">
-							<span class="tablenav-paging-text"><?php echo esc_html( $current_page ); ?> <?php esc_html_e( 'de', 'convoca-shifts' ); ?> <span class="total-pages"><?php echo esc_html( $total_pages ); ?></span></span>
+							<span class="tablenav-paging-text"><?php echo esc_html( (string) $current_page ); ?> <?php esc_html_e( 'de', 'convoca-shifts' ); ?> <span class="total-pages"><?php echo esc_html( (string) $total_pages ); ?></span></span>
 						</span>
 						<?php if ( $current_page < $total_pages ) : ?>
 							<a class="next-page button" href="<?php echo esc_url( add_query_arg( 'paged_logs', $current_page + 1 ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Página siguiente', 'convoca-shifts' ); ?></span>›</a>

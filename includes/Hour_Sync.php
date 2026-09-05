@@ -184,7 +184,7 @@ class Hour_Sync {
 			)
 		);
 
-		if ( ! is_wp_error( $log_id ) ) {
+		if ( $log_id ) {
 			// Check member.
 			$members = get_posts(
 				array(

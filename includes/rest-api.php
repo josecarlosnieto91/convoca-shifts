@@ -130,7 +130,7 @@ function convoca_shifts_rest_get_turnos( WP_REST_Request $request ) {
 					'type'    => 'DATETIME',
 				),
 			);
-		} catch ( Exception $e ) {
+		} catch ( \Exception $e ) {
 			$args['meta_query'] = array(
 				array(
 					'key'     => '_fecha_inicio',
@@ -202,7 +202,7 @@ function convoca_shifts_rest_get_turnos( WP_REST_Request $request ) {
 						$dt->modify( '+2 hours' );
 						$event_end = $dt->format( 'Y-m-d\TH:i:s' );
 					}
-				} catch ( Exception $e ) {
+				} catch ( \Exception $e ) {
 					$event_start = get_the_date( 'Y-m-d\TH:i:s' );
 				}
 			}
@@ -334,7 +334,7 @@ function convoca_shifts_rest_apuntarse_turno( WP_REST_Request $request ) {
 		)
 	);
 
-	if ( ! $rows || $rows === 0 ) {
+	if ( ! $rows ) {
 		// Si no existía la meta o no se pudo actualizar, intentar INSERT.
 		$inserted = $wpdb->query(
 			$wpdb->prepare(
@@ -390,7 +390,7 @@ function convoca_shifts_rest_apuntarse_turno( WP_REST_Request $request ) {
 			$tz               = new DateTimeZone( wp_timezone_string() );
 			$dt               = new \DateTime( $fecha_inicio_turno, $tz );
 			$fecha_para_email = $dt->format( 'd/m/Y H:i' );
-		} catch ( Exception $e ) {
+		} catch ( \Exception $e ) {
 			$fecha_para_email = $fecha_inicio_turno;
 		}
 	} else {
@@ -554,7 +554,7 @@ function convoca_shifts_rest_apuntarse_proximo( WP_REST_Request $request ) {
 		)
 	);
 
-	if ( ! $rows || $rows === 0 ) {
+	if ( ! $rows ) {
 		$inserted = $wpdb->query(
 			$wpdb->prepare(
 				"INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value)
@@ -666,7 +666,7 @@ function convoca_shifts_rest_get_proximo_libre( WP_REST_Request $request ) {
 				$tz    = new DateTimeZone( wp_timezone_string() );
 				$dt    = new \DateTime( $fecha_inicio, $tz );
 				$fecha = $dt->format( 'd/m/Y H:i' );
-			} catch ( Exception $e ) {
+			} catch ( \Exception $e ) {
 				$fecha = $fecha_inicio;
 			}
 		} else {
@@ -753,7 +753,7 @@ function apuntarse_proximo_format_date( $fecha_turno, $turno_post ): string {
 			$tz = new DateTimeZone( wp_timezone_string() );
 			$dt = new \DateTime( $fecha_turno, $tz );
 			return $dt->format( 'd/m/Y' ) . ' ' . __( 'a las', 'convoca-shifts' ) . ' ' . $dt->format( 'H:i' );
-		} catch ( Exception $e ) {
+		} catch ( \Exception $e ) {
 			return $fecha_turno;
 		}
 	}

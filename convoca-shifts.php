@@ -69,7 +69,8 @@ require_once CONVOCA_SHIFTS_DIR . 'includes/blocks.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/Admin_Auditoria_Horas.php';
 
 /*
-── Convoca Core fallback ────────────────────────── */
+── Convoca Core fallback ──────────────────────────
+*/
 // Core classes auto-loaded via Convoca Core's Composer PSR-4
 
 /* ── Dependency Check ──────────────────────────────────── */

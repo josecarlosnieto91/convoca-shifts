@@ -1,6 +1,3 @@
-includes:
-	- phpstan-baseline.neon
-
 parameters:
 	level: 5
 	paths:
@@ -18,3 +15,30 @@ parameters:
 	bootstrapFiles:
 		- vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
 		- phpstan-bootstrap.php
+	ignoreErrors:
+		# ── Falsos positivos del harness de análisis (NO deuda de código) ──
+		# WP acepta callback como string 'Clase::metodo' en add_submenu_page /
+		# add_meta_box / register_setting; el stub exige callable().
+		-
+			message: '#Parameter \#6 \$callback of function add_submenu_page#'
+			identifier: argument.type
+		-
+			message: '#Parameter \#3 \$callback of function add_meta_box#'
+			identifier: argument.type
+		-
+			message: '#Parameter \#3 \$args of function register_setting expects array.*sanitize_text_field#'
+			identifier: argument.type
+		# add_submenu_page(null) es el patrón WP para páginas standalone.
+		-
+			message: '#Parameter \#1 \$parent_slug of function add_submenu_page expects string, null given#'
+			identifier: argument.type
+		# WP_Admin_Bar::add_node acepta WP_Admin_Bar_Node (objeto).
+		-
+			message: '#Parameter \#1 \$args of method WP_Admin_Bar::add_node#'
+			identifier: argument.type
+		# wp_get_sidebars_widgets() puede devolver false en runtime; el stub
+		# declara solo array. El chequeo is_array defensivo es correcto.
+		-
+			message: '#Call to function is_array.*always evaluate to true#'
+			identifier: function.alreadyNarrowedType
+			path: includes/blocks.php

@@ -47,16 +47,16 @@ foreach ( $turnos as $turno ) {
 
 // 1.1 Clean up taxonomy terms.
 $taxonomies = array( 'convoca_shifts_actividad' );
-foreach ( $taxonomies as $tax ) {
+foreach ( $taxonomies as $tax_slug ) {
 	$terms = get_terms(
 		array(
-			'taxonomy'   => $tax,
+			'taxonomy'   => $tax_slug,
 			'hide_empty' => false,
 		)
 	);
 	if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-		foreach ( $terms as $term ) {
-			wp_delete_term( $term->term_id, $tax );
+		foreach ( $terms as $single_term ) {
+			wp_delete_term( $single_term->term_id, $tax_slug );
 		}
 	}
 }

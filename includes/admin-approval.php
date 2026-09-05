@@ -119,14 +119,14 @@ function convoca_shifts_voluntarios_pendientes_page() {
 		'meta_key'   => '_convoca_shifts_aprobado',
 		'meta_value' => '0',
 	);
-	$pending_query = new WP_User_Query( $pending_args );
+	$pending_query = new \WP_User_Query( $pending_args );
 	$pending_users = $pending_query->get_results();
 
 	// Get active volunteers.
 	$active_args  = array(
 		'role' => 'voluntario_aprobado',
 	);
-	$active_query = new WP_User_Query( $active_args );
+	$active_query = new \WP_User_Query( $active_args );
 	$active_users = $active_query->get_results();
 
 	echo '<div class="wrap">';
