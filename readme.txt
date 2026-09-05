@@ -4,7 +4,7 @@ Tags: shifts, volunteering, calendar, scheduling, check-in
 Requires at least: 6.4
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 2.5.1
+Stable tag: 2.5.2
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,10 @@ This plugin may contact getconvoca.app to validate PRO licenses, only when a key
 3. Activate the plugin from the Plugins menu
 
 == Changelog ==
+
+= 2.5.2 =
+* Security: dismiss de aviso admin con nonce (anti-CSRF).
+* Fix: sincronización de horas escribía la meta con espacio inicial ' _convoca_miembro_id' — el enlace horas→socio ahora se materializa.
 
 = 2.5.1 =
 * Improvement: 37 unit tests, 67 assertions

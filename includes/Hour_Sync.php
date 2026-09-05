@@ -197,7 +197,9 @@ class Hour_Sync {
 			);
 
 			if ( ! empty( $members ) ) {
-				update_post_meta( $log_id, ' _convoca_miembro_id', $members[0] );
+				// Fix: clave sin espacio inicial — antes se guardaba como ' _convoca_miembro_id'
+				// y el enlace horas→socio nunca se materializaba.
+				update_post_meta( $log_id, '_convoca_miembro_id', $members[0] );
 			}
 
 			update_post_meta( $log_id, '_convoca_usuario_id', $user_id );

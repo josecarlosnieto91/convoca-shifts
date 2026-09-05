@@ -3,7 +3,7 @@
  * Plugin Name:       Convoca Shifts
  * Plugin URI:        https://getconvoca.app
  * Description:       Volunteer shift management for community centers.
- * Version:           2.5.1
+ * Version:           2.5.2
  * Requires at least: 6.4
  * Requires PHP:      8.1
  * Tested up to:      7.0
@@ -258,8 +258,9 @@ add_action(
 	'admin_init',
 	function () {
 		if ( isset( $_GET['convoca_shifts_dismiss_role_notice'] ) && current_user_can( 'manage_options' ) ) {
+			check_admin_referer( 'convoca_shifts_dismiss_role_notice' );
 			update_user_meta( get_current_user_id(), '_convoca_shifts_role_notice_dismissed', time() );
-			wp_safe_redirect( remove_query_arg( 'convoca_shifts_dismiss_role_notice' ) );
+			wp_safe_redirect( remove_query_arg( array( 'convoca_shifts_dismiss_role_notice', '_wpnonce' ) ) );
 			exit;
 		}
 	}
