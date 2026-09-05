@@ -35,6 +35,7 @@ namespace Convoca\Core {
                 self::$logs[] = ['level' => 'error', 'msg' => $msg, 'context' => $context];
             }
             public static function clear(): void { self::$logs = []; }
+            public static function get_logs(): array { return self::$logs; }
         }
     }
 
