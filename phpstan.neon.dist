@@ -1,0 +1,20 @@
+includes:
+	- phpstan-baseline.neon
+
+parameters:
+	level: 5
+	paths:
+		- includes
+		- convoca-shifts.php
+		- uninstall.php
+	excludePaths:
+		analyseAndScan:
+			- vendor
+			- tests
+			- dev-tools
+			- node_modules (?)
+	scanFiles:
+		- phpstan-convoca-core.stub.php
+	bootstrapFiles:
+		- vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+		- phpstan-bootstrap.php

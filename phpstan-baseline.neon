@@ -1,19 +1,247 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Instantiated class Dompdf\\Options not found\.$#'
-			identifier: class.notFound
+			message: '#^Path in require_once\(\) "/tmp/wp/wp\-admin/includes/upgrade\.php" is not a file or it does not exist\.$#'
+			identifier: requireOnce.fileNotFound
 			count: 1
-			path: ../convoca-core/convoca-core.php
+			path: convoca-shifts.php
 
 		-
-			message: '#^Instantiated class Dompdf\\Options not found\.$#'
+			message: '#^Call to static method info\(\) on an unknown class Convoca\\Core\\Logger\.$#'
 			identifier: class.notFound
 			count: 1
-			path: ../convoca-core/includes/CONV_Signature.php
+			path: includes/Admin_Auditoria_Horas.php
 
 		-
-			message: '#^Function cst_crear_semana_tipo invoked with 0 parameters, 2 required\.$#'
+			message: '#^Call to static method info\(\) on an unknown class Convoca\\Core\\Logger\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/Convoca_Shifts_Upgrade_Manager.php
+
+		-
+			message: '#^Call to function is_wp_error\(\) with int\<0, max\> will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: includes/Hour_Sync.php
+
+		-
+			message: '#^Call to static method do_action\(\) on an unknown class Convoca\\Core\\Utils\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/Hour_Sync.php
+
+		-
+			message: '#^Call to static method error\(\) on an unknown class Convoca\\Core\\Logger\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/Hour_Sync.php
+
+		-
+			message: '#^Call to static method warning\(\) on an unknown class Convoca\\Core\\Logger\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/Hour_Sync.php
+
+		-
+			message: '#^Call to method get_results\(\) on an unknown class Convoca\\Shifts\\WP_User_Query\.$#'
+			identifier: class.notFound
+			count: 2
+			path: includes/admin-approval.php
+
+		-
+			message: '#^Instantiated class Convoca\\Shifts\\WP_User_Query not found\.$#'
+			identifier: class.notFound
+			count: 2
+			path: includes/admin-approval.php
+
+		-
+			message: '#^Parameter \#6 \$callback of function add_submenu_page expects ''''\|\(callable\(\)\: mixed\), ''convoca_shifts…'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: includes/admin-approval.php
+
+		-
+			message: '#^Call to static method has_pro\(\) on an unknown class Convoca\\Core\\License_Manager\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/admin-estadisticas.php
+
+		-
+			message: '#^Parameter \#1 \$text of function esc_html expects string, float given\.$#'
+			identifier: argument.type
+			count: 1
+			path: includes/admin-estadisticas.php
+
+		-
+			message: '#^Parameter \#1 \$text of function esc_html expects string, int\<1, max\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: includes/admin-estadisticas.php
+
+		-
+			message: '#^Parameter \#6 \$callback of function add_submenu_page expects ''''\|\(callable\(\)\: mixed\), ''convoca_shifts…'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: includes/admin-estadisticas.php
+
+		-
+			message: '#^Call to static method is_plugin_active_safe\(\) on an unknown class Convoca\\Core\\Utils\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/admin-settings.php
+
+		-
+			message: '#^Constant CONVOCA_IMAGES_URL not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: includes/admin-settings.php
+
+		-
+			message: '#^Parameter \#3 \$args of function register_setting expects array\{type\?\: string, label\?\: string, description\?\: string, sanitize_callback\?\: callable\(\)\: mixed, show_in_rest\?\: array\|bool, default\?\: mixed\}, ''sanitize_text_field'' given\.$#'
+			identifier: argument.type
+			count: 3
+			path: includes/admin-settings.php
+
+		-
+			message: '#^Parameter \#6 \$callback of function add_submenu_page expects ''''\|\(callable\(\)\: mixed\), ''convoca_shifts…'' given\.$#'
+			identifier: argument.type
+			count: 2
+			path: includes/admin-settings.php
+
+		-
+			message: '#^Parameter \#6 \$callback of function add_submenu_page expects ''''\|\(callable\(\)\: mixed\), ''convoca_shifts…'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: includes/admin-turno-rapido.php
+
+		-
+			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: includes/blocks.php
+
+		-
+			message: '#^Constant CONVOCA_SHIFTS_URL not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: includes/blocks.php
+
+		-
+			message: '#^Call to function is_wp_error\(\) with int\<0, max\> will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: includes/class-admin-turno-editor.php
+
+		-
+			message: '#^Parameter \#1 \$parent_slug of function add_submenu_page expects string, null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: includes/class-admin-turno-editor.php
+
+		-
+			message: '#^Parameter \#1 \$text of function esc_attr expects string, int\<1, max\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: includes/class-admin-turno-editor.php
+
+		-
+			message: '#^Parameter \#1 \$args of method WP_Admin_Bar\:\:add_node\(\) expects array\{id\?\: string, title\?\: string, parent\?\: string, href\?\: string, group\?\: bool, meta\?\: array\}, object given\.$#'
+			identifier: argument.type
+			count: 1
+			path: includes/class-admin-turnos-list-page.php
+
+		-
+			message: '#^Parameter \#1 \$parent_slug of function add_submenu_page expects string, null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: includes/class-admin-turnos-list-page.php
+
+		-
+			message: '#^Cannot access property \$ID on array\|object\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: includes/class-admin-turnos-list.php
+
+		-
+			message: '#^Path in require_once\(\) "/tmp/wp/wp\-admin/includes/class\-wp\-list\-table\.php" is not a file or it does not exist\.$#'
+			identifier: requireOnce.fileNotFound
+			count: 1
+			path: includes/class-admin-turnos-list.php
+
+		-
+			message: '#^Call to function is_wp_error\(\) with int\<0, max\> will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: includes/cpt-turno.php
+
+		-
+			message: '#^Call to static method acquire_lock\(\) on an unknown class Convoca\\Core\\Utils\.$#'
+			identifier: class.notFound
+			count: 2
+			path: includes/cpt-turno.php
+
+		-
+			message: '#^Call to static method error\(\) on an unknown class Convoca\\Core\\Logger\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/cpt-turno.php
+
+		-
+			message: '#^Call to static method release_lock\(\) on an unknown class Convoca\\Core\\Utils\.$#'
+			identifier: class.notFound
+			count: 2
+			path: includes/cpt-turno.php
+
+		-
+			message: '#^Function Convoca\\Shifts\\convoca_shifts_crear_semana_tipo invoked with 0 parameters, 2 required\.$#'
 			identifier: arguments.count
 			count: 1
 			path: includes/cpt-turno.php
+
+		-
+			message: '#^Parameter \#1 \$text of function esc_attr expects string, int given\.$#'
+			identifier: argument.type
+			count: 7
+			path: includes/cpt-turno.php
+
+		-
+			message: '#^Parameter \#1 \$text of function esc_html expects string, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: includes/cpt-turno.php
+
+		-
+			message: '#^Parameter \#3 \$callback of function add_meta_box expects callable\(\)\: mixed, ''convoca_shifts…'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: includes/cpt-turno.php
+
+		-
+			message: '#^Call to static method acquire_lock\(\) on an unknown class Convoca\\Core\\Utils\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/cron.php
+
+		-
+			message: '#^Call to static method release_lock\(\) on an unknown class Convoca\\Core\\Utils\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/cron.php
+
+		-
+			message: '#^Caught class Convoca\\Shifts\\Exception not found\.$#'
+			identifier: class.notFound
+			count: 5
+			path: includes/rest-api.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between mixed and 0 will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 2
+			path: includes/rest-api.php
+
+		-
+			message: '#^Constant CONVOCA_SHIFTS_URL not found\.$#'
+			identifier: constant.notFound
+			count: 2
+			path: includes/shortcodes.php
