@@ -197,9 +197,11 @@ class Hour_Sync {
 			);
 
 			if ( ! empty( $members ) ) {
-				// Fix: clave sin espacio inicial — antes se guardaba como ' _convoca_miembro_id'
-				// y el enlace horas→socio nunca se materializaba.
-				update_post_meta( $log_id, '_convoca_miembro_id', $members[0] );
+				// Clave canónica _convoca_member_id (E2E-11): antes se guardaba
+				// como '_convoca_miembro_id' (con "i"), que Voluntariado_Manager
+				// y Certificate_Generator NO leen → las horas de turnos nunca
+				// se acumulaban al voluntario ni salían en el certificado.
+				update_post_meta( $log_id, '_convoca_member_id', $members[0] );
 			}
 
 			update_post_meta( $log_id, '_convoca_usuario_id', $user_id );

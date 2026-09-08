@@ -62,6 +62,7 @@ class Convoca_Shifts_Upgrade_Manager extends \Convoca\Core\Upgrade_Manager {
 		return array(
 			'1.6.3' => array( $this, 'upgrade_to_1_6_3' ),
 			'2.3.0' => array( $this, 'upgrade_to_2_3_0' ),
+			'2.5.2' => array( $this, 'upgrade_to_2_5_2_member_meta_key' ),
 		);
 	}
 
@@ -81,5 +82,25 @@ class Convoca_Shifts_Upgrade_Manager extends \Convoca\Core\Upgrade_Manager {
 	protected function upgrade_to_2_3_0(): void {
 		// Version 2.3.0 specific maintenance.
 		\Convoca\Core\Logger::info( 'CST Upgrade to 2.3.0 executed.', 'CST/Upgrade' );
+	}
+
+	/**
+	 * Upgrade to 2.5.2 (E2E-11): Normalize the member link key on registro_hora.
+	 *
+	 * Hour_Sync used to write '_convoca_miembro_id' (with "i"), which
+	 * Voluntariado_Manager / Certificate_Generator never read (they use
+	 * '_convoca_member_id'). Migrate historical rows so past shift hours
+	 * count towards volunteers again.
+	 */
+	protected function upgrade_to_2_5_2_member_meta_key(): void {
+		global $wpdb;
+
+		$updated = $wpdb->query(
+			"UPDATE {$wpdb->postmeta}
+			SET meta_key = '_convoca_member_id'
+			WHERE meta_key = '_convoca_miembro_id'"
+		);
+
+		\Convoca\Core\Logger::info( 'CST Upgrade 2.5.2: claves _convoca_miembro_id migradas a _convoca_member_id (filas: ' . (int) $updated . ').', 'CST/Upgrade' );
 	}
 }
