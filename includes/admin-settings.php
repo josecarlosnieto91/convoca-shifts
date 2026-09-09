@@ -257,7 +257,7 @@ function convoca_shifts_get_system_checks( bool $force = false ) {
 
 	// 1. Plugins.
 	$required_plugins = array(
-		'convoca-common/convoca-common.php'   => 'Convoca Core',
+		'convoca-core/convoca-core.php'        => 'Convoca Core',
 		'convoca-members/convoca-members.php' => 'Convoca Members',
 	);
 
