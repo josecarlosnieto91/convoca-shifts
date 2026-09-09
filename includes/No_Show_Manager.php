@@ -219,8 +219,8 @@ class No_Show_Manager {
 
 		/* translators: %d: número de faltas sin justificar */
 		$subject = sprintf( __( 'Aviso: has acumulado %d faltas sin justificar', 'convoca-shifts' ), $count );
-		/* translators: 1: nombre, 2: nº de faltas, 3: ventana en días */
 		$message = sprintf(
+			/* translators: 1: nombre, 2: nº de faltas, 3: ventana en días */
 			__( 'Hola %1$s: has acumulado %2$d faltas sin justificar en los últimos %3$d días. Si hay un motivo, contacta con la coordinación para justificarlas.', 'convoca-shifts' ),
 			$user->display_name,
 			$count,
