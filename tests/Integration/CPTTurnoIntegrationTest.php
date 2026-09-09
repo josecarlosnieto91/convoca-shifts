@@ -24,9 +24,10 @@ class CPTTurnoIntegrationTest extends \WP_UnitTestCase
         $this->assertArrayHasKey('/convoca-shifts/v1', $routes);
     }
 
-    public function test_admin_approval_function_exists(): void
+    public function test_volunteer_lifecycle_listeners_exist(): void
     {
-        // admin-approval.php defines procedural hooks
-        $this->assertTrue(function_exists('Convoca\\Shifts\\convoca_shifts_admin_approval_page'));
+        // admin-approval.php defines volunteer lifecycle listeners (UI moved to Convoca Members).
+        $this->assertTrue(function_exists('Convoca\Shifts\convoca_shifts_on_volunteer_approved'));
+        $this->assertTrue(function_exists('Convoca\Shifts\convoca_shifts_on_volunteer_revoked'));
     }
 }

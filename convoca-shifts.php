@@ -116,9 +116,23 @@ function convoca_shifts_activate_plugin() {
 	flush_rewrite_rules();
 	convoca_shifts_schedule_cron();
 
-	// Defensive: check if the required role exists.
+	// Defensive: check if the required role exists. Convoca Members normally
+	// creates 'voluntario_aprobado' with 'gestionar_mis_turnos'; Shifts creates
+	// it itself if missing so shift selectors/hours keep working without Members.
 	if ( ! get_role( 'voluntario_aprobado' ) ) {
-		error_log( 'CST Warning: The role "voluntario_aprobado" is missing. It should be created by Convoca Members.' );
+		add_role(
+			'voluntario_aprobado',
+			__( 'Voluntario Aprobado', 'convoca-shifts' ),
+			array(
+				'read'                 => true,
+				'gestionar_mis_turnos' => true,
+			)
+		);
+	} else {
+		$v_role = get_role( 'voluntario_aprobado' );
+		if ( ! $v_role->has_cap( 'gestionar_mis_turnos' ) ) {
+			$v_role->add_cap( 'gestionar_mis_turnos' );
+		}
 	}
 }
 
@@ -248,7 +262,7 @@ function convoca_shifts_check_required_role() {
 	if ( ! get_role( 'voluntario_aprobado' ) ) {
 		?>
 		<div class="convoca-alert convoca-alert--warning" style="display:block;margin-bottom:20px;">
-			<p><?php esc_html_e( '<strong>Atención:</strong> El rol "Voluntario Aprobado" no existe. Este rol es necesario para el funcionamiento de Convoca Shifts y debería ser creado por el plugin Convoca Members. Por favor, asegúrate de que Convoca Members está activo y ha sido reactivado recientemente.', 'convoca-shifts' ); ?>
+			<p><?php esc_html_e( '<strong>Atención:</strong> El rol "Voluntario Aprobado" no existe. Reactiva Convoca Shifts (o Convoca Members) para crearlo automáticamente.', 'convoca-shifts' ); ?>
 			<a href="?convoca_shifts_dismiss_role_notice=1" style="float:right;text-decoration:none;color:#999;">✕</a></p>
 		</div>
 		<?php
