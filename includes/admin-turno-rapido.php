@@ -36,7 +36,7 @@ function convoca_shifts_add_turno_rapido_menu() {
 		__( 'Añadir Turno Rápido', 'convoca-shifts' ),
 		'convoca_shifts_manage_turnos',
 		'convoca_shifts_turno_rapido',
-		'convoca_shifts_turno_rapido_page'
+		'Convoca\\Shifts\\convoca_shifts_turno_rapido_page'
 	);
 
 	// 2. Remove the standard "Add New" submenu to avoid confusion.

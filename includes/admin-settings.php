@@ -32,7 +32,7 @@ function convoca_shifts_add_settings_menu() {
 		__( 'Ajustes', 'convoca-shifts' ),
 		'manage_inscripciones',
 		'convoca_shifts_settings',
-		'convoca_shifts_settings_page'
+		'Convoca\\Shifts\\convoca_shifts_settings_page'
 	);
 
 	add_submenu_page(
@@ -41,7 +41,7 @@ function convoca_shifts_add_settings_menu() {
 		__( 'Estado', 'convoca-shifts' ),
 		'manage_options',
 		'convoca_shifts_status',
-		'convoca_shifts_status_page'
+		'Convoca\\Shifts\\convoca_shifts_status_page'
 	);
 }
 

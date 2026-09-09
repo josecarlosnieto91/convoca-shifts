@@ -30,7 +30,7 @@ function convoca_shifts_add_admin_menu() {
 		__( 'Gestionar Voluntarios', 'convoca-shifts' ),
 		'convoca_shifts_manage_turnos',
 		'convoca_shifts_voluntarios_pendientes',
-		'convoca_shifts_voluntarios_pendientes_page'
+		'Convoca\\Shifts\\convoca_shifts_voluntarios_pendientes_page'
 	);
 }
 

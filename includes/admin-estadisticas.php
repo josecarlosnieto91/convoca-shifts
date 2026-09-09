@@ -29,7 +29,7 @@ function convoca_shifts_add_estadisticas_menu() {
 		__( 'Estadísticas', 'convoca-shifts' ),
 		'convoca_shifts_view_stats',
 		'convoca_shifts_estadisticas',
-		'convoca_shifts_estadisticas_page'
+		'Convoca\\Shifts\\convoca_shifts_estadisticas_page'
 	);
 }
 
