@@ -44,8 +44,8 @@ function convoca_shifts_sync_turno_on_save( $post_id, $post, $update ) {
 		return;
 	}
 
-	// Remove action to prevent infinite loop.
-	remove_action( 'save_post_centro_turno', 'convoca_shifts_sync_turno_on_save', 20 );
+	// Remove action to prevent infinite loop (must match the FQN used in add_action).
+	remove_action( 'save_post_centro_turno', 'Convoca\Shifts\convoca_shifts_sync_turno_on_save', 20 );
 
 	try {
 		// 1. Identify the Responsible ID.
@@ -100,8 +100,10 @@ function convoca_shifts_sync_turno_on_save( $post_id, $post, $update ) {
 			wp_update_post( $update_data );
 		}
 	} finally {
-		// Re-add action regardless of errors.
-		add_action( 'save_post_centro_turno', 'Convoca\Shifts\convoca_shifts_sync_turno_on_save', 20, 3 );
+		// Re-add action regardless of errors (only if missing, to avoid stacking duplicates).
+		if ( ! has_action( 'save_post_centro_turno', 'Convoca\Shifts\convoca_shifts_sync_turno_on_save' ) ) {
+			add_action( 'save_post_centro_turno', 'Convoca\Shifts\convoca_shifts_sync_turno_on_save', 20, 3 );
+		}
 	}
 }
 
