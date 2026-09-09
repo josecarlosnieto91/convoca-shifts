@@ -28,6 +28,9 @@ parameters:
 		-
 			message: '#Parameter \#3 \$args of function register_setting expects array.*sanitize_text_field#'
 			identifier: argument.type
+		-
+			message: '#Parameter \#3 \$args of function register_setting expects array.*absint#'
+			identifier: argument.type
 		# add_submenu_page(null) es el patrón WP para páginas standalone.
 		-
 			message: '#Parameter \#1 \$parent_slug of function add_submenu_page expects string, null given#'

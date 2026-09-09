@@ -99,6 +99,8 @@ class Convoca_Shifts_Admin_Turno_Editor {
 		$estado_real    = $is_edit ? get_post_meta( $post_id, '_estado_real', true ) : 'pendiente';
 		$apoyo          = $is_edit ? (int) get_post_meta( $post_id, '_necesita_apoyo', true ) : 0;
 		$id_responsable = $is_edit ? (int) get_post_meta( $post_id, '_id_responsable', true ) : 0;
+		$fecha_aviso    = $is_edit ? get_post_meta( $post_id, '_convoca_fecha_aviso', true ) : '';
+		$motivo         = $is_edit ? get_post_meta( $post_id, '_convoca_ausencia_motivo', true ) : '';
 
 		// Get current taxonomy terms.
 		$term_actividad    = $is_edit ? wp_get_post_terms( $post_id, 'convoca_shifts_actividad', array( 'fields' => 'ids' ) ) : array();
@@ -232,7 +234,20 @@ class Convoca_Shifts_Admin_Turno_Editor {
 							<option value="pendiente" <?php selected( $estado_real, 'pendiente' ); ?>><?php esc_html_e( '⏳ Pendiente', 'convoca-shifts' ); ?></option>
 							<option value="realizado" <?php selected( $estado_real, 'realizado' ); ?>><?php esc_html_e( '✅ Realizado', 'convoca-shifts' ); ?></option>
 							<option value="no_asistio" <?php selected( $estado_real, 'no_asistio' ); ?>><?php esc_html_e( '❌ No asistió', 'convoca-shifts' ); ?></option>
+							<option value="justificada" <?php selected( $estado_real, 'justificada' ); ?>><?php esc_html_e( '✅ Ausencia justificada', 'convoca-shifts' ); ?></option>
+							<option value="cancelada_aviso" <?php selected( $estado_real, 'cancelada_aviso' ); ?>><?php esc_html_e( '↩️ Cancelada con aviso', 'convoca-shifts' ); ?></option>
 						</select>
+					</div>
+
+					<div class="convoca-field" style="grid-column:1/-1;">
+						<label for="convoca_shifts_fecha_aviso"><?php esc_html_e( 'Fecha de aviso (cancelación con aviso)', 'convoca-shifts' ); ?></label>
+						<input type="date" id="convoca_shifts_fecha_aviso" name="convoca_shifts_fecha_aviso" value="<?php echo esc_attr( $fecha_aviso ); ?>">
+						<p class="description"><?php esc_html_e( 'Solo aplica si la ausencia es "Cancelada con aviso" (aviso previo ≥ 24 h).', 'convoca-shifts' ); ?></p>
+					</div>
+
+					<div class="convoca-field" style="grid-column:1/-1;">
+						<label for="convoca_shifts_ausencia_motivo"><?php esc_html_e( 'Motivo / justificación de la ausencia', 'convoca-shifts' ); ?></label>
+						<textarea id="convoca_shifts_ausencia_motivo" name="convoca_shifts_ausencia_motivo" rows="2" style="width:100%;"><?php echo esc_textarea( $motivo ); ?></textarea>
 					</div>
 				</div>
 
@@ -278,6 +293,8 @@ class Convoca_Shifts_Admin_Turno_Editor {
 		$estado_real    = sanitize_text_field( $data['convoca_shifts_estado_real'] ?? 'pendiente' );
 		$id_responsable = (int) ( $data['convoca_shifts_id_responsable'] ?? 0 );
 		$necesita_apoyo = isset( $data['convoca_shifts_necesita_apoyo'] ) ? 1 : 0;
+		$fecha_aviso    = sanitize_text_field( $data['convoca_shifts_fecha_aviso'] ?? '' );
+		$motivo         = sanitize_textarea_field( $data['convoca_shifts_ausencia_motivo'] ?? '' );
 
 		$datetime_str = $fecha . ' ' . $hora_ini . ':00';
 
@@ -313,6 +330,13 @@ class Convoca_Shifts_Admin_Turno_Editor {
 		update_post_meta( $post_id, '_estado_real', $estado_real );
 		update_post_meta( $post_id, '_necesita_apoyo', $necesita_apoyo );
 		update_post_meta( $post_id, '_id_responsable', $id_responsable );
+		update_post_meta( $post_id, '_convoca_fecha_aviso', $fecha_aviso );
+		update_post_meta( $post_id, '_convoca_ausencia_motivo', $motivo );
+
+		// D11/D12: contabilizar la ausencia y enviar avisos si procede.
+		if ( class_exists( 'Convoca\Shifts\No_Show_Manager' ) ) {
+			\Convoca\Shifts\No_Show_Manager::handle_attendance_change( $post_id, $id_responsable, $estado_real );
+		}
 
 		// Save taxonomies.
 		$actividad_term = (int) ( $data['convoca_shifts_actividad_term'] ?? 0 );

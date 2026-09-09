@@ -155,14 +155,18 @@ class Admin_Turnos_List extends \WP_List_Table {
 	protected function column_estado_real( $item ): string {
 		$estado  = get_post_meta( $item->ID, '_estado_real', true ) ?: 'pendiente';
 		$classes = array(
-			'pendiente'  => 'convoca-badge--warning',
-			'realizado'  => 'convoca-badge--success',
-			'no_asistio' => 'convoca-badge--error',
+			'pendiente'       => 'convoca-badge--warning',
+			'realizado'       => 'convoca-badge--success',
+			'no_asistio'      => 'convoca-badge--error',
+			'justificada'     => 'convoca-badge--info',
+			'cancelada_aviso' => 'convoca-badge--info',
 		);
 		$labels  = array(
-			'pendiente'  => '⏳ Pendiente',
-			'realizado'  => '✅ Realizado',
-			'no_asistio' => '❌ No asistió',
+			'pendiente'       => '⏳ Pendiente',
+			'realizado'       => '✅ Realizado',
+			'no_asistio'      => '❌ No asistió',
+			'justificada'     => '✅ Ausencia justificada',
+			'cancelada_aviso' => '↩️ Cancelada con aviso',
 		);
 		$class   = $classes[ $estado ] ?? 'convoca-badge--warning';
 		return '<span class="convoca-badge ' . esc_attr( $class ) . '">' . esc_html( $labels[ $estado ] ?? $estado ) . '</span>';
@@ -184,12 +188,71 @@ class Admin_Turnos_List extends \WP_List_Table {
 
 	public function get_bulk_actions(): array {
 		return array(
-			'mark_realizado'  => __( '✅ Marcar Realizado', 'convoca-shifts' ),
-			'mark_no_asistio' => __( '❌ Marcar No asistió', 'convoca-shifts' ),
+			'mark_realizado'       => __( '✅ Marcar Realizado', 'convoca-shifts' ),
+			'mark_no_asistio'      => __( '❌ Marcar No asistió', 'convoca-shifts' ),
+			'mark_justificada'     => __( '✅ Marcar Ausencia justificada', 'convoca-shifts' ),
+			'mark_cancelada_aviso' => __( '↩️ Marcar Cancelada con aviso', 'convoca-shifts' ),
 		);
 	}
 
+	/**
+	 * Procesa las acciones en bloque sobre el listado de turnos.
+	 */
+	public function process_bulk_action(): void {
+		$action = $this->current_action();
+		if ( ! $action ) {
+			return;
+		}
+
+		$statuses = array(
+			'mark_realizado'       => 'realizado',
+			'mark_no_asistio'      => 'no_asistio',
+			'mark_justificada'     => 'justificada',
+			'mark_cancelada_aviso' => 'cancelada_aviso',
+		);
+		if ( ! isset( $statuses[ $action ] ) ) {
+			return;
+		}
+
+		check_admin_referer( 'bulk-turnos' );
+
+		$turnos = isset( $_GET['turno'] ) ? array_map( 'absint', (array) wp_unslash( $_GET['turno'] ) ) : array();
+		if ( empty( $turnos ) ) {
+			return;
+		}
+
+		$status = $statuses[ $action ];
+
+		foreach ( $turnos as $post_id ) {
+			if ( ! current_user_can( 'edit_post', $post_id ) ) {
+				continue;
+			}
+
+			update_post_meta( $post_id, '_estado_real', $status );
+
+			$id_responsable = (int) get_post_meta( $post_id, '_id_responsable', true );
+
+			if ( class_exists( 'Convoca\Shifts\Hour_Sync' ) ) {
+				\Convoca\Shifts\Hour_Sync::sync_hours_to_volunteer_global( $post_id, $id_responsable, $status );
+			}
+
+			// D11/D12: contabilizar la ausencia y enviar avisos si procede.
+			if ( class_exists( 'Convoca\Shifts\No_Show_Manager' ) ) {
+				\Convoca\Shifts\No_Show_Manager::handle_attendance_change( $post_id, $id_responsable, $status );
+			}
+
+			if ( function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
+				convoca_shifts_log_activity( get_current_user_id(), $post_id, 'asistencia_bulk', array( 'estado' => $status ) );
+			}
+		}
+
+		wp_safe_redirect( remove_query_arg( array( 'action', 'action2', 'turno', '_wpnonce', 'filter_action', 's', 'paged' ) ) );
+		exit;
+	}
+
 	public function prepare_items(): void {
+		$this->process_bulk_action();
+
 		$per_page     = 25;
 		$current_page = $this->get_pagenum();
 
@@ -282,6 +345,8 @@ class Admin_Turnos_List extends \WP_List_Table {
 				<option value="pendiente" <?php selected( $filter_asistencia, 'pendiente' ); ?>><?php esc_html_e( '⏳ Pendiente', 'convoca-shifts' ); ?></option>
 				<option value="realizado" <?php selected( $filter_asistencia, 'realizado' ); ?>><?php esc_html_e( '✅ Realizado', 'convoca-shifts' ); ?></option>
 				<option value="no_asistio" <?php selected( $filter_asistencia, 'no_asistio' ); ?>><?php esc_html_e( '❌ No asistió', 'convoca-shifts' ); ?></option>
+				<option value="justificada" <?php selected( $filter_asistencia, 'justificada' ); ?>><?php esc_html_e( '✅ Ausencia justificada', 'convoca-shifts' ); ?></option>
+				<option value="cancelada_aviso" <?php selected( $filter_asistencia, 'cancelada_aviso' ); ?>><?php esc_html_e( '↩️ Cancelada con aviso', 'convoca-shifts' ); ?></option>
 			</select>
 
 			<select name="filter_apoyo">

@@ -213,6 +213,7 @@ function convoca_shifts_fecha_corta( int $timestamp ): string {
 	return "$dia_semana $dia_mes de $mes";
 }
 
+require_once CONVOCA_SHIFTS_DIR . 'includes/No_Show_Manager.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/Convoca_Shifts_Upgrade_Manager.php';
 
 /**

@@ -60,6 +60,9 @@ function convoca_shifts_register_plugin_settings() {
 	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_calendar_page_url', 'sanitize_text_field' );
 	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_hora_apertura', 'sanitize_text_field' );
 	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_hora_cierre', 'sanitize_text_field' );
+	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_aviso_socio_en', 'absint' );
+	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_aviso_admin_cada', 'absint' );
+	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_ventana_dias', 'absint' );
 }
 
 /**
@@ -106,6 +109,25 @@ function convoca_shifts_settings_page() {
 						<input type="time" id="convoca_shifts_hora_cierre" name="convoca_shifts_hora_cierre" value="<?php echo esc_attr( get_option( 'convoca_shifts_hora_cierre', '22:00' ) ); ?>">
 					</div>
 					<small class="convoca-small"><?php esc_html_e( 'Restringe la creación de turnos fuera de este horario.', 'convoca-shifts' ); ?></small>
+				</div>
+
+				<div class="convoca-field">
+					<label><?php esc_html_e( 'Avisos de ausencias sin justificar', 'convoca-shifts' ); ?></label>
+					<div style="display:flex; flex-wrap:wrap; gap:15px; align-items:flex-end;">
+						<div>
+							<label for="convoca_shifts_aviso_socio_en"><?php esc_html_e( 'Aviso al socio tras N faltas', 'convoca-shifts' ); ?></label><br>
+							<input type="number" min="1" step="1" id="convoca_shifts_aviso_socio_en" name="convoca_shifts_aviso_socio_en" value="<?php echo esc_attr( get_option( 'convoca_shifts_aviso_socio_en', 2 ) ); ?>" style="width:100px;">
+						</div>
+						<div>
+							<label for="convoca_shifts_aviso_admin_cada"><?php esc_html_e( 'Aviso al admin cada N faltas', 'convoca-shifts' ); ?></label><br>
+							<input type="number" min="1" step="1" id="convoca_shifts_aviso_admin_cada" name="convoca_shifts_aviso_admin_cada" value="<?php echo esc_attr( get_option( 'convoca_shifts_aviso_admin_cada', 3 ) ); ?>" style="width:100px;">
+						</div>
+						<div>
+							<label for="convoca_shifts_ventana_dias"><?php esc_html_e( 'Ventana (días)', 'convoca-shifts' ); ?></label><br>
+							<input type="number" min="1" step="1" id="convoca_shifts_ventana_dias" name="convoca_shifts_ventana_dias" value="<?php echo esc_attr( get_option( 'convoca_shifts_ventana_dias', 90 ) ); ?>" style="width:100px;">
+						</div>
+					</div>
+					<small class="convoca-small"><?php esc_html_e( 'Penalización suave: una falta sin justificar no suma horas. Se avisa al socio al alcanzar el umbral y al admin cada N faltas. Sin bloqueos ni pérdida de puntos.', 'convoca-shifts' ); ?></small>
 				</div>
 
 				<div style="margin-top:30px;">

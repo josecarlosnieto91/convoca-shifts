@@ -224,7 +224,27 @@ function convoca_shifts_register_cpt_centro_turno() {
 			'show_in_rest' => true,
 			'single'       => true,
 			'type'         => 'string',
-			'default'      => 'pendiente', // pendiente, realizado, no_asistio.
+			'default'      => 'pendiente', // pendiente, realizado, no_asistio, justificada, cancelada_aviso.
+		)
+	);
+	register_post_meta(
+		'centro_turno',
+		'_convoca_fecha_aviso',
+		array(
+			'show_in_rest' => true,
+			'single'       => true,
+			'type'         => 'string', // Y-m-d, fecha del aviso para cancelada_aviso.
+			'default'      => '',
+		)
+	);
+	register_post_meta(
+		'centro_turno',
+		'_convoca_ausencia_motivo',
+		array(
+			'show_in_rest' => true,
+			'single'       => true,
+			'type'         => 'string',
+			'default'      => '',
 		)
 	);
 	register_post_meta(
@@ -446,9 +466,11 @@ function convoca_shifts_custom_centro_turno_column( $column, $post_id ) {
 			}
 
 			$badges = array(
-				'pendiente'  => __( '<span class="badge-cst badge-pending">⏳ Pendiente</span>', 'convoca-shifts' ),
-				'realizado'  => __( '<span class="badge-cst badge-success">✅ Realizado</span>', 'convoca-shifts' ),
-				'no_asistio' => __( '<span class="badge-cst badge-danger">❌ No asistió</span>', 'convoca-shifts' ),
+				'pendiente'       => __( '<span class="badge-cst badge-pending">⏳ Pendiente</span>', 'convoca-shifts' ),
+				'realizado'       => __( '<span class="badge-cst badge-success">✅ Realizado</span>', 'convoca-shifts' ),
+				'no_asistio'      => __( '<span class="badge-cst badge-danger">❌ No asistió</span>', 'convoca-shifts' ),
+				'justificada'     => __( '<span class="badge-cst badge-info">✅ Ausencia justificada</span>', 'convoca-shifts' ),
+				'cancelada_aviso' => __( '<span class="badge-cst badge-info">↩️ Cancelada con aviso</span>', 'convoca-shifts' ),
 			);
 
 			$badge_html = isset( $badges[ $estado ] ) ? $badges[ $estado ] : esc_html( $estado );
@@ -512,8 +534,13 @@ function convoca_shifts_handle_admin_attendance_action() {
 			wp_die( esc_html__( 'No tienes permisos para editar este turno.', 'convoca-shifts' ) );
 		}
 
-		$status         = sanitize_text_field( $get_data['status'] );
+		$status         = sanitize_text_field( $get_data['status'] ?? '' );
 		$id_responsable = (int) get_post_meta( $post_id, '_id_responsable', true );
+
+		$allowed_statuses = array( 'pendiente', 'realizado', 'no_asistio', 'justificada', 'cancelada_aviso' );
+		if ( ! in_array( $status, $allowed_statuses, true ) ) {
+			wp_die( esc_html__( 'Estado de asistencia no válido.', 'convoca-shifts' ) );
+		}
 
 		if ( $status === 'realizado' && $id_responsable === 0 ) {
 			// Cannot mark as done if nobody is assigned.
@@ -536,6 +563,11 @@ function convoca_shifts_handle_admin_attendance_action() {
 			$wpdb->query( 'ROLLBACK' );
 			\Convoca\Core\Logger::error( 'Error al marcar asistencia: ' . $e->getMessage(), 'Turnos/Admin', $post_id );
 			wp_die( esc_html__( 'Error al procesar la asistencia.', 'convoca-shifts' ) );
+		}
+
+		// D11/D12: contabilizar la ausencia y enviar avisos si procede.
+		if ( class_exists( 'Convoca\Shifts\No_Show_Manager' ) ) {
+			\Convoca\Shifts\No_Show_Manager::handle_attendance_change( $post_id, $id_responsable, $status );
 		}
 
 		// Log activity.
@@ -585,6 +617,8 @@ function convoca_shifts_display_quick_edit_turno( $column_name, $post_type ) {
 				<option value="pendiente"><?php esc_html_e( '⏳ Pendiente', 'convoca-shifts' ); ?></option>
 				<option value="realizado"><?php esc_html_e( '✅ Realizado', 'convoca-shifts' ); ?></option>
 				<option value="no_asistio"><?php esc_html_e( '❌ No asistió', 'convoca-shifts' ); ?></option>
+				<option value="justificada"><?php esc_html_e( '✅ Ausencia justificada', 'convoca-shifts' ); ?></option>
+				<option value="cancelada_aviso"><?php esc_html_e( '↩️ Cancelada con aviso', 'convoca-shifts' ); ?></option>
 			</select>
 		</label>
 		</div>
@@ -680,8 +714,13 @@ function convoca_shifts_save_turno_quick_edit( $post_id, $post ) {
 
 			// Sync hours if applicable.
 			$id_responsable = (int) get_post_meta( $post_id, '_id_responsable', true );
-			if ( class_exists( '\\Convoca\\Shifts\\Hour_Sync' ) ) {
+			if ( class_exists( '\Convoca\Shifts\Hour_Sync' ) ) {
 				\Convoca\Shifts\Hour_Sync::sync_hours_to_volunteer_global( $post_id, $id_responsable, $new_status );
+			}
+
+			// D11/D12: contabilizar la ausencia y enviar avisos si procede.
+			if ( class_exists( 'Convoca\Shifts\No_Show_Manager' ) ) {
+				\Convoca\Shifts\No_Show_Manager::handle_attendance_change( $post_id, $id_responsable, $new_status );
 			}
 
 			// Log activity.

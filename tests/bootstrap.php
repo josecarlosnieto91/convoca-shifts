@@ -62,6 +62,8 @@ namespace {
     \define('WP_DEBUG', true);
     \define('ABSPATH', \dirname(__DIR__) . '/');
     \define('OBJECT', 'OBJECT');
+    if (!\defined('DAY_IN_SECONDS')) { \define('DAY_IN_SECONDS', 86400); }
+    if (!\defined('HOUR_IN_SECONDS')) { \define('HOUR_IN_SECONDS', 3600); }
 
     $GLOBALS['_wp_stores'] = [
         'options'     => [],
@@ -69,6 +71,7 @@ namespace {
         'transients'  => [],
         'user_meta'   => [],
         'test_posts'  => [],
+        'emails'      => [],
     ];
 
     if (!\function_exists('get_option')) {
@@ -126,6 +129,21 @@ namespace {
         }
         function update_user_meta($id, $key, $value) {
             $GLOBALS['_wp_stores']['user_meta'][$id][$key] = $value;
+            return true;
+        }
+        function delete_user_meta($id, $key) {
+            unset($GLOBALS['_wp_stores']['user_meta'][$id][$key]);
+            return true;
+        }
+    }
+
+    if (!\function_exists('wp_mail')) {
+        function wp_mail($to, $subject, $message, $headers = '', $attachments = []) {
+            $GLOBALS['_wp_stores']['emails'][] = [
+                'to'      => $to,
+                'subject' => $subject,
+                'message' => $message,
+            ];
             return true;
         }
     }
