@@ -325,6 +325,7 @@ class Convoca_Shifts_Admin_Turno_Editor {
 		}
 
 		// Save meta.
+		update_post_meta( $post_id, '_fecha_inicio', $datetime_str );
 		update_post_meta( $post_id, '_hora_fin', $hora_fin );
 		update_post_meta( $post_id, '_estado', $estado );
 		update_post_meta( $post_id, '_estado_real', $estado_real );

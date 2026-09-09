@@ -48,6 +48,12 @@ function convoca_shifts_sync_turno_on_save( $post_id, $post, $update ) {
 	remove_action( 'save_post_centro_turno', 'Convoca\Shifts\convoca_shifts_sync_turno_on_save', 20 );
 
 	try {
+		// Contract: keep _fecha_inicio in sync with post_date (WP native edits change post_date only).
+		$fecha_inicio_actual = get_post_meta( $post_id, '_fecha_inicio', true );
+		if ( $fecha_inicio_actual !== $post->post_date ) {
+			update_post_meta( $post_id, '_fecha_inicio', $post->post_date );
+		}
+
 		// 1. Identify the Responsible ID.
 		$id_responsable = (int) get_post_meta( $post_id, '_id_responsable', true );
 
@@ -1263,8 +1269,7 @@ function convoca_shifts_insert_turno( $args ) {
 		$a['h_start'] = $limit_open;
 		$a['h_end']   = $limit_close; }
 
-	$post_date     = $a['date'] . ' ' . $a['h_start'] . ':00';
-	$meta_hora_fin = $a['date'] . ' ' . $a['h_end'] . ':00';
+	$post_date = $a['date'] . ' ' . $a['h_start'] . ':00';
 
 	// Generate Title.
 	$title = '🟡 Pendiente';
@@ -1299,7 +1304,9 @@ function convoca_shifts_insert_turno( $args ) {
 		wp_publish_post( $post_id );
 		update_post_meta( $post_id, '_estado', $a['estado'] );
 		update_post_meta( $post_id, '_id_responsable', $a['id_responsable'] );
-		update_post_meta( $post_id, '_hora_fin', $meta_hora_fin );
+		// Contract meta: _fecha_inicio = full datetime (list/REST order by it), _hora_fin = HH:MM only.
+		update_post_meta( $post_id, '_fecha_inicio', $post_date );
+		update_post_meta( $post_id, '_hora_fin', $a['h_end'] );
 		update_post_meta( $post_id, '_necesita_apoyo', $a['necesita_apoyo'] );
 
 		if ( $a['actividad_id'] ) {
