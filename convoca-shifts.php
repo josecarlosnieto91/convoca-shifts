@@ -38,7 +38,10 @@ if ( ! defined( 'CONVOCA_SHIFTS_URL' ) ) {
 	define( 'CONVOCA_SHIFTS_URL', plugin_dir_url( __FILE__ ) );
 }
 if ( ! defined( 'CONVOCA_SHIFTS_VERSION' ) ) {
-	define( 'CONVOCA_SHIFTS_VERSION', '2.5.1' );
+		// Ojo: esta constante es tambien el fingerprint que usa
+	// Convoca_Shifts_Upgrade_Manager, asi que NO se deriva del header: se alinea
+	// a mano con cada release.
+	define( 'CONVOCA_SHIFTS_VERSION', '2.5.2' );
 }
 
 /* ── Composer autoload ─────────────────────────────── */
