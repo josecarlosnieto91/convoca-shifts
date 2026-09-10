@@ -17,11 +17,8 @@ parameters:
 		- phpstan-bootstrap.php
 	ignoreErrors:
 		# ── Falsos positivos del harness de análisis (NO deuda de código) ──
-		# WP acepta callback como string 'Clase::metodo' en add_submenu_page /
-		# add_meta_box / register_setting; el stub exige callable().
-		-
-			message: '#Parameter \#6 \$callback of function add_submenu_page#'
-			identifier: argument.type
+		# WP acepta callback como string 'Clase::metodo' en add_meta_box /
+		# register_setting; el stub exige callable().
 		-
 			message: '#Parameter \#3 \$callback of function add_meta_box#'
 			identifier: argument.type

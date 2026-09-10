@@ -240,6 +240,9 @@ namespace {
     if (!\function_exists('add_action')) { function add_action($h, $c, $p = 10, $a = 1) { return true; } }
     if (!\function_exists('add_filter')) { function add_filter($h, $c, $p = 10, $a = 1) { return true; } }
     if (!\function_exists('apply_filters')) { function apply_filters($h, $v, ...$a) { return $v; } }
+    // has_action() se usa para no apilar hooks duplicados; sin stub, el motor
+    // de sincronización de turnos revienta en los tests.
+    if (!\function_exists('has_action')) { function has_action($h, $c = false) { return false; } }
     if (!\function_exists('register_post_type')) { function register_post_type($s, $a) { return null; } }
     if (!\function_exists('register_post_meta')) { function register_post_meta($t, $k, $a) { return true; } }
     if (!\function_exists('register_taxonomy')) { function register_taxonomy($s, $t, $a) { return null; } }
