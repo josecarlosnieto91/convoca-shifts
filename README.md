@@ -6,6 +6,8 @@ Gestión de turnos de voluntariado para organizaciones y centros.
 
 - WordPress 6.4+
 - PHP 8.1+
+- convoca-core activo
+- convoca-members (recomendado)
 
 ## Main Features
 
@@ -14,8 +16,13 @@ Gestión de turnos de voluntariado para organizaciones y centros.
 - Añadir Turno Rápido (admin_post_, no admin_init)
 - Duplicar semana
 - Export CSV
-- REST API
+- REST API (`convoca-shifts/v1`)
 - Cron recordatorios
+- Shortcodes: `convoca_calendario`, `convoca_proximos_turnos`, `convoca_resumen_turnos`, `convoca_boton_apuntarse`
+- Auditoría de horas de voluntariado
+- Penalización de ausencias (no-show)
+- Estadísticas
+- Widgets
 
 
 ## 📖 Documentación
@@ -26,38 +33,30 @@ La documentación completa (manual de usuario, API REST, hooks, instalación) vi
 
 ## Dependencies
 
-WordPress 6.4+, PHP 8.1+, convoca-core (optional but recommended)
+convoca-core (obligatorio), convoca-members (recomendado), WordPress 6.4+, PHP 8.1+
 
 ## Version
 
-2.4.0
+2.5.2
 
 ## Changelog
 
-### 2.5.1
-- docs: add MANUAL_USUARIO.md with calendar and shifts guide
-- refactor: remove 7 duplicate/dead include files
-- dev: update phpstan.neon to level 5
+El historial completo de versiones está en [CHANGELOG.md](CHANGELOG.md).
 
-### 2.4.0
-- Seguridad: cst_process_quick_add_turno movido de admin_init a admin_post_cst_quick_add_turno
-- Formulario envía a admin-post.php con action oculto
-- Nonce fallido redirige con error en lugar de ignorar
+## Hooks
 
-### 2.3.1
-- Bugfix: asset enqueue detection for AJAX-loaded content
-- Added convoca_shifts_force_enqueue_assets filter
+| Hook | Tipo | Descripción |
+|------|------|-------------|
+| `convoca_shifts_hourly_event` | action | Envío de recordatorios de turnos (cron) |
+| `convoca_shifts_daily_event` | action | Limpieza de meta antiguo (cron) |
+| `convoca_after_horas_voluntario_actualizadas` | action | Horas de voluntariado actualizadas (fallback `convoca_horas_voluntario_actualizadas`) |
+| `convoca_shifts_force_enqueue_assets` | filter | Forzar carga de assets en el frontend |
+| `convoca_shifts_confirm_signup` | filter | Activar/desactivar confirmación al apuntarse |
+| `convoca_shifts_no_show_email_socio` | filter | Email de ausencia enviado al socio |
+| `convoca_shifts_no_show_email_admin` | filter | Email de ausencia enviado al admin |
 
-### 2.3.0
-- Added Duplicar Semana tool
-- Added Export CSV
-- Mobile-first calendar views with FullCalendar
-- Volunteer approval/revocation workflow
+También escucha `convoca_voluntario_aprobado` y `convoca_voluntario_revocado` (de Convoca Members) para liberar turnos.
 
-### 2.2.0
-- Added visual calendar with FullCalendar
-- Quick-add turno via admin_post_
-- Cron reminders for upcoming shifts
 ## 🧪 Demo
 
 Prueba Convoca sin instalar nada:
