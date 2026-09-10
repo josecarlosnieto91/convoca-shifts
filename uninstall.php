@@ -28,7 +28,10 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 // ─── Keep data mode ───
 // Define CONVOCA_KEEP_DATA_ON_UNINSTALL in wp-config.php to preserve all data
 // when uninstalling. Useful for temporary deactivation + reactivation.
-if ( defined( 'CONVOCA_KEEP_DATA_ON_UNINSTALL' ) && CONVOCA_KEEP_DATA_ON_UNINSTALL ) {
+$convoca_conservar = ( defined( 'CONVOCA_KEEP_DATA_ON_UNINSTALL' ) && CONVOCA_KEEP_DATA_ON_UNINSTALL )
+	|| 1 === (int) get_option( 'convoca_uninstall_keep_data', 0 );
+
+if ( $convoca_conservar ) {
 	return;
 }
 
@@ -82,3 +85,11 @@ if ( $timestamp ) {
 // 6. Clean activity log table.
 global $wpdb;
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}convoca_shifts_activity_log" );
+
+// ─── 7. Transients con prefijo del plugin ───
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+$wpdb->query(
+	"DELETE FROM {$wpdb->options}
+	 WHERE option_name LIKE '_transient_convoca_shifts_%'
+	    OR option_name LIKE '_transient_timeout_convoca_shifts_%'"
+);
