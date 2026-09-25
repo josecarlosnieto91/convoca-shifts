@@ -3,7 +3,7 @@
  * Plugin Name:       Convoca Shifts
  * Plugin URI:        https://getconvoca.app
  * Description:       Volunteer shift management for community centers.
- * Version:           2.5.2
+ * Version:           2.5.3
  * Requires at least: 6.4
  * Requires PHP:      8.1
  * Tested up to:      7.1

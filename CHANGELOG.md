@@ -1,5 +1,19 @@
 # Changelog — convoca-shifts
 
+## v2.5.3 (2026-09-25)
+
+### Corregido
+- El mismo defecto que en Enroll: desmarcar un turno dejaba sus horas contando y volver a marcarlo
+  las duplicaba. La acreditación pasa ahora por `Convoca\Core\Hour_Ledger` (un registro por turno,
+  invalidado al desmarcar y reactivado al re-marcar). Se elimina el escritor duplicado de
+  `registro_hora` que vivía en `Hour_Sync`.
+
+### Migración
+- `Upgrade_Manager` 2.5.3: enlaza los registros de horas de turnos con su turno cuando se puede
+  demostrar (el turno existe y su responsable es el voluntario del registro). Idempotente; los
+  casos no demostrables se dejan intactos y se cuentan en el log.
+
+
 ## v2.5.2 (2026-09-05)
 
 ### 🔐 Security

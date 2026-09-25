@@ -56,4 +56,20 @@ namespace Convoca\Core {
 	final class License_Manager {
 		public static function has_pro( string $feature ): bool { return true; }
 	}
+	class Hour_Ledger {
+		const ORIGEN_INSCRIPCION = 'inscripcion';
+		const ORIGEN_TURNO = 'turno';
+		const ESTADO_APROBADA = 'aprobada';
+		const ESTADO_ANULADA = 'anulada';
+
+		public static function credit( string $origen, int $origen_id, int $user_id, float $hours, array $args = array() ): int { return 0; }
+
+		public static function revoke( string $origen, int $origen_id, string $motivo = '' ): bool { return true; }
+
+		public static function find( string $origen, int $origen_id ): int { return 0; }
+
+		/** @return array<int, int> */
+		public static function credits_for_user( int $user_id, bool $solo_aprobadas = false ): array { return array(); }
+	}
+
 }

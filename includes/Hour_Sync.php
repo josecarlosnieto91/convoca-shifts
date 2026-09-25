@@ -61,6 +61,7 @@ class Hour_Sync {
 
 		$should_log     = false;
 		$should_hook    = false;
+		$should_revoke  = false;
 		$diff_hours     = 0;
 		$log_entry_data = null;
 
@@ -117,15 +118,38 @@ class Hour_Sync {
 				self::update_global_hours_locked( $user_id, -$horas_contabilizadas );
 				delete_post_meta( $post_id, '_convoca_shifts_horas_contabilizadas' );
 
-				$should_hook = true;
-				$diff_hours  = -$horas_contabilizadas;
+				$should_hook   = true;
+				$should_revoke = true;
+				$diff_hours    = -$horas_contabilizadas;
 			}
 
 			$wpdb->query( 'COMMIT' );
 
-			// Create log entry after successful commit.
+			// Acreditación fuera de la transacción: un único registro por turno, que se
+			// reactiva si el turno se vuelve a marcar como realizado.
 			if ( $log_entry_data ) {
-				self::create_log_entry( $log_entry_data['post_id'], $log_entry_data['user_id'], $log_entry_data['hours'] );
+				$turno = get_post( $log_entry_data['post_id'] );
+				$user  = get_userdata( $log_entry_data['user_id'] );
+
+				\Convoca\Core\Hour_Ledger::credit(
+					\Convoca\Core\Hour_Ledger::ORIGEN_TURNO,
+					(int) $log_entry_data['post_id'],
+					(int) $log_entry_data['user_id'],
+					(float) $log_entry_data['hours'],
+					array(
+						'title'  => sprintf( 'Horas Turno CS #%d - %s', (int) $log_entry_data['post_id'], $user ? $user->display_name : '' ),
+						'tareas' => $turno ? ( 'Turno: ' . $turno->post_title ) : '',
+					)
+				);
+			}
+
+			// El turno deja de estar realizado: se invalida su acreditación (no se borra).
+			if ( $should_revoke ) {
+				\Convoca\Core\Hour_Ledger::revoke(
+					\Convoca\Core\Hour_Ledger::ORIGEN_TURNO,
+					$post_id,
+					'Turno desmarcado: ' . $status
+				);
 			}
 
 			// Fire hook only after successful commit.
@@ -157,60 +181,5 @@ class Hour_Sync {
 				$hours
 			)
 		);
-	}
-
-	/**
-	 * Creates an entry in CPT_Registro_Hora
-	 */
-	private static function create_log_entry( int $post_id, int $user_id, float $hours ) {
-		if ( ! post_type_exists( 'registro_hora' ) ) {
-			\Convoca\Core\Logger::warning(
-				"Horas no registradas: el CPT 'registro_hora' no está disponible. Activa convoca-members.",
-				'Turnos/HourSync',
-				$post_id
-			);
-			return;
-		}
-
-		$user = get_userdata( $user_id );
-		$post = get_post( $post_id );
-
-		$log_id = wp_insert_post(
-			array(
-				'post_type'   => 'registro_hora',
-				'post_title'  => sprintf( 'Horas Turno CS #%d - %s', $post_id, $user->display_name ),
-				'post_status' => 'publish',
-				'post_author' => $user_id,
-			)
-		);
-
-		if ( $log_id ) {
-			// Check member.
-			$members = get_posts(
-				array(
-					'post_type'      => 'miembro',
-					'meta_key'       => '_convoca_email',
-					'meta_value'     => $user->user_email,
-					'posts_per_page' => 1,
-					'fields'         => 'ids',
-				)
-			);
-
-			if ( ! empty( $members ) ) {
-				// Clave canónica _convoca_member_id (E2E-11): antes se guardaba
-				// como '_convoca_miembro_id' (con "i"), que Voluntariado_Manager
-				// y Certificate_Generator NO leen → las horas de turnos nunca
-				// se acumulaban al voluntario ni salían en el certificado.
-				update_post_meta( $log_id, '_convoca_member_id', $members[0] );
-			}
-
-			update_post_meta( $log_id, '_convoca_usuario_id', $user_id );
-			update_post_meta( $log_id, '_convoca_fecha', wp_date( 'Y-m-d' ) );
-			update_post_meta( $log_id, '_convoca_horas', $hours );
-			// We use 'turno' as activity or just project ID 0. Turno post ID is not an actividad, but we link it here.
-			update_post_meta( $log_id, '_convoca_actividad_id', 0 );
-			update_post_meta( $log_id, '_convoca_estado', 'aprobada' );
-			update_post_meta( $log_id, '_convoca_tareas', 'Turno: ' . $post->post_title );
-		}
 	}
 }

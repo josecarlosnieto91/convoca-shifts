@@ -63,6 +63,73 @@ class Convoca_Shifts_Upgrade_Manager extends \Convoca\Core\Upgrade_Manager {
 			'1.6.3' => array( $this, 'upgrade_to_1_6_3' ),
 			'2.3.0' => array( $this, 'upgrade_to_2_3_0' ),
 			'2.5.2' => array( $this, 'upgrade_to_2_5_2_member_meta_key' ),
+			'2.5.3' => array( $this, 'upgrade_to_2_5_3_hour_ledger_links' ),
+		);
+	}
+
+	/**
+	 * Upgrade 2.5.3: enlaza los registros de horas de turnos con su turno de origen.
+	 *
+	 * Hasta 2.5.2 el `registro_hora` de un turno no guardaba de qué turno procedía, así que
+	 * desmarcar el turno no podía invalidar sus horas (seguían contando) y volver a marcarlo
+	 * creaba otro registro (se duplicaban). La corrección escribe el vínculo
+	 * (`_convoca_origen` / `_convoca_origen_id`) en los registros nuevos; esta migración se lo
+	 * añade a los históricos **solo cuando se puede demostrar** que el turno existe y que su
+	 * responsable es el voluntario del registro. No borra nada ni cambia estados.
+	 *
+	 * Idempotente: solo toca los registros sin vínculo.
+	 */
+	protected function upgrade_to_2_5_3_hour_ledger_links(): void {
+		global $wpdb;
+
+		$registros = $wpdb->get_results(
+			"SELECT p.ID, p.post_title, u.meta_value AS usuario_id
+			 FROM {$wpdb->posts} p
+			 JOIN {$wpdb->postmeta} a ON a.post_id = p.ID AND a.meta_key = '_convoca_actividad_id' AND a.meta_value = '0'
+			 LEFT JOIN {$wpdb->postmeta} u ON u.post_id = p.ID AND u.meta_key = '_convoca_usuario_id'
+			 LEFT JOIN {$wpdb->postmeta} oi ON oi.post_id = p.ID AND oi.meta_key = '_convoca_origen_id'
+			 WHERE p.post_type = 'registro_hora'
+			   AND oi.meta_id IS NULL
+			   AND p.post_title LIKE 'Horas Turno CS #%'"
+		);
+
+		$enlazados = 0;
+		$omitidos  = 0;
+
+		foreach ( $registros as $registro ) {
+			if ( ! preg_match( '/^Horas Turno CS #(\d+)/', (string) $registro->post_title, $coincidencias ) ) {
+				$omitidos++;
+				continue;
+			}
+
+			$turno_id   = (int) $coincidencias[1];
+			$turno      = get_post( $turno_id );
+			$usuario_id = (int) $registro->usuario_id;
+
+			if ( ! $turno || 'centro_turno' !== $turno->post_type || $usuario_id <= 0 ) {
+				$omitidos++;
+				continue;
+			}
+
+			// Solo se enlaza si el turno es de ese voluntario: sin esa certeza no se toca.
+			if ( (int) get_post_meta( $turno_id, '_id_responsable', true ) !== $usuario_id ) {
+				$omitidos++;
+				continue;
+			}
+
+			update_post_meta( (int) $registro->ID, '_convoca_origen', \Convoca\Core\Hour_Ledger::ORIGEN_TURNO );
+			update_post_meta( (int) $registro->ID, '_convoca_origen_id', $turno_id );
+			$enlazados++;
+		}
+
+		\Convoca\Core\Logger::info(
+			sprintf(
+				'Upgrade 2.5.3: vínculo turno↔registro_hora — enlazados %d, omitidos %d (de %d registros sin vínculo).',
+				$enlazados,
+				$omitidos,
+				count( $registros )
+			),
+			'Turnos/Upgrade'
 		);
 	}
 
