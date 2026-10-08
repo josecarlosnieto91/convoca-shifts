@@ -72,6 +72,19 @@ delete_option( 'convoca_shifts_hora_cierre' );
 delete_option( 'convoca_shifts_calendar_page_url' );
 delete_option( 'convoca_shifts_access_page_url' );
 
+// Los cuatro widgets del plugin guardan su configuración en `widget_convoca_shifts_*` y no se
+// borraban: desinstalado en un WordPress limpio (09/10/2026) quedaban las cuatro opciones.
+// OJO: este bloque va ANTES del `global $wpdb;` de más abajo, así que lo declara aquí. Sin esto,
+// `$wpdb` es nulo, el `uninstall.php` muere a medias y no borra ni esto ni la tabla del registro.
+global $wpdb;
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+$convoca_shifts_widgets = $wpdb->get_col(
+    "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE 'widget_convoca_shifts_%'"
+);
+foreach ( $convoca_shifts_widgets as $convoca_shifts_widget ) {
+	delete_option( $convoca_shifts_widget );
+}
+
 // 4. Note: User meta with _convoca_shifts_ prefix (_convoca_shifts_aprobado, _convoca_shifts_telefono, _convoca_shifts_motivacion).
 // is created by Convoca Members plugin, NOT by Convoca Shifts.
 // Therefore, we do NOT delete it here to preserve Member functionality.
