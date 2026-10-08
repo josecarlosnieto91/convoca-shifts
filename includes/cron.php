@@ -143,7 +143,17 @@ function convoca_shifts_send_reminders() {
 						get_the_date( 'Y-m-d H:i' )
 					);
 
-					wp_mail( $user->user_email, $subject, $message );
+					// Sale con la identidad de Convoca y con copia a la asociación (issue convoca-core#6).
+					\Convoca\Core\Mailer::send(
+						$user->user_email,
+						$subject,
+						$message,
+						array(
+							'plugin'    => 'convoca-shifts',
+							'template'  => 'recordatorio_turno',
+							'entity_id' => $post_id,
+						)
+					);
 
 					// Mark as sent.
 					update_post_meta( $post_id, '_convoca_shifts_reminder_sent', 1 );

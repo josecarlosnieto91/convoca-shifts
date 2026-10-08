@@ -230,7 +230,17 @@ class No_Show_Manager {
 		$subject = (string) apply_filters( 'convoca_shifts_no_show_email_socio_subject', $subject, $user, $count );
 		$message = (string) apply_filters( 'convoca_shifts_no_show_email_socio', $message, $user, $count );
 
-		wp_mail( $user->user_email, $subject, $message );
+		// Sale con la identidad de Convoca y con copia a la asociación (issue convoca-core#6).
+		\Convoca\Core\Mailer::send(
+			$user->user_email,
+			$subject,
+			$message,
+			array(
+				'plugin'    => 'convoca-shifts',
+				'template'  => 'aviso_faltas',
+				'entity_id' => $user->ID,
+			)
+		);
 	}
 
 	/**
