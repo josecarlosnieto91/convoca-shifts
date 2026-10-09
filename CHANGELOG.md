@@ -1,5 +1,30 @@
 # Changelog — convoca-shifts
 
+## v2.5.4 (2026-10-09)
+
+### Corregido
+- **El recordatorio de turno no encontraba los turnos a los que avisar.** La consulta exigía estado
+  `publish`, pero WordPress marca como `future` (entrada programada) cualquier entrada con fecha a
+  más de un minuto en el futuro, y la ventana del recordatorio es, precisamente, futura: los turnos
+  creados desde el editor del panel se quedaban sin aviso. La consulta busca ahora los dos estados.
+  Se añade prueba del cron (`ReminderCronTest`), que antes no existía.
+- **La desinstalación no limpiaba los widgets y moría a medias.** Los cuatro widgets guardan su
+  configuración en `widget_convoca_shifts_*` y no se borraban; además el bloque nuevo usaba `$wpdb`
+  antes del `global $wpdb;`, así que era nulo (fatal a medias: no se borraban ni el registro de
+  actividad ni las opciones de los widgets).
+- **La constante de versión vuelve a ir con el header.** `CONVOCA_SHIFTS_VERSION` es el fingerprint
+  del `Upgrade_Manager` y se quedó en 2.5.2, así que la migración de la 2.5.3 (vínculo
+  turno↔registro_hora) nunca se consideraba pendiente y no corría.
+
+### Añadido
+- **`Convoca\Core\Mailer` como punto único de los correos:** el recordatorio y el aviso por faltas
+  salen con la identidad visual común y copia a la asociación; los avisos al administrador pasan por
+  el mismo punto pero sin copia (ya van a la asociación).
+
+### Internamente
+- Doble fiel de `Convoca\Core\Mailer` para las pruebas y ajustes para dejar el CI en verde (PHPStan y
+  estilo).
+
 ## v2.5.3 (2026-09-25)
 
 ### Corregido

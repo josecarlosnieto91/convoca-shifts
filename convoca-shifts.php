@@ -3,7 +3,7 @@
  * Plugin Name:       Convoca Shifts
  * Plugin URI:        https://getconvoca.app
  * Description:       Volunteer shift management for community centers.
- * Version:           2.5.3
+ * Version:           2.5.4
  * Requires at least: 6.4
  * Requires PHP:      8.1
  * Tested up to:      7.1
@@ -41,7 +41,7 @@ if ( ! defined( 'CONVOCA_SHIFTS_VERSION' ) ) {
 		// Ojo: esta constante es tambien el fingerprint que usa
 	// Convoca_Shifts_Upgrade_Manager, asi que NO se deriva del header: se alinea
 	// a mano con cada release.
-	define( 'CONVOCA_SHIFTS_VERSION', '2.5.3' );
+	define( 'CONVOCA_SHIFTS_VERSION', '2.5.4' );
 }
 
 /* ── Composer autoload ─────────────────────────────── */
