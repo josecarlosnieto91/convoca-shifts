@@ -267,11 +267,16 @@ class No_Show_Manager {
 		$message = (string) apply_filters( 'convoca_shifts_no_show_email_admin', $message, $user, $count );
 
 		// Sale con la identidad de Convoca. Sin copia: el destinatario ya es la asociación (issue convoca-core#6).
-		\Convoca\Core\Mailer::send( $email, $subject, $message, array(
-			'plugin'    => 'convoca-shifts',
-			'template'  => 'faltas_admin',
-			'copy'      => false,
-			'entity_id' => $user->ID,
-		) );
+		\Convoca\Core\Mailer::send(
+			$email,
+			$subject,
+			$message,
+			array(
+				'plugin'    => 'convoca-shifts',
+				'template'  => 'faltas_admin',
+				'copy'      => false,
+				'entity_id' => $user->ID,
+			) 
+		);
 	}
 }
