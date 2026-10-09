@@ -382,4 +382,8 @@ namespace {
     if (\file_exists($autoload)) {
         require_once $autoload;
     }
+
+	// Doble del nucleo para el correo: entrega por wp_mail, que es donde las pruebas
+	// lo capturan (ver tests/StubMailer.php).
+	require_once __DIR__ . '/StubMailer.php';
 }
