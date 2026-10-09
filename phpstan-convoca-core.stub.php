@@ -72,4 +72,8 @@ namespace Convoca\Core {
 		public static function credits_for_user( int $user_id, bool $solo_aprobadas = false ): array { return array(); }
 	}
 
+	final class Mailer {
+		public static function send( $to, string $subject, string $body, array $args = array() ): bool { return true; }
+	}
+
 }

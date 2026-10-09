@@ -79,7 +79,7 @@ delete_option( 'convoca_shifts_access_page_url' );
 global $wpdb;
 // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 $convoca_shifts_widgets = $wpdb->get_col(
-    "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE 'widget_convoca_shifts_%'"
+	"SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE 'widget_convoca_shifts_%'"
 );
 foreach ( $convoca_shifts_widgets as $convoca_shifts_widget ) {
 	delete_option( $convoca_shifts_widget );
