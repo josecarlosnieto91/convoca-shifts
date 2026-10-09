@@ -396,7 +396,18 @@ function convoca_shifts_rest_apuntarse_turno( WP_REST_Request $request ) {
 	} else {
 		$fecha_para_email = $post->post_date;
 	}
-	wp_mail( $admin_email, 'Turno cubierto: ' . $post->post_title, 'El voluntario ' . $user_info->display_name . ' ha cubierto el turno del ' . $fecha_para_email . '.' );
+	// Sale con la identidad de Convoca. Sin copia: el destinatario ya es la asociación (issue convoca-core#6).
+	\Convoca\Core\Mailer::send(
+		$admin_email,
+		'Turno cubierto: ' . $post->post_title,
+		'El voluntario ' . $user_info->display_name . ' ha cubierto el turno del ' . $fecha_para_email . '.',
+		array(
+			'plugin'    => 'convoca-shifts',
+			'template'  => 'turno_cubierto_admin',
+			'copy'      => false,
+			'entity_id' => $post->ID,
+		)
+	);
 
 	return rest_ensure_response(
 		array(

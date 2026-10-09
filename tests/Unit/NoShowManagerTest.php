@@ -91,7 +91,8 @@ class NoShowManagerTest extends TestCase
 
         $admin_emails = array_values(array_filter(
             $GLOBALS['_wp_stores']['emails'],
-            static fn($e) => $e['to'] === 'admin@example.com'
+            // El Mailer entrega el destinatario como lista de correos, no como texto.
+            static fn($e) => in_array('admin@example.com', (array) $e['to'], true)
         ));
 
         $this->assertCount(2, $admin_emails, 'Admin notified at 3rd and 6th falta only');
