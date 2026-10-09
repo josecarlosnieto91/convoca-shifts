@@ -74,7 +74,9 @@ class NoShowManagerTest extends TestCase
         $sent2 = No_Show_Manager::handle_attendance_change(11, 1, 'no_asistio');
         $this->assertSame(['socio'], $sent2);
         $this->assertCount(1, $GLOBALS['_wp_stores']['emails']);
-        $this->assertSame('user1@example.com', $GLOBALS['_wp_stores']['emails'][0]['to']);
+        // El Mailer normaliza el destinatario a un array de correos validos: es lo que
+        // entrega a wp_mail, asi que es lo que se captura aqui.
+        $this->assertSame(['user1@example.com'], $GLOBALS['_wp_stores']['emails'][0]['to']);
     }
 
     // ── D11: aviso al admin cada N faltas ────────────────────

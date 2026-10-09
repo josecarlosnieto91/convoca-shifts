@@ -21,7 +21,7 @@
 
 ### ✨ Improvements
 - Analíticas avanzadas (PRO)
-- Textos genéricos sin referencias a «Centro Social Turnos»
+- Textos genéricos sin referencias a «Centro de ejemplo»
 
 ### 🐛 Fixes
 - Namespace REST renombrado de `centro/v1` a `convoca-shifts/v1`
