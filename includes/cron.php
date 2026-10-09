@@ -72,7 +72,17 @@ function convoca_shifts_send_reminders() {
 		$args = array(
 			'post_type'      => 'centro_turno',
 			'posts_per_page' => -1,
-			'post_status'    => 'publish',
+
+			/*
+			 * Un turno con fecha futura es una entrada programada: el nucleo le pone
+			 * estado 'future', no 'publish' (regla de WordPress: post_date a mas de un
+			 * minuto en el futuro => 'future'). Y la ventana del recordatorio es,
+			 * precisamente, futura (proximas 2 horas). Exigir solo 'publish' dejaba
+			 * fuera, siempre, los turnos a los que hay que avisar (issue #1). El
+			 * recordatorio busca los dos estados; el filtro real de "a quien avisar"
+			 * son las meta_query de abajo y la re-verificacion dentro del bucle.
+			 */
+			'post_status'    => array( 'publish', 'future' ),
 			'date_query'     => array(
 				array(
 					'after'     => wp_date( 'Y-m-d H:i:s', $now ),

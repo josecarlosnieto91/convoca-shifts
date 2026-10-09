@@ -18,6 +18,15 @@ namespace Convoca\Core {
             public static function format_date(string $modify, string $format = 'Y-m-d'): string {
                 return \date($format, \strtotime($modify));
             }
+            // Bloqueos del nucleo: sin esto, cualquier flujo que use acquire_lock()
+            // (p. ej. el recordatorio del cron) revienta con "undefined method".
+            public static function acquire_lock(string $key, int $ttl = 60): bool {
+                $GLOBALS['_wp_stores']['locks'][$key] = \time() + $ttl;
+                return true;
+            }
+            public static function release_lock(string $key): void {
+                unset($GLOBALS['_wp_stores']['locks'][$key]);
+            }
             public static function clear_fired(): void { self::$actions_fired = []; }
         }
     }
@@ -162,7 +171,13 @@ namespace {
     }
 
     if (!\function_exists('get_the_title')) {
-        function get_the_title($id) { return "Title #$id"; }
+        // Dentro de un bucle de WP_Query se llama get_the_title() sin argumentos:
+        // debe devolver el titulo de la entrada actual, no exigir el id.
+        function get_the_title($post = 0) {
+            if ($post) { return "Title #$post"; }
+            $cur = $GLOBALS['convoca_test_current_post'] ?? null;
+            return ($cur && isset($cur->post_title)) ? $cur->post_title : '';
+        }
     }
 
     if (!\function_exists('get_post')) {
@@ -386,4 +401,9 @@ namespace {
 	// Doble del nucleo para el correo: entrega por wp_mail, que es donde las pruebas
 	// lo capturan (ver tests/StubMailer.php).
 	require_once __DIR__ . '/StubMailer.php';
+
+	// Doble de WP_Query y de las funciones del bucle (get_the_ID, get_the_date,
+	// wp_reset_postdata...). Necesario para probar el recordatorio del cron, que es
+	// el unico sitio donde el plugin usa WP_Query en bucle.
+	require_once __DIR__ . '/Support/WpQueryDouble.php';
 }
