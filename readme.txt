@@ -4,7 +4,7 @@ Tags: shifts, volunteering, calendar, scheduling, check-in
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 2.5.4
+Stable tag: 2.5.5
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,9 @@ This plugin may contact getconvoca.app to validate PRO licenses, only when a key
 3. Activate the plugin from the Plugins menu
 
 == Changelog ==
+
+= 2.5.5 =
+* La página de Estadísticas de voluntarios vuelve a funcionar: la consulta usaba dos alias de tabla (`pm_fecha`, `pm_fecha2`) que no estaban en ningún JOIN, así que la base de datos devolvía «Unknown column» y la pantalla salía sin datos. El error quedaba registrado en el log de producción sin que nada lo avisara en pantalla.
 
 = 2.5.2 =
 * Security: dismiss de aviso admin con nonce (anti-CSRF).

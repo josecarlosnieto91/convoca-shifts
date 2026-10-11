@@ -234,6 +234,7 @@ function convoca_shifts_preload_voluntario_stats(): array {
         FROM {$wpdb->posts} p
         JOIN {$wpdb->postmeta} pm_resp ON p.ID = pm_resp.post_id AND pm_resp.meta_key = '_id_responsable'
         LEFT JOIN {$wpdb->postmeta} pm_real ON p.ID = pm_real.post_id AND pm_real.meta_key = '_estado_real'
+        LEFT JOIN {$wpdb->postmeta} pm_fecha ON p.ID = pm_fecha.post_id AND pm_fecha.meta_key = '_fecha_inicio'
         WHERE p.post_type = 'centro_turno' AND p.post_status = 'publish'
         GROUP BY pm_resp.meta_value
     "
@@ -259,12 +260,13 @@ function convoca_shifts_preload_voluntario_stats(): array {
 		"
         SELECT 
             pm_resp.meta_value AS user_id,
-            TIMESTAMPDIFF(SECOND, pm_fecha2.meta_value, 
-                COALESCE(CONCAT(DATE(pm_fecha2.meta_value), ' ', pm_fin.meta_value, ':00'), DATE_ADD(pm_fecha2.meta_value, INTERVAL 2 HOUR))
+            TIMESTAMPDIFF(SECOND, pm_fecha.meta_value, 
+                COALESCE(CONCAT(DATE(pm_fecha.meta_value), ' ', pm_fin.meta_value, ':00'), DATE_ADD(pm_fecha.meta_value, INTERVAL 2 HOUR))
             ) AS total_seconds
         FROM {$wpdb->posts} p
         JOIN {$wpdb->postmeta} pm_resp ON p.ID = pm_resp.post_id AND pm_resp.meta_key = '_id_responsable'
         JOIN {$wpdb->postmeta} pm_real ON p.ID = pm_real.post_id AND pm_real.meta_key = '_estado_real'
+        LEFT JOIN {$wpdb->postmeta} pm_fecha ON p.ID = pm_fecha.post_id AND pm_fecha.meta_key = '_fecha_inicio'
         LEFT JOIN {$wpdb->postmeta} pm_fin ON p.ID = pm_fin.post_id AND pm_fin.meta_key = '_hora_fin'
         WHERE p.post_type = 'centro_turno' AND p.post_status = 'publish'
           AND pm_real.meta_value = 'realizado'

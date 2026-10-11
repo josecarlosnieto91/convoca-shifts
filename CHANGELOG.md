@@ -1,5 +1,10 @@
 # Changelog — convoca-shifts
 
+## v2.5.5 (2026-10-11)
+
+### Corregido
+- **La página de Estadísticas de voluntarios no mostraba datos y llenaba el log de errores de base de datos.** `convoca_shifts_preload_voluntario_stats()` usaba dos alias de tabla que no estaban declarados en ningún JOIN: `pm_fecha` (en el `MAX()` de la primera consulta) y `pm_fecha2` (en el `TIMESTAMPDIFF` de la segunda). MySQL devolvía `Unknown column 'pm_fecha.meta_value' in 'SELECT'`, la consulta entera fallaba y la función devolvía el array vacío; como `WP_DEBUG_DISPLAY` está en false, el error no se veía en pantalla, solo en el log, y la pantalla salía sencillamente sin datos. Reproducido en Lugg y en la demo del 11/10/2026. Se añade el `LEFT JOIN` de `_fecha_inicio` a las dos consultas y `pm_fecha2` pasa a ser `pm_fecha`.
+
 ## v2.5.4 (2026-10-09)
 
 ### Corregido
