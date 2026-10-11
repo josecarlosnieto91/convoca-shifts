@@ -98,7 +98,7 @@ class Convoca_Shifts_Upgrade_Manager extends \Convoca\Core\Upgrade_Manager {
 
 		foreach ( $registros as $registro ) {
 			if ( ! preg_match( '/^Horas Turno CS #(\d+)/', (string) $registro->post_title, $coincidencias ) ) {
-				$omitidos++;
+				++$omitidos;
 				continue;
 			}
 
@@ -107,19 +107,19 @@ class Convoca_Shifts_Upgrade_Manager extends \Convoca\Core\Upgrade_Manager {
 			$usuario_id = (int) $registro->usuario_id;
 
 			if ( ! $turno || 'centro_turno' !== $turno->post_type || $usuario_id <= 0 ) {
-				$omitidos++;
+				++$omitidos;
 				continue;
 			}
 
 			// Solo se enlaza si el turno es de ese voluntario: sin esa certeza no se toca.
 			if ( (int) get_post_meta( $turno_id, '_id_responsable', true ) !== $usuario_id ) {
-				$omitidos++;
+				++$omitidos;
 				continue;
 			}
 
 			update_post_meta( (int) $registro->ID, '_convoca_origen', \Convoca\Core\Hour_Ledger::ORIGEN_TURNO );
 			update_post_meta( (int) $registro->ID, '_convoca_origen_id', $turno_id );
-			$enlazados++;
+			++$enlazados;
 		}
 
 		\Convoca\Core\Logger::info(
