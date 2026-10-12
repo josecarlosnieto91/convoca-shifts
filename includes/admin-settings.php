@@ -84,11 +84,11 @@ function convoca_shifts_settings_page() {
 		</div>
 
 		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_settings&tab=general' ) ); ?>" class="nav-tab <?php echo $active_tab == 'general' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Ajustes', 'convoca-shifts' ); ?></a>
-			<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_settings&tab=status' ) ); ?>" class="nav-tab <?php echo $active_tab == 'status' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Estado', 'convoca-shifts' ); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_settings&tab=general' ) ); ?>" class="nav-tab <?php echo $active_tab === 'general' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Ajustes', 'convoca-shifts' ); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_settings&tab=status' ) ); ?>" class="nav-tab <?php echo $active_tab === 'status' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Estado', 'convoca-shifts' ); ?></a>
 		</h2>
 
-		<?php if ( $active_tab == 'general' ) : ?>
+		<?php if ( $active_tab === 'general' ) : ?>
 			<p><?php esc_html_e( 'Configura las URLs de las páginas que contienen los shortcodes para que el plugin pueda generar enlaces correctos.', 'convoca-shifts' ); ?></p>
 
 			<form method="post" action="options.php" class="convoca-box" style="background:#fff;border-radius:12px;padding:30px;max-width:700px;margin-top:20px;">

@@ -169,7 +169,7 @@ function convoca_shifts_log_activity( $user_id, $turno_id, $action, $data = arra
 
 	// Cache existence of table to avoid SHOW TABLES on every log.
 	if ( false === get_transient( 'convoca_shifts_log_table_exists' ) ) {
-		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) ) != $table_name ) {
+		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) ) !== $table_name ) {
 			convoca_shifts_create_log_table();
 		}
 		set_transient( 'convoca_shifts_log_table_exists', 1, DAY_IN_SECONDS );
@@ -181,7 +181,7 @@ function convoca_shifts_log_activity( $user_id, $turno_id, $action, $data = arra
 			'user_id'    => $user_id,
 			'turno_id'   => $turno_id,
 			'action'     => $action,
-			'data'       => ! empty( $data ) ? json_encode( $data ) : null,
+			'data'       => ! empty( $data ) ? wp_json_encode( $data ) : null,
 			'created_at' => current_time( 'mysql' ),
 		)
 	);

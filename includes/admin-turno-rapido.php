@@ -62,7 +62,7 @@ add_action( 'admin_init', 'Convoca\Shifts\convoca_shifts_force_redirect_standard
 function convoca_shifts_force_redirect_standard_editor() {
 	global $pagenow;
 	if ( $pagenow === 'post-new.php' && isset( $_GET['post_type'] ) && $_GET['post_type'] === 'centro_turno' ) {
-		wp_redirect( admin_url( 'admin.php?page=convoca_shifts_turno_rapido' ) );
+		wp_safe_redirect( admin_url( 'admin.php?page=convoca_shifts_turno_rapido' ) );
 		exit;
 	}
 }
@@ -73,7 +73,7 @@ function convoca_shifts_force_redirect_standard_editor() {
 add_action( 'admin_post_convoca_shifts_quick_add_turno', 'Convoca\Shifts\convoca_shifts_process_quick_add_turno' );
 function convoca_shifts_process_quick_add_turno() {
 	if ( ! isset( $_POST['convoca_shifts_quick_add_nonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['convoca_shifts_quick_add_nonce'] ), 'convoca_shifts_quick_add_action' ) ) {
-		wp_safe_redirect( admin_url( 'edit.php?post_type=centro_turno&convoca_shifts_msg=error&convoca_shifts_err=' . urlencode( __( 'Nonce inválido.', 'convoca-shifts' ) ) ) );
+		wp_safe_redirect( admin_url( 'edit.php?post_type=centro_turno&convoca_shifts_msg=error&convoca_shifts_err=' . rawurlencode( __( 'Nonce inválido.', 'convoca-shifts' ) ) ) );
 		exit;
 	}
 
@@ -109,7 +109,7 @@ function convoca_shifts_process_quick_add_turno() {
 		wp_safe_redirect( admin_url( 'edit.php?post_type=centro_turno&convoca_shifts_msg=created' ) );
 		exit;
 	} else {
-		wp_safe_redirect( admin_url( 'edit.php?post_type=centro_turno&convoca_shifts_msg=error&convoca_shifts_err=' . urlencode( $post_id->get_error_message() ) ) );
+		wp_safe_redirect( admin_url( 'edit.php?post_type=centro_turno&convoca_shifts_msg=error&convoca_shifts_err=' . rawurlencode( $post_id->get_error_message() ) ) );
 		exit;
 	}
 }

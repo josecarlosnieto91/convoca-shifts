@@ -49,7 +49,7 @@ class Hour_Sync {
 		}
 
 		// Check if user is a volunteer.
-		$is_volunteer = in_array( 'voluntario_aprobado', (array) $user->roles ) || $user->has_cap( 'gestionar_mis_turnos' ) || get_user_meta( $user_id, '_convoca_es_voluntario', true );
+		$is_volunteer = in_array( 'voluntario_aprobado', (array) $user->roles , true) || $user->has_cap( 'gestionar_mis_turnos' ) || get_user_meta( $user_id, '_convoca_es_voluntario', true );
 		if ( ! $is_volunteer ) {
 			return;
 		}

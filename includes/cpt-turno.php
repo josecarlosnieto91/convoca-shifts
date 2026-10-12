@@ -584,7 +584,7 @@ function convoca_shifts_handle_admin_attendance_action() {
 			convoca_shifts_log_activity( get_current_user_id(), $post_id, $action );
 		}
 
-		wp_redirect( remove_query_arg( array( 'convoca_shifts_action', 'status', 'post', '_wpnonce' ) ) );
+		wp_safe_redirect( remove_query_arg( array( 'convoca_shifts_action', 'status', 'post', '_wpnonce' ) ) );
 		exit;
 	}
 }
@@ -637,7 +637,7 @@ function convoca_shifts_display_quick_edit_turno( $column_name, $post_type ) {
 add_action( 'admin_footer', 'Convoca\Shifts\convoca_shifts_quick_edit_javascript' );
 function convoca_shifts_quick_edit_javascript() {
 	$current_screen = get_current_screen();
-	if ( ! $current_screen || $current_screen->id != 'edit-centro_turno' ) {
+	if ( ! $current_screen || $current_screen->id !== 'edit-centro_turno' ) {
 		return;
 	}
 	?>
@@ -1102,7 +1102,7 @@ function convoca_shifts_crear_semana_tipo( $fecha_inicio, $dias ) {
 		$count = 0;
 
 		foreach ( $dias as $offset => $conf ) {
-			if ( ! isset( $conf['activo'] ) || $conf['activo'] != '1' ) {
+			if ( ! isset( $conf['activo'] ) || $conf['activo'] !== '1' ) {
 				continue;
 			}
 
