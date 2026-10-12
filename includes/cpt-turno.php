@@ -367,7 +367,7 @@ function convoca_shifts_turno_opciones_html( $post ) {
 				)
 			);
 			foreach ( $monitor_users as $mu ) :
-				$sel = $current_monitor == $mu->ID ? 'selected="selected"' : '';
+				$sel = (int) $current_monitor === $mu->ID ? 'selected="selected"' : '';
 				?>
 				<option value="<?php echo esc_attr( $mu->ID ); ?>" <?php echo esc_attr( $sel ); ?>>
 					<?php echo esc_html( $mu->display_name ); ?>
