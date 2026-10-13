@@ -106,7 +106,7 @@ function convoca_shifts_settings_page() {
 					<div style="display:flex; align-items:center; gap:10px;">
 						<input type="time" id="convoca_shifts_hora_apertura" name="convoca_shifts_hora_apertura" value="<?php echo esc_attr( get_option( 'convoca_shifts_hora_apertura', '09:00' ) ); ?>">
 						<span><?php esc_html_e( 'hasta las', 'convoca-shifts' ); ?></span>
-						<input type="time" id="convoca_shifts_hora_cierre" name="convoca_shifts_hora_cierre" value="<?php echo esc_attr( get_option( 'convoca_shifts_hora_cierre', '22:00' ) ); ?>">
+						<input type="time" id="convoca_shifts_hora_cierre" name="convoca_shifts_hora_cierre" aria-label="<?php esc_attr_e( 'Hora de cierre', 'convoca-shifts' ); ?>" value="<?php echo esc_attr( get_option( 'convoca_shifts_hora_cierre', '22:00' ) ); ?>">
 					</div>
 					<small class="convoca-small"><?php esc_html_e( 'Restringe la creación de turnos fuera de este horario.', 'convoca-shifts' ); ?></small>
 				</div>
@@ -143,7 +143,7 @@ function convoca_shifts_settings_page() {
 						<div style="background:#fff;border-radius:8px;padding:15px;border:1px solid #e2e8f0;opacity:0.7;">
 							<span style="font-size:1.2rem;">📊</span>
 							<span style="font-weight:600;margin-left:8px;">Analytics Avanzados</span>
-							<span style="display:block;font-size:11px;color:#94a3b8;margin-top:4px;">Gráficos, tendencias y exportación avanzada</span>
+							<span style="display:block;font-size:11px;color:#475569;margin-top:4px;">Gráficos, tendencias y exportación avanzada</span>
 						</div>
 					</div>
 				</div>

@@ -895,7 +895,7 @@ function convoca_shifts_generar_turnos_page() {
 								echo '<input type="time" name="dias[' . esc_attr( (string) $index ) . '][hora_inicio]" placeholder="17:00">';
 								echo '<span>a</span>';
 								echo '<input type="time" name="dias[' . esc_attr( (string) $index ) . '][hora_fin]" placeholder="21:00">';
-								echo '<select name="dias[' . esc_attr( (string) $index ) . '][estado]" class="convoca-shifts-estado-selector">';
+								echo '<select name="dias[' . esc_attr( (string) $index ) . '][estado]" class="convoca-shifts-estado-selector" aria-label="' . esc_attr( sprintf( /* translators: %d: número de día */ __( 'Estado del día %d', 'convoca-shifts' ), (int) $index + 1 ) ) . '">';
 								echo '<option value="abierto_disponible">' . esc_html__( '🟡 Pendiente (Disponible)', 'convoca-shifts' ) . '</option>';
 								echo '<option value="abierto_ocupado">' . esc_html__( '🔵 Ocupado (Actividad)', 'convoca-shifts' ) . '</option>';
 								echo '<option value="cerrado">' . esc_html__( '🔴 Cerrado', 'convoca-shifts' ) . '</option>';

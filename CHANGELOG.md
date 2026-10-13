@@ -1,5 +1,19 @@
 # Changelog — convoca-shifts
 
+## [2.5.8] - 2026-10-13
+
+### Arreglado (accesibilidad, issue #2)
+
+- **41 nodos serious/critical medidos con axe en 8 pantallas del panel**: los controles sin nombre
+  accesible y los contrastes que no llegaban a AA.
+  - Seis casillas de fila del listado de turnos: ahora llevan `aria-label` con la fecha del turno
+    (antes el lector solo decía «casilla de verificación»).
+  - Tres selects de filtro (estado, asistencia, apoyo) y **siete** selects de día de la pantalla de
+    generación: ahora llevan etiqueta (visible para lectores, oculta a la vista).
+  - El campo «hora de cierre» de los ajustes, que estaba rotulado solo por el texto contiguo.
+  - Contraste: el gris `#94a3b8` (**2,56:1** sobre blanco) pasa a `#475569` (**7,58:1**), en el
+    «No» de la columna de apoyo, en los textos del bloque PRO y en el CSS propio del plugin.
+
 ## [2.5.7] - 2026-10-13
 
 ### Arreglado

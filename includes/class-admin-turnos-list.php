@@ -70,7 +70,19 @@ class Admin_Turnos_List extends \WP_List_Table {
 	 * @param \WP_Post $item Row item (WP_Post from WP_Query).
 	 */
 	protected function column_cb( $item ): string {
-		return sprintf( '<input type="checkbox" name="turno[]" value="%d">', $item->ID );
+		// Nombre accesible: una casilla sin etiqueta es «crítica» en axe (y el lector de pantalla
+		// solo lee «casilla de verificación»).
+		$fecha = get_post_meta( $item->ID, '_convoca_fecha', true );
+		return sprintf(
+			'<input type="checkbox" name="turno[]" value="%d" aria-label="%s">',
+			$item->ID,
+			esc_attr(
+				$fecha
+					/* translators: %s: fecha del turno */
+					? sprintf( __( 'Seleccionar el turno del %s', 'convoca-shifts' ), $fecha )
+					: sprintf( __( 'Seleccionar el turno #%d', 'convoca-shifts' ), (int) $item->ID )
+			)
+		);
 	}
 
 	/**
@@ -144,7 +156,7 @@ class Admin_Turnos_List extends \WP_List_Table {
 	 */
 	protected function column_apoyo( $item ): string {
 		$apoyo = (int) get_post_meta( $item->ID, '_necesita_apoyo', true );
-		return $apoyo ? '<span class="convoca-badge convoca-badge--warning">🛟 Sí</span>' : '<span style="color:#94a3b8;">No</span>';
+		return $apoyo ? '<span class="convoca-badge convoca-badge--warning">🛟 Sí</span>' : '<span style="color:#475569;">No</span>';
 	}
 
 	/**
@@ -333,14 +345,16 @@ class Admin_Turnos_List extends \WP_List_Table {
 		$filter_apoyo      = isset( $_GET['filter_apoyo'] ) ? sanitize_text_field( wp_unslash( $_GET['filter_apoyo'] ) ) : '';
 		?>
 		<div class="alignleft actions" style="display:flex;gap:10px;align-items:center;">
-			<select name="filter_estado">
+			<label class="screen-reader-text" for="filter_estado"><?php esc_html_e( 'Filtrar por estado', 'convoca-shifts' ); ?></label>
+			<select name="filter_estado" id="filter_estado">
 				<option value=""><?php esc_html_e( 'Todos los estados', 'convoca-shifts' ); ?></option>
 				<option value="abierto_disponible" <?php selected( $filter_estado, 'abierto_disponible' ); ?>><?php esc_html_e( '🟡 Pendiente', 'convoca-shifts' ); ?></option>
 				<option value="abierto_ocupado" <?php selected( $filter_estado, 'abierto_ocupado' ); ?>><?php esc_html_e( '🔵 Ocupado', 'convoca-shifts' ); ?></option>
 				<option value="cerrado" <?php selected( $filter_estado, 'cerrado' ); ?>><?php esc_html_e( '🔴 Cerrado', 'convoca-shifts' ); ?></option>
 			</select>
 
-			<select name="filter_asistencia">
+			<label class="screen-reader-text" for="filter_asistencia"><?php esc_html_e( 'Filtrar por asistencia', 'convoca-shifts' ); ?></label>
+			<select name="filter_asistencia" id="filter_asistencia">
 				<option value=""><?php esc_html_e( 'Todas asistencias', 'convoca-shifts' ); ?></option>
 				<option value="pendiente" <?php selected( $filter_asistencia, 'pendiente' ); ?>><?php esc_html_e( '⏳ Pendiente', 'convoca-shifts' ); ?></option>
 				<option value="realizado" <?php selected( $filter_asistencia, 'realizado' ); ?>><?php esc_html_e( '✅ Realizado', 'convoca-shifts' ); ?></option>
@@ -349,7 +363,8 @@ class Admin_Turnos_List extends \WP_List_Table {
 				<option value="cancelada_aviso" <?php selected( $filter_asistencia, 'cancelada_aviso' ); ?>><?php esc_html_e( '↩️ Cancelada con aviso', 'convoca-shifts' ); ?></option>
 			</select>
 
-			<select name="filter_apoyo">
+			<label class="screen-reader-text" for="filter_apoyo"><?php esc_html_e( 'Filtrar por necesidad de apoyo', 'convoca-shifts' ); ?></label>
+			<select name="filter_apoyo" id="filter_apoyo">
 				<option value=""><?php esc_html_e( 'Apoyo: Todos', 'convoca-shifts' ); ?></option>
 				<option value="1" <?php selected( $filter_apoyo, '1' ); ?>><?php esc_html_e( '🛟 Necesita apoyo', 'convoca-shifts' ); ?></option>
 				<option value="0" <?php selected( $filter_apoyo, '0' ); ?>><?php esc_html_e( 'Sin apoyo', 'convoca-shifts' ); ?></option>
