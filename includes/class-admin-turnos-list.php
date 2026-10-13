@@ -73,15 +73,17 @@ class Admin_Turnos_List extends \WP_List_Table {
 		// Nombre accesible: una casilla sin etiqueta es «crítica» en axe (y el lector de pantalla
 		// solo lee «casilla de verificación»).
 		$fecha = get_post_meta( $item->ID, '_convoca_fecha', true );
+		if ( $fecha ) {
+			/* translators: %s: fecha del turno */
+			$nombre = sprintf( __( 'Seleccionar el turno del %s', 'convoca-shifts' ), $fecha );
+		} else {
+			/* translators: %d: número de turno */
+			$nombre = sprintf( __( 'Seleccionar el turno #%d', 'convoca-shifts' ), (int) $item->ID );
+		}
 		return sprintf(
 			'<input type="checkbox" name="turno[]" value="%d" aria-label="%s">',
 			$item->ID,
-			esc_attr(
-				$fecha
-					/* translators: %s: fecha del turno */
-					? sprintf( __( 'Seleccionar el turno del %s', 'convoca-shifts' ), $fecha )
-					: sprintf( __( 'Seleccionar el turno #%d', 'convoca-shifts' ), (int) $item->ID )
-			)
+			esc_attr( $nombre )
 		);
 	}
 

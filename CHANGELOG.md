@@ -1,5 +1,13 @@
 # Changelog — convoca-shifts
 
+## [2.5.9] - 2026-10-13
+
+### Arreglado
+
+- El comentario `translators:` de las casillas del listado de turnos estaba encima del `sprintf`, no de
+  la propia `__()`, y Plugin Check lo rechaza (WordPress.WP.I18n.MissingTranslatorsComment). El texto
+  del nombre accesible es el mismo; solo cambia dónde está el comentario.
+
 ## [2.5.8] - 2026-10-13
 
 ### Arreglado (accesibilidad, issue #2)
