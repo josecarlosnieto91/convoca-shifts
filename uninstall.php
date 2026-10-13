@@ -89,11 +89,12 @@ foreach ( $convoca_shifts_widgets as $convoca_shifts_widget ) {
 // is created by Convoca Members plugin, NOT by Convoca Shifts.
 // Therefore, we do NOT delete it here to preserve Member functionality.
 
-// 5. Clear scheduled CRON events.
-$timestamp = wp_next_scheduled( 'convoca_shifts_hourly_event' );
-if ( $timestamp ) {
-	wp_unschedule_event( $timestamp, 'convoca_shifts_hourly_event' );
-}
+// 5. Limpiar las tareas programadas.
+// Antes solo se quitaba la de cada hora, y una sola vez (wp_unschedule_event con la marca de
+// tiempo siguiente): la diaria se quedaba puesta y, si había más de una entrada, quedaban las
+// demás. wp_clear_scheduled_hook las quita todas. Medido en un WordPress limpio el 13/10/2026.
+wp_clear_scheduled_hook( 'convoca_shifts_hourly_event' );
+wp_clear_scheduled_hook( 'convoca_shifts_daily_event' );
 
 // 6. Clean activity log table.
 global $wpdb;
