@@ -124,7 +124,7 @@ function convoca_shifts_turno_rapido_notices() {
 		if ( $_GET['convoca_shifts_msg'] === 'created' ) {
 			echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . esc_html__( 'Turno creado correctamente.', 'convoca-shifts' ) . '</p></div>';
 		} elseif ( $_GET['convoca_shifts_msg'] === 'error' ) {
-			$err = isset( $_GET['convoca_shifts_err'] ) ? sanitize_text_field( wp_unslash( $_GET['convoca_shifts_err'] ) ) : esc_html__( 'Error desconocido', 'convoca-shifts' );
+			$err = isset( $_GET['convoca_shifts_err'] ) ? sanitize_text_field( wp_unslash( $_GET['convoca_shifts_err'] ) ) : esc_html__( 'No se ha podido crear el turno y no hay mas detalle. Vuelve a intentarlo; si se repite, avisa a quien mantiene el sistema.', 'convoca-shifts' );
 			echo '<div class="convoca-alert convoca-alert--danger" style="display:block;margin-bottom:20px;"><p><strong>Error:</strong> ' . esc_html( $err ) . '</p></div>';
 		}
 	}

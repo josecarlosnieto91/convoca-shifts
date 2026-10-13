@@ -1,5 +1,16 @@
 # Changelog — convoca-shifts
 
+## [2.5.7] - 2026-10-13
+
+### Arreglado
+
+- **El aviso del turno rápido dejó de decir «Error desconocido»**: cuando el guardado no devolvía
+  detalle, el usuario veía ese literal sin saber qué había pasado. Ahora explica qué intentar.
+
+### Pruebas
+
+- `MensajesDeErrorTest` (nuevo), probado en negativo.
+
 ## v2.5.6 (2026-10-12)
 
 ### Arreglado
