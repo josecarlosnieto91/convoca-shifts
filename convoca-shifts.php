@@ -3,7 +3,7 @@
  * Plugin Name:       Convoca Shifts
  * Plugin URI:        https://getconvoca.app
  * Description:       Volunteer shift management for community centers.
- * Version:           2.5.17
+ * Version:           2.5.18
  * Requires at least: 6.4
  * Requires PHP:      8.1
  * Tested up to:      7.1
@@ -52,6 +52,7 @@ if ( file_exists( $composer_autoload ) ) {
 
 // Includes.
 require_once CONVOCA_SHIFTS_DIR . 'includes/ical.php';
+require_once CONVOCA_SHIFTS_DIR . 'includes/importador.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/horario.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/semana-tipo.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/cpt-turno.php';
@@ -68,6 +69,10 @@ require_once CONVOCA_SHIFTS_DIR . 'includes/class-admin-turnos-list-page.php';
 // desde fuera (issue #13). Puesto dentro de `is_admin()` no se registra nunca en la portada y la dirección
 // devuelve la página normal.
 Ical::init();
+
+// Importación de plantillas: la página es de administración, pero el enganche no estorba fuera y así la
+// subida se atiende siempre (issue #13).
+Importador::init();
 
 if ( is_admin() ) {
 	new Convoca_Shifts_Admin_Turno_Editor();

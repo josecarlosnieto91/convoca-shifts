@@ -1,3 +1,29 @@
+## [2.5.18] — 2026-10-15
+
+### Añadido
+- **Importación de turnos desde plantilla (issue #13).** La web prometía «Importa plantillas desde Excel para
+  alta masiva de turnos» y no existía: el alta masiva era rellenar una semana en el panel, que no es un
+  fichero. Ahora hay una página **«Importar turnos»** en el menú de turnos, con la plantilla descargable y la
+  subida del fichero relleno.
+  - Se lee **CSV**, que es lo que Excel abre y guarda de serie, sin meter una librería de hojas de cálculo en el
+    plugin. Se entienden las dos costumbres: la coma y el **punto y coma** de Excel en español, y el BOM que
+    mete al guardar.
+  - Las fechas se leen como se escriben aquí: **`05/11/2026` es el 5 de noviembre**, no el 11 de mayo; también
+    valen `5-11-2026` y `2026-11-05`. Las horas se normalizan (`9:00` → `09:00`).
+  - Cada fila mala se explica con **su número de línea** y no se lleva por delante las buenas. La actividad y
+    las personas se resuelven por nombre, usuario, correo o número.
+  - **No duplica**: un turno que ya existe ese día a esa hora se cuenta como repetido y se deja en paz, con el
+    mismo criterio que el generador de semanas.
+  - La creación de cada turno se delega en `convoca_shifts_insert_turno()`, la del generador: horario del
+    centro, estado y título se calculan en un solo sitio.
+
+### Pruebas
+- `tests/Unit/ImportadorTest.php`: la plantilla que se descarga **se importa a sí misma** sin errores, el
+  separador de Excel, el BOM, que una fila mala no arrastre a las buenas y diga en qué línea, y que `05/11`
+  sea noviembre. **Negativos probados**: poniendo el orden `m/d/Y` primero caen dos pruebas, y volviendo a
+  `array_shift` cae la de los números de línea.
+- Suite 84 en verde, PHPCS 0, PHPStan `[OK]`. Sin deprecaciones (`str_getcsv` con el escape explícito).
+
 ## [2.5.17] — 2026-10-15
 
 ### Corregido
