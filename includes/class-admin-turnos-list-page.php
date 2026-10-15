@@ -47,6 +47,26 @@ class Admin_Turnos_List_Page {
 			'convoca-shifts-turnos-list',
 			array( $this, 'render_page' )
 		);
+
+		// La página es oculta (padre null), así que WordPress no le pone título y la pestaña salía sin
+		// nombre: «‹ Convoca Demo — WordPress». El h1 sí estaba; lo que faltaba era el título del
+		// documento. Esto lo completa sin tocar el h1.
+		add_filter( 'admin_title', array( $this, 'titulo_documento' ), 10, 2 );
+	}
+
+	/**
+	 * Título del documento para la pantalla de todos los turnos.
+	 *
+	 * @param string $admin_title Título completo que ha montado WordPress.
+	 * @param string $title       Título de la página.
+	 */
+	public function titulo_documento( $admin_title, $title ) {
+		$pagina = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
+		if ( 'convoca-shifts-turnos-list' !== $pagina ) {
+			return $admin_title;
+		}
+
+		return __( 'Todos los Turnos', 'convoca-shifts' ) . $admin_title . $title;
 	}
 
 	/**

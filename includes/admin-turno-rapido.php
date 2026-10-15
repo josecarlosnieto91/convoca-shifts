@@ -264,8 +264,8 @@ function convoca_shifts_turno_rapido_page() {
 						customFields.style.display = 'none';
 						let start = this.dataset.start;
 						let end = this.dataset.end;
-						const limitOpen = '<?php echo esc_js( get_option( 'convoca_shifts_hora_apertura', '09:00' ) ); ?>';
-						const limitClose = '<?php echo esc_js( get_option( 'convoca_shifts_hora_cierre', '22:00' ) ); ?>';
+						const limitOpen = '<?php echo esc_js( Horario::apertura() ); ?>';
+						const limitClose = '<?php echo esc_js( Horario::cierre() ); ?>';
 						
 						let adjusted = false;
 						if (start < limitOpen) { start = limitOpen; adjusted = true; }
@@ -301,8 +301,8 @@ function convoca_shifts_turno_rapido_page() {
 		form.onsubmit = function(e) {
 			let h_start = document.getElementById('fe_h_start').value;
 			let h_end = document.getElementById('fe_h_end').value;
-			const limitOpen = '<?php echo esc_js( get_option( 'convoca_shifts_hora_apertura', '09:00' ) ); ?>';
-			const limitClose = '<?php echo esc_js( get_option( 'convoca_shifts_hora_cierre', '22:00' ) ); ?>';
+			const limitOpen = '<?php echo esc_js( Horario::apertura() ); ?>';
+			const limitClose = '<?php echo esc_js( Horario::cierre() ); ?>';
 			
 			let adjusted = false;
 			if (h_start < limitOpen) {

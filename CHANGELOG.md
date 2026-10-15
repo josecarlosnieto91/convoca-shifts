@@ -1,5 +1,19 @@
 # Changelog — convoca-shifts
 
+## [2.5.11] - 2026-10-15
+
+### Corregido
+
+- **Tres defectos del calendario y del panel** (auditoría de navegador):
+  - Con las horas de apertura y cierre guardadas **vacías**, el turno rápido no guardaba y los turnos
+    nacían sin hora: `get_option( ..., '09:00' )` no aplica el valor por defecto cuando la opción existe
+    vacía. Ahora el vacío se trata como «sin configurar» (`Horario::apertura()`/`cierre()`).
+  - La pantalla «Todos los Turnos» no tenía título de documento: la pestaña salía como «‹ Convoca Demo —
+    WordPress».
+  - El enlace «Ir a Acceso» del calendario apuntaba a `#`: la opción de la página de acceso no se
+    registraba en ningún sitio, así que no había forma de configurarla. Se registra y, si está vacía, se
+    usa la página de acceso de WordPress en vez de un enlace que no lleva a ninguna parte.
+
 ## [2.5.9] - 2026-10-13
 
 ### Arreglado

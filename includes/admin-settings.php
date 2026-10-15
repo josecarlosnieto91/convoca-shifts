@@ -60,6 +60,16 @@ function convoca_shifts_register_plugin_settings() {
 	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_calendar_page_url', 'sanitize_text_field' );
 	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_hora_apertura', 'sanitize_text_field' );
 	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_hora_cierre', 'sanitize_text_field' );
+	// El calendario público lee esta opción para el enlace «Ir a Acceso», pero no se registraba en
+	// ningún sitio: no había forma de guardarla y el enlace salía siempre con «#».
+	register_setting(
+		'convoca_shifts_settings_group',
+		'convoca_shifts_access_page_url',
+		array(
+			'type'              => 'string',
+			'sanitize_callback' => 'esc_url_raw',
+		)
+	);
 	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_aviso_socio_en', 'absint' );
 	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_aviso_admin_cada', 'absint' );
 	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_ventana_dias', 'absint' );
@@ -102,11 +112,17 @@ function convoca_shifts_settings_page() {
 				</div>
 
 				<div class="convoca-field">
+					<label for="convoca_shifts_access_page_url"><?php esc_html_e( 'URL de la página de Acceso', 'convoca-shifts' ); ?></label>
+					<input type="url" id="convoca_shifts_access_page_url" name="convoca_shifts_access_page_url" value="<?php echo esc_attr( get_option( 'convoca_shifts_access_page_url' ) ); ?>" placeholder="<?php echo esc_attr( wp_login_url() ); ?>">.
+					<small class="convoca-small"><?php esc_html_e( 'A dónde va el visitante que pulsa «Ir a Acceso» en el calendario. Si lo dejas vacío, se usa la página de acceso de WordPress.', 'convoca-shifts' ); ?></small>
+				</div>
+
+				<div class="convoca-field">
 					<label for="convoca_shifts_hora_apertura"><?php esc_html_e( 'Horario del Centro', 'convoca-shifts' ); ?></label>
 					<div style="display:flex; align-items:center; gap:10px;">
-						<input type="time" id="convoca_shifts_hora_apertura" name="convoca_shifts_hora_apertura" value="<?php echo esc_attr( get_option( 'convoca_shifts_hora_apertura', '09:00' ) ); ?>">
+						<input type="time" id="convoca_shifts_hora_apertura" name="convoca_shifts_hora_apertura" value="<?php echo esc_attr( Horario::apertura() ); ?>">
 						<span><?php esc_html_e( 'hasta las', 'convoca-shifts' ); ?></span>
-						<input type="time" id="convoca_shifts_hora_cierre" name="convoca_shifts_hora_cierre" aria-label="<?php esc_attr_e( 'Hora de cierre', 'convoca-shifts' ); ?>" value="<?php echo esc_attr( get_option( 'convoca_shifts_hora_cierre', '22:00' ) ); ?>">
+						<input type="time" id="convoca_shifts_hora_cierre" name="convoca_shifts_hora_cierre" aria-label="<?php esc_attr_e( 'Hora de cierre', 'convoca-shifts' ); ?>" value="<?php echo esc_attr( Horario::cierre() ); ?>">
 					</div>
 					<small class="convoca-small"><?php esc_html_e( 'Restringe la creación de turnos fuera de este horario.', 'convoca-shifts' ); ?></small>
 				</div>

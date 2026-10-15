@@ -69,7 +69,12 @@ function convoca_shifts_calendario_centro() {
 	ob_start();
 
 	if ( ! is_user_logged_in() ) {
-		$access_url = get_option( 'convoca_shifts_access_page_url', '#' );
+		// Sin configurar no se pone '#': un enlace que no lleva a ninguna parte es peor que no ponerlo.
+		// El respaldo es la página de acceso de WordPress, que siempre existe.
+		$access_url = (string) get_option( 'convoca_shifts_access_page_url', '' );
+		if ( '' === trim( $access_url ) ) {
+			$access_url = wp_login_url();
+		}
 		echo '<div class="convoca-shifts-public-notice">';
 		echo '<p>💡 ' . esc_html__( 'Este es el cuadrante actual. Si eres voluntario/a, inicia sesión para apuntarte a un turno.', 'convoca-shifts' ) . ' <a href="' . esc_url( $access_url ) . '">' . esc_html__( 'Ir a Acceso', 'convoca-shifts' ) . '</a></p>';
 		echo '</div>';

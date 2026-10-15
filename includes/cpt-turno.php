@@ -999,8 +999,8 @@ function convoca_shifts_duplicar_semana() {
 			$h_end   = wp_date( 'H:i', strtotime( $old_hora_fin_val ) );
 
 			// Business hours enforcement.
-			$limit_open  = get_option( 'convoca_shifts_hora_apertura', '09:00' );
-			$limit_close = get_option( 'convoca_shifts_hora_cierre', '22:00' );
+			$limit_open  = Horario::apertura();
+			$limit_close = Horario::cierre();
 
 			if ( $h_start < $limit_open ) {
 				$h_start = $limit_open;
@@ -1125,8 +1125,8 @@ function convoca_shifts_crear_semana_tipo( $fecha_inicio, $dias ) {
 			$meta_hora_fin = $date_day . ' ' . $hora_fin . ':00';
 
 			// Business hours enforcement.
-			$limit_open  = get_option( 'convoca_shifts_hora_apertura', '09:00' );
-			$limit_close = get_option( 'convoca_shifts_hora_cierre', '22:00' );
+			$limit_open  = Horario::apertura();
+			$limit_close = Horario::cierre();
 
 			if ( $hora_inicio < $limit_open ) {
 				$hora_inicio = $limit_open;
@@ -1257,8 +1257,8 @@ function convoca_shifts_insert_turno( $args ) {
 	$a        = wp_parse_args( $args, $defaults );
 
 	// Enforce business hours.
-	$limit_open  = get_option( 'convoca_shifts_hora_apertura', '09:00' );
-	$limit_close = get_option( 'convoca_shifts_hora_cierre', '22:00' );
+	$limit_open  = Horario::apertura();
+	$limit_close = Horario::cierre();
 	if ( $a['h_start'] < $limit_open ) {
 		$a['h_start'] = $limit_open;
 	}
