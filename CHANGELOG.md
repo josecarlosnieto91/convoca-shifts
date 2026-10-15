@@ -1,5 +1,17 @@
 # Changelog — convoca-shifts
 
+## [2.5.15] - 2026-10-15
+
+### Seguridad
+
+- **La API pública de turnos devolvía la planificación interna a quien preguntara sin sesión** (#4): el
+  responsable, su nombre, las notas, el monitor y si el turno necesita apoyo. Ahora solo se sirven a quien
+  puede gestionar turnos (misma capacidad que usan las pantallas del plugin); sin sesión quedan la fecha, la
+  hora, el estado y la actividad.
+- Y la otra puerta que llevaba al mismo sitio: las metas del turno (`_id_responsable`, `_notas`,
+  `_necesita_apoyo`, `_estado_real`, `_monitor`) se registraban con `show_in_rest` y **sin `auth_callback`**,
+  así que también viajaban por `/wp/v2/centro_turno`. Se les pone el mismo permiso.
+
 ## [2.5.14] - 2026-10-15
 
 ### Corregido

@@ -145,6 +145,9 @@ function convoca_shifts_rest_get_turnos( WP_REST_Request $request ) {
 	$turnos = new \WP_Query( $args );
 	$events = array();
 
+	// Misma capacidad que usan las pantallas de gestión del plugin.
+	$puede_ver_planificacion = current_user_can( 'convoca_shifts_manage_turnos' ) || current_user_can( 'manage_options' );
+
 	if ( $turnos->have_posts() ) {
 		while ( $turnos->have_posts() ) {
 			$turnos->the_post();
@@ -207,38 +210,46 @@ function convoca_shifts_rest_get_turnos( WP_REST_Request $request ) {
 				}
 			}
 
+			// Lo público: la actividad y su estado. Lo INTERNO del turno —quién lo lleva, las notas, el
+			// monitor y si necesita apoyo— solo para quien gestiona turnos: esta ruta es pública y los
+			// devolvía a cualquiera sin sesión (issue #4). Decisión: sin sesión, solo fecha, hora y estado.
+			$props = array(
+				'estado'        => $estado,
+				'actividad'     => ( function ( $pid ) {
+					$terms = wp_get_post_terms( $pid, 'convoca_shifts_actividad' );
+					return ( ! empty( $terms ) && ! is_wp_error( $terms ) ) ? $terms[0]->name : '';
+				} )( $post_id ),
+				'actividad_url' => ( function ( $pid ) {
+					$terms = wp_get_post_terms( $pid, 'convoca_shifts_actividad' );
+					if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+						return get_term_meta( $terms[0]->term_id, 'convoca_shifts_url_info', true );
+					}
+					return '';
+				} )( $post_id ),
+			);
+
+			if ( $puede_ver_planificacion ) {
+				$props['responsable_id']     = $responsable_id;
+				$props['responsable_nombre'] = $responsable_nombre;
+				$props['notas']              = get_post_meta( $post_id, '_notas', true );
+				$props['necesita_apoyo']     = (int) get_post_meta( $post_id, '_necesita_apoyo', true );
+				$props['monitor']            = ( function ( $pid ) {
+					$monitor_id = (int) get_post_meta( $pid, '_monitor', true );
+					if ( $monitor_id > 0 ) {
+						$mu = get_userdata( $monitor_id );
+						return $mu ? $mu->display_name : '';
+					}
+					return '';
+				} )( $post_id );
+			}
+
 			$events[] = array(
 				'id'            => $post_id,
 				'title'         => html_entity_decode( $title ),
 				'start'         => $event_start,
 				'end'           => $event_end,
 				'color'         => $color,
-				'extendedProps' => array(
-					'estado'             => $estado,
-					'responsable_id'     => $responsable_id,
-					'responsable_nombre' => $responsable_nombre,
-					'notas'              => get_post_meta( $post_id, '_notas', true ),
-					'necesita_apoyo'     => (int) get_post_meta( $post_id, '_necesita_apoyo', true ),
-					'actividad'          => ( function ( $pid ) {
-						$terms = wp_get_post_terms( $pid, 'convoca_shifts_actividad' );
-						return ( ! empty( $terms ) && ! is_wp_error( $terms ) ) ? $terms[0]->name : '';
-					} )( $post_id ),
-					'actividad_url'      => ( function ( $pid ) {
-						$terms = wp_get_post_terms( $pid, 'convoca_shifts_actividad' );
-						if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-							return get_term_meta( $terms[0]->term_id, 'convoca_shifts_url_info', true );
-						}
-						return '';
-					} )( $post_id ),
-					'monitor'            => ( function ( $pid ) {
-						$monitor_id = (int) get_post_meta( $pid, '_monitor', true );
-						if ( $monitor_id > 0 ) {
-							$mu = get_userdata( $monitor_id );
-							return $mu ? $mu->display_name : '';
-						}
-						return '';
-					} )( $post_id ),
-				),
+				'extendedProps' => $props,
 			);
 		}
 		wp_reset_postdata();

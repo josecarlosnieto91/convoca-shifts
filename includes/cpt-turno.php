@@ -200,39 +200,55 @@ function convoca_shifts_register_cpt_centro_turno() {
 		'centro_turno',
 		'_id_responsable',
 		array(
-			'show_in_rest' => true,
-			'single'       => true,
-			'type'         => 'integer',
-			'default'      => 0,
+			'show_in_rest'  => true,
+			// Sin `auth_callback`, la meta viaja por `/wp/v2/centro_turno` a quien pregunte sin sesión.
+			'auth_callback' => static function () {
+				return current_user_can( 'convoca_shifts_manage_turnos' ) || current_user_can( 'manage_options' );
+			},
+			'single'        => true,
+			'type'          => 'integer',
+			'default'       => 0,
 		)
 	);
 	register_post_meta(
 		'centro_turno',
 		'_notas',
 		array(
-			'show_in_rest' => true,
-			'single'       => true,
-			'type'         => 'string',
+			'show_in_rest'  => true,
+			// Sin `auth_callback`, la meta viaja por `/wp/v2/centro_turno` a quien pregunte sin sesión.
+			'auth_callback' => static function () {
+				return current_user_can( 'convoca_shifts_manage_turnos' ) || current_user_can( 'manage_options' );
+			},
+			'single'        => true,
+			'type'          => 'string',
 		)
 	);
 	register_post_meta(
 		'centro_turno',
 		'_necesita_apoyo',
 		array(
-			'show_in_rest' => true,
-			'single'       => true,
-			'type'         => 'boolean',
-			'default'      => false,
+			'show_in_rest'  => true,
+			// Sin `auth_callback`, la meta viaja por `/wp/v2/centro_turno` a quien pregunte sin sesión.
+			'auth_callback' => static function () {
+				return current_user_can( 'convoca_shifts_manage_turnos' ) || current_user_can( 'manage_options' );
+			},
+			'single'        => true,
+			'type'          => 'boolean',
+			'default'       => false,
 		)
 	);
 	register_post_meta(
 		'centro_turno',
 		'_estado_real',
 		array(
-			'show_in_rest' => true,
-			'single'       => true,
-			'type'         => 'string',
-			'default'      => 'pendiente', // pendiente, realizado, no_asistio, justificada, cancelada_aviso.
+			'show_in_rest'  => true,
+			// Sin `auth_callback`, la meta viaja por `/wp/v2/centro_turno` a quien pregunte sin sesión.
+			'auth_callback' => static function () {
+				return current_user_can( 'convoca_shifts_manage_turnos' ) || current_user_can( 'manage_options' );
+			},
+			'single'        => true,
+			'type'          => 'string',
+			'default'       => 'pendiente', // pendiente, realizado, no_asistio, justificada, cancelada_aviso.
 		)
 	);
 	register_post_meta(
@@ -268,9 +284,13 @@ function convoca_shifts_register_cpt_centro_turno() {
 		'centro_turno',
 		'_monitor',
 		array(
-			'show_in_rest' => true,
-			'single'       => true,
-			'type'         => 'string',
+			'show_in_rest'  => true,
+			// Sin `auth_callback`, la meta viaja por `/wp/v2/centro_turno` a quien pregunte sin sesión.
+			'auth_callback' => static function () {
+				return current_user_can( 'convoca_shifts_manage_turnos' ) || current_user_can( 'manage_options' );
+			},
+			'single'        => true,
+			'type'          => 'string',
 		)
 	);
 }
