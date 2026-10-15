@@ -1,3 +1,17 @@
+## [2.5.20] — 2026-10-15
+
+### Arreglado
+- **El exportador de turnos a CSV no tenía botón.** Existía desde hace tiempo —`convoca_shifts_exportar_csv_turnos()`,
+  enganchado a `admin_init`, con su nonce y sus columnas— pero **ninguna pantalla lo lanzaba**: la promesa de la
+  web estaba en el código y no había forma de usarla. Ahora tiene su botón en el listado de turnos, que es donde
+  se busca («📥 Exportar a CSV»).
+- Prueba nueva `AccionesConBotonTest`: recorre las acciones que el plugin sabe atender y exige que cada una
+  aparezca en algo que la dispare. Una función que sólo se puede llamar por correo no existe para quien usa el
+  plugin. **Negativo probado**: quitando el botón, la prueba cae.
+
+### Pruebas
+- Suite 85 en verde, PHPCS 0, PHPStan `[OK]`.
+
 ## [2.5.19] — 2026-10-15
 
 ### Corregido

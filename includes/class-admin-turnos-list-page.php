@@ -109,6 +109,20 @@ class Admin_Turnos_List_Page {
 			</a>
 			<hr class="wp-header-end">
 
+			<?php
+			// Exportar los turnos a CSV (issue #13). El exportador existía desde hace tiempo
+			// —`convoca_shifts_exportar_csv_turnos()`, enganchado a `admin_init`— pero **no tenía botón en
+			// ninguna pantalla**: la promesa de la web existía en el código y no había forma de usarla. Va
+			// aquí, con su nonce y el mismo nombre de acción que espera el manejador.
+			?>
+			<form method="post" action="" style="display:inline-block;margin:0 0 12px;">
+				<?php wp_nonce_field( 'convoca_shifts_exportar_csv_action' ); ?>
+				<input type="hidden" name="convoca_shifts_action" value="exportar_csv">
+				<button type="submit" class="convoca-btn convoca-btn-outline">
+					<?php esc_html_e( '📥 Exportar a CSV', 'convoca-shifts' ); ?>
+				</button>
+			</form>
+
 			<form method="get">
 				<input type="hidden" name="post_type" value="centro_turno">
 				<input type="hidden" name="page" value="convoca-shifts-turnos-list">
