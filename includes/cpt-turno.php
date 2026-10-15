@@ -121,8 +121,8 @@ function convoca_shifts_sync_turno_on_save( $post_id, $post, $update ) {
  * el monitor, el motivo de ausencia y la fecha de aviso a quien preguntara sin sesión (issue #4). El filtro
  * es lo que cierra la lectura.
  *
- * @param WP_REST_Response $response Respuesta del turno.
- * @return WP_REST_Response
+ * @param \WP_REST_Response $response Respuesta del turno.
+ * @return \WP_REST_Response
  */
 function convoca_shifts_filtrar_metas_privadas( $response ) {
 	if ( current_user_can( 'convoca_shifts_manage_turnos' ) || current_user_can( 'manage_options' ) ) {
