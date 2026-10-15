@@ -3,7 +3,7 @@
  * Plugin Name:       Convoca Shifts
  * Plugin URI:        https://getconvoca.app
  * Description:       Volunteer shift management for community centers.
- * Version:           2.5.22
+ * Version: 2.5.23
  * Requires at least: 6.4
  * Requires PHP:      8.1
  * Tested up to:      7.1
@@ -38,10 +38,19 @@ if ( ! defined( 'CONVOCA_SHIFTS_URL' ) ) {
 	define( 'CONVOCA_SHIFTS_URL', plugin_dir_url( __FILE__ ) );
 }
 if ( ! defined( 'CONVOCA_SHIFTS_VERSION' ) ) {
-		// Ojo: esta constante es tambien el fingerprint que usa
-	// Convoca_Shifts_Upgrade_Manager, asi que NO se deriva del header: se alinea
-	// a mano con cada release.
-	define( 'CONVOCA_SHIFTS_VERSION', '2.5.10' );
+	// Version del PLUGIN: es el cache-buster de los assets. Se deriva de la cabecera, como en el resto
+	// del ecosistema. Estuvo clavada en 2.5.10 hasta la 2.5.22, asi que durante doce releases los assets
+	// se sirvieron con ?ver=2.5.10 y los navegadores guardaban JS/CSS viejos bajo esa misma URL.
+	$convoca_shifts_header = get_file_data( __FILE__, array( 'Version' => 'Version' ), 'plugin' );
+	define( 'CONVOCA_SHIFTS_VERSION', ! empty( $convoca_shifts_header['Version'] ) ? $convoca_shifts_header['Version'] : '2.5.23' );
+}
+if ( ! defined( 'CONVOCA_SHIFTS_DB_VERSION' ) ) {
+	// Version de la BASE DE DATOS: el fingerprint que Convoca_Shifts_Upgrade_Manager compara contra la
+	// opcion guardada para decidir que migraciones corren. Va SEPARADA de la del plugin porque no
+	// significan lo mismo (en gateway ya son dos constantes): la del plugin sube en cada release, esta
+	// solo cuando cambian las migraciones. Aqui queda el valor que tenia la constante unica (2.5.10) para
+	// no disparar ninguna migracion que no tocaba.
+	define( 'CONVOCA_SHIFTS_DB_VERSION', '2.5.10' );
 }
 
 /* ── Composer autoload ─────────────────────────────── */

@@ -1,3 +1,18 @@
+## [2.5.23] — 2026-10-15
+
+### Corregido
+- **Los assets se servían con `?ver=2.5.10` yendo el plugin por la 2.5.22 (issue #15).** La constante de
+  versión hacía **dos trabajos con requisitos opuestos**: cache-buster de los assets —que sube en cada
+  release— y fingerprint de las migraciones (`Convoca_Shifts_Upgrade_Manager::get_db_version()`), que no tiene
+  por qué moverse cuando no cambia ninguna migración. Fundidas, se quedó atrás **doce releases**.
+
+### Cambiado
+- Las dos versiones quedan **separadas**, como ya estaban en gateway: `CONVOCA_SHIFTS_VERSION` es la del
+  plugin (derivada de la cabecera, no un literal) y `CONVOCA_SHIFTS_DB_VERSION` es la de la base de datos,
+  con **el valor que ya tenía** (2.5.10) para no disparar ninguna migración que no tocaba. `get_db_version()`
+  lee la nueva.
+- Contrato nuevo (`tests/Unit/VersionYFingerprintTest.php`), probado en negativo contra el fichero anterior.
+
 ## [2.5.22] — 2026-10-15
 
 ### Arreglado

@@ -38,7 +38,10 @@ class Convoca_Shifts_Upgrade_Manager extends \Convoca\Core\Upgrade_Manager {
 	 * Get the current database version constant for this plugin.
 	 */
 	protected function get_db_version(): string {
-		return defined( 'CONVOCA_SHIFTS_VERSION' ) ? CONVOCA_SHIFTS_VERSION : '0.0.0';
+		// La version de la BD, no la del plugin: son dos cosas (ver convoca-shifts.php). Antes leia la
+		// constante del PLUGIN, que es el cache-buster de los assets: subir la version del plugin movia el
+		// fingerprint de las migraciones sin que ninguna migracion hubiera cambiado.
+		return defined( 'CONVOCA_SHIFTS_DB_VERSION' ) ? CONVOCA_SHIFTS_DB_VERSION : '0.0.0';
 	}
 
 	/**
