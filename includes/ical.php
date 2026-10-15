@@ -106,8 +106,8 @@ class Ical {
 		nocache_headers();
 		header( 'Content-Type: text/calendar; charset=utf-8' );
 		header( 'Content-Disposition: inline; filename="convoca-turnos.ics"' );
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- text/calendar no lleva HTML: el
-		// contenido va escapado según el RFC 5545 (comas, puntos y coma, barras y saltos) antes de salir.
+		// Contenido no-HTML: el texto va escapado según el RFC 5545 (comas, puntos y coma, barras y saltos).
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- text/calendar: no lleva HTML.
 		echo $feed;
 		exit;
 	}
