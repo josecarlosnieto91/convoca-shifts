@@ -1,5 +1,16 @@
 # Changelog — convoca-shifts
 
+## [2.5.14] - 2026-10-15
+
+### Corregido
+
+- **Repetir «Crear semana tipo» duplicaba los turnos** (#12): el control de existentes comparaba
+  `_hora_fin` contra `'2026-11-09 13:00:00'`, pero ese metadato guarda **solo la hora** (`'13:00'`), así que
+  la comparación no coincidía nunca y la segunda pasada volvía a insertar la semana entera, dejando cada
+  día con dos turnos idénticos. Ahora se compara contra los formatos reales (`_hora_fin` con la hora y
+  `_fecha_inicio` con la fecha y hora), y también se miran los turnos en borrador. El mismo defecto estaba
+  en **duplicar semana**, y se corrige igual.
+
 ## [2.5.13] - 2026-10-15
 
 ### Corregido

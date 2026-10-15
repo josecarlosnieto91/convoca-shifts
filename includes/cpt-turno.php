@@ -1019,23 +1019,24 @@ function convoca_shifts_duplicar_semana() {
 			$apoyo           = get_post_meta( $turno->ID, '_necesita_apoyo', true );
 
 			// Prevent duplicate shifts: skip if a turno already exists on the target date+time.
+			// Mismo arreglo que en el generador de semanas (issue #12): `_hora_fin` guarda solo la hora y
+			// `_fecha_inicio` la fecha y hora completas, así que la comparación tiene que usar esos formatos.
 			$target_date = wp_date( 'Y-m-d', $new_date_ts );
 			$existing    = get_posts(
 				array(
 					'post_type'      => 'centro_turno',
-					'post_status'    => 'publish',
+					'post_status'    => array( 'publish', 'draft' ),
 					'meta_query'     => array(
+						'relation' => 'AND',
 						array(
 							'key'     => '_hora_fin',
-							'value'   => $target_date . ' ' . $h_end . ':00',
+							'value'   => $h_end,
 							'compare' => '=',
 						),
-					),
-					'date_query'     => array(
 						array(
-							'after'     => $target_date . ' 00:00:00',
-							'before'    => $target_date . ' 23:59:59',
-							'inclusive' => true,
+							'key'     => '_fecha_inicio',
+							'value'   => $target_date . ' ' . $h_start . ':00',
+							'compare' => '=',
 						),
 					),
 					'posts_per_page' => 1,
@@ -1143,22 +1144,26 @@ function convoca_shifts_crear_semana_tipo( $fecha_inicio, $dias ) {
 			$monitor_id   = ! empty( $conf['monitor_id'] ) ? (int) $conf['monitor_id'] : 0;
 
 			// Prevent duplicate shifts on same date+time.
+			//
+			// La comparación tiene que usar los MISMOS formatos con los que se guarda:
+			// `_hora_fin` guarda solo la hora ('13:00') y `_fecha_inicio` la fecha y hora completas. Antes se
+			// comparaba `_hora_fin` contra '2026-11-09 13:00:00', que no coincide NUNCA: repetir la misma
+			// semana volvía a insertarla entera y cada día quedaba con dos turnos idénticos (issue #12).
 			$existing = get_posts(
 				array(
 					'post_type'      => 'centro_turno',
-					'post_status'    => 'publish',
+					'post_status'    => array( 'publish', 'draft' ),
 					'meta_query'     => array(
+						'relation' => 'AND',
 						array(
 							'key'     => '_hora_fin',
-							'value'   => $meta_hora_fin,
+							'value'   => $hora_fin,
 							'compare' => '=',
 						),
-					),
-					'date_query'     => array(
 						array(
-							'after'     => $date_day . ' 00:00:00',
-							'before'    => $date_day . ' 23:59:59',
-							'inclusive' => true,
+							'key'     => '_fecha_inicio',
+							'value'   => $date_day . ' ' . $hora_inicio . ':00',
+							'compare' => '=',
 						),
 					),
 					'posts_per_page' => 1,
