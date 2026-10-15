@@ -40,6 +40,35 @@ class Convoca_Shifts_Admin_Turno_Editor {
 		add_action( 'load-post-new.php', array( $this, 'redirect_from_default' ) );
 		add_action( 'load-post.php', array( $this, 'redirect_from_default' ) );
 		add_action( 'add_meta_boxes', array( $this, 'remove_metabox' ), 20 );
+
+		// Igual que en el listado: la pantalla del editor no tenía título de documento y la pestaña salía
+		// como «‹ Convoca Demo — WordPress». Se cubren las dos puertas a la pantalla: la del plugin
+		// (oculta, sin título por tener padre null) y la de `post.php`, por si se llega por el enlace
+		// estándar de edición. Issue #11.
+		add_filter( 'admin_title', array( $this, 'titulo_documento' ), 10, 2 );
+	}
+
+	/**
+	 * Título del documento para la pantalla de edición de un turno.
+	 *
+	 * @param string $admin_title Título completo que ha montado WordPress.
+	 * @param string $title       Título de la página.
+	 */
+	public function titulo_documento( $admin_title, $title ) {
+		$pagina    = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
+		$es_editor = self::SLUG === $pagina;
+		$en_post   = isset( $_GET['post'] ) && 'centro_turno' === get_post_type( (int) $_GET['post'] );
+
+		if ( ! $es_editor && ! $en_post ) {
+			return $admin_title;
+		}
+
+		$post_id = isset( $_GET['post'] ) ? (int) $_GET['post'] : 0;
+		$nombre  = $post_id ? get_the_title( $post_id ) : '';
+
+		return __( 'Editar Turno', 'convoca-shifts' )
+			. ( $nombre ? ': ' . $nombre : '' )
+			. $admin_title;
 	}
 
 	public function register_page(): void {

@@ -1,5 +1,14 @@
 # Changelog — convoca-shifts
 
+## [2.5.13] - 2026-10-15
+
+### Corregido
+
+- **La pantalla de Editar Turno salía sin título de documento** (#11): es la variante del #7, que ya se
+  arregló en el listado. La pestaña salía como «‹ Convoca Demo — WordPress» porque la pantalla del plugin
+  es oculta (padre `null`) y WordPress no le pone título. Se completa con el filtro `admin_title`, cubriendo
+  las dos puertas a la pantalla: la del plugin y la de `post.php` de un turno.
+
 ## [2.5.12] - 2026-10-15
 
 ### Corregido
