@@ -85,6 +85,11 @@ foreach ( $convoca_shifts_widgets as $convoca_shifts_widget ) {
 	delete_option( $convoca_shifts_widget );
 }
 
+// Las encontró la prueba de contrato de opciones (issue #10): se guardaban y no se borraban.
+delete_option( 'convoca_shifts_aviso_socio_en' );
+delete_option( 'convoca_shifts_aviso_admin_cada' );
+delete_option( 'convoca_shifts_ventana_dias' );
+
 // 4. Note: User meta with _convoca_shifts_ prefix (_convoca_shifts_aprobado, _convoca_shifts_telefono, _convoca_shifts_motivacion).
 // is created by Convoca Members plugin, NOT by Convoca Shifts.
 // Therefore, we do NOT delete it here to preserve Member functionality.

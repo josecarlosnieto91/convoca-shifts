@@ -1,3 +1,14 @@
+## [2.5.22] — 2026-10-15
+
+### Arreglado
+- **La desinstalación no borraba tres opciones del plugin (issue #10).** `convoca_shifts_aviso_socio_en`,
+  `convoca_shifts_aviso_admin_cada` y `convoca_shifts_ventana_dias` se guardaban y se quedaban en la base para
+  siempre. Las ha encontrado la **prueba de contrato** que lee las claves del propio código.
+
+### Pruebas
+- `tests/Unit/OpcionesSeBorranAlDesinstalarTest.php`. **Negativo probado**: quitando una opción, la prueba cae y
+  la nombra.
+
 ## [2.5.21] — 2026-10-15
 
 ### Corregido
