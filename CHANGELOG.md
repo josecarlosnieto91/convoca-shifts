@@ -8,9 +8,13 @@
   responsable, su nombre, las notas, el monitor y si el turno necesita apoyo. Ahora solo se sirven a quien
   puede gestionar turnos (misma capacidad que usan las pantallas del plugin); sin sesión quedan la fecha, la
   hora, el estado y la actividad.
-- Y la otra puerta que llevaba al mismo sitio: las metas del turno (`_id_responsable`, `_notas`,
-  `_necesita_apoyo`, `_estado_real`, `_monitor`) se registraban con `show_in_rest` y **sin `auth_callback`**,
-  así que también viajaban por `/wp/v2/centro_turno`. Se les pone el mismo permiso.
+- Y la otra puerta llevaba al mismo sitio y además **el `auth_callback` no bastaba**: en WordPress autoriza
+  las ESCRITURAS, no las lecturas, así que con `show_in_rest` a `true` las metas seguían viajando en la
+  respuesta de `/wp/v2/centro_turno` (medido: `_id_responsable`, `_notas`, `_necesita_apoyo`, `_estado_real`,
+  `_monitor`, el motivo de ausencia y la fecha de aviso). Se cierra la lectura con
+  `rest_prepare_centro_turno`, que las quita para quien no gestiona turnos, y se deja el `auth_callback`
+  que sí sirve: el de las escrituras.
+
 
 ## [2.5.14] - 2026-10-15
 

@@ -113,6 +113,47 @@ function convoca_shifts_sync_turno_on_save( $post_id, $post, $update ) {
 	}
 }
 
+/**
+ * Quita las metas internas del turno de la respuesta REST para quien no gestiona turnos.
+ *
+ * `auth_callback` en `register_meta` autoriza las ESCRITURAS, no las lecturas: con `show_in_rest` a true la
+ * meta viaja igual en la respuesta, así que `/wp/v2/centro_turno` seguía sirviendo el responsable, las notas,
+ * el monitor, el motivo de ausencia y la fecha de aviso a quien preguntara sin sesión (issue #4). El filtro
+ * es lo que cierra la lectura.
+ *
+ * @param WP_REST_Response $response Respuesta del turno.
+ * @return WP_REST_Response
+ */
+function convoca_shifts_filtrar_metas_privadas( $response ) {
+	if ( current_user_can( 'convoca_shifts_manage_turnos' ) || current_user_can( 'manage_options' ) ) {
+		return $response;
+	}
+
+	$datos = $response->get_data();
+	if ( ! isset( $datos['meta'] ) || ! is_array( $datos['meta'] ) ) {
+		return $response;
+	}
+
+	$privadas = array(
+		'_id_responsable',
+		'_notas',
+		'_necesita_apoyo',
+		'_estado_real',
+		'_monitor',
+		'_convoca_ausencia_motivo',
+		'_convoca_fecha_aviso',
+	);
+
+	foreach ( $privadas as $clave ) {
+		unset( $datos['meta'][ $clave ] );
+	}
+
+	$response->set_data( $datos );
+
+	return $response;
+}
+add_filter( 'rest_prepare_centro_turno', __NAMESPACE__ . '\\convoca_shifts_filtrar_metas_privadas', 10, 1 );
+
 function convoca_shifts_register_cpt_centro_turno() {
 	$labels = array(
 		'name'               => _x( 'Turnos', 'Post Type General Name', 'convoca-shifts' ),
