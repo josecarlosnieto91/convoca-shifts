@@ -1,5 +1,26 @@
 # Changelog — convoca-shifts
 
+## [2.5.12] - 2026-10-15
+
+### Corregido
+
+- **«Crear semana tipo» no generaba nada** (auditoría de navegador, #9): el saneado del POST pasaba el
+  array de días —que es un array de arrays— por `sanitize_text_field()`, y esa función devuelve **cadena
+  vacía** para un array, así que el generador recibía `['0' => '', '1' => '', …]`, no encontraba ningún día
+  activo y respondía siempre «Se han generado 0 turnos nuevos.». El saneado se hace ahora campo a campo
+  (`convoca_shifts_sanear_dias()`, en `includes/semana-tipo.php`), conservando el anidamiento.
+- **Editar Turno no guardaba nunca** (#10): el campo nonce se imprimía **antes** de abrir el `<form>`, así
+  que no viajaba en el POST y el manejador cortaba en la primera comprobación con «Acceso denegado.»
+  (HTTP 500). El nonce va ahora dentro del formulario, con una prueba que vigila ese orden.
+
+### Notas
+
+- #5 (comprobación de duplicados con `get_posts()` dentro de una transacción) **no se reproduce**: las dos
+  rutas que lo usan están protegidas por un bloqueo del núcleo con clave única en tabla propia
+  (`convoca_lock_convoca_shifts_creating_week` / `…duplicating_week`), que serializa las peticiones antes
+  de abrir la transacción. Medido: dos generaciones simultáneas de la misma semana → una crea los turnos y
+  la otra no crea ninguno. Se deja escrito en el issue; el riesgo sigue latente si alguien quita el bloqueo.
+
 ## [2.5.11] - 2026-10-15
 
 ### Corregido

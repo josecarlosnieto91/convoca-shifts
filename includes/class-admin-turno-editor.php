@@ -130,12 +130,16 @@ class Convoca_Shifts_Admin_Turno_Editor {
 			)
 		);
 
-		wp_nonce_field( 'convoca_shifts_save_turno_' . $post_id, '_convoca_shifts_nonce' );
 		?>
 		<div class="wrap" style="max-width: 800px; margin: 20px auto;">
 			<h1><?php echo $is_edit ? esc_html__( 'Editar Turno', 'convoca-shifts' ) : esc_html__( 'Nuevo Turno', 'convoca-shifts' ); ?></h1>
 
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="convoca-box" style="background:#fff;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,0.05);padding:40px;margin-top:20px;">
+				<?php
+				// El nonce TIENE que ir dentro del <form>: impreso antes, no viaja en el POST y el manejador
+				// corta en la primera comprobación con «Acceso denegado». Pasó exactamente eso (issue #10).
+				wp_nonce_field( 'convoca_shifts_save_turno_' . $post_id, '_convoca_shifts_nonce' );
+				?>
 				<input type="hidden" name="action" value="convoca_shifts_save_turno">
 				<input type="hidden" name="post_id" value="<?php echo $is_edit ? esc_attr( (string) $post_id ) : 0; ?>">
 

@@ -839,7 +839,7 @@ function convoca_shifts_generar_turnos_page() {
 		} elseif ( $_POST['convoca_shifts_action'] === 'generar_semana' ) {
 			// Los datos vienen del form: fecha_inicio (date) + dias[0..6][...].
 			$fecha_inicio = sanitize_text_field( wp_unslash( $_POST['fecha_inicio'] ?? '' ) );
-			$dias         = isset( $_POST['dias'] ) && is_array( $_POST['dias'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['dias'] ) ) : array();
+			$dias         = isset( $_POST['dias'] ) && is_array( $_POST['dias'] ) ? convoca_shifts_sanear_dias( wp_unslash( $_POST['dias'] ) ) : array();
 			$result       = convoca_shifts_crear_semana_tipo( $fecha_inicio, $dias );
 			if ( is_wp_error( $result ) ) {
 				echo '<div class="convoca-alert convoca-alert--danger" style="display:block;margin-bottom:20px;"><p>' . esc_html( $result->get_error_message() ) . '</p></div>';

@@ -56,6 +56,9 @@ namespace Convoca\Shifts\Tests {
 			if ( ! class_exists( '\\Convoca\\Shifts\\Horario' ) && file_exists( $inc . 'horario.php' ) ) {
 				require_once $inc . 'horario.php';
 			}
+			if ( ! function_exists( '\\Convoca\\Shifts\\convoca_shifts_sanear_dias' ) && file_exists( $inc . 'semana-tipo.php' ) ) {
+				require_once $inc . 'semana-tipo.php';
+			}
 			if ( ! function_exists( '\\Convoca\\Shifts\\convoca_shifts_crear_semana_tipo' ) && file_exists( $inc . 'cpt-turno.php' ) ) {
 				require_once $inc . 'cpt-turno.php';
 			}
@@ -115,19 +118,66 @@ namespace Convoca\Shifts\Tests {
 		/**
 		 * R2 — Contrato del saneado: el anidamiento tiene que llegar intacto al generador.
 		 *
-		 * Queda incompleto a propósito: comprobarlo de verdad obliga a sacar el saneado del renderizador
-		 * a una función propia, y eso ya es el arreglo de #9 (cambio de producción), no una tarea de la
-		 * pasada de pruebas. Cuando ese arreglo exista, la comprobación es:
+		 * Comprobado ahora que el arreglo de #9 existe (el saneado es
+		 * `Convoca\Shifts\convoca_shifts_sanear_dias()`, en `includes/semana-tipo.php`):
 		 *
-		 *     $dias = <saneador>( array( 0 => $this->dia_activo() ) );
+		 *     $dias = convoca_shifts_sanear_dias( array( 0 => $this->dia_activo() ) );
 		 *     $this->assertSame( '1', $dias[0]['activo'] );
 		 */
-		public function test_el_saneado_del_post_conserva_el_anidamiento_de_los_dias(): void {
-			$this->markTestIncomplete(
-				'Pendiente del arreglo de convoca-shifts#9: el saneado debe preservar dias[N][campo]. ' .
-				'Hoy `array_map( "sanitize_text_field", $_POST["dias"] )` deja cada día en cadena vacía ' .
-				'(_sanitize_text_fields() devuelve "" para arrays), y el generador no encuentra `activo`.'
-			);
-		}
-	}
+		 public function test_el_saneado_del_post_conserva_el_anidamiento_de_los_dias(): void {
+		 self::cargar_generador();
+
+		 if ( ! function_exists( '\\Convoca\\Shifts\\convoca_shifts_sanear_dias' ) ) {
+		 $this->markTestIncomplete( 'No he podido cargar includes/semana-tipo.php en la suite unitaria.' );
+		 }
+
+		 $dias = \Convoca\Shifts\convoca_shifts_sanear_dias(
+		 array(
+		 0 => $this->dia_activo( '10:00', '13:00' ),
+		 1 => array( 'hora_inicio' => '17:00' ),
+		 2 => $this->dia_activo( '18:30', '21:00' ),
+		 )
+		 );
+
+		 $this->assertCount( 3, $dias, 'El saneado no puede perder días.' );
+		 $this->assertSame( '1', $dias[0]['activo'], 'El `activo` tiene que sobrevivir al saneado.' );
+		 $this->assertSame( '10:00', $dias[0]['hora_inicio'] );
+		 $this->assertSame( '18:30', $dias[2]['hora_inicio'] );
+
+		 // Un día sin `activo` no lo inventa: el generador lo saltará, como antes.
+		 $this->assertSame( '', $dias[1]['activo'] );
+
+		 // Lo que el generador verá: dos días activos de tres.
+		 $activos = 0;
+		 foreach ( $dias as $conf ) {
+		 if ( isset( $conf['activo'] ) && '1' === $conf['activo'] ) {
+		 ++$activos;
+		 }
+		 }
+		 $this->assertSame( 2, $activos );
+		 }
+
+		 /**
+		 * El negativo de R2: con el saneado que había antes, el generador no veía NINGÚN día activo.
+		 *
+		 * No es una suposición: es la misma expresión que estaba en el código, con el mismo dato.
+		 */
+		 public function test_el_saneado_anterior_dejaba_al_generador_sin_dias(): void {
+		 $antes = array_map( 'sanitize_text_field', array( 0 => $this->dia_activo() ) );
+
+		 $this->assertSame(
+		 array( '' ),
+		 $antes,
+		 'sanitize_text_field() sobre un array devuelve cadena vacía: por eso el generador generaba 0 turnos.'
+		 );
+
+		 $activos = 0;
+		 foreach ( $antes as $conf ) {
+		 if ( isset( $conf['activo'] ) && '1' === $conf['activo'] ) {
+		 ++$activos;
+		 }
+		 }
+		 $this->assertSame( 0, $activos, 'Con el saneado viejo no había ningún día activo: es el issue #9.' );
+		 }
+		 }
 }
