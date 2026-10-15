@@ -397,7 +397,30 @@ class Importador {
 	 * @return bool
 	 */
 	public static function si( string $valor ): bool {
-		return in_array( strtolower( trim( $valor ) ), array( '1', 'si', 'sí', 's', 'x', 'yes', 'y', 'true' ), true );
+		// Se quitan los acentos ANTES de bajar a minúsculas: `strtolower()` es byte a byte y a «SÍ» no le toca
+		// la Í, así que un «SÍ» escrito en una casilla no contaba como sí (medido: la comprobación fallaba y
+		// el aviso salía solo con «sí» en minúsculas). Se miran las dos cajas.
+		$limpio = strtolower(
+			strtr(
+				trim( $valor ),
+				array(
+					'Á' => 'a',
+					'É' => 'e',
+					'Í' => 'i',
+					'Ó' => 'o',
+					'Ú' => 'u',
+					'Ñ' => 'n',
+					'á' => 'a',
+					'é' => 'e',
+					'í' => 'i',
+					'ó' => 'o',
+					'ú' => 'u',
+					'ñ' => 'n',
+				)
+			)
+		);
+
+		return in_array( $limpio, array( '1', 'si', 's', 'x', 'yes', 'y', 'true', 'v', 'verdadero' ), true );
 	}
 
 	/**

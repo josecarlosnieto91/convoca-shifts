@@ -1,3 +1,16 @@
+## [2.5.21] — 2026-10-15
+
+### Corregido
+- **Un «SÍ» con tilde y en mayúsculas no contaba como sí.** `strtolower()` es byte a byte y no baja las vocales
+  acentuadas, así que `SÍ` —tal cual se escribe muchas veces en una hoja de cálculo— se quedaba fuera de la
+  lista y la columna «apoyo» salía en blanco. Ahora se quitan los acentos antes de bajar a minúsculas y se
+  aceptan también `Verdadero` y `V`. Lo destapó el arnés de verificación, no la suite.
+
+### Pruebas
+- El caso del «sí» cubre ahora las dos cajas y las tildes. **Negativo probado**: volviendo al `strtolower`
+  simple, la prueba cae.
+- Suite 87 en verde, PHPCS 0, PHPStan `[OK]`.
+
 ## [2.5.20] — 2026-10-15
 
 ### Arreglado

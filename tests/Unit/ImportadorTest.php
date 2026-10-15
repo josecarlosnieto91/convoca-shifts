@@ -102,7 +102,7 @@ class ImportadorTest extends TestCase {
 
 	public function test_el_si_de_una_hoja_de_calculo(): void {
 		// En una casilla se escribe 1, x, sí, SI… Todas valen como sí; «0» y vacío, no.
-		foreach ( array( '1', 'x', 'sí', 'SI', 'true', ' y ' ) as $si ) {
+		foreach ( array( '1', 'x', 'sí', 'SI', 'SÍ', 'Sí', 'true', ' y ', 'Verdadero' ) as $si ) {
 			$this->assertTrue( $this->llamar( 'si', array( $si ) ), '«' . $si . '» debería contar como sí'  );
 		}
 		foreach ( array( '0', '', 'no', 'quizá' ) as $no ) {
