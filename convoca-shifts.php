@@ -3,7 +3,7 @@
  * Plugin Name:       Convoca Shifts
  * Plugin URI:        https://getconvoca.app
  * Description:       Volunteer shift management for community centers.
- * Version:           2.5.15
+ * Version:           2.5.16
  * Requires at least: 6.4
  * Requires PHP:      8.1
  * Tested up to:      7.1
@@ -51,6 +51,7 @@ if ( file_exists( $composer_autoload ) ) {
 }
 
 // Includes.
+require_once CONVOCA_SHIFTS_DIR . 'includes/ical.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/horario.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/semana-tipo.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/cpt-turno.php';
@@ -67,6 +68,7 @@ if ( is_admin() ) {
 	new Convoca_Shifts_Admin_Turno_Editor();
 	new Admin_Turnos_List_Page();
 	Admin_Auditoria_Horas::init();
+	Ical::init();
 }
 require_once CONVOCA_SHIFTS_DIR . 'includes/cron.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/widgets.php';

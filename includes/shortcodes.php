@@ -342,10 +342,48 @@ function convoca_shifts_resumen_turnos( $atts = array() ) {
 			<!-- Populated via AJAX on load -->
 			Cargando próximo turno...
 		</div>
+
+		<?php
+		// La suscripción va aquí, con los turnos: es donde el voluntario mira y donde tiene sentido ofrecérsela.
+		echo convoca_shifts_caja_suscripcion(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- HTML propio, ya escapado dentro.
+		?>
 	</div>
 	<?php
 	return ob_get_clean();
 }
+
+/**
+ * Caja de suscripción al calendario de turnos (issue #13).
+ *
+ * La web prometía exportar a iCal y Google Calendar y no existía: se ofrece la **suscripción**, que es lo
+ * que de verdad sirve al voluntario (sus turnos se mantienen al día sin volver a descargar nada). Google
+ * Calendar se suscribe a una URL `.ics` igual que cualquier otro calendario, así que la misma dirección vale
+ * para los dos.
+ *
+ * @return string HTML de la caja, o vacío si no hay sesión.
+ */
+function convoca_shifts_caja_suscripcion(): string {
+	if ( ! is_user_logged_in() ) {
+		return '';
+	}
+
+	$url = \Convoca\Shifts\Ical::url_de( (int) get_current_user_id() );
+	if ( '' === $url ) {
+		return '';
+	}
+
+	$salida  = '<div class="convoca-shifts-suscripcion convoca-box">';
+	$salida .= '<h3>' . esc_html__( 'Lleva tus turnos a tu calendario', 'convoca-shifts' ) . '</h3>';
+	$salida .= '<p>' . esc_html__( 'Pega esta dirección en tu calendario (en Google Calendar: «Otros calendarios» → «Suscribirse desde una URL») y tus turnos aparecerán y se actualizarán solos cuando haya cambios.', 'convoca-shifts' ) . '</p>';
+	$salida .= '<p><code class="convoca-shifts-suscripcion__url">' . esc_html( $url ) . '</code></p>';
+	$salida .= '<p><a class="convoca-btn" href="' . esc_url( $url ) . '">' . esc_html__( 'Descargar el calendario (.ics)', 'convoca-shifts' ) . '</a></p>';
+	$salida .= '<p class="description">' . esc_html__( 'Esta dirección es personal: no la compartas. Quien la tenga puede ver tus turnos.', 'convoca-shifts' ) . '</p>';
+	$salida .= '</div>';
+
+	return $salida;
+}
+
+add_shortcode( 'convoca_suscripcion_turnos', 'Convoca\Shifts\convoca_shifts_caja_suscripcion' );
 
 // Shortcode: [proximos_turnos cantidad="5"].
 add_shortcode( 'convoca_proximos_turnos', 'Convoca\Shifts\convoca_shifts_proximos_turnos' );

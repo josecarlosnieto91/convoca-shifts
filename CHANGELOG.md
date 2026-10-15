@@ -1,3 +1,25 @@
+## [2.5.16] — 2026-10-15
+
+### Añadido
+- **Feed de calendario de los turnos de cada voluntario (issue #13).** La web prometía «Exportación a iCal,
+  Google Calendar» y no existía nada — cero apariciones de `ics` en el plugin. Se sirve un **feed
+  suscribible**: el voluntario pega la dirección en su calendario y sus turnos se mantienen al día solos, sin
+  volver a descargar nada. Google Calendar se suscribe a una URL `.ics` igual que cualquier otro, así que la
+  misma dirección cubre las dos promesas.
+  - La dirección es personal y **estable** (una suscripción que caduca no sirve): lleva un testigo firmado con
+    la sal del sitio y comparado en tiempo constante. Sin testigo válido, 403.
+  - Los turnos van en **UTC** y con las líneas plegadas a 75 octetos por carácter completo (un acento partido
+    en dos rompe el calendario), con el escapado del RFC 5545. Un turno que cruza la medianoche termina al día
+    siguiente en vez de acabar antes de empezar.
+  - La caja con la dirección y las instrucciones para Google Calendar sale **dentro del resumen de turnos**, que
+    es donde el voluntario mira, y también como shortcode `[convoca_suscripcion_turnos]`.
+
+### Pruebas
+- `tests/Unit/IcalTest.php`: escapado (comas, puntos y coma, barras y saltos), plegado a 75 octetos sin partir
+  acentos y sin perder un byte, y el contrato del feed (ruta, tipo de contenido, campos obligatorios, testigo
+  firmado, enganche y caja en el resumen). **Negativo probado**: desactivando el plegado caen dos pruebas.
+- Suite 74 en verde, PHPCS 0, PHPStan `[OK]`.
+
 # Changelog — convoca-shifts
 
 ## [2.5.15] - 2026-10-15
