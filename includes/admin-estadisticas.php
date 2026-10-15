@@ -328,15 +328,17 @@ function convoca_shifts_exportar_stats_csv_handler() {
 
 		$filename = 'estadisticas-voluntariado-' . wp_date( 'Y-m-d' ) . '.csv';
 
-		header( 'Content-Type: text/csv; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
-		header( 'Pragma: no-cache' );
-		header( 'Expires: 0' );
+		// Same logic as in stats page to get UIDs.
+		global $wpdb;
+		$volunteers      = get_users( array( 'capability' => 'gestionar_mis_turnos' ) );
+		$uids_with_turns = $wpdb->get_col( "SELECT DISTINCT meta_value FROM $wpdb->postmeta WHERE meta_key = '_id_responsable' AND meta_value > 0" );
+		$all_uids        = array_unique( array_merge( wp_list_pluck( $volunteers, 'ID' ), $uids_with_turns ) );
 
-		$output = fopen( 'php://output', 'w' );
-		fprintf( $output, chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ) ); // BOM for Excel.
-		fputcsv(
-			$output,
+		// La ceremonia del CSV vive en el núcleo: cabeceras, BOM, separador y escapado por celda en un
+		// solo flujo. Aquí salía con el separador por omisión de PHP (`,`), que Excel en español no
+		// reconoce, y las columnas con cero las dejaba en blanco.
+		\Convoca\Core\Utils::stream_csv(
+			$filename,
 			array(
 				__( 'Voluntario', 'convoca-shifts' ),
 				__( 'Email', 'convoca-shifts' ),
@@ -345,46 +347,29 @@ function convoca_shifts_exportar_stats_csv_handler() {
 				__( 'Faltas', 'convoca-shifts' ),
 				__( 'Horas (Aprobadas)', 'convoca-shifts' ),
 				__( 'Último Turno', 'convoca-shifts' ),
-			)
+			),
+			( static function () use ( $all_uids ) {
+				foreach ( $all_uids as $user_id ) {
+					$user = get_userdata( $user_id );
+					if ( ! $user ) {
+						continue;
+					}
+
+					$stats = convoca_shifts_get_voluntario_stats( $user_id );
+
+					yield array(
+						$user->display_name,
+						$user->user_email,
+						$stats['total_turnos'],
+						$stats['realizados'],
+						$stats['no_asistio'],
+						$stats['total_horas'],
+						$stats['ultimo_turno'] ?: '---',
+					);
+				}
+			} )()
 		);
 
-		// Same logic as in stats page to get UIDs.
-		global $wpdb;
-		$volunteers      = get_users( array( 'capability' => 'gestionar_mis_turnos' ) );
-		$uids_with_turns = $wpdb->get_col( "SELECT DISTINCT meta_value FROM $wpdb->postmeta WHERE meta_key = '_id_responsable' AND meta_value > 0" );
-		$all_uids        = array_unique( array_merge( wp_list_pluck( $volunteers, 'ID' ), $uids_with_turns ) );
-
-		foreach ( $all_uids as $user_id ) {
-			$user = get_userdata( $user_id );
-			if ( ! $user ) {
-				continue;
-			}
-
-			$stats = convoca_shifts_get_voluntario_stats( $user_id );
-
-			$row = array(
-				$user->display_name,
-				$user->user_email,
-				$stats['total_turnos'],
-				$stats['realizados'],
-				$stats['no_asistio'],
-				$stats['total_horas'],
-				$stats['ultimo_turno'] ?: '---',
-			);
-
-			// Escape all fields for CSV injection.
-			$row = array_map(
-				function ( $field ) {
-					return class_exists( '\Convoca\Core\Utils' ) ? \Convoca\Core\Utils::escape_csv_field( (string) $field ) : (string) $field;
-				},
-				$row
-			);
-
-			fputcsv( $output, $row );
-		}
-
-	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- php://output is not a real file
-		fclose( $output );
 		exit;
 	}
 }

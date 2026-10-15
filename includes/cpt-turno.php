@@ -811,17 +811,6 @@ function convoca_shifts_exportar_csv_turnos() {
 
 		$filename = 'turnos-centro-social-' . wp_date( 'Y-m-d' ) . '.csv';
 
-		// Set headers for CSV download.
-		header( 'Content-Type: text/csv; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
-		header( 'Pragma: no-cache' );
-		header( 'Expires: 0' );
-
-		$output = fopen( 'php://output', 'w' );
-		// Add UTF-8 BOM for Excel compatibility.
-		fprintf( $output, chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ) );
-		fputcsv( $output, array( 'ID', 'Título', 'Fecha Inicio', 'Fecha Fin', 'Estado', 'Responsable', 'Necesita Apoyo', 'Asistencia', 'Notas' ) );
-
 		$args = array(
 			'post_type'      => 'centro_turno',
 			'posts_per_page' => -1,
@@ -832,43 +821,47 @@ function convoca_shifts_exportar_csv_turnos() {
 
 		$turnos = get_posts( $args );
 
-		foreach ( $turnos as $turno ) {
-			$estado         = get_post_meta( $turno->ID, '_estado', true );
-			$hora_fin       = get_post_meta( $turno->ID, '_hora_fin', true );
-			$id_responsable = get_post_meta( $turno->ID, '_id_responsable', true );
-			$necesita_apoyo = get_post_meta( $turno->ID, '_necesita_apoyo', true ) ? 'Sí' : 'No';
-			$notas          = get_post_meta( $turno->ID, '_notas', true );
+		// La ceremonia del CSV vive en el núcleo: cabeceras, BOM, separador y escapado por celda en un
+		// solo flujo. Aquí salía con el separador por omisión de PHP (`,`), que Excel en español no
+		// reconoce, y con TODAS las celdas sin protección contra fórmulas.
+		\Convoca\Core\Utils::stream_csv(
+			$filename,
+			array( 'ID', 'Título', 'Fecha Inicio', 'Fecha Fin', 'Estado', 'Responsable', 'Necesita Apoyo', 'Asistencia', 'Notas' ),
+			( static function () use ( $turnos ) {
+				foreach ( $turnos as $turno ) {
+					$estado         = get_post_meta( $turno->ID, '_estado', true );
+					$hora_fin       = get_post_meta( $turno->ID, '_hora_fin', true );
+					$id_responsable = get_post_meta( $turno->ID, '_id_responsable', true );
+					$necesita_apoyo = get_post_meta( $turno->ID, '_necesita_apoyo', true ) ? 'Sí' : 'No';
+					$notas          = get_post_meta( $turno->ID, '_notas', true );
 
-			$responsable_nombre = 'Nadie';
-			if ( $id_responsable ) {
-				$user = get_userdata( $id_responsable );
-				if ( $user ) {
-					$responsable_nombre = $user->display_name . ' (' . $user->user_email . ')';
+					$responsable_nombre = 'Nadie';
+					if ( $id_responsable ) {
+						$user = get_userdata( $id_responsable );
+						if ( $user ) {
+							$responsable_nombre = $user->display_name . ' (' . $user->user_email . ')';
+						}
+					}
+					$estado_real = get_post_meta( $turno->ID, '_estado_real', true );
+					if ( ! $estado_real ) {
+						$estado_real = 'pendiente';
+					}
+
+					yield array(
+						$turno->ID,
+						$turno->post_title,
+						get_the_date( 'Y-m-d H:i', $turno ),
+						$hora_fin,
+						$estado,
+						$responsable_nombre,
+						$necesita_apoyo,
+						$estado_real,
+						$notas,
+					);
 				}
-			}
-			$estado_real = get_post_meta( $turno->ID, '_estado_real', true );
-			if ( ! $estado_real ) {
-				$estado_real = 'pendiente';
-			}
+			} )()
+		);
 
-			fputcsv(
-				$output,
-				array(
-					$turno->ID,
-					$turno->post_title,
-					get_the_date( 'Y-m-d H:i', $turno ),
-					$hora_fin,
-					$estado,
-					$responsable_nombre,
-					$necesita_apoyo,
-					$estado_real,
-					$notas,
-				)
-			);
-		}
-
-	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- php://output is not a real file
-		fclose( $output );
 		exit;
 	}
 }

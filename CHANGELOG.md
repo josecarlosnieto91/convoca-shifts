@@ -1,5 +1,20 @@
 ## [2.5.23] — 2026-10-15
 
+## [2.5.24] — 2026-10-15
+
+### Cambiado
+- **Los dos exportadores de CSV usan la ceremonia del núcleo (issue convoca-core#16).** El listado de turnos y las
+  estadísticas de voluntariado vuelcan ya por `\Convoca\Core\Utils::stream_csv()`, con generador para las filas.
+- **Contrato `UnaSolaCeremoniaCsvTest`** (probado en negativo): nadie abre `php://output` ni llama a `fputcsv` en este
+  plugin, y los dos exportadores declarados usan el ayudante.
+
+### Corregido
+- **El listado de turnos no escapaba NINGUNA celda.** Las notas de un turno que empezaran por `=`, `+`, `-` o `@`
+  viajaban tal cual a la hoja de cálculo de quien abre el CSV (inyección de fórmulas).
+- **Los dos salían con el separador por omisión de PHP (`,`)**, que Excel en español no reconoce.
+- **Las estadísticas dejan de perder los ceros:** un voluntario con 0 faltas o 0 turnos realizados salía con la celda
+  en blanco, y el escapado dependía de un `class_exists()` (si el núcleo no estaba cargado, no protegía nada).
+
 ### Corregido
 - **Los assets se servían con `?ver=2.5.10` yendo el plugin por la 2.5.22 (issue #15).** La constante de
   versión hacía **dos trabajos con requisitos opuestos**: cache-buster de los assets —que sube en cada

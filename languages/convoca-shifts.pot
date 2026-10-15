@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Convoca Shifts 2.5.23\n"
+"Project-Id-Version: Convoca Shifts 2.5.24\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/convoca-shifts\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-15T11:05:01+00:00\n"
+"POT-Creation-Date: 2026-10-15T16:51:53+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: convoca-shifts\n"
@@ -35,12 +35,12 @@ msgstr ""
 msgid "Jose Carlos Nieto Ramos"
 msgstr ""
 
-#: convoca-shifts.php:141
+#: convoca-shifts.php:150
 #: includes/admin-estadisticas.php:315
 msgid "Voluntario Aprobado"
 msgstr ""
 
-#: convoca-shifts.php:281
+#: convoca-shifts.php:290
 msgid "<strong>Atención:</strong> El rol \"Voluntario Aprobado\" no existe. Reactiva Convoca Shifts (o Convoca Members) para crearlo automáticamente."
 msgstr ""
 
@@ -80,38 +80,38 @@ msgid "📥 Exportar Estadísticas a CSV"
 msgstr ""
 
 #: includes/admin-estadisticas.php:88
-#: includes/admin-estadisticas.php:341
+#: includes/admin-estadisticas.php:343
 msgid "Voluntario"
 msgstr ""
 
 #: includes/admin-estadisticas.php:89
-#: includes/admin-estadisticas.php:342
+#: includes/admin-estadisticas.php:344
 #: includes/Admin_Auditoria_Horas.php:73
 msgid "Email"
 msgstr ""
 
 #: includes/admin-estadisticas.php:90
-#: includes/admin-estadisticas.php:343
+#: includes/admin-estadisticas.php:345
 msgid "Turnos (Total)"
 msgstr ""
 
 #: includes/admin-estadisticas.php:91
-#: includes/admin-estadisticas.php:344
+#: includes/admin-estadisticas.php:346
 msgid "Realizados"
 msgstr ""
 
 #: includes/admin-estadisticas.php:92
-#: includes/admin-estadisticas.php:345
+#: includes/admin-estadisticas.php:347
 msgid "Faltas"
 msgstr ""
 
 #: includes/admin-estadisticas.php:93
-#: includes/admin-estadisticas.php:346
+#: includes/admin-estadisticas.php:348
 msgid "Horas (Aprobadas)"
 msgstr ""
 
 #: includes/admin-estadisticas.php:94
-#: includes/admin-estadisticas.php:347
+#: includes/admin-estadisticas.php:349
 msgid "Último Turno"
 msgstr ""
 
@@ -622,14 +622,14 @@ msgstr ""
 
 #: includes/class-admin-turno-editor.php:219
 #: includes/cpt-turno.php:398
-#: includes/cpt-turno.php:961
+#: includes/cpt-turno.php:954
 msgid "🔵 Ocupado (Actividad)"
 msgstr ""
 
 #: includes/class-admin-turno-editor.php:220
 #: includes/class-admin-turnos-list.php:355
 #: includes/cpt-turno.php:399
-#: includes/cpt-turno.php:962
+#: includes/cpt-turno.php:955
 msgid "🔴 Cerrado"
 msgstr ""
 
@@ -977,121 +977,121 @@ msgstr ""
 msgid "Error al procesar la asistencia."
 msgstr ""
 
-#: includes/cpt-turno.php:882
-#: includes/cpt-turno.php:883
+#: includes/cpt-turno.php:875
+#: includes/cpt-turno.php:876
 msgid "Generar Turnos"
 msgstr ""
 
 #. translators: %d: number of shifts duplicated
-#: includes/cpt-turno.php:898
+#: includes/cpt-turno.php:891
 #, php-format
 msgid "Se han duplicado %d turnos."
 msgstr ""
 
 #. translators: %d: number of shifts generated
-#: includes/cpt-turno.php:909
+#: includes/cpt-turno.php:902
 #, php-format
 msgid "Se han generado %d turnos nuevos."
 msgstr ""
 
-#: includes/cpt-turno.php:916
+#: includes/cpt-turno.php:909
 msgid "Generador de Turnos"
 msgstr ""
 
-#: includes/cpt-turno.php:919
+#: includes/cpt-turno.php:912
 msgid "Duplicar semana anterior"
 msgstr ""
 
-#: includes/cpt-turno.php:920
+#: includes/cpt-turno.php:913
 msgid "Copia todos los turnos de los últimos 7 días y los reprograma exactamente una semana después, dejándolos pendientes."
 msgstr ""
 
-#: includes/cpt-turno.php:924
+#: includes/cpt-turno.php:917
 msgid "Duplicar Semana Anterior"
 msgstr ""
 
-#: includes/cpt-turno.php:929
+#: includes/cpt-turno.php:922
 msgid "Crear semana tipo"
 msgstr ""
 
-#: includes/cpt-turno.php:936
+#: includes/cpt-turno.php:929
 msgid "Fecha del Lunes"
 msgstr ""
 
-#: includes/cpt-turno.php:940
+#: includes/cpt-turno.php:933
 msgid "Configuración diaria"
 msgstr ""
 
-#: includes/cpt-turno.php:944
+#: includes/cpt-turno.php:937
 msgid "Lunes"
 msgstr ""
 
-#: includes/cpt-turno.php:945
+#: includes/cpt-turno.php:938
 msgid "Martes"
 msgstr ""
 
-#: includes/cpt-turno.php:946
+#: includes/cpt-turno.php:939
 msgid "Miércoles"
 msgstr ""
 
-#: includes/cpt-turno.php:947
+#: includes/cpt-turno.php:940
 msgid "Jueves"
 msgstr ""
 
-#: includes/cpt-turno.php:948
+#: includes/cpt-turno.php:941
 msgid "Viernes"
 msgstr ""
 
-#: includes/cpt-turno.php:949
+#: includes/cpt-turno.php:942
 msgid "Sábado"
 msgstr ""
 
-#: includes/cpt-turno.php:950
+#: includes/cpt-turno.php:943
 msgid "Domingo"
 msgstr ""
 
 #. translators: %d: número de día
-#: includes/cpt-turno.php:959
+#: includes/cpt-turno.php:952
 #, php-format
 msgid "Estado del día %d"
 msgstr ""
 
 #. translators: %d: número de día
-#: includes/cpt-turno.php:960
+#: includes/cpt-turno.php:953
 msgid "🟡 Pendiente (Disponible)"
 msgstr ""
 
-#: includes/cpt-turno.php:967
+#: includes/cpt-turno.php:960
 msgid "— Actividad —"
 msgstr ""
 
-#: includes/cpt-turno.php:977
+#: includes/cpt-turno.php:970
 msgid "— Monitor/a —"
 msgstr ""
 
-#: includes/cpt-turno.php:1006
+#: includes/cpt-turno.php:999
 msgid "Generar Semana"
 msgstr ""
 
-#: includes/cpt-turno.php:1012
+#: includes/cpt-turno.php:1005
 msgid "Exportar datos (Copias de Seguridad / Estadísticas)"
 msgstr ""
 
-#: includes/cpt-turno.php:1013
+#: includes/cpt-turno.php:1006
 msgid "Descarga un archivo CSV con el historial completo de turnos, estados y voluntarios asignados. Ideal para guardar estadísticas antes de desinstalar el plugin o limpiar el calendario."
 msgstr ""
 
-#: includes/cpt-turno.php:1017
+#: includes/cpt-turno.php:1010
 msgid "Exportar historial a CSV"
 msgstr ""
 
-#: includes/cpt-turno.php:1276
-#: includes/cpt-turno.php:1288
+#: includes/cpt-turno.php:1269
+#: includes/cpt-turno.php:1281
 msgid "URL de Información"
 msgstr ""
 
-#: includes/cpt-turno.php:1278
-#: includes/cpt-turno.php:1291
+#: includes/cpt-turno.php:1271
+#: includes/cpt-turno.php:1284
 msgid "Enlace a la entrada del blog o página con más información e inscripciones."
 msgstr ""
 
