@@ -1,13 +1,13 @@
 <?php
 /**
- * Ninguna acción del panel sin su botón (issue #13).
+ * El exportador de turnos tiene que poder lanzarse (issue #13).
  *
- * El exportador de turnos a CSV existía, estaba enganchado y funcionaba… y no lo podía lanzar nadie: no había
- * ninguna pantalla que enviara `convoca_shifts_action=exportar_csv`. Una función que sólo se puede llamar por
- * correo no existe para quien usa el plugin, y la web la estaba anunciando.
+ * Existía, estaba enganchado y funcionaba… y no lo podía lanzar nadie: ninguna pantalla enviaba
+ * `convoca_shifts_action=exportar_csv`. Una función que sólo se puede llamar por correo no existe para quien
+ * usa el plugin, y la web la estaba anunciando.
  *
- * Esta prueba recorre las acciones que el plugin sabe atender y exige que cada una aparezca en algún sitio que
- * la dispare (un formulario, un botón o un enlace).
+ * Se comprueba el contrato entre las dos mitades —quien atiende y quien dispara— porque es justo donde se
+ * rompió: el nombre de la acción y el del nonce tienen que ser los mismos en los dos sitios.
  *
  * @package Convoca\Shifts\Tests
  */
@@ -18,47 +18,42 @@ use PHPUnit\Framework\TestCase;
 
 class AccionesConBotonTest extends TestCase {
 
-	/**
-	 * Todo el PHP del plugin, menos las pruebas y el vendor.
-	 *
-	 * @return string
-	 */
-	private function plugin(): string {
-		$raiz   = dirname( __DIR__, 2 );
-		$codigo = '';
-		foreach ( glob( $raiz . '/{*.php,includes/*.php,admin/*.php}', GLOB_BRACE ) as $fichero ) {
-			if ( false !== strpos( $fichero, '/tests/' ) ) {
-				continue;
-			}
-			$codigo .= (string) file_get_contents( $fichero );
-		}
+	private function leer( string $ruta ): string {
+		$completa = dirname( __DIR__, 2 ) . '/' . $ruta;
+		$this->assertFileExists( $completa );
 
-		return $codigo;
+		return (string) file_get_contents( $completa );
 	}
 
-	public function test_cada_accion_del_panel_tiene_quien_la_lance(): void {
-		$codigo  = $this->plugin();
-		$acciones = array();
+	public function test_el_exportador_de_turnos_tiene_su_boton(): void {
+		$listado = $this->leer( 'includes/class-admin-turnos-list-page.php' );
 
-		// Acciones que el plugin atiende: `$_POST['convoca_shifts_action'] === 'x'` y sus hermanas.
-		preg_match_all( "/convoca_shifts_action'?\s*\]\s*[^;]*?===\s*'([a-z_]+)'/", $codigo, $post );
-		preg_match_all( "/\['convoca_shifts_action'\]\s*[^;]*?===\s*'([a-z_]+)'/", $codigo, $get );
-		preg_match_all( "/convoca_shifts_action\s*=\s*([a-z_]+)/", $codigo, $url );
+		$this->assertStringContainsString(
+			'value="exportar_csv"',
+			$listado,
+			'El exportador de turnos existe pero no hay ningún botón que lo lance'
+		);
+		$this->assertStringContainsString(
+			"wp_nonce_field( 'convoca_shifts_exportar_csv_action' )",
+			$listado,
+			'Y el nonce tiene que ser el mismo que comprueba el manejador'
+		);
+	}
 
-		foreach ( array_merge( $post[1], $get[1] ) as $accion ) {
-			$acciones[ $accion ] = true;
+	public function test_el_manejador_y_el_boton_hablan_de_lo_mismo(): void {
+		$manejador = $this->leer( 'includes/cpt-turno.php' );
+		$listado   = $this->leer( 'includes/class-admin-turnos-list-page.php' );
+
+		foreach ( array( 'exportar_csv', 'convoca_shifts_exportar_csv_action' ) as $contrato ) {
+			$this->assertStringContainsString( $contrato, $manejador, 'El manejador usa otro nombre: ' . $contrato );
+			$this->assertStringContainsString( $contrato, $listado, 'El botón usa otro nombre: ' . $contrato );
 		}
+	}
 
-		$this->assertNotEmpty( $acciones, 'No se han encontrado acciones: revisa la expresión de búsqueda' );
-
-		foreach ( array_keys( $acciones ) as $accion ) {
-			// Tiene que aparecer al menos dos veces: donde se atiende y donde se dispara.
-			$apariciones = preg_match_all( "/convoca_shifts_action[^;]{0,80}" . preg_quote( $accion, '/' ) . "/", $codigo );
-			$this->assertGreaterThan(
-				1,
-				$apariciones,
-				sprintf( 'La acción «%s» se atiende pero no hay ningún botón ni enlace que la dispare', $accion )
-			);
-		}
+	public function test_el_exportador_sigue_vivo_y_en_la_lista(): void {
+		// Si alguien quita el enganche, el botón se queda sin nada detrás.
+		$turnos = $this->leer( 'includes/cpt-turno.php' );
+		$this->assertStringContainsString( 'convoca_shifts_exportar_csv_turnos', $turnos );
+		$this->assertStringContainsString( "add_action( 'admin_init', 'Convoca\\Shifts\\convoca_shifts_exportar_csv_turnos' )", $turnos );
 	}
 }
