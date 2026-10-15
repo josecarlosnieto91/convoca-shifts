@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-15T23:18:00+00:00\n"
+"POT-Creation-Date: 2026-10-15T23:22:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: convoca-shifts\n"
@@ -1226,6 +1226,7 @@ msgstr ""
 
 #: includes/rest-api.php:613
 #: includes/rest-api.php:777
+#: includes/shortcodes.php:470
 msgid "a las"
 msgstr ""
 
@@ -1347,7 +1348,7 @@ msgstr ""
 msgid "Sin cubrir"
 msgstr ""
 
-#: includes/shortcodes.php:466
+#: includes/shortcodes.php:468
 msgid "sin hora fijada"
 msgstr ""
 

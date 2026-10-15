@@ -461,15 +461,18 @@ function convoca_shifts_proximos_turnos( $atts ) {
 
 		// La hora sale del post, y un turno creado sin horario queda a las 00:00: decirlo («sin hora
 		// fijada») es más útil que un 00:00 que parece una hora y no lo es (medido: 2 de 17 turnos de la demo).
+		// El separador va con el texto: «a las 17:00» pero «— sin hora fijada» (si no, sale «a las sin hora fijada»).
 		$hora_fin = (string) get_post_meta( $turno->ID, '_hora_fin', true );
 		if ( '' === $hora_fin && '00:00' === $time ) {
+			$separador  = ' — ';
 			$texto_hora = esc_html__( 'sin hora fijada', 'convoca-shifts' );
 		} else {
+			$separador  = ' ' . esc_html__( 'a las', 'convoca-shifts' ) . ' ';
 			$texto_hora = esc_html( $time );
 		}
 
 		echo '<li style="margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid #eee;">';
-		echo '📅 <strong>' . esc_html( $date ) . '</strong> a las ' . $texto_hora;
+		echo '📅 <strong>' . esc_html( $date ) . '</strong>' . $separador . $texto_hora;
 		// wp_kses_post y no esc_html: aquí SÍ hay que interpretar la etiqueta del estado. Lo que
 		// viene de fuera (el nombre del responsable) ya va escapado arriba.
 		echo wp_kses_post( $responsable_texto );
