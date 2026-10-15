@@ -1,3 +1,18 @@
+## [2.5.25] — 2026-10-16
+
+### Arreglado
+- **El botón «Me apunto al siguiente turno libre» no hacía nada (issue #17).** Su JS usaba `cstData`, un objeto
+  que **no existe**: el script localiza `convocaShiftsData` (y es el que usa `calendario.js`, por eso el calendario
+  sí funcionaba). Al pulsar, el navegador lanzaba un `ReferenceError`: ni llamada al endpoint —que existe y
+  funciona— ni mensaje en pantalla, así que el voluntario se quedaba creyendo que se había apuntado. Ahora usa el
+  objeto que se localiza de verdad, **avisa si falta la configuración** en vez de callarse, y el refresco del
+  calendario busca la instancia con su nombre real (`convocaShiftsCalendarInstance`).
+- **El listado de próximos turnos mostraba el código a la vista (issue #18).** El estado se imprimía con
+  `esc_html()` y el estado lleva HTML: en la página se leían las etiquetas (`<span style="color:#d35400…">⚠ Sin
+  cubrir</span>`). Se escapa el nombre del responsable al construir la cadena y se interpreta el marcado al
+  pintarlo (`wp_kses_post`). Y un turno creado **sin horario** ya no se anuncia «a las 00:00», que parece una hora
+  y no lo es: dice «sin hora fijada».
+
 ## [2.5.23] — 2026-10-15
 
 ## [2.5.24] — 2026-10-15

@@ -155,7 +155,7 @@ function convoca_shifts_render_frontend_modal() {
 			</div>
 			<div class="convoca-shifts-form-group">
 				<label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-					<input type="checkbox" id="fe_apoyo"> 
+					<input type="checkbox" id="fe_apoyo">
 					<span>🛟 <?php esc_html_e( 'Necesita apoyo', 'convoca-shifts' ); ?></span>
 				</label>
 			</div>
@@ -191,33 +191,49 @@ function convoca_shifts_boton_apuntarse() {
 	jQuery(document).ready(function($) {
 		$('#convoca-shifts-btn-proximo').on('click', function(e) {
 			e.preventDefault();
-			if (cstData.confirmSignup && !confirm('<?php echo esc_js( __( '¿Te apuntas a este turno? Serás responsable de abrir el centro.', 'convoca-shifts' ) ); ?>')) {
-				return;
-			}
 
 			var $btn = $(this);
 			var $msg = $('#convoca-shifts-proximo-msg');
-			
-			$btn.prop('disabled', true).text('Buscando turno...');
-			
+			// El texto original se guarda al cargar: así el error lo restaura sin duplicar el
+			// marcado dentro del JS (que es como se quedó desincronizado).
+			if ( ! $btn.data('htmlOriginal') ) {
+				$btn.data('htmlOriginal', $btn.html());
+			}
+
+			// Si falta la configuración del script, se DICE. Antes esto era un `cstData` que no
+			// existía: el navegador lanzaba un ReferenceError y el botón no hacía nada, sin
+			// mensaje, sin petición — el voluntario creía que se había apuntado (#17).
+			if ( typeof convocaShiftsData === 'undefined' ) {
+				$msg.removeClass('convoca-shifts-success').addClass('convoca-shifts-error')
+					.text('<?php echo esc_js( __( 'No se ha podido cargar el turno. Recarga la página e inténtalo de nuevo.', 'convoca-shifts' ) ); ?>').show();
+				return;
+			}
+
+			if (convocaShiftsData.confirmSignup && !confirm('<?php echo esc_js( __( '¿Te apuntas a este turno? Serás responsable de abrir el centro.', 'convoca-shifts' ) ); ?>')) {
+				return;
+			}
+
+			$btn.prop('disabled', true).text('<?php echo esc_js( __( 'Buscando turno…', 'convoca-shifts' ) ); ?>');
+
 			$.ajax({
-				url: cstData.restUrl + '/apuntarse-proximo',
+				url: convocaShiftsData.restUrl + '/apuntarse-proximo',
 				type: 'POST',
 				beforeSend: function(xhr) {
-					xhr.setRequestHeader('X-WP-Nonce', cstData.nonce);
+					xhr.setRequestHeader('X-WP-Nonce', convocaShiftsData.nonce);
 				},
 				success: function(response) {
 					$btn.hide();
 					$msg.removeClass('convoca-shifts-error').addClass('convoca-shifts-success').text(response.message).show();
-					// if calendar is on page, refetch.
-					if (window.cstCalendarInstance) {
-						window.cstCalendarInstance.refetchEvents();
+					// si el calendario está en la página, se refresca (el nombre real de la instancia
+					// es el que publica calendario.js: antes se buscaba otro que no existe).
+					if (window.convocaShiftsCalendarInstance) {
+						window.convocaShiftsCalendarInstance.refetchEvents();
 					}
 				},
 				error: function(xhr) {
-					$btn.prop('disabled', false).html('<span class="dashicons dashicons-calendar-alt"></span> Me apunto al siguiente turno libre');
+					$btn.prop('disabled', false).html($btn.data('htmlOriginal'));
 					var res = xhr.responseJSON;
-					$msg.removeClass('convoca-shifts-success').addClass('convoca-shifts-error').text((res && res.message) ? res.message : 'Error.').show();
+					$msg.removeClass('convoca-shifts-success').addClass('convoca-shifts-error').text((res && res.message) ? res.message : '<?php echo esc_js( __( 'No se ha podido apuntar el turno. Inténtalo de nuevo.', 'convoca-shifts' ) ); ?>').show();
 				}
 			});
 		});
@@ -433,16 +449,30 @@ function convoca_shifts_proximos_turnos( $atts ) {
 		if ( $responsable_id > 0 ) {
 			$user = get_userdata( $responsable_id );
 			if ( $user ) {
-				$nombre_mostrar    = ! empty( $user->first_name ) ? $user->first_name : $user->display_name;
-				$responsable_texto = ' — 👤 ' . $nombre_mostrar;
+				$nombre_mostrar = ! empty( $user->first_name ) ? $user->first_name : $user->display_name;
+				// El nombre se escapa AQUÍ (viene del usuario) y el HTML de la etiqueta se añade después:
+				// antes se imprimía todo con esc_html() y el resultado era el código a la vista
+				// (`<span style="color:#d35400...">`), y escaparlo de otra forma habría metido el nombre sin escapar.
+				$responsable_texto = ' — 👤 ' . esc_html( $nombre_mostrar );
 			}
 		} else {
-			$responsable_texto = ' — <span style="color:#d35400; font-weight:bold;">⚠️ ' . __( 'Sin cubrir', 'convoca-shifts' ) . '</span>';
+			$responsable_texto = ' — <span style="color:#d35400; font-weight:bold;">⚠️ ' . esc_html__( 'Sin cubrir', 'convoca-shifts' ) . '</span>';
+		}
+
+		// La hora sale del post, y un turno creado sin horario queda a las 00:00: decirlo («sin hora
+		// fijada») es más útil que un 00:00 que parece una hora y no lo es (medido: 2 de 17 turnos de la demo).
+		$hora_fin = (string) get_post_meta( $turno->ID, '_hora_fin', true );
+		if ( '' === $hora_fin && '00:00' === $time ) {
+			$texto_hora = esc_html__( 'sin hora fijada', 'convoca-shifts' );
+		} else {
+			$texto_hora = esc_html( $time );
 		}
 
 		echo '<li style="margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid #eee;">';
-		echo '📅 <strong>' . esc_html( $date ) . '</strong> a las ' . esc_html( $time );
-		echo esc_html( $responsable_texto );
+		echo '📅 <strong>' . esc_html( $date ) . '</strong> a las ' . $texto_hora;
+		// wp_kses_post y no esc_html: aquí SÍ hay que interpretar la etiqueta del estado. Lo que
+		// viene de fuera (el nombre del responsable) ya va escapado arriba.
+		echo wp_kses_post( $responsable_texto );
 		echo '</li>';
 	}
 	echo '</ul>';
