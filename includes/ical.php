@@ -331,7 +331,7 @@ class Ical {
 	}
 
 	/**
-	 * Pliega una línea a 75 octetos, por caracteres completos.
+	 * Pliega a 75 octetos por línea, por caracteres completos.
 	 *
 	 * Se cuenta en octetos (lo que pide el RFC) y se corta por carácter, que si no se parte un acento en dos
 	 * y el calendario enseña un rombo.
@@ -340,6 +340,25 @@ class Ical {
 	 * @return string
 	 */
 	public static function plegar( string $linea ): string {
+		// Un texto puede traer VARIAS líneas (un evento completo, que llega ya unido con CRLF). Se pliega cada
+		// línea por su cuenta: plegando el conjunto, los cortes caen dentro de los propios saltos y parten
+		// palabras por la mitad —medido en la demo: «SUMMARY:🟢 C» / «ubierto», y un DTSTAMP de 24 caracteres
+		// partido en dos—. Un calendario estricto no lee eso.
+		$partes = preg_split( '/\r\n|\r|\n/', $linea );
+		if ( ! is_array( $partes ) ) {
+			return $linea;
+		}
+
+		return implode( "\r\n", array_map( array( self::class, 'plegar_linea' ), $partes ) );
+	}
+
+	/**
+	 * Pliega UNA línea (sin saltos dentro).
+	 *
+	 * @param string $linea Línea.
+	 * @return string
+	 */
+	private static function plegar_linea( string $linea ): string {
 		if ( strlen( $linea ) <= 75 ) {
 			return $linea;
 		}

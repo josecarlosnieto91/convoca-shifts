@@ -1,3 +1,16 @@
+## [2.5.17] — 2026-10-15
+
+### Corregido
+- **El feed partía líneas cortas por la mitad.** Medido en la demo, con el feed ya sirviendo: el evento llega
+  unido con CRLF y se plegaba como si fuera **una sola línea**, así que el corte caía donde tocara —un
+  `DTSTAMP` de 24 caracteres salió partido en dos y el resumen quedó «SUMMARY:🟢 C» / «ubierto»—. Ahora se pliega
+  **cada línea por su cuenta**, y la prueba lo deja por escrito: una línea corta no puede partirse.
+
+### Pruebas
+- Caso nuevo en `IcalTest` que coloca una línea corta justo en el punto donde caería el corte del bloque.
+  **Negativo probado**: volviendo a plegar el bloque entero, la prueba cae («no contiene SUMMARY:Turno corto»).
+- Suite 75 en verde, PHPCS 0, PHPStan `[OK]`.
+
 ## [2.5.16] — 2026-10-15
 
 ### Añadido

@@ -60,6 +60,17 @@ class IcalTest extends TestCase {
 		$this->assertStringNotContainsString( "\xEF\xBF\xBD", $plegada, 'No puede quedar ningún carácter roto' );
 	}
 
+	public function test_pliega_cada_linea_por_su_cuenta(): void {
+		// Un evento llega unido con CRLF. Si se plegara el bloque entero, el corte cae donde toque: medido en
+		// la demo, un DTSTAMP de 24 caracteres salió partido en dos y el resumen se rompió por la mitad.
+		$evento  = str_repeat( 'x', 60 ) . "\r\nSUMMARY:Turno corto\r\n" . str_repeat( 'y', 60 );
+		$plegado = $this->llamar( 'plegar', array( $evento ) );
+
+		$logicas = array_values( array_filter( explode( "\r\n", $plegado ), static fn( $l ) => '' !== $l && ' ' !== substr( $l, 0, 1 ) ) );
+
+		$this->assertContains( 'SUMMARY:Turno corto', $logicas, 'Una línea corta no puede partirse al plegar el bloque' );
+	}
+
 	public function test_una_linea_corta_no_se_toca(): void {
 		$this->assertSame( 'SUMMARY:Turno', $this->llamar( 'plegar', array( 'SUMMARY:Turno' ) ) );
 	}
