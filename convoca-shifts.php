@@ -64,11 +64,15 @@ require_once CONVOCA_SHIFTS_DIR . 'includes/admin-settings.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/class-admin-turno-editor.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/class-admin-turnos-list.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/class-admin-turnos-list-page.php';
+// El feed de calendario vive en la WEB, no en el panel: quien lo pide es el calendario del voluntario,
+// desde fuera (issue #13). Puesto dentro de `is_admin()` no se registra nunca en la portada y la dirección
+// devuelve la página normal.
+Ical::init();
+
 if ( is_admin() ) {
 	new Convoca_Shifts_Admin_Turno_Editor();
 	new Admin_Turnos_List_Page();
 	Admin_Auditoria_Horas::init();
-	Ical::init();
 }
 require_once CONVOCA_SHIFTS_DIR . 'includes/cron.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/widgets.php';

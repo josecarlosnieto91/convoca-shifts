@@ -86,6 +86,17 @@ class IcalTest extends TestCase {
 		$this->assertStringContainsString( 'includes/ical.php', $principal );
 		$this->assertStringContainsString( 'Ical::init()', $principal );
 
+		// Y tiene que estar FUERA de `is_admin()`: el feed lo pide el calendario del voluntario desde fuera,
+		// y dentro de ese bloque no se registra nunca en la portada (pasó: la dirección devolvía la página).
+		$pos_init  = strpos( $principal, 'Ical::init()' );
+		$pos_admin = strpos( $principal, 'if ( is_admin() ) {' );
+		$this->assertNotFalse( $pos_admin );
+		$this->assertLessThan(
+			$pos_admin,
+			$pos_init,
+			'El feed de calendario no puede registrarse dentro del bloque de administración'
+		);
+
 		$shortcodes = file_get_contents( dirname( __DIR__, 2 ) . '/includes/shortcodes.php' );
 		$this->assertStringContainsString( 'Ical::url_de(', $shortcodes, 'El voluntario tiene que poder ver su dirección' );
 		$this->assertStringContainsString( 'Suscribirse desde una URL', $shortcodes, 'Y saber qué hacer con ella en Google Calendar' );
