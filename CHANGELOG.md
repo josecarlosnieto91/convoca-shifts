@@ -1,3 +1,14 @@
+## [2.5.19] — 2026-10-15
+
+### Corregido
+- **La descarga de la plantilla devolvía HTML.** Medido en la demo: `header()` dentro del render de la página
+  llega tarde —WordPress ya ha mandado la cabecera y pintado el marco del panel—, así que el botón de descarga
+  entregaba la plantilla envuelta en la página. Se atiende en `admin_init`, antes de que exista salida.
+
+### Pruebas
+- La prueba de contrato exige ahora que la descarga esté enganchada en `admin_init`, no en el render.
+- Suite 84 en verde, PHPCS 0, PHPStan `[OK]`.
+
 ## [2.5.18] — 2026-10-15
 
 ### Añadido

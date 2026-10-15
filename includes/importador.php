@@ -53,7 +53,34 @@ class Importador {
 	 */
 	public static function init(): void {
 		add_action( 'admin_menu', array( self::class, 'menu' ) );
+		add_action( 'admin_init', array( self::class, 'quizas_descargar_plantilla' ) );
 		add_action( 'admin_post_' . self::ACCION, array( self::class, 'handle' ) );
+	}
+
+	/**
+	 * Descarga la plantilla (antes de que se pinte la página).
+	 *
+	 * `header()` dentro del render de la página llega tarde: WordPress ya ha mandado la cabecera y pintado el
+	 * marco del panel, así que el fichero salía envuelto en HTML —medido en la demo: la descarga devolvía
+	 * `<!DOCTYPE html>`—. Se atiende en `admin_init`, que es antes de que exista salida.
+	 */
+	public static function quizas_descargar_plantilla(): void {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- descarga de una plantilla vacía: no cambia nada.
+		$pagina = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( (string) $_GET['page'] ) ) : '';
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( 'convoca_shifts_importar' !== $pagina || ! isset( $_GET['plantilla'] ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( self::CAP ) ) {
+			wp_die( esc_html__( 'No tienes permiso para importar turnos.', 'convoca-shifts' ) );
+		}
+
+		nocache_headers();
+		header( 'Content-Type: text/csv; charset=utf-8' );
+		header( 'Content-Disposition: attachment; filename="plantilla-turnos.csv"' );
+		echo self::plantilla(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- es un CSV, no HTML.
+		exit;
 	}
 
 	/**
@@ -446,15 +473,6 @@ class Importador {
 	public static function pagina(): void {
 		if ( ! current_user_can( self::CAP ) ) {
 			wp_die( esc_html__( 'No tienes permiso para importar turnos.', 'convoca-shifts' ) );
-		}
-
-		$descarga = isset( $_GET['plantilla'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- descarga de una plantilla vacía: no cambia nada.
-		if ( $descarga ) {
-			nocache_headers();
-			header( 'Content-Type: text/csv; charset=utf-8' );
-			header( 'Content-Disposition: attachment; filename="plantilla-turnos.csv"' );
-			echo self::plantilla(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- es un CSV, no HTML.
-			exit;
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- sólo pinta el resultado de la importación.

@@ -120,5 +120,10 @@ class ImportadorTest extends TestCase {
 		$this->assertStringContainsString( 'check_admin_referer', $codigo, 'La subida lleva nonce' );
 		$this->assertStringContainsString( 'current_user_can', $codigo );
 		$this->assertStringContainsString( 'add_submenu_page', $codigo, 'Y su página en el menú de turnos' );
+		$this->assertStringContainsString(
+			"add_action( 'admin_init', array( self::class, 'quizas_descargar_plantilla' ) )",
+			$codigo,
+			'La descarga de la plantilla va en `admin_init`: dentro del render, `header()` llega tarde y el fichero sale envuelto en HTML'
+		);
 	}
 }
