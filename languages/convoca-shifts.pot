@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Convoca Shifts 2.5.9\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/app\n"
+"Project-Id-Version: Convoca Shifts 2.5.22\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/convoca-shifts\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-13T20:07:49+00:00\n"
+"POT-Creation-Date: 2026-10-15T11:05:01+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: convoca-shifts\n"
@@ -35,12 +35,12 @@ msgstr ""
 msgid "Jose Carlos Nieto Ramos"
 msgstr ""
 
-#: convoca-shifts.php:128
+#: convoca-shifts.php:141
 #: includes/admin-estadisticas.php:315
 msgid "Voluntario Aprobado"
 msgstr ""
 
-#: convoca-shifts.php:268
+#: convoca-shifts.php:281
 msgid "<strong>Atención:</strong> El rol \"Voluntario Aprobado\" no existe. Reactiva Convoca Shifts (o Convoca Members) para crearlo automáticamente."
 msgstr ""
 
@@ -207,7 +207,7 @@ msgid "Ajustes del Sistema"
 msgstr ""
 
 #: includes/admin-settings.php:32
-#: includes/admin-settings.php:87
+#: includes/admin-settings.php:97
 msgid "Ajustes"
 msgstr ""
 
@@ -216,199 +216,207 @@ msgid "Estado del Sistema"
 msgstr ""
 
 #: includes/admin-settings.php:41
-#: includes/admin-settings.php:88
+#: includes/admin-settings.php:98
 #: includes/class-admin-turnos-list.php:52
-#: includes/shortcodes.php:139
+#: includes/shortcodes.php:144
 msgid "Estado"
 msgstr ""
 
-#: includes/admin-settings.php:81
+#: includes/admin-settings.php:91
 msgid "Ajustes de Convoca Shifts"
 msgstr ""
 
-#: includes/admin-settings.php:82
+#: includes/admin-settings.php:92
 msgid "Configuración del sistema de turnos y apertura"
 msgstr ""
 
-#: includes/admin-settings.php:92
+#: includes/admin-settings.php:102
 msgid "Configura las URLs de las páginas que contienen los shortcodes para que el plugin pueda generar enlaces correctos."
 msgstr ""
 
-#: includes/admin-settings.php:99
+#: includes/admin-settings.php:109
 msgid "URL de la página del Calendario"
 msgstr ""
 
-#: includes/admin-settings.php:101
+#: includes/admin-settings.php:111
 msgid "URL donde has pegado el shortcode [calendario_centro]."
 msgstr ""
 
-#: includes/admin-settings.php:105
+#: includes/admin-settings.php:115
+msgid "URL de la página de Acceso"
+msgstr ""
+
+#: includes/admin-settings.php:117
+msgid "A dónde va el visitante que pulsa «Ir a Acceso» en el calendario. Si lo dejas vacío, se usa la página de acceso de WordPress."
+msgstr ""
+
+#: includes/admin-settings.php:121
 msgid "Horario del Centro"
 msgstr ""
 
-#: includes/admin-settings.php:108
+#: includes/admin-settings.php:124
 msgid "hasta las"
 msgstr ""
 
-#: includes/admin-settings.php:109
+#: includes/admin-settings.php:125
 msgid "Hora de cierre"
 msgstr ""
 
-#: includes/admin-settings.php:111
+#: includes/admin-settings.php:127
 msgid "Restringe la creación de turnos fuera de este horario."
 msgstr ""
 
-#: includes/admin-settings.php:115
+#: includes/admin-settings.php:131
 msgid "Avisos de ausencias sin justificar"
 msgstr ""
 
-#: includes/admin-settings.php:118
+#: includes/admin-settings.php:134
 msgid "Aviso al socio tras N faltas"
 msgstr ""
 
-#: includes/admin-settings.php:122
+#: includes/admin-settings.php:138
 msgid "Aviso al admin cada N faltas"
 msgstr ""
 
-#: includes/admin-settings.php:126
+#: includes/admin-settings.php:142
 msgid "Ventana (días)"
 msgstr ""
 
-#: includes/admin-settings.php:130
+#: includes/admin-settings.php:146
 msgid "Penalización suave: una falta sin justificar no suma horas. Se avisa al socio al alcanzar el umbral y al admin cada N faltas. Sin bloqueos ni pérdida de puntos."
 msgstr ""
 
-#: includes/admin-settings.php:134
+#: includes/admin-settings.php:150
 msgid "Guardar ajustes"
 msgstr ""
 
-#: includes/admin-settings.php:152
+#: includes/admin-settings.php:168
 msgid "¡Novedad!"
 msgstr ""
 
-#: includes/admin-settings.php:152
+#: includes/admin-settings.php:168
 msgid "Ahora tienes dos nuevas formas de insertar el contenido: mediante **Bloques de Gutenberg** (recomendado para el editor moderno) o mediante **Widgets** (para barras laterales y pie de página). Ambos son más fáciles de configurar que los shortcodes."
 msgstr ""
 
-#: includes/admin-settings.php:155
+#: includes/admin-settings.php:171
 msgid "Guía de Bloques / Widgets / Shortcodes"
 msgstr ""
 
-#: includes/admin-settings.php:156
+#: includes/admin-settings.php:172
 msgid "Puedes usar estos elementos como bloques de Gutenberg, widgets o mediante shortcodes:"
 msgstr ""
 
-#: includes/admin-settings.php:167
+#: includes/admin-settings.php:183
 #: includes/blocks.php:166
 #: includes/widgets.php:48
 msgid "CST: Calendario"
 msgstr ""
 
-#: includes/admin-settings.php:169
+#: includes/admin-settings.php:185
 msgid "Muestra el calendario interactivo (FullCalendar)."
 msgstr ""
 
-#: includes/admin-settings.php:172
+#: includes/admin-settings.php:188
 #: includes/blocks.php:211
 #: includes/widgets.php:162
 msgid "CST: Próximos Turnos"
 msgstr ""
 
-#: includes/admin-settings.php:174
+#: includes/admin-settings.php:190
 msgid "Lista simple de los próximos turnos programados."
 msgstr ""
 
-#: includes/admin-settings.php:177
+#: includes/admin-settings.php:193
 #: includes/blocks.php:192
 #: includes/widgets.php:124
 msgid "CST: Resumen Semanal"
 msgstr ""
 
-#: includes/admin-settings.php:179
+#: includes/admin-settings.php:195
 msgid "Resumen semanal con contador de huecos libres y botón de acción rápida."
 msgstr ""
 
-#: includes/admin-settings.php:182
+#: includes/admin-settings.php:198
 #: includes/blocks.php:179
 #: includes/widgets.php:86
 msgid "CST: Botón Apuntarse"
 msgstr ""
 
-#: includes/admin-settings.php:184
+#: includes/admin-settings.php:200
 msgid "Botón directo \"Me apunto al siguiente turno libre\"."
 msgstr ""
 
-#: includes/admin-settings.php:206
+#: includes/admin-settings.php:222
 msgid "Se han detectado problemas críticos que impiden el funcionamiento."
 msgstr ""
 
-#: includes/admin-settings.php:207
+#: includes/admin-settings.php:223
 msgid "Estado: Errores detectados"
 msgstr ""
 
-#: includes/admin-settings.php:211
+#: includes/admin-settings.php:227
 msgid "Hay advertencias que podrían afectar el funcionamiento."
 msgstr ""
 
-#: includes/admin-settings.php:212
+#: includes/admin-settings.php:228
 msgid "Estado: Advertencias"
 msgstr ""
 
-#: includes/admin-settings.php:216
+#: includes/admin-settings.php:232
 msgid "Todos los componentes están configurados correctamente."
 msgstr ""
 
-#: includes/admin-settings.php:217
+#: includes/admin-settings.php:233
 msgid "Estado: Todo correcto"
 msgstr ""
 
 #. translators: %s: plugin name
-#: includes/admin-settings.php:268
+#: includes/admin-settings.php:284
 #, php-format
 msgid "Plugin: %s"
 msgstr ""
 
-#: includes/admin-settings.php:270
+#: includes/admin-settings.php:286
 msgid "Activo y funcionando."
 msgstr ""
 
-#: includes/admin-settings.php:270
+#: includes/admin-settings.php:286
 msgid "Plugin no detectado o inactivo."
 msgstr ""
 
 #. translators: %s: plugin name
-#: includes/admin-settings.php:272
+#: includes/admin-settings.php:288
 #, php-format
 msgid "Se recomienda instalar y activar el plugin %s."
 msgstr ""
 
-#: includes/admin-settings.php:279
+#: includes/admin-settings.php:295
 msgid "Página: Calendario"
 msgstr ""
 
-#: includes/admin-settings.php:281
+#: includes/admin-settings.php:297
 msgid "Crea una página con el shortcode [calendario_centro]."
 msgstr ""
 
 #. translators: %s: page title
-#: includes/admin-settings.php:292
+#: includes/admin-settings.php:308
 #, php-format
 msgid "Detectada: %s"
 msgstr ""
 
-#: includes/admin-settings.php:293
+#: includes/admin-settings.php:309
 msgid "No se ha encontrado ninguna página con este shortcode."
 msgstr ""
 
 #: includes/admin-turno-rapido.php:35
 #: includes/admin-turno-rapido.php:36
 #: includes/admin-turno-rapido.php:139
-#: includes/class-admin-turnos-list-page.php:88
+#: includes/class-admin-turnos-list-page.php:108
 msgid "Añadir Turno Rápido"
 msgstr ""
 
 #: includes/admin-turno-rapido.php:76
-#: includes/class-admin-turno-editor.php:280
+#: includes/class-admin-turno-editor.php:313
 msgid "Nonce inválido."
 msgstr ""
 
@@ -417,7 +425,7 @@ msgid "No tienes permisos para realizar esta acción."
 msgstr ""
 
 #: includes/admin-turno-rapido.php:125
-#: includes/rest-api.php:752
+#: includes/rest-api.php:763
 msgid "Turno creado correctamente."
 msgstr ""
 
@@ -430,37 +438,37 @@ msgid "Selecciona un día en el calendario para crear un turno sin pasar por la 
 msgstr ""
 
 #: includes/admin-turno-rapido.php:348
-#: includes/shortcodes.php:114
+#: includes/shortcodes.php:119
 msgid "Crear Nuevo Turno"
 msgstr ""
 
 #: includes/admin-turno-rapido.php:356
-#: includes/shortcodes.php:117
+#: includes/shortcodes.php:122
 msgid "Seleccionar Horario"
 msgstr ""
 
 #: includes/admin-turno-rapido.php:358
-#: includes/shortcodes.php:119
+#: includes/shortcodes.php:124
 msgid "Mañana (10-13h)"
 msgstr ""
 
 #: includes/admin-turno-rapido.php:359
-#: includes/shortcodes.php:120
+#: includes/shortcodes.php:125
 msgid "Tarde (17-20h)"
 msgstr ""
 
 #: includes/admin-turno-rapido.php:360
-#: includes/shortcodes.php:121
+#: includes/shortcodes.php:126
 msgid "Personalizado"
 msgstr ""
 
 #: includes/admin-turno-rapido.php:367
-#: includes/shortcodes.php:128
+#: includes/shortcodes.php:133
 msgid "Hora Inicio"
 msgstr ""
 
 #: includes/admin-turno-rapido.php:371
-#: includes/shortcodes.php:132
+#: includes/shortcodes.php:137
 msgid "Hora Fin"
 msgstr ""
 
@@ -478,12 +486,12 @@ msgid "Marca esto si el voluntario necesita acompañamiento (p.ej. no tiene llav
 msgstr ""
 
 #: includes/admin-turno-rapido.php:395
-#: includes/shortcodes.php:158
+#: includes/shortcodes.php:163
 msgid "Cancelar"
 msgstr ""
 
 #: includes/admin-turno-rapido.php:396
-#: includes/shortcodes.php:159
+#: includes/shortcodes.php:164
 msgid "Guardar Turno"
 msgstr ""
 
@@ -550,183 +558,193 @@ msgstr ""
 msgid "%d comprobaciones realizadas."
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:48
-#: includes/class-admin-turno-editor.php:49
-#: includes/class-admin-turno-editor.php:136
-#: includes/cpt-turno.php:129
+#: includes/class-admin-turno-editor.php:69
+#: includes/class-admin-turno-editor.php:77
+#: includes/class-admin-turno-editor.php:78
+#: includes/class-admin-turno-editor.php:164
+#: includes/cpt-turno.php:170
 msgid "Editar Turno"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:88
-#: includes/class-admin-turno-editor.php:284
-#: includes/cpt-turno.php:542
+#: includes/class-admin-turno-editor.php:117
+#: includes/class-admin-turno-editor.php:317
+#: includes/cpt-turno.php:603
 msgid "No tienes permisos para editar este turno."
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:136
-#: includes/cpt-turno.php:128
+#: includes/class-admin-turno-editor.php:164
+#: includes/cpt-turno.php:169
 msgid "Nuevo Turno"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:145
+#: includes/class-admin-turno-editor.php:178
 msgid "Datos del Turno"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:149
+#: includes/class-admin-turno-editor.php:182
 #: includes/class-admin-turnos-list.php:50
 msgid "Fecha"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:154
+#: includes/class-admin-turno-editor.php:187
 msgid "Hora inicio"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:159
+#: includes/class-admin-turno-editor.php:192
 msgid "Hora fin"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:164
+#: includes/class-admin-turno-editor.php:197
 #: includes/class-admin-turnos-list.php:53
-#: includes/cpt-turno.php:445
-#: includes/cpt-turno.php:611
+#: includes/cpt-turno.php:506
+#: includes/cpt-turno.php:672
 msgid "Responsable"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:166
-#: includes/cpt-turno.php:321
-#: includes/cpt-turno.php:613
+#: includes/class-admin-turno-editor.php:199
+#: includes/cpt-turno.php:382
+#: includes/cpt-turno.php:674
 msgid "— Sin asignar —"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:179
+#: includes/class-admin-turno-editor.php:212
 msgid "Estado y Actividad"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:183
+#: includes/class-admin-turno-editor.php:216
 msgid "Estado del centro"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:185
-#: includes/cpt-turno.php:336
+#: includes/class-admin-turno-editor.php:218
+#: includes/cpt-turno.php:397
 msgid "🟡 Pendiente (Abierto)"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:186
-#: includes/cpt-turno.php:337
-#: includes/cpt-turno.php:900
+#: includes/class-admin-turno-editor.php:219
+#: includes/cpt-turno.php:398
+#: includes/cpt-turno.php:961
 msgid "🔵 Ocupado (Actividad)"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:187
+#: includes/class-admin-turno-editor.php:220
 #: includes/class-admin-turnos-list.php:355
-#: includes/cpt-turno.php:338
-#: includes/cpt-turno.php:901
+#: includes/cpt-turno.php:399
+#: includes/cpt-turno.php:962
 msgid "🔴 Cerrado"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:196
+#: includes/class-admin-turno-editor.php:229
 msgid "Actividad"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:198
+#: includes/class-admin-turno-editor.php:231
 msgid "— Seleccionar —"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:207
+#: includes/class-admin-turno-editor.php:240
 msgid "Monitor/a"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:209
-#: includes/cpt-turno.php:361
+#: includes/class-admin-turno-editor.php:242
+#: includes/cpt-turno.php:422
 msgid "— Sin monitor —"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:223
+#: includes/class-admin-turno-editor.php:256
 msgid "🛟 Necesita apoyo (sin llaves / acompañamiento)"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:228
+#: includes/class-admin-turno-editor.php:261
 msgid "Seguimiento"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:232
+#: includes/class-admin-turno-editor.php:265
 msgid "Estado de asistencia"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:234
+#: includes/class-admin-turno-editor.php:267
 #: includes/class-admin-turnos-list.php:361
-#: includes/cpt-turno.php:625
+#: includes/cpt-turno.php:686
 msgid "⏳ Pendiente"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:235
+#: includes/class-admin-turno-editor.php:268
 #: includes/class-admin-turnos-list.php:362
-#: includes/cpt-turno.php:626
+#: includes/cpt-turno.php:687
 msgid "✅ Realizado"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:236
+#: includes/class-admin-turno-editor.php:269
 #: includes/class-admin-turnos-list.php:363
-#: includes/cpt-turno.php:627
+#: includes/cpt-turno.php:688
 msgid "❌ No asistió"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:237
+#: includes/class-admin-turno-editor.php:270
 #: includes/class-admin-turnos-list.php:364
-#: includes/cpt-turno.php:628
+#: includes/cpt-turno.php:689
 msgid "✅ Ausencia justificada"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:238
+#: includes/class-admin-turno-editor.php:271
 #: includes/class-admin-turnos-list.php:365
-#: includes/cpt-turno.php:629
+#: includes/cpt-turno.php:690
 msgid "↩️ Cancelada con aviso"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:243
+#: includes/class-admin-turno-editor.php:276
 msgid "Fecha de aviso (cancelación con aviso)"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:245
+#: includes/class-admin-turno-editor.php:278
 msgid "Solo aplica si la ausencia es \"Cancelada con aviso\" (aviso previo ≥ 24 h)."
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:249
+#: includes/class-admin-turno-editor.php:282
 msgid "Motivo / justificación de la ausencia"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:256
+#: includes/class-admin-turno-editor.php:289
 msgid "Volver al listado"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:259
+#: includes/class-admin-turno-editor.php:292
 msgid "Guardar cambios"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:259
+#: includes/class-admin-turno-editor.php:292
 msgid "Crear turno"
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:277
+#: includes/class-admin-turno-editor.php:310
 msgid "Acceso denegado."
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:286
+#: includes/class-admin-turno-editor.php:319
 msgid "No tienes permisos para crear turnos."
 msgstr ""
 
-#: includes/class-admin-turno-editor.php:323
+#: includes/class-admin-turno-editor.php:356
 #: includes/shortcodes.php:53
 msgid "Error al crear el turno."
 msgstr ""
 
 #: includes/class-admin-turnos-list-page.php:44
 #: includes/class-admin-turnos-list-page.php:45
-#: includes/class-admin-turnos-list-page.php:86
+#: includes/class-admin-turnos-list-page.php:106
 msgid "Turnos"
 msgstr ""
 
-#: includes/class-admin-turnos-list-page.php:95
+#: includes/class-admin-turnos-list-page.php:69
+#: includes/cpt-turno.php:166
+msgid "Todos los Turnos"
+msgstr ""
+
+#: includes/class-admin-turnos-list-page.php:122
+msgid "📥 Exportar a CSV"
+msgstr ""
+
+#: includes/class-admin-turnos-list-page.php:129
 msgid "Buscar turno..."
 msgstr ""
 
@@ -743,8 +761,8 @@ msgid "Apoyo"
 msgstr ""
 
 #: includes/class-admin-turnos-list.php:55
-#: includes/cpt-turno.php:446
-#: includes/cpt-turno.php:623
+#: includes/cpt-turno.php:507
+#: includes/cpt-turno.php:684
 msgid "Asistencia"
 msgstr ""
 
@@ -820,264 +838,260 @@ msgstr ""
 msgid "Filtrar"
 msgstr ""
 
-#: includes/cpt-turno.php:118
+#: includes/cpt-turno.php:159
 msgctxt "Post Type General Name"
 msgid "Turnos"
 msgstr ""
 
-#: includes/cpt-turno.php:119
+#: includes/cpt-turno.php:160
 msgctxt "Post Type Singular Name"
 msgid "Turno"
 msgstr ""
 
-#: includes/cpt-turno.php:120
+#: includes/cpt-turno.php:161
 msgid "Turnos Centro"
 msgstr ""
 
-#: includes/cpt-turno.php:121
-#: includes/cpt-turno.php:138
+#: includes/cpt-turno.php:162
+#: includes/cpt-turno.php:179
 msgid "Turno"
 msgstr ""
 
-#: includes/cpt-turno.php:122
+#: includes/cpt-turno.php:163
 msgid "Archivo de Turnos"
 msgstr ""
 
-#: includes/cpt-turno.php:123
+#: includes/cpt-turno.php:164
 msgid "Atributos de Turno"
 msgstr ""
 
-#: includes/cpt-turno.php:124
+#: includes/cpt-turno.php:165
 msgid "Turno Padre:"
 msgstr ""
 
-#: includes/cpt-turno.php:125
-msgid "Todos los Turnos"
-msgstr ""
-
-#: includes/cpt-turno.php:126
+#: includes/cpt-turno.php:167
 msgid "Añadir Nuevo Turno"
 msgstr ""
 
-#: includes/cpt-turno.php:127
+#: includes/cpt-turno.php:168
 msgid "Añadir Nuevo"
 msgstr ""
 
-#: includes/cpt-turno.php:130
+#: includes/cpt-turno.php:171
 msgid "Actualizar Turno"
 msgstr ""
 
-#: includes/cpt-turno.php:131
+#: includes/cpt-turno.php:172
 msgid "Ver Turno"
 msgstr ""
 
-#: includes/cpt-turno.php:132
+#: includes/cpt-turno.php:173
 msgid "Ver Turnos"
 msgstr ""
 
-#: includes/cpt-turno.php:133
+#: includes/cpt-turno.php:174
 msgid "Buscar Turno"
 msgstr ""
 
-#: includes/cpt-turno.php:134
+#: includes/cpt-turno.php:175
 msgid "No encontrado"
 msgstr ""
 
-#: includes/cpt-turno.php:135
+#: includes/cpt-turno.php:176
 msgid "No encontrado en la Papelera"
 msgstr ""
 
-#: includes/cpt-turno.php:139
+#: includes/cpt-turno.php:180
 msgid "Turnos de apertura del centro social"
 msgstr ""
 
-#: includes/cpt-turno.php:164
+#: includes/cpt-turno.php:205
 msgid "Actividades"
 msgstr ""
 
-#: includes/cpt-turno.php:284
+#: includes/cpt-turno.php:345
 msgid "Opciones de Turno"
 msgstr ""
 
-#: includes/cpt-turno.php:319
+#: includes/cpt-turno.php:380
 msgid "👤 Responsable Asignado:"
 msgstr ""
 
-#: includes/cpt-turno.php:334
+#: includes/cpt-turno.php:395
 msgid "Estado del Centro:"
 msgstr ""
 
-#: includes/cpt-turno.php:342
+#: includes/cpt-turno.php:403
 msgid "Actividad:"
 msgstr ""
 
-#: includes/cpt-turno.php:346
+#: includes/cpt-turno.php:407
 msgid "— Seleccionar Actividad —"
 msgstr ""
 
-#: includes/cpt-turno.php:357
+#: includes/cpt-turno.php:418
 msgid "Gestiona actividades desde el menú lateral."
 msgstr ""
 
-#: includes/cpt-turno.php:359
+#: includes/cpt-turno.php:420
 msgid "Monitor/a:"
 msgstr ""
 
-#: includes/cpt-turno.php:377
+#: includes/cpt-turno.php:438
 msgid "Asigna un usuario con rol monitor_actividad."
 msgstr ""
 
-#: includes/cpt-turno.php:467
+#: includes/cpt-turno.php:528
 msgid "Sin asignar"
 msgstr ""
 
-#: includes/cpt-turno.php:477
+#: includes/cpt-turno.php:538
 msgid "<span class=\"badge-cst badge-pending\">⏳ Pendiente</span>"
 msgstr ""
 
-#: includes/cpt-turno.php:478
+#: includes/cpt-turno.php:539
 msgid "<span class=\"badge-cst badge-success\">✅ Realizado</span>"
 msgstr ""
 
-#: includes/cpt-turno.php:479
+#: includes/cpt-turno.php:540
 msgid "<span class=\"badge-cst badge-danger\">❌ No asistió</span>"
 msgstr ""
 
-#: includes/cpt-turno.php:480
+#: includes/cpt-turno.php:541
 msgid "<span class=\"badge-cst badge-info\">✅ Ausencia justificada</span>"
 msgstr ""
 
-#: includes/cpt-turno.php:481
+#: includes/cpt-turno.php:542
 msgid "<span class=\"badge-cst badge-info\">↩️ Cancelada con aviso</span>"
 msgstr ""
 
-#: includes/cpt-turno.php:550
+#: includes/cpt-turno.php:611
 msgid "Estado de asistencia no válido."
 msgstr ""
 
-#: includes/cpt-turno.php:555
+#: includes/cpt-turno.php:616
 msgid "No se puede marcar como realizado un turno sin responsable asignado."
 msgstr ""
 
-#: includes/cpt-turno.php:573
+#: includes/cpt-turno.php:634
 msgid "Error al procesar la asistencia."
 msgstr ""
 
-#: includes/cpt-turno.php:821
-#: includes/cpt-turno.php:822
+#: includes/cpt-turno.php:882
+#: includes/cpt-turno.php:883
 msgid "Generar Turnos"
 msgstr ""
 
 #. translators: %d: number of shifts duplicated
-#: includes/cpt-turno.php:837
+#: includes/cpt-turno.php:898
 #, php-format
 msgid "Se han duplicado %d turnos."
 msgstr ""
 
 #. translators: %d: number of shifts generated
-#: includes/cpt-turno.php:848
+#: includes/cpt-turno.php:909
 #, php-format
 msgid "Se han generado %d turnos nuevos."
 msgstr ""
 
-#: includes/cpt-turno.php:855
+#: includes/cpt-turno.php:916
 msgid "Generador de Turnos"
 msgstr ""
 
-#: includes/cpt-turno.php:858
+#: includes/cpt-turno.php:919
 msgid "Duplicar semana anterior"
 msgstr ""
 
-#: includes/cpt-turno.php:859
+#: includes/cpt-turno.php:920
 msgid "Copia todos los turnos de los últimos 7 días y los reprograma exactamente una semana después, dejándolos pendientes."
 msgstr ""
 
-#: includes/cpt-turno.php:863
+#: includes/cpt-turno.php:924
 msgid "Duplicar Semana Anterior"
 msgstr ""
 
-#: includes/cpt-turno.php:868
+#: includes/cpt-turno.php:929
 msgid "Crear semana tipo"
 msgstr ""
 
-#: includes/cpt-turno.php:875
+#: includes/cpt-turno.php:936
 msgid "Fecha del Lunes"
 msgstr ""
 
-#: includes/cpt-turno.php:879
+#: includes/cpt-turno.php:940
 msgid "Configuración diaria"
 msgstr ""
 
-#: includes/cpt-turno.php:883
+#: includes/cpt-turno.php:944
 msgid "Lunes"
 msgstr ""
 
-#: includes/cpt-turno.php:884
+#: includes/cpt-turno.php:945
 msgid "Martes"
 msgstr ""
 
-#: includes/cpt-turno.php:885
+#: includes/cpt-turno.php:946
 msgid "Miércoles"
 msgstr ""
 
-#: includes/cpt-turno.php:886
+#: includes/cpt-turno.php:947
 msgid "Jueves"
 msgstr ""
 
-#: includes/cpt-turno.php:887
+#: includes/cpt-turno.php:948
 msgid "Viernes"
 msgstr ""
 
-#: includes/cpt-turno.php:888
+#: includes/cpt-turno.php:949
 msgid "Sábado"
 msgstr ""
 
-#: includes/cpt-turno.php:889
+#: includes/cpt-turno.php:950
 msgid "Domingo"
 msgstr ""
 
 #. translators: %d: número de día
-#: includes/cpt-turno.php:898
+#: includes/cpt-turno.php:959
 #, php-format
 msgid "Estado del día %d"
 msgstr ""
 
 #. translators: %d: número de día
-#: includes/cpt-turno.php:899
+#: includes/cpt-turno.php:960
 msgid "🟡 Pendiente (Disponible)"
 msgstr ""
 
-#: includes/cpt-turno.php:906
+#: includes/cpt-turno.php:967
 msgid "— Actividad —"
 msgstr ""
 
-#: includes/cpt-turno.php:916
+#: includes/cpt-turno.php:977
 msgid "— Monitor/a —"
 msgstr ""
 
-#: includes/cpt-turno.php:945
+#: includes/cpt-turno.php:1006
 msgid "Generar Semana"
 msgstr ""
 
-#: includes/cpt-turno.php:951
+#: includes/cpt-turno.php:1012
 msgid "Exportar datos (Copias de Seguridad / Estadísticas)"
 msgstr ""
 
-#: includes/cpt-turno.php:952
+#: includes/cpt-turno.php:1013
 msgid "Descarga un archivo CSV con el historial completo de turnos, estados y voluntarios asignados. Ideal para guardar estadísticas antes de desinstalar el plugin o limpiar el calendario."
 msgstr ""
 
-#: includes/cpt-turno.php:956
+#: includes/cpt-turno.php:1017
 msgid "Exportar historial a CSV"
 msgstr ""
 
-#: includes/cpt-turno.php:1210
-#: includes/cpt-turno.php:1222
+#: includes/cpt-turno.php:1276
+#: includes/cpt-turno.php:1288
 msgid "URL de Información"
 msgstr ""
 
-#: includes/cpt-turno.php:1212
-#: includes/cpt-turno.php:1225
+#: includes/cpt-turno.php:1278
+#: includes/cpt-turno.php:1291
 msgid "Enlace a la entrada del blog o página con más información e inscripciones."
 msgstr ""
 
@@ -1089,6 +1103,91 @@ msgstr ""
 #: includes/cron.php:148
 #, php-format
 msgid "Hola %1$s,\\n\\nTe recordamos que tienes un turno asignado para abrir el centro pronto:\\n\\nTurno: %2$s\\nHora de inicio: %3$s\\n\\n¡Gracias por tu voluntariado!"
+msgstr ""
+
+#: includes/importador.php:76
+#: includes/importador.php:498
+#: includes/importador.php:569
+msgid "No tienes permiso para importar turnos."
+msgstr ""
+
+#: includes/importador.php:92
+#: includes/importador.php:93
+msgid "Importar turnos"
+msgstr ""
+
+#. translators: %s: nombre de la columna que falta.
+#: includes/importador.php:145
+#, php-format
+msgid "A la plantilla le falta la columna «%s». Descarga la plantilla de esta página y rellénala."
+msgstr ""
+
+#. translators: 1: número de línea, 2: valor leído.
+#: includes/importador.php:167
+#, php-format
+msgid "Línea %1$d: «%2$s» no es una fecha válida (usa 05/11/2026 o 2026-11-05)."
+msgstr ""
+
+#. translators: 1: número de línea, 2: hora de inicio, 3: hora de fin.
+#: includes/importador.php:179
+#, php-format
+msgid "Línea %1$d: las horas tienen que ir en formato 17:00 (leído «%2$s» y «%3$s»)."
+msgstr ""
+
+#. translators: %s: nombre de la actividad.
+#: includes/importador.php:300
+#, php-format
+msgid "No encuentro la actividad «%s»: revísala o déjala vacía."
+msgstr ""
+
+#. translators: 1: papel (responsable o monitor), 2: valor leído.
+#: includes/importador.php:317
+#, php-format
+msgid "No encuentro a la persona «%2$s» para el %1$s: usa el usuario, el correo o el número."
+msgstr ""
+
+#. translators: %s: fecha de la fila.
+#: includes/importador.php:345
+#, php-format
+msgid "No se ha podido crear el turno del %s."
+msgstr ""
+
+#: includes/importador.php:510
+msgid "Importar turnos desde una plantilla"
+msgstr ""
+
+#. translators: 1: turnos creados, 2: turnos repetidos.
+#: includes/importador.php:518
+#, php-format
+msgid "Importación terminada: %1$d turnos creados y %2$d repetidos (no se han duplicado)."
+msgstr ""
+
+#: includes/importador.php:527
+msgid "Estas filas no se han podido usar:"
+msgstr ""
+
+#: includes/importador.php:537
+msgid "Descarga la plantilla, rellénala en Excel (o en una hoja de cálculo) y súbela aquí. Excel guarda en el formato que se lee aquí tal cual: «Guardar como» → CSV."
+msgstr ""
+
+#: includes/importador.php:540
+msgid "Descargar la plantilla"
+msgstr ""
+
+#: includes/importador.php:549
+msgid "Plantilla rellena"
+msgstr ""
+
+#: includes/importador.php:553
+msgid "Columnas: fecha, hora_inicio, hora_fin, actividad, monitor, responsable, estado, apoyo. La actividad y las personas pueden ir por nombre o por número."
+msgstr ""
+
+#: includes/importador.php:558
+msgid "Importar los turnos"
+msgstr ""
+
+#: includes/importador.php:583
+msgid "No ha llegado ningún fichero. Elige la plantilla rellena antes de pulsar el botón."
 msgstr ""
 
 #. translators: %d: número de faltas sin justificar
@@ -1121,24 +1220,24 @@ msgstr ""
 msgid "Lo siento, no tienes permisos para realizar esta acción."
 msgstr ""
 
-#: includes/rest-api.php:479
+#: includes/rest-api.php:490
 msgid "Turno liberado con éxito."
 msgstr ""
 
-#: includes/rest-api.php:602
-#: includes/rest-api.php:766
+#: includes/rest-api.php:613
+#: includes/rest-api.php:777
 msgid "a las"
 msgstr ""
 
-#: includes/rest-api.php:623
+#: includes/rest-api.php:634
 msgid "¡Te has apuntado al turno del "
 msgstr ""
 
-#: includes/rest-api.php:691
+#: includes/rest-api.php:702
 msgid "Próximo turno sin cubrir: "
 msgstr ""
 
-#: includes/rest-api.php:699
+#: includes/rest-api.php:710
 msgid "¡Todos los turnos están cubiertos! 🎉"
 msgstr ""
 
@@ -1166,57 +1265,73 @@ msgstr ""
 msgid "Aún no hay turnos definidos para esta vista."
 msgstr ""
 
-#: includes/shortcodes.php:74
+#: includes/shortcodes.php:79
 msgid "Este es el cuadrante actual. Si eres voluntario/a, inicia sesión para apuntarte a un turno."
 msgstr ""
 
-#: includes/shortcodes.php:74
+#: includes/shortcodes.php:79
 msgid "Ir a Acceso"
 msgstr ""
 
-#: includes/shortcodes.php:78
+#: includes/shortcodes.php:83
 msgid "Tu cuenta está pendiente de aprobación. Podrás apuntarte a turnos en cuanto un administrador te active."
 msgstr ""
 
-#: includes/shortcodes.php:142
+#: includes/shortcodes.php:147
 msgid "Pendiente"
 msgstr ""
 
-#: includes/shortcodes.php:143
+#: includes/shortcodes.php:148
 msgid "Cerrado"
 msgstr ""
 
-#: includes/shortcodes.php:147
+#: includes/shortcodes.php:152
 msgid "Pendiente (Disponible para voluntarios)"
 msgstr ""
 
-#: includes/shortcodes.php:154
+#: includes/shortcodes.php:159
 msgid "Necesita apoyo"
 msgstr ""
 
-#: includes/shortcodes.php:181
+#: includes/shortcodes.php:186
 msgid "Me apunto al siguiente turno libre"
 msgstr ""
 
-#: includes/shortcodes.php:189
+#: includes/shortcodes.php:194
 msgid "¿Te apuntas a este turno? Serás responsable de abrir el centro."
 msgstr ""
 
 #. translators: 1: number of uncovered shifts, 2: total number of shifts
-#: includes/shortcodes.php:285
+#: includes/shortcodes.php:290
 #, php-format
 msgid "Esta semana hay %1$d turnos sin cubrir de %2$d en total."
 msgstr ""
 
-#: includes/shortcodes.php:326
+#: includes/shortcodes.php:331
 msgid "Huecos libres:"
 msgstr ""
 
-#: includes/shortcodes.php:378
+#: includes/shortcodes.php:376
+msgid "Lleva tus turnos a tu calendario"
+msgstr ""
+
+#: includes/shortcodes.php:377
+msgid "Pega esta dirección en tu calendario (en Google Calendar: «Otros calendarios» → «Suscribirse desde una URL») y tus turnos aparecerán y se actualizarán solos cuando haya cambios."
+msgstr ""
+
+#: includes/shortcodes.php:379
+msgid "Descargar el calendario (.ics)"
+msgstr ""
+
+#: includes/shortcodes.php:380
+msgid "Esta dirección es personal: no la compartas. Quien la tenga puede ver tus turnos."
+msgstr ""
+
+#: includes/shortcodes.php:421
 msgid "No hay turnos próximos programados."
 msgstr ""
 
-#: includes/shortcodes.php:397
+#: includes/shortcodes.php:440
 msgid "Sin cubrir"
 msgstr ""
 
