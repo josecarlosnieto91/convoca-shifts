@@ -67,13 +67,21 @@ ln -sfn "$AQUI" "$DATOS/wp/wp-content/plugins/$SLUG"
 if [ "$SLUG" != "convoca-core" ] && [ -d "$AQUI/../convoca-core" ]; then
 	ln -sfn "$(cd "$AQUI/../convoca-core" && pwd)" "$DATOS/wp/wp-content/plugins/convoca-core"
 fi
+# Dependencias del plugin que estén al lado (Shifts exige Members, p. ej.)
+for dep in convoca-members; do
+	if [ "$SLUG" != "$dep" ] && [ -d "$AQUI/../$dep" ]; then
+		ln -sfn "$(cd "$AQUI/../$dep" && pwd)" "$DATOS/wp/wp-content/plugins/$dep"
+	fi
+done
 
 wp --path="$DATOS/wp" core install --url=http://example.org --title="Convoca pruebas" \
 	--admin_user=admin --admin_password=admin --admin_email=admin@example.org --skip-email >/dev/null
 # El núcleo PRIMERO: los demás plugins dependen de él y su activación falla sin Convoca Core.
-if [ -d "$DATOS/wp/wp-content/plugins/convoca-core" ] && [ "$SLUG" != "convoca-core" ]; then
-	wp --path="$DATOS/wp" plugin activate convoca-core >/dev/null
-fi
+for dep in convoca-core convoca-members; do
+	if [ "$SLUG" != "$dep" ] && [ -d "$DATOS/wp/wp-content/plugins/$dep" ]; then
+		wp --path="$DATOS/wp" plugin activate "$dep" >/dev/null 2>&1 || true
+	fi
+done
 wp --path="$DATOS/wp" plugin activate "$SLUG" >/dev/null
 
 echo

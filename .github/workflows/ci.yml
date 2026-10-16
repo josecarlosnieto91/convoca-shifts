@@ -212,6 +212,9 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/josecarlosnieto91/convoca-core.git ../convoca-core
           ( cd ../convoca-core && composer install --no-dev --no-interaction --ignore-platform-req=ext-iconv --optimize-autoloader )
+          # Shifts exige ADEMÁS convoca-members activo: sin él, la activación falla y el entorno no se monta.
+          git clone --depth 1 https://github.com/josecarlosnieto91/convoca-members.git ../convoca-members
+          ( cd ../convoca-members && composer install --no-dev --no-interaction --ignore-platform-req=ext-iconv --optimize-autoloader )
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
