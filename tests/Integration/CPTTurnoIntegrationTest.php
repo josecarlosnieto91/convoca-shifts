@@ -27,14 +27,14 @@ class CPTTurnoIntegrationTest extends \PHPUnit\Framework\TestCase
 
     public function test_cpt_turno_registered(): void
     {
-        $this->markTestSkipped('Requiere WordPress: post_type_exists() exige WordPress cargado');
+        $this->markTestSkipped('Requiere WordPress: post_type_exists() exige WordPress cargado · motivo y seguimiento: convoca-health-check#20.');
         // (medido en pasada 3: de 13 casos, 3 necesitan WP; este es uno)
 $this->assertTrue(post_type_exists('turno'));
     }
 
     public function test_rest_routes_registered(): void
     {
-        $this->markTestSkipped('Requiere WordPress: rest_get_server() exige WordPress cargado');
+        $this->markTestSkipped('Requiere WordPress: rest_get_server() exige WordPress cargado · motivo y seguimiento: convoca-health-check#20.');
         // (medido en pasada 3: de 13 casos, 3 necesitan WP; este es uno)
 $routes = rest_get_server()->get_routes();
         $this->assertArrayHasKey('/convoca-shifts/v1', $routes);
