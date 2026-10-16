@@ -787,3 +787,69 @@
 .fc-timegrid-event.fc-event-past {
     opacity: 0.7;
 }
+
+/* ══════════════════════════════════════════════════════════════════════════════════════════════
+   BLOQUE: Modo oscuro del calendario
+   ─────────────────────────────────────────────────────────────────────────────────────────────
+   El tema activa el modo oscuro con la clase `.dark-mode` en <html> y publica ahí sus tokens
+   (`--dark-surface`, `--dark-elevated`, `--dark-bg`, `--dark-text`…). El calendario se pintaba con
+   colores claros FIJOS, así que en modo oscuro quedaban trozos en blanco y, en la leyenda, tinta
+   clara sobre fondo claro (medido en la demo, 16/10/2026):
+
+     .convoca-shifts-leyenda            fondo #f9f9f9 con texto #f4f6f8  ->  ~1,05:1, no se lee
+     .fc .fc-day-sat / -sun             #fffcf8 !important             ->  fin de semana en blanco
+     .fc .fc-day-futura (días futuros)  #ffffff                        ->  casilla blanca, número invisible
+     .fc .fc-day-today                  amarillo claro del preset      ->  «hoy» sin contraste
+     .fc .fc-daygrid-day-number         rgba(0,0,0,.05)                ->  insignia invisible sobre oscuro
+
+   Los valores son los del tema (no se inventan colores), con respaldo por si algún día el tema no es
+   Convoca. Se aplican con `!important` porque el CSS de arriba también lo usa, y con `.dark-mode`
+   delante para ganar en especificidad. Verificado en la demo con la clase puesta en <html>, en las
+   tres vistas (Mes, Semana, Lista): cero fondos claros dentro del calendario.
+   Prueba que lo fija: tests/Unit/ModoOscuroDelCalendarioTest.php
+   ══════════════════════════════════════════════════════════════════════════════════════════════ */
+.dark-mode .convoca-shifts-leyenda {
+	background: var(--dark-surface, #241019) !important;
+	color: var(--dark-text, #f4f6f8) !important;
+}
+
+.dark-mode .convoca-shifts-leyenda-item {
+	color: var(--dark-text, #f4f6f8) !important;
+}
+
+.dark-mode .fc .fc-col-header-cell-cushion {
+	color: var(--dark-text-secondary, #a8b0bc) !important;
+}
+
+.dark-mode .fc .fc-day-sat,
+.dark-mode .fc .fc-day-sun {
+	background-color: var(--dark-elevated, #2e1520) !important;
+}
+
+.dark-mode .fc .fc-day-past,
+.dark-mode .fc .fc-day-other {
+	background-color: var(--dark-bg, #1a0b16) !important;
+}
+
+.dark-mode .fc .fc-daygrid-day,
+.dark-mode .fc .fc-day {
+	background-color: var(--dark-surface, #241019) !important;
+}
+
+.dark-mode .fc .fc-daygrid-day-number {
+	background: rgba(255, 255, 255, 0.06) !important;
+	color: var(--dark-text, #f4f6f8) !important;
+}
+
+.dark-mode .fc .fc-day-today {
+	background-color: var(--dark-elevated-2, #381a28) !important;
+	box-shadow: inset 0 0 0 2px var(--dark-amber, #ffab00) !important;
+}
+
+.dark-mode .convoca-shifts-weekend {
+	background: var(--dark-elevated, #2e1520) !important;
+}
+
+.dark-mode .convoca-shifts-past-day.convoca-shifts-weekend {
+	background: var(--dark-bg, #1a0b16) !important;
+}
