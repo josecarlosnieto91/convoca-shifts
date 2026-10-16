@@ -1,3 +1,15 @@
+## [2.5.26] — 2026-10-16
+
+### Arreglado
+- **El calendario era ilegible con el tema en modo oscuro.** El plugin fijaba colores claros a mano: la
+  leyenda en `#f9f9f9` con texto `#f4f6f8` (un contraste de ~1:1, texto sobre su propio color), los fines
+  de semana en `#fffcf8` con `!important`, los días futuros en blanco y el «hoy» en amarillo. Sobre el
+  fondo oscuro del tema no se leía nada. Ahora usa los tokens del tema (`--dark-surface`, `--dark-elevated`,
+  `--dark-bg`, `--dark-text`) en un bloque `dark-mode`, sin fijar ningún color claro. Medido en las tres
+  vistas (mes, semana y lista): cero fondos claros.
+### Añadido
+- `tests/Unit/ModoOscuro*`: vigila que el estilo no vuelva a fijar colores claros para el modo oscuro.
+
 ## [2.5.25] — 2026-10-16
 
 ### Arreglado
