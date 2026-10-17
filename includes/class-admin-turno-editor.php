@@ -329,7 +329,11 @@ class Convoca_Shifts_Admin_Turno_Editor {
 		$fecha_aviso    = sanitize_text_field( $data['convoca_shifts_fecha_aviso'] ?? '' );
 		$motivo         = sanitize_textarea_field( $data['convoca_shifts_ausencia_motivo'] ?? '' );
 
-		$datetime_str = $fecha . ' ' . $hora_ini . ':00';
+		// Sin hora, «fecha . ' ' . '' . ':00'» producía «2026-10-23 :00», que no es una fecha válida:
+		// strtotime() devolvía false y el aviso salía «del  a las » (shifts#20). Se guarda una fecha
+		// completa y se anota aparte que el turno no tiene hora, para no inventarla al contarla.
+		$sin_hora     = ( '' === $hora_ini );
+		$datetime_str = $fecha . ' ' . ( $sin_hora ? '00:00:00' : $hora_ini . ':00' );
 
 		if ( $is_edit ) {
 			// Update existing post.
@@ -359,6 +363,7 @@ class Convoca_Shifts_Admin_Turno_Editor {
 
 		// Save meta.
 		update_post_meta( $post_id, '_fecha_inicio', $datetime_str );
+		update_post_meta( $post_id, '_sin_hora', $sin_hora ? 1 : 0 );
 		update_post_meta( $post_id, '_hora_fin', $hora_fin );
 		update_post_meta( $post_id, '_estado', $estado );
 		update_post_meta( $post_id, '_estado_real', $estado_real );

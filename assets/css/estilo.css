@@ -808,6 +808,34 @@
    tres vistas (Mes, Semana, Lista): cero fondos claros dentro del calendario.
    Prueba que lo fija: tests/Unit/ModoOscuroDelCalendarioTest.php
    ══════════════════════════════════════════════════════════════════════════════════════════════ */
+/* El modal de crear turno y sus piezas usaban `--wp--preset--color--blanco`, que el tema NO remapea en
+   modo oscuro: quedaba claro sobre claro (~1,08:1, medido el 16/10/2026, shifts#21). Se pintan con los
+   tokens oscuros del tema, que es de donde sale el resto del modo oscuro. */
+.dark-mode .convoca-shifts-modal-content {
+    background-color: var(--dark-elevated, #241019) !important;
+    color: var(--dark-text, #F4F6F8) !important;
+    border-color: var(--dark-border, #3a2233) !important;
+}
+.dark-mode .convoca-shifts-modal-content h2,
+.dark-mode .convoca-shifts-modal-content h3,
+.dark-mode .convoca-shifts-form-group label,
+.dark-mode .convoca-shifts-modal-content strong,
+.dark-mode .convoca-shifts-modal-content p {
+    color: var(--dark-text, #F4F6F8) !important;
+}
+.dark-mode .convoca-shifts-preset-btn,
+.dark-mode #convoca-shifts-custom-time-fields {
+    background: var(--dark-surface, #1b0d17) !important;
+    color: var(--dark-text, #F4F6F8) !important;
+    border-color: var(--dark-border, #3a2233) !important;
+}
+.dark-mode .convoca-shifts-modal-content input,
+.dark-mode .convoca-shifts-modal-content select,
+.dark-mode .convoca-shifts-modal-content textarea {
+    background: var(--dark-surface, #1b0d17) !important;
+    color: var(--dark-text, #F4F6F8) !important;
+    border-color: var(--dark-border, #3a2233) !important;
+}
 .dark-mode .convoca-shifts-leyenda {
 	background: var(--dark-surface, #241019) !important;
 	color: var(--dark-text, #f4f6f8) !important;

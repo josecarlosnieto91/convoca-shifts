@@ -610,7 +610,20 @@ function convoca_shifts_rest_apuntarse_proximo( WP_REST_Request $request ) {
 	$nombre      = ! empty( $user_info->first_name ) ? $user_info->first_name : $user_info->display_name;
 	$title       = $turno_post->post_title;
 	$fecha_turno = get_post_meta( $turno_id, '_fecha_inicio', true );
-	$date        = $fecha_turno ? wp_date( 'd/m/Y', strtotime( $fecha_turno ) ) . ' ' . __( 'a las', 'convoca-shifts' ) . ' ' . wp_date( 'H:i', strtotime( $fecha_turno ) ) : $turno_post->post_date;
+	// Antes se hacía wp_date() sobre el resultado de strtotime() SIN comprobarlo: con la fecha
+	// mal formada («2026-10-23 :00») strtotime devuelve false y el aviso salía «del  a las » (shifts#20).
+	$sin_hora = (bool) get_post_meta( $turno_id, '_sin_hora', true );
+	$ts       = $fecha_turno ? strtotime( $fecha_turno ) : false;
+	if ( $ts && ! $sin_hora ) {
+		$date = wp_date( 'd/m/Y', $ts ) . ' ' . __( 'a las', 'convoca-shifts' ) . ' ' . wp_date( 'H:i', $ts );
+	} elseif ( $ts ) {
+		// Turno sin hora: se dice el día y no se inventa una hora.
+		$date = wp_date( 'd/m/Y', $ts );
+	} elseif ( $fecha_turno && strlen( $fecha_turno ) >= 10 && false !== strtotime( substr( $fecha_turno, 0, 10 ) ) ) {
+		$date = wp_date( 'd/m/Y', strtotime( substr( $fecha_turno, 0, 10 ) ) );
+	} else {
+		$date = $turno_post->post_date;
+	}
 	wp_update_post(
 		array(
 			'ID'          => $post_id,

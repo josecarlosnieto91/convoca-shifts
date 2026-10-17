@@ -1,3 +1,17 @@
+## [2.5.27] — 2026-10-16
+
+### Arreglado
+- **El aviso salía sin fecha ni hora: «¡Te has apuntado al turno del  a las !» (issue #20).** El turno se
+  guardaba como `2026-10-23 :00` cuando la hora iba vacía —no es una fecha válida—, y el aviso hacía
+  `wp_date()` sobre el resultado de `strtotime()` **sin comprobarlo**: `false` entra, cadena vacía sale.
+  Ahora un turno sin hora se guarda como fecha completa con `_sin_hora` marcado, y el aviso dice el día
+  y **no inventa una hora**; si la fecha viene mal formada, cae al título del turno en vez de imprimir
+  espacios en blanco.
+- **El modal de crear turno quedaba claro sobre claro en modo oscuro (~1,08:1, issue #21).** Usaba
+  `--wp--preset--color--blanco`, un preset que el tema no remapea en `.dark-mode`, con el texto en
+  `antracita`, que en oscuro vale #F4F6F8. Ahora el modal, sus botones de preset, las etiquetas, los
+  campos y el bloque de hora personalizada se pintan con los tokens oscuros del tema.
+
 ## [2.5.26] — 2026-10-16
 
 ### Arreglado
