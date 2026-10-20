@@ -3,7 +3,7 @@
  * Plugin Name:       Convoca Shifts
  * Plugin URI:        https://getconvoca.app
  * Description:       Volunteer shift management for community centers.
- * Version: 2.5.28
+ * Version: 2.5.29
  * Requires at least: 6.4
  * Requires PHP:      8.1
  * Tested up to:      7.1
@@ -13,7 +13,7 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       convoca-shifts
  * Domain Path:       /languages
- * Requires Plugins:  convoca-core, convoca-members
+ * Requires Plugins:  convoca-core
  */
 
 namespace Convoca\Shifts;
@@ -115,7 +115,7 @@ if ( ! class_exists( '\\Convoca\\Core\\Utils' ) ) {
 add_action(
 	'admin_enqueue_scripts',
 	function ( string $hook ): void {
-		wp_register_style( 'convoca-shifts-style', CONVOCA_SHIFTS_URL . 'assets/css/estilo.css', array(), CONVOCA_SHIFTS_VERSION );
+		wp_register_style( 'convoca-shifts-style', CONVOCA_SHIFTS_URL . 'assets/css/estilo.css', array( 'convoca-core' ), CONVOCA_SHIFTS_VERSION );
 		$screen = get_current_screen();
 		if ( $screen && in_array( $screen->post_type, array( 'centro_turno' ), true ) ) {
 			wp_enqueue_style( 'convoca-shifts-style' );

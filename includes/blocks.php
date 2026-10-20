@@ -28,12 +28,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * In the frontend: load if CST blocks/shortcodes are in content, widgets, or forced via filter.
  */
 function convoca_shifts_enqueue_block_assets() {
-	// Always load in editor context (block previews need the scripts).
-	if ( is_admin() ) {
-		wp_enqueue_style( 'convoca-shifts-style' );
-		wp_enqueue_script( 'convoca-shifts-calendario' );
-		return;
-	}
+	// Aquí había una rama `is_admin()` que no se ejecutaba nunca: `wp_enqueue_scripts`
+	// solo se dispara en el front. El editor recibe los estilos por el `style` del bloque
+	// (ver `convoca_shifts_register_blocks()`).
 
 	// Frontend: robust detection.
 	if ( convoca_shifts_should_load_assets() ) {
@@ -53,13 +50,22 @@ function convoca_shifts_should_load_assets() {
 		return true;
 	}
 
-	$convoca_shifts_blocks     = array(
+	$convoca_shifts_blocks = array(
 		'centro-social/calendario',
 		'centro-social/boton-apuntarse',
 		'centro-social/resumen',
 		'centro-social/proximos-turnos',
 	);
-	$convoca_shifts_shortcodes = array( 'calendario_centro', 'boton_apuntarse', 'resumen_turnos', 'proximos_turnos' );
+	// Los shortcodes REALES (registrados en `includes/shortcodes.php`). Antes esta lista
+	// llevaba nombres sin prefijo que no existen: `has_shortcode()` devolvía siempre false
+	// y una página con `[convoca_calendario]` dependía del encolado tardío del shortcode.
+	$convoca_shifts_shortcodes = array(
+		'convoca_calendario',
+		'convoca_boton_apuntarse',
+		'convoca_resumen_turnos',
+		'convoca_proximos_turnos',
+		'convoca_suscripcion_turnos',
+	);
 
 	// 2. Check current post content (blocks and shortcodes).
 	if ( is_singular() ) {
@@ -154,6 +160,10 @@ function convoca_shifts_register_blocks() {
 		'apiVersion'    => 3,
 		'category'      => 'convoca-turnos',
 		'editor_script' => 'convoca-shifts-blocks-js', // This links the JS to the blocks.
+		// La previsualización del bloque la pinta el servidor con el mismo markup que el
+		// front, así que necesita la misma hoja: sin esto el calendario se veía desnudo
+		// en el editor (la rama `is_admin()` de arriba era código muerto).
+		'style'         => 'convoca-shifts-style',
 	);
 
 	// 1. Calendario.

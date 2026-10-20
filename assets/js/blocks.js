@@ -29,13 +29,13 @@
     }
 
     // Register simple blocks
-    registerCSTBlock( 'calendario', 'CST: Calendario', 'calendar-alt' );
-    registerCSTBlock( 'boton-apuntarse', 'CST: Botón Apuntarse', 'plus-alt' );
+    registerCSTBlock( 'calendario', 'Convoca: Calendario', 'calendar-alt' );
+    registerCSTBlock( 'boton-apuntarse', 'Convoca: Botón Apuntarse', 'plus-alt' );
 
     // Resumen Semanal — with week selector
     blocks.registerBlockType( 'centro-social/resumen', {
         apiVersion: 3,
-        title: 'CST: Resumen Semanal',
+        title: 'Convoca: Resumen Semanal',
         icon: 'chart-bar',
         category: 'convoca-turnos',
         attributes: {
@@ -80,7 +80,7 @@
     // Próximos Turnos — with InspectorControls for 'cantidad'
     blocks.registerBlockType( 'centro-social/proximos-turnos', {
         apiVersion: 3,
-        title: 'CST: Próximos Turnos',
+        title: 'Convoca: Próximos Turnos',
         icon: 'list-view',
         category: 'convoca-turnos',
         attributes: {

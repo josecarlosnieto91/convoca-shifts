@@ -1,3 +1,29 @@
+## [2.5.29] — 2026-10-20
+
+### Arreglado
+
+- **La detección de shortcodes usaba nombres que no existen.** La lista era
+  `calendario_centro, boton_apuntarse, resumen_turnos, proximos_turnos`; los shortcodes reales
+  llevan prefijo `convoca_`. `has_shortcode()` devolvía siempre `false`, así que una página con
+  `[convoca_calendario]` dependía del encolado tardío del shortcode y su hoja acababa en el footer.
+- **El editor enseñaba el calendario sin estilos.** En `wp_enqueue_scripts` había una rama
+  `if ( is_admin() )` que no se ejecuta nunca (ese hook solo dispara en el front) y los bloques no
+  declaraban `style`: la previsualización SSR se pintaba desnuda. Ahora `$common_args` declara el
+  estilo y la rama muerta está fuera.
+- **`dashicons` viajaba en todas las páginas del sitio.** Se encolaba en `init`; el único icono del
+  front es el del botón de apuntarse, que ya lo encola.
+- **Tres clases del front sin ninguna regla**: `convoca-shifts-suscripcion`, su `__url` y
+  `convoca-shifts-proximos-lista` (la URL del `.ics` salía como texto suelto).
+
+### Cambiado
+
+- La hoja depende ya del handle `convoca-core` (la capa común no llegaba por dependencia).
+- Los títulos de bloque dejan de llamarse `CST:` y pasan a `Convoca:` (se veían así en el insertador
+  de cualquier instalación).
+- `Requires Plugins` deja de exigir `convoca-members`: el código no usa ni una clase ni una función
+  de Members.
+- El CSV de ejemplo de la prueba del importador usa nombres neutros.
+
 ## [2.5.28] — 2026-10-20
 
 ### Cambiado

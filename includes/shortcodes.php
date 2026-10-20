@@ -31,8 +31,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action( 'init', 'Convoca\Shifts\convoca_shifts_register_scripts' );
 
 function convoca_shifts_register_scripts() {
-	wp_register_style( 'convoca-shifts-style', CONVOCA_SHIFTS_URL . 'assets/css/estilo.css', array(), CONVOCA_SHIFTS_VERSION );
-	wp_enqueue_style( 'dashicons' ); // Needed for buttons/icons.
+	wp_register_style( 'convoca-shifts-style', CONVOCA_SHIFTS_URL . 'assets/css/estilo.css', array( 'convoca-core' ), CONVOCA_SHIFTS_VERSION );
+	// `dashicons` se encola donde de verdad se usa un icono: el botón de apuntarse
+	// (`convoca_shifts_boton_apuntarse`). Antes se encolaba aquí, en `init`, y la hoja de
+	// dashicons viajaba en TODAS las páginas del sitio aunque no hubiera nada de Convoca.
+	// (El icono del menú de admin lo sirve WordPress, que ya carga dashicons allí.)
 	// phpcs:ignore PluginCheck.CodeAnalysis.EnqueuedResourceOffloading.OffloadedContent -- FullCalendar CDN is required for the calendar feature.
 	wp_register_script( 'fullcalendar-core', 'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js', array(), '6.1.15', true );
 	wp_register_script( 'convoca-shifts-calendario', CONVOCA_SHIFTS_URL . 'assets/js/calendario.js', array( 'fullcalendar-core', 'jquery' ), CONVOCA_SHIFTS_VERSION, true );
@@ -177,6 +180,7 @@ function convoca_shifts_boton_apuntarse() {
 
 	wp_enqueue_script( 'convoca-shifts-calendario' ); // reuse the script for data.
 	wp_enqueue_style( 'convoca-shifts-style' );
+	wp_enqueue_style( 'dashicons' ); // El único icono de dashicons del front: el del botón.
 
 	ob_start();
 	?>

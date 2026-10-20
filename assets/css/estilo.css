@@ -881,3 +881,56 @@
 .dark-mode .convoca-shifts-past-day.convoca-shifts-weekend {
 	background: var(--dark-bg, #1a0b16) !important;
 }
+
+
+/* ── Caja de suscripción y lista de próximos turnos ──────────────── */
+/* Las tres clases existían en el markup y no tenían ninguna regla en el ecosistema:
+   la URL del .ics salía como texto suelto y la lista de próximos turnos, como una
+   lista sin viñetas ni espaciado. */
+
+.convoca-shifts-suscripcion {
+	margin: 1.5rem 0;
+}
+
+.convoca-shifts-suscripcion h3 {
+	margin-top: 0;
+}
+
+.convoca-shifts-suscripcion__url {
+	display: block;
+	padding: 0.6rem 0.8rem;
+	background: rgba(0, 0, 0, 0.04);
+	border-radius: var(--wp--custom--radius--small, 8px);
+	font-size: 0.8125rem;
+	line-height: 1.4;
+	overflow-wrap: anywhere;
+	word-break: break-all;
+}
+
+.dark-mode .convoca-shifts-suscripcion__url {
+	background: rgba(255, 255, 255, 0.08);
+	color: inherit;
+}
+
+.convoca-shifts-proximos-lista {
+	list-style: none;
+	margin: 0 0 1rem;
+	padding: 0;
+}
+
+.convoca-shifts-proximos-lista li {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem 1rem;
+	align-items: baseline;
+	padding: 0.6rem 0;
+	border-bottom: 1px solid var(--wp--preset--color--gris-medio, #e0e0e0);
+}
+
+.convoca-shifts-proximos-lista li:last-child {
+	border-bottom: 0;
+}
+
+.dark-mode .convoca-shifts-proximos-lista li {
+	border-bottom-color: rgba(255, 255, 255, 0.12);
+}

@@ -34,8 +34,8 @@ class ImportadorTest extends TestCase {
 
 	public function test_lee_una_plantilla_sencilla(): void {
 		$csv  = "fecha,hora_inicio,hora_fin,actividad,monitor,responsable,estado,apoyo\n"
-			. "05/11/2026,17:00,21:00,Huerto,jose.nieto,,abierto_disponible,0\n"
-			. "2026-11-06,10:00,13:00,,,jose.nieto,cerrado,1\n";
+			. "05/11/2026,17:00,21:00,Huerto,socia-ejemplo,,abierto_disponible,0\n"
+			. "2026-11-06,10:00,13:00,,,socia-ejemplo,cerrado,1\n";
 		$leido = $this->llamar( 'parsear', array( $csv ) );
 
 		$this->assertSame( array(), $leido['errores'] );
@@ -51,7 +51,7 @@ class ImportadorTest extends TestCase {
 	public function test_lee_lo_que_guarda_excel_en_espanol(): void {
 		// Excel en español guarda con punto y coma, y con BOM al principio.
 		$csv  = "\xEF\xBB\xBFfecha;hora_inicio;hora_fin;actividad;monitor;responsable;estado;apoyo\n"
-			. "05/11/2026;9:00;13:00;;;jose.nieto;;0\n";
+			. "05/11/2026;9:00;13:00;;;socia-ejemplo;;0\n";
 		$leido = $this->llamar( 'parsear', array( $csv ) );
 
 		$this->assertSame( array(), $leido['errores'], 'El BOM no puede comerse la primera columna' );
