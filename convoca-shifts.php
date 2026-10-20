@@ -306,3 +306,8 @@ add_action(
 		}
 	}
 );
+
+/*
+ * Diagnóstico compartido: Turnos aporta sus comprobaciones a la página Salud del núcleo.
+ */
+add_filter( 'convoca_system_checks', '\Convoca\Shifts\convoca_shifts_aportar_checks', 10, 2 );

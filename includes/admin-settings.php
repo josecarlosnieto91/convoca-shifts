@@ -268,6 +268,35 @@ function convoca_shifts_render_status_tab() {
 /**
  * Get system checks for Turnos.
  */
+/**
+ * Aporta las comprobaciones de Turnos a la página Salud del núcleo (filtro `convoca_system_checks`).
+ *
+ * El prefijo «Turnos: » y el mapeo de claves los ponía el núcleo; ahora los pone el módulo.
+ *
+ * @param array<string, array<int, array<string, string>>> $bloques Bloques ya aportados.
+ * @param bool                                             $force   Si se ignoran las cachés.
+ * @return array<string, array<int, array<string, string>>>
+ */
+function convoca_shifts_aportar_checks( array $bloques, $force = false ): array {
+	$items = array();
+
+	foreach ( convoca_shifts_get_system_checks( (bool) $force ) as $c ) {
+		if ( ! is_array( $c ) ) {
+			continue;
+		}
+		$items[] = array(
+			'title'   => 'Turnos: ' . ( $c['title'] ?? '' ),
+			'status'  => (string) ( $c['status'] ?? 'warning' ),
+			'message' => (string) ( $c['message'] ?? '' ),
+			'fix'     => (string) ( $c['fix'] ?? '' ),
+		);
+	}
+
+	$bloques['turnos'] = $items;
+
+	return $bloques;
+}
+
 function convoca_shifts_get_system_checks( bool $force = false ) {
 	$checks = array();
 
