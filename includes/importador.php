@@ -42,8 +42,8 @@ class Importador {
 			"\n",
 			array(
 				'fecha,hora_inicio,hora_fin,actividad,monitor,responsable,estado,apoyo',
-				'05/11/2026,17:00,21:00,Huerto comunitario,jose.nietovoluntario414,,abierto_disponible,0',
-				'2026-11-06,10:00,13:00,,,jose.nietovoluntario414,cerrado,1',
+				'05/11/2026,17:00,21:00,Huerto comunitario,monitor-ejemplo,,abierto_disponible,0',
+				'2026-11-06,10:00,13:00,,,responsable-ejemplo,cerrado,1',
 			)
 		) . "\n";
 	}

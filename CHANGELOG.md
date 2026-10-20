@@ -1,3 +1,9 @@
+## [2.5.28] — 2026-10-20
+
+### Cambiado
+- La plantilla CSV de importación ya no trae un identificador de persona real en las columnas de
+  monitor y responsable: usa marcadores neutros (`monitor-ejemplo`, `responsable-ejemplo`).
+
 ## [2.5.27] — 2026-10-16
 
 ### Arreglado
