@@ -361,6 +361,8 @@ class Convoca_Shifts_Admin_Turno_Editor {
 		update_post_meta( $post_id, '_estado', $estado );
 		update_post_meta( $post_id, '_estado_real', $estado_real );
 		update_post_meta( $post_id, '_necesita_apoyo', $necesita_apoyo );
+		// Sólo se asigna a quien está en la lista; si no, se conserva lo que había.
+		$id_responsable = Personas_Asignables::id_a_guardar( (int) $id_responsable, 'voluntario', (int) get_post_meta( $post_id, '_id_responsable', true ) );
 		update_post_meta( $post_id, '_id_responsable', $id_responsable );
 		update_post_meta( $post_id, '_convoca_fecha_aviso', $fecha_aviso );
 		update_post_meta( $post_id, '_convoca_ausencia_motivo', $motivo );
@@ -374,7 +376,7 @@ class Convoca_Shifts_Admin_Turno_Editor {
 		$actividad_term = (int) ( $data['convoca_shifts_actividad_term'] ?? 0 );
 		wp_set_post_terms( $post_id, $actividad_term > 0 ? array( $actividad_term ) : array(), 'convoca_shifts_actividad' );
 
-		$monitor_user = (int) ( $data['convoca_shifts_monitor_user'] ?? 0 );
+		$monitor_user = Personas_Asignables::id_a_guardar( (int) ( $data['convoca_shifts_monitor_user'] ?? 0 ), 'monitor', (int) get_post_meta( $post_id, '_monitor', true ) );
 		update_post_meta( $post_id, '_monitor', $monitor_user > 0 ? $monitor_user : '' );
 
 		// Sync the post (title, status) using existing function.

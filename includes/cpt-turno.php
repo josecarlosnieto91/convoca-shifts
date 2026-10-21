@@ -459,13 +459,14 @@ function convoca_shifts_save_turno_meta( $post_id ) {
 	}
 
 	if ( isset( $_POST['convoca_shifts_monitor_user'] ) ) {
-		$user_id = (int) $_POST['convoca_shifts_monitor_user'];
+		$user_id = Personas_Asignables::id_a_guardar( (int) $_POST['convoca_shifts_monitor_user'], 'monitor', (int) get_post_meta( $post_id, '_monitor', true ) );
 		update_post_meta( $post_id, '_monitor', $user_id > 0 ? $user_id : '' );
 	}
 
 	if ( isset( $_POST['convoca_shifts_id_responsable'] ) ) {
-		$new_id = (int) $_POST['convoca_shifts_id_responsable'];
 		$old_id = (int) get_post_meta( $post_id, '_id_responsable', true );
+		// Sólo se asigna a quien está en la lista; si no, se queda lo que había (no se borra nada).
+		$new_id = Personas_Asignables::id_a_guardar( (int) $_POST['convoca_shifts_id_responsable'], 'voluntario', $old_id );
 
 		if ( $new_id !== $old_id ) {
 			update_post_meta( $post_id, '_id_responsable', $new_id );
@@ -738,8 +739,8 @@ function convoca_shifts_save_turno_quick_edit( $post_id, $post ) {
 	}
 
 	if ( isset( $_POST['convoca_shifts_id_responsable'] ) ) {
-		$new_id = (int) $_POST['convoca_shifts_id_responsable'];
 		$old_id = (int) get_post_meta( $post_id, '_id_responsable', true );
+		$new_id = Personas_Asignables::id_a_guardar( (int) $_POST['convoca_shifts_id_responsable'], 'voluntario', $old_id );
 
 		if ( $new_id !== $old_id ) {
 			update_post_meta( $post_id, '_id_responsable', $new_id );
@@ -1347,7 +1348,11 @@ function convoca_shifts_insert_turno( $args ) {
 	if ( $post_id ) {
 		wp_publish_post( $post_id );
 		update_post_meta( $post_id, '_estado', $a['estado'] );
-		update_post_meta( $post_id, '_id_responsable', $a['id_responsable'] );
+		update_post_meta(
+			$post_id,
+			'_id_responsable',
+			Personas_Asignables::id_a_guardar( (int) $a['id_responsable'], 'voluntario', (int) get_post_meta( $post_id, '_id_responsable', true ) )
+		);
 		// Contract meta: _fecha_inicio = full datetime (list/REST order by it), _hora_fin = HH:MM only.
 		update_post_meta( $post_id, '_fecha_inicio', $post_date );
 		update_post_meta( $post_id, '_hora_fin', $a['h_end'] );
@@ -1357,7 +1362,8 @@ function convoca_shifts_insert_turno( $args ) {
 			wp_set_object_terms( $post_id, (int) $a['actividad_id'], 'convoca_shifts_actividad' );
 		}
 		if ( $a['monitor_id'] ) {
-			update_post_meta( $post_id, '_monitor', (int) $a['monitor_id'] > 0 ? (int) $a['monitor_id'] : '' );
+			$monitor_id = Personas_Asignables::id_a_guardar( (int) $a['monitor_id'], 'monitor', (int) get_post_meta( $post_id, '_monitor', true ) );
+			update_post_meta( $post_id, '_monitor', $monitor_id > 0 ? $monitor_id : '' );
 		}
 	}
 

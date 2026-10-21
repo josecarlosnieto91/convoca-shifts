@@ -1,3 +1,20 @@
+## [2.5.32] — 2026-10-21
+
+### Añadido
+
+- **La asignación se valida al guardar, no sólo al pintar.** El selector ya sólo ofrecía personas de la
+  lista, pero un POST a mano podía traer cualquier id. Ahora los siete sitios que escriben `_monitor` y
+  `_id_responsable` pasan por `Personas_Asignables::id_a_guardar()`: se guarda el id sólo si está en la
+  lista, y si no se **conserva lo que había** (un rechazo no borra una asignación anterior).
+- **Liberar un turno se puede siempre**, también sin gestión de personas: quitar a alguien no es
+  asignarlo, y bloquearlo dejaría turnos con un monitor que ya no debería estar. Los dos caminos que
+  ponen el responsable a 0 no se tocan.
+
+### Pruebas
+
+- 3 casos nuevos: el id colado se rechaza, el rechazo no borra la asignación previa y liberar funciona
+  en los dos contextos.
+
 ## [2.5.31] — 2026-10-21
 
 ### Cambiado

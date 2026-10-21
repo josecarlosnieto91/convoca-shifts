@@ -122,6 +122,34 @@ class PersonasAsignablesTest extends TestCase {
 		$this->assertSame( array(), Personas_Asignables::lista( 'voluntario' ) );
 	}
 
+	public function test_id_a_guardar_no_deja_asignar_a_quien_no_esta_en_la_lista(): void {
+		$this->aportar(
+			static function () {
+				return array( array( 'id' => 7, 'nombre' => 'Ana' ) );
+			}
+		);
+
+		$this->assertSame( 7, Personas_Asignables::id_a_guardar( 7, 'voluntario' ), 'quien está en la lista, entra' );
+		$this->assertSame( 0, Personas_Asignables::id_a_guardar( 8, 'voluntario' ), 'un id colado por POST se rechaza' );
+	}
+
+	public function test_id_a_guardar_conserva_lo_que_habia_si_el_nuevo_no_vale(): void {
+		$this->aportar(
+			static function () {
+				return array( array( 'id' => 7, 'nombre' => 'Ana' ) );
+			}
+		);
+
+		$this->assertSame( 7, Personas_Asignables::id_a_guardar( 8, 'voluntario', 7 ), 'el rechazo no borra la asignación anterior' );
+	}
+
+	public function test_liberar_el_turno_se_puede_siempre(): void {
+		// Sin nadie que aporte personas —o sea, en un sitio sin gestión de personas— quitar a alguien del
+		// turno tiene que seguir siendo posible: bloquearlo dejaría turnos con un monitor que no toca.
+		$this->assertSame( 0, Personas_Asignables::id_a_guardar( 0, 'voluntario', 7 ) );
+		$this->assertSame( 0, Personas_Asignables::id_a_guardar( 0, 'monitor', 3 ) );
+	}
+
 	public function test_la_nota_dice_por_que_no_hay_nadie(): void {
 		$this->assertStringContainsString( 'No hay personas asignables', Personas_Asignables::nota_sin_personas() );
 	}

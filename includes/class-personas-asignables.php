@@ -124,6 +124,27 @@ class Personas_Asignables {
 	}
 
 	/**
+	 * Id que se puede guardar en un meta de asignación.
+	 *
+	 * Es la guarda de los escritores de `_monitor` y `_id_responsable`: aunque el selector sólo ofrezca
+	 * personas de la lista, un POST a mano podría traer cualquier id. **Liberar siempre se puede**
+	 * (quitar a alguien no es asignarlo: bloquearlo dejaría turnos con un monitor que ya no debería
+	 * estar); asignar, sólo si la persona está en la lista.
+	 *
+	 * @param int    $user_id  Id propuesto.
+	 * @param string $contexto 'voluntario' o 'monitor'.
+	 * @param int    $actual   Lo que ya estaba guardado; se conserva si el propuesto no vale.
+	 * @return int Id que se guarda.
+	 */
+	public static function id_a_guardar( int $user_id, string $contexto, int $actual = 0 ): int {
+		if ( $user_id <= 0 ) {
+			return 0;
+		}
+
+		return self::permitida( $user_id, $contexto ) ? $user_id : $actual;
+	}
+
+	/**
 	 * Texto para la pantalla cuando nadie aporta personas.
 	 *
 	 * @return string
