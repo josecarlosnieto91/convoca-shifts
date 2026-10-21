@@ -1,3 +1,9 @@
+## [2.5.30] — 2026-10-21
+
+### Cambiado
+
+- **Aporta sus comprobaciones de diagnóstico** al núcleo por el filtro `convoca_system_checks`.
+
 ## [2.5.29] — 2026-10-20
 
 ### Arreglado
