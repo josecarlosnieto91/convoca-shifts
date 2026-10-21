@@ -1,3 +1,22 @@
+## [2.5.33] — 2026-10-21
+
+### Cambiado
+
+- **Shifts deja de decidir quién acredita horas.** `Hour_Sync` miraba el rol `voluntario_aprobado`, la
+  capacidad `gestionar_mis_turnos` y un meta para saber si acreditar: eso es administrar personas y además
+  acreditaba en sitios donde no hay gestión de personas. Ahora pregunta a la puerta del libro
+  (`Hour_Ledger::puede_acreditar_horas()`), que por defecto dice **no**. El turno se marca realizado
+  igual; las horas no se acreditan.
+- **Revocar sigue permitido siempre**: si un turno pasa a «no asistió», las horas que hubiera hay que
+  quitarlas, y eso es limpieza, no acreditación.
+
+### Pruebas
+
+- `HourSyncPuertaTest` (3 casos) blinda el orden —la puerta ANTES de escribir en el libro—, que revocar
+  no quede detrás de ella, y que no vuelva a nombrarse el rol ni la capacidad en este camino. Probado en
+  negativo: sin la puerta, el test cae (2 fallos).
+- El doble de `Convoca\Core\Hour_Ledger` de los tests nace con la puerta **cerrada**, como el de verdad.
+
 ## [2.5.32] — 2026-10-21
 
 ### Añadido

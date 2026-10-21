@@ -254,6 +254,26 @@ namespace {
 
     if (!\function_exists('add_action')) { function add_action($h, $c, $p = 10, $a = 1) { return true; } }
     if (!\function_exists('add_filter')) { function add_filter($h, $c, $p = 10, $a = 1) { return true; } }
+    // El libro de horas vive en Convoca Core, que estos tests unitarios no cargan. Se dobla con la PUERTA
+    // CERRADA por defecto, que es el valor real por defecto del núcleo: así un test que acredite sin
+    // abrirla se está engañando. Para abrirla: $GLOBALS['__horas_puerta'] = true.
+    if (!class_exists('Convoca\Core\Hour_Ledger')) {
+        eval('namespace Convoca\Core; class Hour_Ledger {
+            const ORIGEN_TURNO = "turno";
+            public static function credit( $origen, $origen_id, $user_id, $hours, array $args = array() ) {
+                return empty( $GLOBALS["__horas_puerta"] ) ? 0 : 1;
+            }
+            public static function revoke( $origen, $origen_id, $user_id ) { return true; }
+            public static function puede_acreditar_horas( int $user_id ): bool {
+                return !empty( $GLOBALS["__horas_puerta"] ) && $user_id > 0;
+            }
+        }');
+    }
+
+    // El libro de horas vive en Core, que estos tests no cargan: doble con la puerta CERRADA por
+    // defecto (el valor real del núcleo). Se abre con $GLOBALS['__horas_puerta'] = true.
+    require_once __DIR__ . '/dobles/hour-ledger.php';
+
     // Los filtros se pueden registrar desde los tests con $GLOBALS['__shifts_filtros'][ $hook ] = callable,
     // para poder probar los contratos (p. ej. las personas asignables) sin WordPress.
     if (!\function_exists('apply_filters')) {

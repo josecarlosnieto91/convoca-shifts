@@ -48,9 +48,13 @@ class Hour_Sync {
 			return;
 		}
 
-		// Check if user is a volunteer.
-		$is_volunteer = in_array( 'voluntario_aprobado', (array) $user->roles, true ) || $user->has_cap( 'gestionar_mis_turnos' ) || get_user_meta( $user_id, '_convoca_es_voluntario', true );
-		if ( ! $is_volunteer ) {
+		// Quién acredita horas lo dice la puerta del libro, no un rol leído desde aquí: Shifts no administra
+		// miembros ni decide quién es voluntario (eso son las fichas y las aprobaciones). Por defecto la
+		// puerta está CERRADA, así que en un sitio sin gestión de personas el turno se marca realizado y
+		// no se acredita nada. Revocar sí se permite siempre: si un turno pasa a «no asistió», las horas
+		// que hubiera hay que quitarlas, y eso es limpieza, no acreditación.
+
+		if ( 'no_asistio' !== $status && ! \Convoca\Core\Hour_Ledger::puede_acreditar_horas( $user_id ) ) {
 			return;
 		}
 

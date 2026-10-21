@@ -64,6 +64,7 @@ namespace Convoca\Core {
 		const ESTADO_ANULADA = 'anulada';
 
 		public static function credit( string $origen, int $origen_id, int $user_id, float $hours, array $args = array() ): int { return 0; }
+		public static function puede_acreditar_horas( int $user_id ): bool { return false; }
 
 		public static function revoke( string $origen, int $origen_id, string $motivo = '' ): bool { return true; }
 
