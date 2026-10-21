@@ -254,7 +254,16 @@ namespace {
 
     if (!\function_exists('add_action')) { function add_action($h, $c, $p = 10, $a = 1) { return true; } }
     if (!\function_exists('add_filter')) { function add_filter($h, $c, $p = 10, $a = 1) { return true; } }
-    if (!\function_exists('apply_filters')) { function apply_filters($h, $v, ...$a) { return $v; } }
+    // Los filtros se pueden registrar desde los tests con $GLOBALS['__shifts_filtros'][ $hook ] = callable,
+    // para poder probar los contratos (p. ej. las personas asignables) sin WordPress.
+    if (!\function_exists('apply_filters')) {
+        function apply_filters($h, $v, ...$a) {
+            if (isset($GLOBALS['__shifts_filtros'][$h]) && is_callable($GLOBALS['__shifts_filtros'][$h])) {
+                return call_user_func($GLOBALS['__shifts_filtros'][$h], $v, ...$a);
+            }
+            return $v;
+        }
+    }
     // has_action() se usa para no apilar hooks duplicados; sin stub, el motor
     // de sincronización de turnos revienta en los tests.
     if (!\function_exists('has_action')) { function has_action($h, $c = false) { return false; } }

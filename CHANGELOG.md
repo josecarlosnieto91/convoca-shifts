@@ -1,3 +1,25 @@
+## [2.5.31] — 2026-10-21
+
+### Cambiado
+
+- **Shifts deja de administrar miembros.** No crea roles ni les añade capacidades: el vocabulario de
+  personas (`voluntario_aprobado`, `monitor_actividad`) lo define y lo crea **Convoca Core**, y quién es
+  voluntario o monitor lo dicen sus fichas y aprobaciones. Antes Shifts creaba el rol «por si faltaba», y
+  eso era lo que permitía asignar gente a los turnos en un sitio **sin** gestión de personas.
+- **Las personas se piden, no se buscan.** Los ocho sitios que hacían `get_users()` por rol o por
+  capacidad (tres selectores de voluntario, dos de monitor, la auditoría de horas y las dos pantallas de
+  estadísticas) usan ahora el contrato `convoca_shifts_personas_asignables` (clase
+  `Personas_Asignables`), con **valor por defecto vacío**. Sin nadie que lo aporte no hay selector, no se
+  puede asignar y no hay horas que auditar, que es la regla de producto.
+- La nota en la pantalla del turno explica por qué no hay a nadie a quien asignar en vez de mostrar un
+  desplegable vacío, y el aviso del rol manda a Convoca Core, que es quien lo mantiene.
+
+### Pruebas
+
+- 8 casos nuevos en `PersonasAsignablesTest`: por defecto no hay nadie, dos contextos que no se mezclan,
+  `permitida()` sólo acepta lo que está en la lista, admite ids sueltos y objetos, no duplica, y lo que
+  devuelva el filtro no puede romper la pantalla.
+
 ## [2.5.30] — 2026-10-21
 
 ### Cambiado

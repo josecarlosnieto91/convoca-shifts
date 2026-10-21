@@ -136,13 +136,9 @@ class Convoca_Shifts_Admin_Turno_Editor {
 		$current_actividad = ! empty( $term_actividad ) ? $term_actividad[0] : 0;
 		$current_monitor   = $is_edit ? (int) get_post_meta( $post_id, '_monitor', true ) : 0;
 
-		// Get approved volunteers.
-		$voluntarios = get_users(
-			array(
-				'role'    => 'voluntario_aprobado',
-				'orderby' => 'display_name',
-			)
-		);
+		// Las personas las aporta quien las gestiona; Shifts no pregunta por roles.
+		$voluntarios    = Personas_Asignables::lista( 'voluntario' );
+		$aviso_personas = Personas_Asignables::hay( 'voluntario' ) ? '' : Personas_Asignables::nota_sin_personas();
 
 		$all_actividades = get_terms(
 			array(
@@ -151,13 +147,7 @@ class Convoca_Shifts_Admin_Turno_Editor {
 				'orderby'    => 'name',
 			)
 		);
-		$all_monitores   = get_users(
-			array(
-				'role__in' => array( 'administrator', 'monitor_actividad' ),
-				'orderby'  => 'display_name',
-				'fields'   => array( 'ID', 'display_name' ),
-			)
-		);
+		$all_monitores   = Personas_Asignables::lista( 'monitor' );
 
 		?>
 		<div class="wrap" style="max-width: 800px; margin: 20px auto;">
@@ -202,10 +192,13 @@ class Convoca_Shifts_Admin_Turno_Editor {
 								$nombre = ! empty( $v->first_name ) ? $v->first_name : $v->display_name;
 								?>
 								<option value="<?php echo (int) $v->ID; ?>" <?php selected( $id_responsable, $v->ID ); ?>>
-									<?php echo esc_html( $nombre . ' (@' . $v->user_login . ')' ); ?>
+									<?php echo esc_html( '' !== $v->user_login ? $nombre . ' (@' . $v->user_login . ')' : $nombre ); ?>
 								</option>
 							<?php endforeach; ?>
 						</select>
+						<?php if ( $aviso_personas ) : ?>
+							<p class="description" style="margin-top:.4rem;"><?php echo esc_html( $aviso_personas ); ?></p>
+						<?php endif; ?>
 					</div>
 
 					<h3 style="grid-column:1/-1;margin-top:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--bde-border,#ccc);">

@@ -366,13 +366,8 @@ function convoca_shifts_turno_opciones_html( $post ) {
 		$estado_real = 'pendiente';
 	}
 
-	// Get only approved volunteers for the selector.
-	$voluntarios = get_users(
-		array(
-			'role'    => 'voluntario_aprobado',
-			'orderby' => 'display_name',
-		)
-	);
+	// Las personas del selector las aporta quien las gestiona; sin aportantes, no hay selector.
+	$voluntarios = Personas_Asignables::lista( 'voluntario' );
 
 	wp_nonce_field( 'convoca_shifts_turno_meta_action', 'convoca_shifts_turno_meta_nonce' );
 	?>
@@ -421,12 +416,7 @@ function convoca_shifts_turno_opciones_html( $post ) {
 		<select id="convoca_shifts_monitor_select" name="convoca_shifts_monitor_user" style="width:100%;">
 			<option value="0"><?php esc_html_e( '— Sin monitor —', 'convoca-shifts' ); ?></option>
 			<?php
-			$monitor_users = get_users(
-				array(
-					'role__in' => array( 'administrator', 'monitor_actividad' ),
-					'orderby'  => 'display_name',
-				)
-			);
+			$monitor_users = Personas_Asignables::lista( 'monitor' );
 			foreach ( $monitor_users as $mu ) :
 				$sel = (int) $current_monitor === $mu->ID ? 'selected="selected"' : '';
 				?>
@@ -658,13 +648,8 @@ function convoca_shifts_display_quick_edit_turno( $column_name, $post_type ) {
 		return;
 	}
 
-	// Get all users who can manage turns.
-	$voluntarios = get_users(
-		array(
-			'role__in' => array( 'administrator', 'voluntario_aprobado' ),
-			'orderby'  => 'display_name',
-		)
-	);
+	// Las personas las aporta quien las gestiona; Shifts no pregunta por roles.
+	$voluntarios = Personas_Asignables::lista( 'voluntario' );
 	?>
 	<fieldset class="inline-edit-col-right">
 		<div class="inline-edit-col">

@@ -61,7 +61,8 @@ class Admin_Auditoria_Horas {
 			echo '<div class="convoca-alert convoca-alert--success" style="display:block;margin-bottom:20px;"><p>' . esc_html__( 'Horas recalculadas correctamente.', 'convoca-shifts' ) . '</p></div>';
 		}
 
-		$users = get_users( array( 'role__in' => array( 'voluntario_aprobado', 'administrator' ) ) );
+		// Sin quien aporte personas no hay a quién auditar horas (sin gestión de personas no se acreditan).
+		$users = Personas_Asignables::lista( 'voluntario' );
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Auditoría de Horas - Voluntariado', 'convoca-shifts' ); ?></h1>

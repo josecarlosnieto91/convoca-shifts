@@ -3,7 +3,7 @@
  * Plugin Name:       Convoca Shifts
  * Plugin URI:        https://getconvoca.app
  * Description:       Volunteer shift management for community centers.
- * Version: 2.5.30
+ * Version: 2.5.31
  * Requires at least: 6.4
  * Requires PHP:      8.1
  * Tested up to:      7.1
@@ -64,6 +64,7 @@ require_once CONVOCA_SHIFTS_DIR . 'includes/ical.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/importador.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/horario.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/semana-tipo.php';
+require_once CONVOCA_SHIFTS_DIR . 'includes/class-personas-asignables.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/cpt-turno.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/rest-api.php';
 require_once CONVOCA_SHIFTS_DIR . 'includes/shortcodes.php';
@@ -141,24 +142,11 @@ function convoca_shifts_activate_plugin() {
 	flush_rewrite_rules();
 	convoca_shifts_schedule_cron();
 
-	// Defensive: check if the required role exists. Convoca Members normally
-	// creates 'voluntario_aprobado' with 'gestionar_mis_turnos'; Shifts creates
-	// it itself if missing so shift selectors/hours keep working without Members.
-	if ( ! get_role( 'voluntario_aprobado' ) ) {
-		add_role(
-			'voluntario_aprobado',
-			__( 'Voluntario Aprobado', 'convoca-shifts' ),
-			array(
-				'read'                 => true,
-				'gestionar_mis_turnos' => true,
-			)
-		);
-	} else {
-		$v_role = get_role( 'voluntario_aprobado' );
-		if ( ! $v_role->has_cap( 'gestionar_mis_turnos' ) ) {
-			$v_role->add_cap( 'gestionar_mis_turnos' );
-		}
-	}
+	// Los roles de personas son vocabulario del PRODUCTO y los crea Convoca Core
+	// (`Capabilities::crear_roles()`). Shifts no los crea ni les añade capacidades: hacerlo era proveer
+	// funcionalidad de otro plugin, y además fabricaba el rol que permitía asignar gente a los turnos en
+	// sitios donde no hay gestión de personas. Quién puede asignarse lo dice
+	// `Personas_Asignables`, cuyo valor por defecto es vacío.
 }
 
 function convoca_shifts_create_log_table() {
@@ -287,7 +275,7 @@ function convoca_shifts_check_required_role() {
 	if ( ! get_role( 'voluntario_aprobado' ) ) {
 		?>
 		<div class="convoca-alert convoca-alert--warning" style="display:block;margin-bottom:20px;">
-			<p><?php esc_html_e( '<strong>Atención:</strong> El rol "Voluntario Aprobado" no existe. Reactiva Convoca Shifts (o Convoca Members) para crearlo automáticamente.', 'convoca-shifts' ); ?>
+			<p><?php esc_html_e( '<strong>Atención:</strong> El rol "Voluntario Aprobado" no existe. Lo crea Convoca Core al cargar: comprueba que esté activo y actualizado.', 'convoca-shifts' ); ?>
 			<a href="?convoca_shifts_dismiss_role_notice=1" style="float:right;text-decoration:none;color:#999;">✕</a></p>
 		</div>
 		<?php

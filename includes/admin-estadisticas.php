@@ -50,12 +50,8 @@ function convoca_shifts_estadisticas_page() {
 		echo '<div class="error"><p>' . esc_html( sprintf( __( 'La tabla de logs (%s) no existe. El registro de actividad no funcionará.', 'convoca-shifts' ), $table_log ) ) . ' <a href="' . esc_url( admin_url( 'edit.php?post_type=centro_turno&page=convoca_shifts_estadisticas&convoca_shifts_fix_logs=1' ) ) . '" class="convoca-btn convoca-btn-outline">' . esc_html__( 'Intentar crear ahora', 'convoca-shifts' ) . '</a></p></div>';
 	}
 
-	// Get all users who have the volunteer role or have done turns.
-	$volunteers = get_users(
-		array(
-			'capability' => 'gestionar_mis_turnos',
-		)
-	);
+	// Las personas las aporta quien las gestiona; Shifts no pregunta por capacidades.
+	$volunteers = Personas_Asignables::lista( 'voluntario' );
 
 	// Also get users who are not "volunteers" but have responsable_id in metadata (maybe admins).
 	$uids_with_turns = $wpdb->get_col( "SELECT DISTINCT meta_value FROM $wpdb->postmeta WHERE meta_key = '_id_responsable' AND meta_value > 0" );
@@ -330,7 +326,7 @@ function convoca_shifts_exportar_stats_csv_handler() {
 
 		// Same logic as in stats page to get UIDs.
 		global $wpdb;
-		$volunteers      = get_users( array( 'capability' => 'gestionar_mis_turnos' ) );
+		$volunteers      = Personas_Asignables::lista( 'voluntario' );
 		$uids_with_turns = $wpdb->get_col( "SELECT DISTINCT meta_value FROM $wpdb->postmeta WHERE meta_key = '_id_responsable' AND meta_value > 0" );
 		$all_uids        = array_unique( array_merge( wp_list_pluck( $volunteers, 'ID' ), $uids_with_turns ) );
 
