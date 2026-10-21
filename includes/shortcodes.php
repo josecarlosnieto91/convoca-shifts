@@ -37,7 +37,10 @@ function convoca_shifts_register_scripts() {
 	// dashicons viajaba en TODAS las páginas del sitio aunque no hubiera nada de Convoca.
 	// (El icono del menú de admin lo sirve WordPress, que ya carga dashicons allí.)
 	// phpcs:ignore PluginCheck.CodeAnalysis.EnqueuedResourceOffloading.OffloadedContent -- FullCalendar CDN is required for the calendar feature.
-	wp_register_script( 'fullcalendar-core', 'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js', array(), '6.1.15', true );
+	// Servido desde el propio plugin: wordpress.org no admite cargar recursos de terceros por CDN
+	// (`EnqueuedResourceOffloading`), y además así el calendario no depende de que un CDN externo esté
+	// disponible o siga sirviendo esa versión.
+	wp_register_script( 'fullcalendar-core', CONVOCA_SHIFTS_URL . 'assets/vendor/fullcalendar/index.global.min.js', array(), '6.1.15', true );
 	wp_register_script( 'convoca-shifts-calendario', CONVOCA_SHIFTS_URL . 'assets/js/calendario.js', array( 'fullcalendar-core', 'jquery' ), CONVOCA_SHIFTS_VERSION, true );
 
 	wp_localize_script(

@@ -1,3 +1,18 @@
+## [2.5.34] — 2026-10-21
+
+### Corregido
+
+- **FullCalendar se sirve desde el plugin, no desde un CDN.** Se cargaba desde `cdn.jsdelivr.net`, y
+  wordpress.org no admite recursos de terceros en un plugin (`EnqueuedResourceOffloading`): la revisión del
+  directorio lo rechaza. Ahora la librería viaja en `assets/vendor/fullcalendar/` (v6.1.15, con su banner de
+  licencia) y se registra con la URL del propio plugin.
+- De paso, el calendario deja de depender de que un CDN externo esté disponible o siga sirviendo esa
+  versión exacta.
+
+### Verificado
+
+- El fichero **viaja en el paquete**: `assets/vendor/` no queda excluido por el patrón `vendor/` del
+  `.distignore` (comprobado con el empaquetador real, no leyendo el patrón).
 ## [2.5.33] — 2026-10-21
 
 ### Cambiado
