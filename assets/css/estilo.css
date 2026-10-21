@@ -399,7 +399,7 @@
     border-color: #fecaca !important;
 }
 
-.convoca-shifts-modal input[type="time"], 
+.convoca-shifts-modal input[type="time"],
 .convoca-shifts-modal select {
     padding: 10px;
     border: 1px solid var(--wp--preset--color--gris-medio, #e0e0e0);
@@ -572,7 +572,7 @@
     .convoca-shifts-event-resp { font-size: 9px; margin-top: 2px; padding-top: 2px; border-top: 1px solid rgba(255,255,255,0.1); }
     .convoca-shifts-event-time-top { font-size: 9px; }
     .convoca-shifts-event-link { display: none; } /* Hide link in mobile month view to save space */
-    
+
     .fc .fc-daygrid-day-number {
         width: 24px;
         height: 24px;
@@ -654,7 +654,7 @@
 #convoca-shifts-calendar-grid td:last-child { border-right: none; }
 #convoca-shifts-calendar-grid tr:last-child td { border-bottom: none; }
 
-#convoca-shifts-calendar-grid .convoca-shifts-day-num { 
+#convoca-shifts-calendar-grid .convoca-shifts-day-num {
     display: inline-flex; align-items: center; justify-content: center;
     width: 32px; height: 32px; border-radius: 8px;
     font-weight: 700; font-size: 1.1em;
@@ -679,16 +679,16 @@
 .convoca-shifts-empty { background: var(--wp--preset--color--gris-piedra, #f4f4f4); cursor: default; opacity: 0.5; }
 
 /* Admin: Modal */
-.convoca-shifts-modal { 
-    display: none; 
-    position: fixed !important; 
-    z-index: 999999 !important; 
-    left: 0 !important; top: 0 !important; 
+.convoca-shifts-modal {
+    display: none;
+    position: fixed !important;
+    z-index: 999999 !important;
+    left: 0 !important; top: 0 !important;
     right: 0 !important; bottom: 0 !important;
     width: auto !important; height: auto !important;
-    background-color: rgba(0,0,0,0.6) !important; 
-    backdrop-filter: blur(8px); 
-    align-items: center; justify-content: center; 
+    background-color: rgba(0,0,0,0.6) !important;
+    backdrop-filter: blur(8px);
+    align-items: center; justify-content: center;
     margin: 0 !important; padding: 0 !important;
 }
 .convoca-shifts-modal.is-active { display: flex !important; }

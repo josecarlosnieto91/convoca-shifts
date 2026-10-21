@@ -276,7 +276,7 @@ class No_Show_Manager {
 				'template'  => 'faltas_admin',
 				'copy'      => false,
 				'entity_id' => $user->ID,
-			) 
+			)
 		);
 	}
 }

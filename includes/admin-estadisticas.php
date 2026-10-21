@@ -65,11 +65,11 @@ function convoca_shifts_estadisticas_page() {
 
 		<?php if ( ! \Convoca\Core\License_Manager::has_pro( 'analytics' ) ) : ?>
 		<div class="convoca-alert convoca-alert--info" style="display:block;margin-bottom:20px;padding:12px 16px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;">
-			<p style="margin:0;">📊 <strong>Analytics Avanzados</strong> es una funcionalidad PRO que incluye gráficos de evolución, distribución por turnos, tendencias temporales y exportación avanzada. 
+			<p style="margin:0;">📊 <strong>Analytics Avanzados</strong> es una funcionalidad PRO que incluye gráficos de evolución, distribución por turnos, tendencias temporales y exportación avanzada.
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=convoca-license' ) ); ?>" style="font-weight:600;">Activa tu licencia</a> para desbloquearlos.</p>
 		</div>
 		<?php endif; ?>
-		
+
 		<div style="margin-bottom: 20px;">
 			<form method="post" action="">
 				<?php wp_nonce_field( 'convoca_shifts_exportar_stats_action' ); ?>
@@ -221,7 +221,7 @@ function convoca_shifts_preload_voluntario_stats(): array {
 	// Total hours and counts per volunteer in a single query.
 	$results = $wpdb->get_results(
 		"
-        SELECT 
+        SELECT
             pm_resp.meta_value AS user_id,
             COUNT(*) AS total_turnos,
             SUM(CASE WHEN pm_real.meta_value = 'realizado' THEN 1 ELSE 0 END) AS realizados,
@@ -254,9 +254,9 @@ function convoca_shifts_preload_voluntario_stats(): array {
 	// Hours calculation (requires _hora_fin join) in a second aggregated query.
 	$hour_results = $wpdb->get_results(
 		"
-        SELECT 
+        SELECT
             pm_resp.meta_value AS user_id,
-            TIMESTAMPDIFF(SECOND, pm_fecha.meta_value, 
+            TIMESTAMPDIFF(SECOND, pm_fecha.meta_value,
                 COALESCE(CONCAT(DATE(pm_fecha.meta_value), ' ', pm_fin.meta_value, ':00'), DATE_ADD(pm_fecha.meta_value, INTERVAL 2 HOUR))
             ) AS total_seconds
         FROM {$wpdb->posts} p

@@ -315,7 +315,7 @@ function convoca_shifts_resumen_turnos( $atts = array() ) {
 				📅 No hay turnos definidos para esta semana.
 			<?php endif; ?>
 		</div>
-		
+
 		<?php
 		// Mini list of gaps for the current week.
 		$start_of_week = wp_date( 'Y-m-d 00:00:00', strtotime( 'monday this week' ) );

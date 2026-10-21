@@ -176,7 +176,7 @@ class Hour_Sync {
 		// Atomic UPSERT: handles both insert and update in one query, avoiding SELECT+INSERT race.
 		$wpdb->query(
 			$wpdb->prepare(
-				"INSERT INTO {$wpdb->usermeta} (user_id, meta_key, meta_value) 
+				"INSERT INTO {$wpdb->usermeta} (user_id, meta_key, meta_value)
              VALUES (%d, %s, %f)
              ON DUPLICATE KEY UPDATE meta_value = CAST(meta_value AS DECIMAL(10,2)) + %f",
 				$user_id,

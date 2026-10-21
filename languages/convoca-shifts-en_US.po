@@ -1213,4 +1213,3 @@ msgstr "Displays a list of the upcoming shifts."
 #: includes/widgets.php:187
 msgid "Cantidad de turnos:"
 msgstr "Number of shifts:"
-

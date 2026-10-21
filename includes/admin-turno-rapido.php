@@ -140,7 +140,7 @@ function convoca_shifts_turno_rapido_page() {
 		<div class="convoca-alert convoca-alert--info" style="display:block;margin-bottom:20px;">
 			<p><?php esc_html_e( 'Selecciona un día en el calendario para crear un turno sin pasar por la pantalla de edición estándar.', 'convoca-shifts' ); ?></p>
 		</div>
-		
+
 		<div id="convoca-shifts-admin-calendar-container" class="card" style="padding: 20px; max-width: 800px;">
 <div id="convoca-shifts-calendar-controls" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
 					<button type="button" id="convoca-shifts-prev-month" class="convoca-btn convoca-btn-outline">&laquo; Mes anterior</button>
@@ -186,7 +186,7 @@ function convoca_shifts_turno_rapido_page() {
 
 			const firstDay = (new Date(year, month, 1).getDay() + 6) % 7; // Monday start.
 			const daysInMonth = new Date(year, month + 1, 0).getDate();
-			
+
 			const today = new Date();
 			today.setHours(0, 0, 0, 0);
 			const todayTime = today.getTime();
@@ -197,13 +197,13 @@ function convoca_shifts_turno_rapido_page() {
 
 			for (let day = 1; day <= daysInMonth; day++) {
 				if ((day + firstDay - 1) % 7 === 0 && day > 1) html += '<tr>';
-				
+
 				const dateObj = new Date(year, month, day);
 				dateObj.setHours(0, 0, 0, 0);
 				const dateTime = dateObj.getTime();
-				
+
 				const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-				
+
 				let classes = [];
 				const isToday = dateTime === todayTime;
 				const isPast = dateTime < todayTime;
@@ -213,11 +213,11 @@ function convoca_shifts_turno_rapido_page() {
 				if (isToday) classes.push('convoca-shifts-today');
 				else if (isPast) classes.push('convoca-shifts-past-day');
 				else if (isFuture) classes.push('convoca-shifts-future-day');
-				
+
 				if (isWeekend) classes.push('convoca-shifts-weekend');
-				
+
 				const isClickable = isToday || isFuture;
-				
+
 				html += `<td class="${classes.join(' ')}" data-date="${dateStr}" ${ !isClickable ? 'style="pointer-events:none;"' : '' }>
 							<span class="convoca-shifts-day-num">${day}</span>
 							<div class="convoca-shifts-day-content"></div>
@@ -225,7 +225,7 @@ function convoca_shifts_turno_rapido_page() {
 
 				if ((day + firstDay) % 7 === 0) html += '</tr>';
 			}
-			
+
 			html += '</tbody></table>';
 			grid.innerHTML = html;
 
@@ -236,12 +236,12 @@ function convoca_shifts_turno_rapido_page() {
 					dateInput.value = date;
 					const d = new Date(date);
 					modalTitle.innerText = `Añadir Turno: ${d.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
-					
+
 					// Reset presets.
 					document.querySelectorAll('.convoca-shifts-preset-btn').forEach(b => b.classList.remove('active'));
 					const morningBtn = document.querySelector('.convoca-shifts-preset-btn[data-start="10:00"]');
 					if (morningBtn) morningBtn.classList.add('active');
-					
+
 					document.getElementById('convoca-shifts-custom-time-fields').style.display = 'none';
 					document.getElementById('fe_h_start').value = '10:00';
 					document.getElementById('fe_h_end').value = '13:00';
@@ -266,11 +266,11 @@ function convoca_shifts_turno_rapido_page() {
 						let end = this.dataset.end;
 						const limitOpen = '<?php echo esc_js( Horario::apertura() ); ?>';
 						const limitClose = '<?php echo esc_js( Horario::cierre() ); ?>';
-						
+
 						let adjusted = false;
 						if (start < limitOpen) { start = limitOpen; adjusted = true; }
 						if (end > limitClose) { end = limitClose; adjusted = true; }
-						
+
 						if (adjusted) {
 							alert('Este horario predefinido se sale del margen permitido del centro y ha sido ajustado.');
 						}
@@ -303,7 +303,7 @@ function convoca_shifts_turno_rapido_page() {
 			let h_end = document.getElementById('fe_h_end').value;
 			const limitOpen = '<?php echo esc_js( Horario::apertura() ); ?>';
 			const limitClose = '<?php echo esc_js( Horario::cierre() ); ?>';
-			
+
 			let adjusted = false;
 			if (h_start < limitOpen) {
 				h_start = limitOpen;
@@ -351,7 +351,7 @@ function convoca_shifts_render_quick_add_modal() {
 				<?php wp_nonce_field( 'convoca_shifts_quick_add_action', 'convoca_shifts_quick_add_nonce' ); ?>
 				<input type="hidden" name="action" value="convoca_shifts_quick_add_turno">
 				<input type="hidden" id="convoca_shifts_modal_date" name="convoca_shifts_date">
-				
+
 				<div class="convoca-shifts-form-group">
 					<label><?php esc_html_e( 'Seleccionar Horario', 'convoca-shifts' ); ?></label>
 					<div class="convoca-shifts-presets">
@@ -400,4 +400,3 @@ function convoca_shifts_render_quick_add_modal() {
 	</div>
 	<?php
 }
-

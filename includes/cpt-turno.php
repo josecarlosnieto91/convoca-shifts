@@ -411,7 +411,7 @@ function convoca_shifts_turno_opciones_html( $post ) {
 		);
 		?>
 		<p class="description"><?php esc_html_e( 'Gestiona actividades desde el menú lateral.', 'convoca-shifts' ); ?></p>
-		
+
 		<label for="convoca_shifts_monitor_select"><strong><?php esc_html_e( 'Monitor/a:', 'convoca-shifts' ); ?></strong></label>
 		<select id="convoca_shifts_monitor_select" name="convoca_shifts_monitor_user" style="width:100%;">
 			<option value="0"><?php esc_html_e( '— Sin monitor —', 'convoca-shifts' ); ?></option>
@@ -693,15 +693,15 @@ function convoca_shifts_quick_edit_javascript() {
 		const wp_inline_edit = inlineEditPost.edit;
 		inlineEditPost.edit = function( id ) {
 			wp_inline_edit.apply( this, arguments );
-			
+
 			const post_id = ( typeof( id ) === 'object' ) ? $( id ).parents( 'tr' ).attr( 'id' ).replace( 'post-', '' ) : id;
 			const $row = $( '#post-' + post_id );
 			const $edit_row = $( '#edit-' + post_id );
-			
+
 			if ( post_id > 0 ) {
 				const responsable = $row.find('.convoca_shifts_id_responsable').text();
 				const asistencia = $row.find('.convoca_shifts_estado_real').text();
-				
+
 				// Fill our custom selects.
 				$edit_row.find( 'select[name="convoca_shifts_id_responsable"]' ).val( responsable );
 				$edit_row.find( 'select[name="convoca_shifts_estado_real"]' ).val( asistencia );
@@ -893,7 +893,7 @@ function convoca_shifts_generar_turnos_page() {
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Generador de Turnos', 'convoca-shifts' ); ?></h1>
-		
+
 		<div class="card" style="max-width: 600px; margin-top: 20px;">
 			<h2><?php esc_html_e( 'Duplicar semana anterior', 'convoca-shifts' ); ?></h2>
 			<p><?php esc_html_e( 'Copia todos los turnos de los últimos 7 días y los reprograma exactamente una semana después, dejándolos pendientes.', 'convoca-shifts' ); ?></p>
@@ -909,7 +909,7 @@ function convoca_shifts_generar_turnos_page() {
 			<form method="post" action="">
 				<?php wp_nonce_field( 'convoca_shifts_generar_turnos_action' ); ?>
 				<input type="hidden" name="convoca_shifts_action" value="generar_semana">
-				
+
 				<table class="form-table">
 					<tr>
 						<th scope="row"><label for="fecha_inicio"><?php esc_html_e( 'Fecha del Lunes', 'convoca-shifts' ); ?></label></th>
@@ -1403,14 +1403,14 @@ function convoca_shifts_check_user_overlap( $user_id, $start_time, $end_time, $e
 	if ( $for_update ) {
 		$conflict_id = $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT p.ID 
+				"SELECT p.ID
          FROM %i p
          JOIN %i pm_ini ON p.ID = pm_ini.post_id AND pm_ini.meta_key = '_fecha_inicio'
          JOIN %i pm_fin ON p.ID = pm_fin.post_id AND pm_fin.meta_key = '_hora_fin'
          JOIN %i pm_resp ON p.ID = pm_resp.post_id AND pm_resp.meta_key = '_id_responsable'
          LEFT JOIN %i pm_est ON p.ID = pm_est.post_id AND pm_est.meta_key = '_estado'
          LEFT JOIN %i pm_real ON p.ID = pm_real.post_id AND pm_real.meta_key = '_estado_real'
-         WHERE p.post_type = 'centro_turno' 
+         WHERE p.post_type = 'centro_turno'
            AND p.post_status = 'publish'
            AND pm_resp.meta_value = %d
            AND p.ID != %d
@@ -1434,14 +1434,14 @@ function convoca_shifts_check_user_overlap( $user_id, $start_time, $end_time, $e
 	} else {
 		$conflict_id = $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT p.ID 
+				"SELECT p.ID
          FROM %i p
          JOIN %i pm_ini ON p.ID = pm_ini.post_id AND pm_ini.meta_key = '_fecha_inicio'
          JOIN %i pm_fin ON p.ID = pm_fin.post_id AND pm_fin.meta_key = '_hora_fin'
          JOIN %i pm_resp ON p.ID = pm_resp.post_id AND pm_resp.meta_key = '_id_responsable'
          LEFT JOIN %i pm_est ON p.ID = pm_est.post_id AND pm_est.meta_key = '_estado'
          LEFT JOIN %i pm_real ON p.ID = pm_real.post_id AND pm_real.meta_key = '_estado_real'
-         WHERE p.post_type = 'centro_turno' 
+         WHERE p.post_type = 'centro_turno'
            AND p.post_status = 'publish'
            AND pm_resp.meta_value = %d
            AND p.ID != %d
@@ -1484,4 +1484,3 @@ function convoca_shifts_check_user_overlap( $user_id, $start_time, $end_time, $e
 
 	return $conflict_id;
 }
-

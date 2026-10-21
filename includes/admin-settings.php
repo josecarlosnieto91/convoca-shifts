@@ -352,10 +352,10 @@ function convoca_shifts_find_page_by_shortcode( string $shortcode ) {
 	$tag = trim( $shortcode, '[]' );
 	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is prepared below.
 	$query = $wpdb->prepare(
-		"SELECT ID, post_content FROM $wpdb->posts 
-         WHERE post_content LIKE %s 
-         AND post_status = 'publish' 
-         AND post_type = 'page' 
+		"SELECT ID, post_content FROM $wpdb->posts
+         WHERE post_content LIKE %s
+         AND post_status = 'publish'
+         AND post_type = 'page'
          LIMIT 1",
 		'%' . $wpdb->esc_like( $shortcode ) . '%'
 	);

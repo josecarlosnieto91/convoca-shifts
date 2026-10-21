@@ -28,7 +28,7 @@ add_action(
 	function () {
 		wp_set_script_translations( 'convoca-shifts-scripts', 'convoca-shifts', plugin_dir_path( __FILE__ ) . 'languages/' );
 		load_plugin_textdomain( 'convoca-shifts', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
-	} 
+	}
 );
 
 if ( ! defined( 'CONVOCA_SHIFTS_DIR' ) ) {

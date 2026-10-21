@@ -1,5 +1,5 @@
 jQuery(document).ready(function ($) {
-    
+
     window.initConvocaShiftsCalendar = function(container) {
         if (typeof FullCalendar === 'undefined') {
             console.error('FullCalendar is not loaded.');
@@ -214,7 +214,7 @@ jQuery(document).ready(function ($) {
                                 type: 'POST',
                                 beforeSend: function (xhr) { xhr.setRequestHeader('X-WP-Nonce', convocaShiftsData.nonce); },
                                 success: function (response) {
-                                    if (response.success) { calendar.refetchEvents(); } 
+                                    if (response.success) { calendar.refetchEvents(); }
                                     else { alert(response.message || convocaShiftsData.msgError); $btn.text(originalText); $el.css('opacity', '1'); }
                                 },
                                 error: function (xhr) {
@@ -245,13 +245,13 @@ jQuery(document).ready(function ($) {
                         $.ajax({
                             url: convocaShiftsData.restUrl + '/' + event.id + '/apuntarse',
                             type: 'POST',
-                            beforeSend: function (xhr) { 
+                            beforeSend: function (xhr) {
                                 console.log('CST: setting nonce header:', convocaShiftsData.nonce);
-                                xhr.setRequestHeader('X-WP-Nonce', convocaShiftsData.nonce); 
+                                xhr.setRequestHeader('X-WP-Nonce', convocaShiftsData.nonce);
                             },
                             success: function (response) {
                                 console.log('CST: AJAX success', response);
-                                if (response.success) { calendar.refetchEvents(); } 
+                                if (response.success) { calendar.refetchEvents(); }
                                 else { alert(response.message || convocaShiftsData.msgError); $el.css('opacity', '1'); if (response.code === 'ya_cubierto') calendar.refetchEvents(); }
                             },
                             error: function (xhr) {
@@ -316,7 +316,7 @@ jQuery(document).ready(function ($) {
         $('.convoca-shifts-preset-btn').removeClass('active');
         $(this).addClass('active');
         const isCustom = $(this).data('custom');
-        if (isCustom) { $('#convoca-shifts-custom-time-fields').slideDown(); } 
+        if (isCustom) { $('#convoca-shifts-custom-time-fields').slideDown(); }
         else {
             $('#convoca-shifts-custom-time-fields').slideUp();
             let start = $(this).data('start'); let end = $(this).data('end');
