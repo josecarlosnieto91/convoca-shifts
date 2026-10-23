@@ -338,9 +338,27 @@ namespace {
     // has_action() se usa para no apilar hooks duplicados; sin stub, el motor
     // de sincronización de turnos revienta en los tests.
     if (!\function_exists('has_action')) { function has_action($h, $c = false) { return false; } }
-    if (!\function_exists('register_post_type')) { function register_post_type($s, $a) { return null; } }
-    if (!\function_exists('register_post_meta')) { function register_post_meta($t, $k, $a) { return true; } }
-    if (!\function_exists('register_taxonomy')) { function register_taxonomy($s, $t, $a) { return null; } }
+    // El tipo registrado se apunta: hay que poder afirmar qué se registra y con qué visibilidad.
+    if (!\function_exists('register_post_type')) {
+        function register_post_type($slug, $args) {
+            $GLOBALS['_wp_stores']['cpt'][$slug] = (array) $args;
+            return null;
+        }
+    }
+    // Metas y taxonomías APUNTADAS: lo que hay que poder afirmar es qué se registra, con qué tipo y con
+    // qué permiso (el `auth_callback` de una meta que se escribe por REST es una puerta de seguridad).
+    if (!\function_exists('register_post_meta')) {
+        function register_post_meta($tipo, $clave, $args) {
+            $GLOBALS['_sh_metas'][$clave] = array('tipo' => $tipo, 'args' => (array) $args);
+            return true;
+        }
+    }
+    if (!\function_exists('register_taxonomy')) {
+        function register_taxonomy($slug, $tipos, $args) {
+            $GLOBALS['_sh_taxonomias'][$slug] = array('tipos' => $tipos, 'args' => (array) $args);
+            return null;
+        }
+    }
     if (!\function_exists('__return_true')) {
         /**
          * Devuelve verdadero: es lo que usa WordPress para los endpoints públicos.
