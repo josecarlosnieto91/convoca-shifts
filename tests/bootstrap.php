@@ -256,6 +256,13 @@ namespace {
                 return $wp_error ? $GLOBALS['_sh_insert_error'] : 0;
             }
             global $wp_insert_counter;
+            // El id de un alta NUNCA pisa uno existente: si el contador va por detrás de lo sembrado,
+            // la prueba acaba leyendo el post que puso ella y da por bueno lo que no se escribió.
+            $sembrados = array_keys($GLOBALS['_wp_stores']['posts'] ?? []);
+            $maximo    = $sembrados ? \max($sembrados) : 0;
+            if ((int) $wp_insert_counter <= (int) $maximo) {
+                $wp_insert_counter = (int) $maximo;
+            }
             $wp_insert_counter++;
             $GLOBALS['_wp_stores']['insertados'][] = $data;
             update_post_meta($wp_insert_counter, '_wp_insert_data', $data);
@@ -411,11 +418,18 @@ namespace {
     if (!\function_exists('wp_cache_delete')) { function wp_cache_delete($k, $g = '') { return true; } }
 
     if (!\function_exists('wp_get_post_terms')) {
-        function wp_get_post_terms($id, $tax) {
-            if ($tax === 'convoca_shifts_actividad') {
-                return [ (object)['name' => 'Actividad Test', 'term_id' => 1] ];
+        function wp_get_post_terms($id, $tax, $args = []) {
+            if ($tax !== 'convoca_shifts_actividad') { return []; }
+
+            $terminos = [ (object)['name' => 'Actividad Test', 'term_id' => 1] ];
+
+            // `fields => 'ids'` devuelve ids, no objetos: el código que pide ids castea a int y con
+            // objetos avisa («Object of class stdClass could not be converted to int») y guarda un 0.
+            if ('ids' === ( $args['fields'] ?? '' )) {
+                return \array_map( static fn( $t ) => $t->term_id, $terminos );
             }
-            return [];
+
+            return $terminos;
         }
     }
 
@@ -446,6 +460,19 @@ namespace {
                 if (!\in_array($p->post_type ?? 'post', $tipos, true)) { continue; }
                 if (!\in_array($p->post_status ?? 'publish', $estado, true)) { continue; }
                 if (!\_sh_meta_encaja((int) $id, $args['meta_query'] ?? [])) { continue; }
+
+                // date_query: duplicar la semana pide «los turnos de la semana pasada» y sin esto el
+                // arnés devuelve TODOS, así que la prueba se ponía a duplicar turnos de otras fechas.
+                $dq = $args['date_query'][0] ?? null;
+                if (\is_array($dq)) {
+                    // Un post sin fecha no se filtra: hay pruebas que siembran turnos sin `post_date` y
+                    // las fechas las llevan solo en metas.
+                    $post_date = (string) ($p->post_date ?? '');
+                    if ('' !== $post_date) {
+                        if (!empty($dq['after']) && \strtotime($post_date) < \strtotime((string) $dq['after'])) { continue; }
+                        if (!empty($dq['before']) && \strtotime($post_date) > \strtotime((string) $dq['before'])) { continue; }
+                    }
+                }
 
                 $salida[] = $p;
                 if ($limite > 0 && \count($salida) >= $limite) { break; }

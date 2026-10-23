@@ -285,9 +285,10 @@ final class ShortcodesTest extends TestCase {
 		$vacio = \Convoca\Shifts\convoca_shifts_proximos_turnos( array() );
 		$this->assertStringContainsString( 'No hay turnos próximos programados', $vacio );
 
+		$manana = gmdate( 'Y-m-d', time() + 86400 ) . ' 10:00:00';
 		$GLOBALS['_wp_stores']['posts'] = array(
-			1 => $this->turno( 1, 0 ),
-			2 => $this->turno( 2, 7 ),
+			1 => $this->turno( 1, 0, $manana ),
+			2 => $this->turno( 2, 7, $manana ),
 		);
 
 		$html = \Convoca\Shifts\convoca_shifts_proximos_turnos( array( 'cantidad' => 5 ) );
@@ -330,15 +331,21 @@ final class ShortcodesTest extends TestCase {
 	 * @param int $responsable Persona que lo cubre (0 = libre).
 	 * @return object
 	 */
-	private function turno( int $id, int $responsable ): object {
+	private function turno( int $id, int $responsable, ?string $fecha = null ): object {
 		$GLOBALS['_wp_stores']['post_meta'][ $id ]['_id_responsable'] = $responsable;
 		$GLOBALS['_wp_stores']['post_meta'][ $id ]['_estado']         = 0 === $responsable ? 'abierto_disponible' : 'cubierto';
+
+		// La fecha tiene que caer donde la consulta la busca: con una fecha fija el turno se queda fuera
+		// en cuanto el arnés filtra de verdad por `date_query`. Por defecto, hoy al final del día (dentro
+		// de la semana del resumen y por delante de «ahora» para los próximos).
+		$fecha = $fecha ?? gmdate( 'Y-m-d' ) . ' 23:00:00';
+		$GLOBALS['_wp_stores']['post_meta'][ $id ]['_fecha_inicio'] = $fecha;
 
 		return (object) array(
 			'ID'        => $id,
 			'post_type' => 'centro_turno',
-			'post_date' => '2026-10-26 10:00:00',
-			'timestamp' => strtotime( '2026-10-26 10:00:00' ),
+			'post_date' => $fecha,
+			'timestamp' => strtotime( $fecha ),
 		);
 	}
 }
