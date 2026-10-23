@@ -458,7 +458,12 @@ namespace {
             $salida = [];
             foreach ($posts as $id => $p) {
                 if (!\in_array($p->post_type ?? 'post', $tipos, true)) { continue; }
-                if (!\in_array($p->post_status ?? 'publish', $estado, true)) { continue; }
+                $estado_post = $p->post_status ?? 'publish';
+                if (\in_array('any', $estado, true)) {
+                    if (\in_array($estado_post, ['trash', 'auto-draft', 'inherit'], true)) { continue; }
+                } elseif (!\in_array($estado_post, $estado, true)) {
+                    continue;
+                }
                 if (!\_sh_meta_encaja((int) $id, $args['meta_query'] ?? [])) { continue; }
 
                 // date_query: duplicar la semana pide «los turnos de la semana pasada» y sin esto el
@@ -505,6 +510,7 @@ namespace {
                 if (!$tiene) { return false; }
 
                 if ('=' === $compara && (string) $meta[ $clave ] !== (string) ($clausula['value'] ?? '')) { return false; }
+                if ('LIKE' === $compara && false === \strpos((string) $meta[ $clave ], (string) ($clausula['value'] ?? ''))) { return false; }
                 if ('!=' === $compara && (string) $meta[ $clave ] === (string) ($clausula['value'] ?? '')) { return false; }
             }
 
@@ -523,13 +529,26 @@ namespace {
     // La cola de estilos vive en tests/StubAssets.php: ahí se apunta lo que se encola, que es lo que
     // hay que poder afirmar de los shortcodes.
     if (!\function_exists('remove_action')) { function remove_action($h, $c, $p = 10) { return true; } }
-    if (!\function_exists('get_user_by')) { function get_user_by($field, $value) { return false; } }
+    if (!\function_exists('get_user_by')) {
+        function get_user_by($field, $value) {
+            // Como WordPress: busca por id, login o correo en el almacén de personas.
+            foreach ($GLOBALS['_wp_stores']['usuarios'] ?? [] as $id => $u) {
+                if (!\is_object($u)) { continue; }
+                if ('id' === $field && (int) $id === (int) $value) { return $u; }
+                if ('login' === $field && (string) ($u->user_login ?? '') === (string) $value) { return $u; }
+                if ('email' === $field && (string) ($u->user_email ?? '') === (string) $value) { return $u; }
+            }
+
+            return false;
+        }
+    }
     if (!\function_exists('wp_next_scheduled')) { function wp_next_scheduled($h) { return false; } }
     if (!\function_exists('wp_schedule_event')) { function wp_schedule_event($ts, $r, $h, $a = []) { return true; } }
     if (!\function_exists('wp_set_script_translations')) { function wp_set_script_translations($h, $d, $p) {} }
     if (!\function_exists('load_plugin_textdomain')) { function load_plugin_textdomain($d, $dep, $p) {} }
     if (!\function_exists('delete_post_meta_by_key')) { function delete_post_meta_by_key($key) { return true; } }
     if (!\function_exists('get_users')) { function get_users($args = []) { return []; } }
+    if (!\function_exists('submit_button')) { function submit_button($t = 'Save', $c = 'primary', $n = 'submit', $w = true, $a = []) { echo '<button type="submit">' . \esc_html($t) . '</button>'; } }
     if (!\function_exists('wp_list_pluck')) {
         function wp_list_pluck($list, $field) {
             $r = [];

@@ -133,3 +133,42 @@ if ( ! function_exists( 'update_term_meta' ) ) {
 		return true;
 	}
 }
+
+if ( ! function_exists( 'get_term_by' ) ) {
+	/**
+	 * Término por campo (nombre, slug o id).
+	 *
+	 * @param string $campo   Campo.
+	 * @param mixed  $valor   Valor.
+	 * @param string $tax     Taxonomía.
+	 * @return object|null
+	 */
+	function get_term_by( $campo, $valor, $tax = '' ) {
+		foreach ( $GLOBALS['_sh_terminos_existentes'] ?? array() as $termino ) {
+			$termino = (object) $termino;
+			if ( 'name' === $campo && (string) $termino->name === (string) $valor ) {
+				return $termino;
+			}
+			if ( 'slug' === $campo && (string) $termino->slug === (string) $valor ) {
+				return $termino;
+			}
+			if ( 'id' === $campo && (int) $termino->term_id === (int) $valor ) {
+				return $termino;
+			}
+		}
+
+		return null;
+	}
+}
+
+if ( ! function_exists( 'is_email' ) ) {
+	/**
+	 * ¿Es un correo?
+	 *
+	 * @param string $valor Valor.
+	 * @return bool
+	 */
+	function is_email( $valor ) {
+		return (bool) filter_var( (string) $valor, FILTER_VALIDATE_EMAIL );
+	}
+}
