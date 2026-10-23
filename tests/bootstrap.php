@@ -727,6 +727,7 @@ namespace {
 	// lo capturan (ver tests/StubMailer.php).
 	require_once __DIR__ . '/StubMailer.php';
  require_once __DIR__ . '/StubIcal.php';
+ require_once __DIR__ . '/StubWidgets.php';
 
 	// Doble de WP_Query y de las funciones del bucle (get_the_ID, get_the_date,
 	// wp_reset_postdata...). Necesario para probar el recordatorio del cron, que es
