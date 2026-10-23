@@ -497,6 +497,20 @@ namespace {
          * @return bool
          */
         function _sh_meta_encaja($id, $mq) {
+            $mq = (array) $mq;
+
+            // `relation => OR`: el feed iCal pide los turnos donde la persona es responsable O monitor.
+            // Tratándolo como AND no devolvía ninguno y la prueba pasaba sin comprobar nada.
+            $relacion = strtoupper((string) ($mq['relation'] ?? 'AND'));
+            if ('OR' === $relacion) {
+                $alguno = false;
+                foreach ($mq as $clave => $clausula) {
+                    if ('relation' === $clave || !\is_array($clausula)) { continue; }
+                    if (_sh_meta_encaja($id, array($clausula))) { $alguno = true; break; }
+                }
+                return $alguno;
+            }
+
             foreach ((array) $mq as $clausula) {
                 if (!\is_array($clausula) || empty($clausula['key'])) { continue; }
 
@@ -714,6 +728,7 @@ namespace {
 	// Doble del nucleo para el correo: entrega por wp_mail, que es donde las pruebas
 	// lo capturan (ver tests/StubMailer.php).
 	require_once __DIR__ . '/StubMailer.php';
+ require_once __DIR__ . '/StubIcal.php';
 
 	// Doble de WP_Query y de las funciones del bucle (get_the_ID, get_the_date,
 	// wp_reset_postdata...). Necesario para probar el recordatorio del cron, que es
