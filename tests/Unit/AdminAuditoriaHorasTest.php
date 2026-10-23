@@ -159,6 +159,7 @@ final class AdminAuditoriaHorasTest extends TestCase {
 		$this->assertStringContainsString( 'Horas recalculadas correctamente', $html );
 		$this->assertSame( 6.5, (float) $GLOBALS['_wp_stores']['user_meta'][7]['_convoca_horas_voluntariado_total'] );
 		$this->assertSame( array( 'convoca_shifts_recalcular_7' ), $GLOBALS['_sh_admin_nonces_comprobados'] );
+		$this->assertSame( 'info', \Convoca\Core\Logger::get_logs()[0]['level'] ?? '', 'es un apunte informativo, no un aviso' );
 		$this->assertSame( 'Turnos', \Convoca\Core\Logger::get_logs()[0]['context'] ?? '' );
 		$this->assertStringContainsString( '6.5 horas en 2 turnos', \Convoca\Core\Logger::get_logs()[0]['msg'] ?? '' );
 	}
