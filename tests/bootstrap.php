@@ -33,6 +33,11 @@ namespace Convoca\Core {
              * El producto pregunta por este método cuando la clase existe; si el doble no lo tuviera,
              * cualquier endpoint de la API reventaría al llamarlo (y ninguno se podía probar).
              */
+            /** ¿Está activo ese plugin? (lista blanca de la prueba; por defecto todos). */
+            public static function is_plugin_active_safe(string $plugin): bool {
+                $activos = $GLOBALS['_sh_plugins_activos'] ?? null;
+                return null === $activos ? true : \in_array($plugin, (array) $activos, true);
+            }
             public static function check_rate_limit(string $action, int $max = 10, int $window = 300, string $identity = ''): bool {
                 $GLOBALS['_sh_rate_limit_consultas'][] = $action;
                 return (bool) ($GLOBALS['_sh_rate_limit'] ?? true);
@@ -547,6 +552,12 @@ namespace {
             public $options = 'wp_options';
             public $usermeta = 'wp_usermeta';
             public $insert_id = 42;
+
+            public function esc_like($texto) { return addcslashes((string) $texto, '_%\\'); }
+
+            public function get_row($q = null, $o = 'OBJECT', $y = 0) {
+                return $GLOBALS['_sh_db']['get_row'] ?? null;
+            }
 
             public function get_col($q = null, $x = 0) {
                 if (isset($GLOBALS['_sh_db']['get_col'])) { return (array) $GLOBALS['_sh_db']['get_col']; }

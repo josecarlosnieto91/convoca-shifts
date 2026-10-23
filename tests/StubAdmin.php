@@ -182,3 +182,22 @@ if ( ! function_exists( 'sanitize_key' ) ) {
 		return strtolower( preg_replace( '/[^a-z0-9_\-]/i', '', (string) $clave ) );
 	}
 }
+
+if ( ! function_exists( 'register_setting' ) ) {
+	/**
+	 * Registra un ajuste (apuntado con su grupo y su saneador).
+	 *
+	 * @param string   $grupo    Grupo.
+	 * @param string   $nombre   Nombre.
+	 * @param callable $sanear   Saneador.
+	 * @param array    $args     Argumentos.
+	 * @return void
+	 */
+	function register_setting( $grupo, $nombre, $sanear = '', $args = array() ) {
+		$GLOBALS['_sh_settings'][] = array(
+			'grupo'  => $grupo,
+			'nombre' => $nombre,
+			'sanear' => $sanear,
+		);
+	}
+}
