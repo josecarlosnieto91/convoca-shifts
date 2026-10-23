@@ -622,9 +622,9 @@ namespace {
                 $GLOBALS['_sh_db']['consultas'][] = (string) $q;
 
                 // El UPDATE del alta devuelve filas afectadas: 0 hace que el código intente el INSERT.
+                // La cola se consume EN EL GLOBAL (una copia no avanza y todas las llamadas devolvían lo mismo).
                 if (isset($GLOBALS['_sh_db']['query_rc']) && \is_array($GLOBALS['_sh_db']['query_rc'])) {
-                    $rc = $GLOBALS['_sh_db']['query_rc'];
-                    return \array_shift($rc);
+                    return \array_shift($GLOBALS['_sh_db']['query_rc']);
                 }
                 return $GLOBALS['_sh_db']['query_rc'] ?? 1;
             }
