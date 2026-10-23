@@ -252,7 +252,14 @@ namespace {
         }
     }
 
-    if (!\function_exists('add_action')) { function add_action($h, $c, $p = 10, $a = 1) { return true; } }
+    // Los enganches se APUNTAN: una prueba tiene que poder decir qué queda enganchado y con qué. Antes
+    // eran un no-op y eso dejaba sin comprobar medio arranque del plugin (el modal, la limpieza de caché).
+    if (!\function_exists('add_action')) {
+        function add_action($h, $c, $p = 10, $a = 1) {
+            $GLOBALS['_wp_stores']['acciones'][$h][] = $c;
+            return true;
+        }
+    }
     if (!\function_exists('add_filter')) { function add_filter($h, $c, $p = 10, $a = 1) { return true; } }
     // El libro de horas vive en Convoca Core, que estos tests unitarios no cargan. Se dobla con la PUERTA
     // CERRADA por defecto, que es el valor real por defecto del núcleo: así un test que acredite sin
@@ -340,12 +347,63 @@ namespace {
         }
     }
 
+    // `get_posts` de verdad, aunque sea de mentira: filtra el almacén por tipo, estado y meta. Antes
+    // devolvía SIEMPRE vacío (salvo un caso especial), así que cualquier consulta del plugin —el
+    // resumen de turnos, los próximos turnos— se probaba contra el vacío y no medía nada.
     if (!\function_exists('get_posts')) {
         function get_posts($args) {
+            $args = (array) $args;
+
             if (isset($args['meta_value']) && $args['meta_value'] === 'exists@example.com') {
                 return [ (object)['ID' => 42] ];
             }
-            return [];
+
+            $posts  = $GLOBALS['_wp_stores']['posts'] ?? [];
+            $tipos  = (array) ($args['post_type'] ?? 'post');
+            $estado = (array) ($args['post_status'] ?? ['publish']);
+            $limite = (int) ($args['posts_per_page'] ?? 5);
+
+            $salida = [];
+            foreach ($posts as $id => $p) {
+                if (!\in_array($p->post_type ?? 'post', $tipos, true)) { continue; }
+                if (!\in_array($p->post_status ?? 'publish', $estado, true)) { continue; }
+                if (!\_sh_meta_encaja((int) $id, $args['meta_query'] ?? [])) { continue; }
+
+                $salida[] = $p;
+                if ($limite > 0 && \count($salida) >= $limite) { break; }
+            }
+
+            if ('DESC' === \strtoupper((string) ($args['order'] ?? ''))) { $salida = \array_reverse($salida); }
+
+            return $salida;
+        }
+
+        /**
+         * ¿La meta de una entrada cumple la consulta? Se entiende `=`, `!=`, `EXISTS` y `NOT EXISTS`,
+         * que es lo que usa el plugin; lo que no se entiende, no descarta (mejor de más que de menos).
+         *
+         * @param int   $id Entrada.
+         * @param array $mq Consulta de meta.
+         * @return bool
+         */
+        function _sh_meta_encaja($id, $mq) {
+            foreach ((array) $mq as $clausula) {
+                if (!\is_array($clausula) || empty($clausula['key'])) { continue; }
+
+                $clave   = $clausula['key'];
+                $compara = \strtoupper((string) ($clausula['compare'] ?? '='));
+                $meta    = $GLOBALS['_wp_stores']['post_meta'][ $id ] ?? [];
+                $tiene   = \array_key_exists($clave, $meta);
+
+                if ('NOT EXISTS' === $compara) { if ($tiene) { return false; } continue; }
+                if ('EXISTS' === $compara) { if (!$tiene) { return false; } continue; }
+                if (!$tiene) { return false; }
+
+                if ('=' === $compara && (string) $meta[ $clave ] !== (string) ($clausula['value'] ?? '')) { return false; }
+                if ('!=' === $compara && (string) $meta[ $clave ] === (string) ($clausula['value'] ?? '')) { return false; }
+            }
+
+            return true;
         }
     }
 
@@ -355,8 +413,8 @@ namespace {
     if (!\function_exists('plugin_dir_path')) { function plugin_dir_path($f) { return \dirname($f) . '/'; } }
     if (!\function_exists('plugin_dir_url')) { function plugin_dir_url($f) { return 'https://example.com/wp-content/plugins/' . \basename(\dirname($f)) . '/'; } }
     if (!\function_exists('get_current_screen')) { function get_current_screen() { return null; } }
-    if (!\function_exists('wp_enqueue_style')) { function wp_enqueue_style($h, $s = '', $d = [], $v = '', $m = 'all') {} }
-    if (!\function_exists('wp_register_style')) { function wp_register_style($h, $s, $d = [], $v = '', $m = 'all') { return true; } }
+    // La cola de estilos vive en tests/StubAssets.php: ahí se apunta lo que se encola, que es lo que
+    // hay que poder afirmar de los shortcodes.
     if (!\function_exists('remove_action')) { function remove_action($h, $c, $p = 10) { return true; } }
     if (!\function_exists('get_user_by')) { function get_user_by($field, $value) { return false; } }
     if (!\function_exists('wp_next_scheduled')) { function wp_next_scheduled($h) { return false; } }
@@ -463,4 +521,9 @@ namespace {
 	// wp_reset_postdata...). Necesario para probar el recordatorio del cron, que es
 	// el unico sitio donde el plugin usa WP_Query en bucle.
 	require_once __DIR__ . '/Support/WpQueryDouble.php';
+
+	// Doble de la cola de recursos (registrar, encolar y localizar estilos y guiones): lo
+	// necesitan los shortcodes, que hasta ahora no se probaban.
+	require_once __DIR__ . '/StubAssets.php';
+	require_once __DIR__ . '/StubFechaCorta.php';
 }
