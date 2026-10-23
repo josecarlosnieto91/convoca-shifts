@@ -28,7 +28,20 @@ if ( ! class_exists( 'Convoca\Core\Hour_Ledger' ) ) {
 		 * @return int
 		 */
 		public static function credit( $origen, $origen_id, $user_id, $hours, array $args = array() ) {
-			return empty( $GLOBALS['__horas_puerta'] ) ? 0 : 1;
+			if ( empty( $GLOBALS['__horas_puerta'] ) ) {
+				return 0;
+			}
+
+			// Se apunta: lo que hay que poder afirmar es QUÉ horas y con qué datos se acreditaron.
+			$GLOBALS['__horas_credit'][] = array(
+				'origen'    => $origen,
+				'origen_id' => (int) $origen_id,
+				'user_id'   => (int) $user_id,
+				'hours'     => (float) $hours,
+				'args'      => $args,
+			);
+
+			return 1;
 		}
 
 		/**
@@ -37,6 +50,12 @@ if ( ! class_exists( 'Convoca\Core\Hour_Ledger' ) ) {
 		 * @return bool
 		 */
 		public static function revoke( $origen, $origen_id, $user_id ) {
+			$GLOBALS['__horas_revoke'][] = array(
+				'origen'    => $origen,
+				'origen_id' => (int) $origen_id,
+				'user_id'   => (int) $user_id,
+			);
+
 			return true;
 		}
 
