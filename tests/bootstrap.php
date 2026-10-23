@@ -119,6 +119,11 @@ namespace {
     if (!\function_exists('get_userdata')) {
         function get_userdata($id) {
             if ($id <= 0) return false;
+            // Si la prueba ha puesto la persona en el almacén, manda el almacén: es la única forma de
+            // probar una pantalla que pinta nombres y correos.
+            if (array_key_exists( (int) $id, $GLOBALS['_wp_stores']['usuarios'] ?? array() )) {
+                return $GLOBALS['_wp_stores']['usuarios'][ (int) $id ];
+            }
             $u = new \stdClass();
             $u->ID = $id;
             $u->display_name = "User $id";
@@ -183,8 +188,15 @@ namespace {
     if (!\function_exists('get_post')) {
         function get_post($id = null) {
             if ($id === null) return null;
-            $posts = &$GLOBALS['_wp_stores']['test_posts'];
+            // WordPress no devuelve entrada para un identificador no positivo: el arnés inventaba una
+            // («Post 0 — Default Title») y eso hacía creer que el detalle de un registro tenía título.
+            if ((int) $id <= 0) return null;
+            // `posts` es el almacén que usa `get_posts`; `test_posts` se conserva por compatibilidad.
+            $posts = &$GLOBALS['_wp_stores']['posts'];
             if (isset($posts[$id])) return $posts[$id];
+            $viejos = &$GLOBALS['_wp_stores']['test_posts'];
+            if (isset($viejos[$id])) return $viejos[$id];
+            if (isset($GLOBALS['_wp_stores']['no_existe'][(int) $id])) return null;
             $p = new \stdClass();
             $p->ID = $id;
             $p->post_title = "Post $id — Default Title";
@@ -478,9 +490,19 @@ namespace {
             public $usermeta = 'wp_usermeta';
             public $insert_id = 42;
 
+            public function get_col($q = null, $x = 0) {
+                if (isset($GLOBALS['_sh_db']['get_col'])) { return (array) $GLOBALS['_sh_db']['get_col']; }
+                return [];
+            }
+
             public function get_var($q = null, $x = 0, $y = 0) {
                 $qs = (string)$q;
-                if (\strpos($qs, 'SHOW TABLES') !== false) return 'wp_convoca_member_sequence';
+                // El diagnóstico de esquema se sirve aparte del resto de consultas: la pantalla pregunta
+                // «¿existe la tabla?» y «¿cuántas filas hay?» a la misma función.
+                if (\strpos($qs, 'SHOW TABLES') !== false) {
+                    return $GLOBALS['_sh_db']['tabla'] ?? 'wp_convoca_member_sequence';
+                }
+                if (isset($GLOBALS['_sh_db']['get_var'])) { return $GLOBALS['_sh_db']['get_var']; }
                 if (\strpos($qs, 'SELECT meta_value') !== false) {
                     // Check if it's for horas_contabilizadas - return 0 for tests
                     if (\strpos($qs, 'horas_contabilizadas') !== false) return '0';
@@ -490,7 +512,15 @@ namespace {
                 return '10';
             }
 
-            public function get_results($q = null, $o = 'OBJECT') { return []; }
+            public function get_results($q = null, $o = 'OBJECT') {
+                // Una misma pantalla hace DOS consultas distintas; el arnés tiene que poder servirlas
+                // por separado o la pantalla recibe la respuesta de la otra (y con ella, avisos).
+                foreach ((array) ($GLOBALS['_sh_db']['por_sql'] ?? []) as $aguja => $valor) {
+                    if (\strpos((string) $q, (string) $aguja) !== false) { return $valor; }
+                }
+                if (isset($GLOBALS['_sh_db']['get_results'])) { return $GLOBALS['_sh_db']['get_results']; }
+                return [];
+            }
             public function query($q) { return 1; }
             public function insert($t, $d, $f = []) { $this->insert_id = 42; return 1; }
 
@@ -526,4 +556,6 @@ namespace {
 	// necesitan los shortcodes, que hasta ahora no se probaban.
 	require_once __DIR__ . '/StubAssets.php';
 	require_once __DIR__ . '/StubFechaCorta.php';
+	require_once __DIR__ . '/StubAdmin.php';
+	require_once __DIR__ . '/StubLicenseManager.php';
 }
