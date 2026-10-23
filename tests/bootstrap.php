@@ -593,6 +593,12 @@ namespace {
                 }
                 $GLOBALS['_sh_db']['consultas'][] = $qs;
 
+                // Cola: un mismo flujo hace VARIAS consultas con `get_var` (el cerrojo del turno y luego
+                // la comprobación de solapamiento) y hay que poder darle a cada una su respuesta.
+                if ( ! empty( $GLOBALS['_sh_db']['get_var_cola'] ) ) {
+                    return \array_shift( $GLOBALS['_sh_db']['get_var_cola'] );
+                }
+
                 if (\array_key_exists( 'get_var', $GLOBALS['_sh_db'] ?? array() )) { return $GLOBALS['_sh_db']['get_var']; }
                 if (\strpos($qs, 'SELECT meta_value') !== false) {
                     // Check if it's for horas_contabilizadas - return 0 for tests
@@ -612,7 +618,16 @@ namespace {
                 if (isset($GLOBALS['_sh_db']['get_results'])) { return $GLOBALS['_sh_db']['get_results']; }
                 return [];
             }
-            public function query($q) { return 1; }
+            public function query($q) {
+                $GLOBALS['_sh_db']['consultas'][] = (string) $q;
+
+                // El UPDATE del alta devuelve filas afectadas: 0 hace que el código intente el INSERT.
+                if (isset($GLOBALS['_sh_db']['query_rc']) && \is_array($GLOBALS['_sh_db']['query_rc'])) {
+                    $rc = $GLOBALS['_sh_db']['query_rc'];
+                    return \array_shift($rc);
+                }
+                return $GLOBALS['_sh_db']['query_rc'] ?? 1;
+            }
             public function insert($t, $d, $f = []) { $this->insert_id = 42; return 1; }
 
             public function prepare($q, ...$args) {
