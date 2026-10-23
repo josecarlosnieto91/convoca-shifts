@@ -96,3 +96,19 @@ if ( ! function_exists( 'get_post_type' ) ) {
 		return $GLOBALS['_wp_stores']['posts'][ $post_id ]->post_type ?? false;
 	}
 }
+
+if ( ! function_exists( 'get_term_meta' ) ) {
+	/**
+	 * Meta de un término.
+	 *
+	 * @param int    $term_id Término.
+	 * @param string $clave   Clave.
+	 * @param bool   $single  Un solo valor.
+	 * @return mixed
+	 */
+	function get_term_meta( $term_id, $clave = '', $single = false ) {
+		$valor = $GLOBALS['_sh_term_meta'][ (int) $term_id ][ $clave ] ?? '';
+
+		return $single ? $valor : (array) $valor;
+	}
+}

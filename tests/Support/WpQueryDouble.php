@@ -300,6 +300,12 @@ if ( ! function_exists( 'convoca_test_wp_query_meta_clause' ) ) {
 				return '' !== (string) $value;
 			case 'NOT EXISTS':
 				return '' === (string) $value;
+			// Rango de fechas: lo usa la API para pedir los turnos entre dos días.
+			case 'BETWEEN':
+				$rango = array_values( (array) $target );
+				$a     = (string) ( $rango[0] ?? '' );
+				$b     = (string) ( $rango[1] ?? '' );
+				return (string) $value >= $a && (string) $value <= $b;
 			default:
 				return (string) $value === (string) $target;
 		}
