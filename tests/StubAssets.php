@@ -185,7 +185,8 @@ if ( ! function_exists( 'add_shortcode' ) ) {
 	 * @return bool
 	 */
 	function add_shortcode( $tag, $callback ) {
-		$GLOBALS['_wp_stores']['shortcodes'][ $tag ] = $callback;
+		// Almacén propio: el registro de shortcodes sobrevive a las pruebas que vacían `_wp_stores`.
+		$GLOBALS['_sh_shortcodes'][ $tag ] = $callback;
 
 		return true;
 	}

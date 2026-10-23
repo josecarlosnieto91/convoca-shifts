@@ -59,7 +59,7 @@ final class ShortcodesTest extends TestCase {
 	 * Los cinco shortcodes quedan registrados con su nombre público.
 	 */
 	public function test_los_shortcodes_quedan_registrados(): void {
-		$shortcodes = $GLOBALS['_wp_stores']['shortcodes'];
+		$shortcodes = $GLOBALS['_sh_shortcodes'] ?? array();
 
 		foreach ( array( 'convoca_calendario', 'convoca_boton_apuntarse', 'convoca_resumen_turnos', 'convoca_suscripcion_turnos', 'convoca_proximos_turnos' ) as $tag ) {
 			$this->assertArrayHasKey( $tag, $shortcodes, 'falta el shortcode ' . $tag );

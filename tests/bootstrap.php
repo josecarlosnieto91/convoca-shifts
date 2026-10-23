@@ -207,7 +207,9 @@ namespace {
 
     if (!\function_exists('get_post')) {
         function get_post($id = null) {
-            if ($id === null) return null;
+            // Sin argumentos, WordPress devuelve la entrada del bucle (el global `$post`): una detección
+            // que mira «la entrada actual» se quedaba en null y no veía nada nunca.
+            if ($id === null) { return $GLOBALS['post'] ?? null; }
             // WordPress no devuelve entrada para un identificador no positivo: el arnés inventaba una
             // («Post 0 — Default Title») y eso hacía creer que el detalle de un registro tenía título.
             if ((int) $id <= 0) return null;
@@ -621,4 +623,5 @@ namespace {
 	require_once __DIR__ . '/StubRestRequest.php';
 	require_once __DIR__ . '/StubRest.php';
 	require_once __DIR__ . '/StubFecha.php';
+	require_once __DIR__ . '/StubBlocks.php';
 }
