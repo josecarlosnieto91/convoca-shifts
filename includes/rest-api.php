@@ -761,7 +761,9 @@ function convoca_shifts_rest_crear_turno( WP_REST_Request $request ) {
 		)
 	);
 
-	if ( is_wp_error( $post_id ) ) {
+	// `convoca_shifts_insert_turno()` devuelve el identificador o un error; sin `$wp_error`, un fallo de
+	// WordPress es 0. Sin mirar el 0, el endpoint contestaba «creado» con `id: 0`.
+	if ( ! $post_id || is_wp_error( $post_id ) ) {
 		return new \WP_Error( 'create_failed', 'No se pudo crear el turno.', array( 'status' => 500 ) );
 	}
 
