@@ -27,6 +27,16 @@ namespace Convoca\Core {
             public static function release_lock(string $key): void {
                 unset($GLOBALS['_wp_stores']['locks'][$key]);
             }
+            /**
+             * Límite de peticiones: por defecto pasa, y la prueba puede cerrarlo.
+             *
+             * El producto pregunta por este método cuando la clase existe; si el doble no lo tuviera,
+             * cualquier endpoint de la API reventaría al llamarlo (y ninguno se podía probar).
+             */
+            public static function check_rate_limit(string $action, int $max = 10, int $window = 300, string $identity = ''): bool {
+                $GLOBALS['_sh_rate_limit_consultas'][] = $action;
+                return (bool) ($GLOBALS['_sh_rate_limit'] ?? true);
+            }
             public static function clear_fired(): void { self::$actions_fired = []; }
         }
     }
@@ -483,6 +493,11 @@ namespace {
                 if (!$code) $code = $this->get_error_code();
                 return $this->errors[$code][0] ?? '';
             }
+            /** Datos del error (estado HTTP incluido): sin esto no se puede afirmar un 429. */
+            public function get_error_data($code = '') {
+                if (!$code) $code = $this->get_error_code();
+                return $this->error_data[$code] ?? null;
+            }
         }
     }
 
@@ -569,4 +584,7 @@ namespace {
 	require_once __DIR__ . '/StubLicenseManager.php';
 	require_once __DIR__ . '/StubTurnos.php';
 	require_once __DIR__ . '/StubLogActivity.php';
+	require_once __DIR__ . '/StubRestRequest.php';
+	require_once __DIR__ . '/StubRest.php';
+	require_once __DIR__ . '/StubFecha.php';
 }

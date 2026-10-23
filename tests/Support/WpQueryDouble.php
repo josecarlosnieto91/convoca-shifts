@@ -81,7 +81,14 @@ if ( ! function_exists( 'convoca_test_wp_query_match' ) ) {
 	 * @return array
 	 */
 	function convoca_test_wp_query_match( $args ) {
-		$all    = isset( $GLOBALS['_wp_stores']['test_posts'] ) ? $GLOBALS['_wp_stores']['test_posts'] : array();
+		// `test_posts` es el almacén histórico de este doble; `posts` es el que usan las pruebas nuevas
+		// (y `get_posts`). Se miran los dos para que sembrar en cualquiera de ellos funcione.
+		$all = array();
+		foreach ( array( 'test_posts', 'posts' ) as $almacen ) {
+			foreach ( (array) ( $GLOBALS['_wp_stores'][ $almacen ] ?? array() ) as $clave => $entrada ) {
+				$all[ $clave ] = $entrada;
+			}
+		}
 		$out    = array();
 		$type   = isset( $args['post_type'] ) ? $args['post_type'] : 'post';
 		$status = isset( $args['post_status'] ) ? $args['post_status'] : 'publish';
@@ -204,6 +211,46 @@ if ( ! function_exists( 'convoca_test_wp_query_meta_match' ) ) {
 	}
 }
 
+if ( ! function_exists( 'convoca_test_wp_query_compara' ) ) {
+
+	/**
+	 * Compara dos valores de meta para `>`, `>=`, `<` y `<=`.
+	 *
+	 * Numero con numero, número; lo demás, texto. Es lo que hace falta para las fechas, que en la base
+	 * son cadenas ISO y se ordenan igual como texto.
+	 *
+	 * @param mixed  $valor  Valor guardado.
+	 * @param mixed  $contra Valor de la consulta.
+	 * @param string $operador Operador.
+	 * @return bool
+	 */
+	function convoca_test_wp_query_compara( $valor, $contra, $operador ) {
+		$valor  = (string) $valor;
+		$contra = (string) $contra;
+
+		if ( is_numeric( $valor ) && is_numeric( $contra ) ) {
+			$a = (float) $valor;
+			$b = (float) $contra;
+		} else {
+			$a = $valor;
+			$b = $contra;
+		}
+
+		switch ( $operador ) {
+			case '>':
+				return $a > $b;
+			case '>=':
+				return $a >= $b;
+			case '<':
+				return $a < $b;
+			case '<=':
+				return $a <= $b;
+		}
+
+		return false;
+	}
+}
+
 if ( ! function_exists( 'convoca_test_wp_query_meta_clause' ) ) {
 
 	/**
@@ -226,14 +273,17 @@ if ( ! function_exists( 'convoca_test_wp_query_meta_clause' ) ) {
 				return (string) $value === (string) $target;
 			case '!=':
 				return (string) $value !== (string) $target;
+			// Las fechas se comparan como texto: `(float) '2026-10-26 10:00:00'` es 2026, así que con
+			// números las comparaciones de fecha daban todas falsas y una consulta con `>` sobre
+			// `_fecha_inicio` no encontraba nunca nada.
 			case '>':
-				return (float) $value > (float) $target;
+				return convoca_test_wp_query_compara( $value, $target, '>' );
 			case '>=':
-				return (float) $value >= (float) $target;
+				return convoca_test_wp_query_compara( $value, $target, '>=' );
 			case '<':
-				return (float) $value < (float) $target;
+				return convoca_test_wp_query_compara( $value, $target, '<' );
 			case '<=':
-				return (float) $value <= (float) $target;
+				return convoca_test_wp_query_compara( $value, $target, '<=' );
 			case 'IN':
 				return in_array( (string) $value, $target_list, true );
 			case 'NOT IN':
@@ -242,6 +292,8 @@ if ( ! function_exists( 'convoca_test_wp_query_meta_clause' ) ) {
 				return false !== strpos( (string) $value, (string) $target );
 			case 'EXISTS':
 				return '' !== (string) $value;
+			case 'NOT EXISTS':
+				return '' === (string) $value;
 			default:
 				return (string) $value === (string) $target;
 		}
