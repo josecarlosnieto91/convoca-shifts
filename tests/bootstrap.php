@@ -554,11 +554,27 @@ namespace {
             return false;
         }
     }
-    if (!\function_exists('wp_next_scheduled')) { function wp_next_scheduled($h) { return false; } }
+    if (!\function_exists('wp_next_scheduled')) {
+        function wp_next_scheduled($h) {
+            // Como WordPress: la marca de tiempo del evento, o falso si no está programado.
+            return $GLOBALS['_sh_cron'][$h] ?? false;
+        }
+    }
     if (!\function_exists('wp_schedule_event')) { function wp_schedule_event($ts, $r, $h, $a = []) { return true; } }
     if (!\function_exists('wp_set_script_translations')) { function wp_set_script_translations($h, $d, $p) {} }
     if (!\function_exists('load_plugin_textdomain')) { function load_plugin_textdomain($d, $dep, $p) {} }
     if (!\function_exists('delete_post_meta_by_key')) { function delete_post_meta_by_key($key) { return true; } }
+    if (!\function_exists('get_page_by_path')) {
+        function get_page_by_path($slug, $output = OBJECT, $post_type = 'page') {
+            // Como WordPress: busca por slug entre las páginas publicadas o en borrador del almacén.
+            foreach ($GLOBALS['_wp_stores']['pages'] ?? [] as $pagina) {
+                if (($pagina->post_name ?? '') === $slug && ($pagina->post_type ?? 'page') === $post_type) {
+                    return $pagina;
+                }
+            }
+            return null;
+        }
+    }
     if (!\function_exists('get_users')) { function get_users($args = []) { return []; } }
     if (!\function_exists('submit_button')) { function submit_button($t = 'Save', $c = 'primary', $n = 'submit', $w = true, $a = []) { echo '<button type="submit">' . \esc_html($t) . '</button>'; } }
     if (!\function_exists('wp_list_pluck')) {
@@ -657,6 +673,16 @@ namespace {
                 // El diagnóstico de esquema se sirve aparte del resto de consultas: la pantalla pregunta
                 // «¿existe la tabla?» y «¿cuántas filas hay?» a la misma función.
                 if (\strpos($qs, 'SHOW TABLES') !== false) {
+                    // Si la prueba da la lista de tablas que existen, se contesta por tabla.
+                    if (isset($GLOBALS['_sh_db']['tablas_existentes'])) {
+                        foreach ((array) $GLOBALS['_sh_db']['tablas_existentes'] as $tabla) {
+                            if (false !== \strpos($qs, (string) $tabla)) {
+                                return (string) $tabla;
+                            }
+                        }
+                        return '';
+                    }
+
                     return $GLOBALS['_sh_db']['tabla'] ?? 'wp_convoca_member_sequence';
                 }
                 $GLOBALS['_sh_db']['consultas'][] = $qs;
