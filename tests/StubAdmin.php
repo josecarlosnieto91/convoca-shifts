@@ -201,3 +201,19 @@ if ( ! function_exists( 'register_setting' ) ) {
 		);
 	}
 }
+
+if ( ! function_exists( 'remove_submenu_page' ) ) {
+	/**
+	 * Quita una página del menú (apuntada, para poder afirmar que se quita).
+	 *
+	 * @param string $padre Menú padre.
+	 * @param string $slug  Identificador.
+	 * @return void
+	 */
+	function remove_submenu_page( $padre, $slug ) {
+		$GLOBALS['_sh_submenus_quitados'][] = array(
+			'padre' => $padre,
+			'slug'  => $slug,
+		);
+	}
+}

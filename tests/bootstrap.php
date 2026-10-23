@@ -462,7 +462,9 @@ namespace {
     if (!\function_exists('plugin_basename')) { function plugin_basename($f) { return \basename($f); } }
     if (!\function_exists('plugin_dir_path')) { function plugin_dir_path($f) { return \dirname($f) . '/'; } }
     if (!\function_exists('plugin_dir_url')) { function plugin_dir_url($f) { return 'https://example.com/wp-content/plugins/' . \basename(\dirname($f)) . '/'; } }
-    if (!\function_exists('get_current_screen')) { function get_current_screen() { return null; } }
+    // La pantalla actual la fija la prueba: sin esto, cualquier rama que dependa de la pantalla quedaba
+    // inalcanzable (avisos del listado, columnas por pantalla…).
+    if (!\function_exists('get_current_screen')) { function get_current_screen() { return $GLOBALS['_sh_pantalla'] ?? null; } }
     // La cola de estilos vive en tests/StubAssets.php: ahí se apunta lo que se encola, que es lo que
     // hay que poder afirmar de los shortcodes.
     if (!\function_exists('remove_action')) { function remove_action($h, $c, $p = 10) { return true; } }
