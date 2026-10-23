@@ -319,9 +319,8 @@ final class RestApiProximoTest extends TestCase {
 	 * @param array $turnos Turnos.
 	 */
 	private function turnos( array $turnos ): void {
-		$GLOBALS['_wp_stores']['posts']      = $turnos;
-		$GLOBALS['_wp_stores']['post_meta']  = $GLOBALS['_wp_stores']['post_meta'] ?? array();
-		$GLOBALS['_wp_stores']['options']    = array(
+		$GLOBALS['_wp_stores']['posts']   = $turnos;
+		$GLOBALS['_wp_stores']['options'] = array(
 			'convoca_shifts_hora_apertura' => '08:00',
 			'convoca_shifts_hora_cierre'   => '22:00',
 		);
