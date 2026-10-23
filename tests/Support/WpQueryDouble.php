@@ -111,7 +111,13 @@ if ( ! function_exists( 'convoca_test_wp_query_match' ) ) {
 			// guarda como 'future' lo publicado con fecha futura; una consulta que
 			// exige 'publish' no lo ve.
 			$pstatus = isset( $p->post_status ) ? $p->post_status : 'publish';
-			if ( ! in_array( $pstatus, $status, true ) ) {
+			// `post_status => 'any'` es «todo menos la basura», no «un estado llamado any»: sin esto, una
+			// consulta del panel con 'any' no devolvía nunca nada.
+			if ( in_array( 'any', $status, true ) ) {
+				if ( in_array( $pstatus, array( 'trash', 'auto-draft', 'inherit' ), true ) ) {
+					continue;
+				}
+			} elseif ( ! in_array( $pstatus, $status, true ) ) {
 				continue;
 			}
 

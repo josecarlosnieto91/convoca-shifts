@@ -470,6 +470,13 @@ namespace {
 
     if (!\class_exists('WP_List_Table')) {
         class WP_List_Table {
+            /** Filas de la tabla (las pone prepare_items). */
+            public $items = [];
+            /** Cabeceras de columna. */
+            public $_column_headers = [];
+            /** Argumentos de paginación recibidos. */
+            public $paginacion = null;
+
             public function __construct($args = []) {}
             public function prepare_items() {}
             public function display() {}
@@ -477,6 +484,19 @@ namespace {
             public function get_sortable_columns() { return []; }
             public function column_default($item, $col) { return ''; }
             protected function get_table_classes() { return ['wp-list-table']; }
+
+            /** Página actual: la fija la prueba con `$GLOBALS['_sh_pagenum']`. */
+            public function get_pagenum() { return (int) ($GLOBALS['_sh_pagenum'] ?? 1); }
+
+            /** WordPress apunta aquí el total para pintar la paginación. */
+            public function set_pagination_args($args) { $this->paginacion = $args; }
+
+            /** Acción en bloque pedida, como en WordPress. */
+            public function current_action() {
+                if (!empty($_REQUEST['action']) && '-1' !== $_REQUEST['action']) { return (string) $_REQUEST['action']; }
+                if (!empty($_REQUEST['action2']) && '-1' !== $_REQUEST['action2']) { return (string) $_REQUEST['action2']; }
+                return '';
+            }
         }
     }
 
