@@ -191,7 +191,15 @@ namespace {
         // Dentro de un bucle de WP_Query se llama get_the_title() sin argumentos:
         // debe devolver el titulo de la entrada actual, no exigir el id.
         function get_the_title($post = 0) {
-            if ($post) { return "Title #$post"; }
+            if ($post) {
+                // Si la prueba ha sembrado la entrada, manda su título: es lo que se pinta en la pestaña.
+                $id = \is_object($post) ? (int) ($post->ID ?? 0) : (int) $post;
+                foreach (array('posts', 'test_posts') as $almacen) {
+                    $sembrada = $GLOBALS['_wp_stores'][$almacen][$id] ?? null;
+                    if ($sembrada && isset($sembrada->post_title)) { return (string) $sembrada->post_title; }
+                }
+                return "Title #$post";
+            }
             $cur = $GLOBALS['convoca_test_current_post'] ?? null;
             return ($cur && isset($cur->post_title)) ? $cur->post_title : '';
         }
@@ -257,7 +265,7 @@ namespace {
     }
 
     if (!\function_exists('wp_verify_nonce')) {
-        function wp_verify_nonce($n, $a) { return true; }
+        function wp_verify_nonce($n, $a) { return (bool) ($GLOBALS['_sh_nonce_ok'] ?? true); }
     }
 
     if (!\function_exists('__')) { function __($s, $d = 'default') { return $s; } }
@@ -358,7 +366,13 @@ namespace {
     if (!\function_exists('register_activation_hook')) { function register_activation_hook($f, $c) { return true; } }
     if (!\function_exists('flush_rewrite_rules')) { function flush_rewrite_rules() {} }
     if (!\function_exists('wp_redirect')) { function wp_redirect($u) {} }
-    if (!\function_exists('wp_die')) { function wp_die($m = '', $t = '', $a = []) {} }
+    // `wp_die` CORTA: en WordPress termina la petición. Un no-op dejaba que el código siguiera hasta el
+    // `exit` de después y se llevaba por delante el proceso de PHPUnit (sin mensaje, sin resultado).
+    if (!\function_exists('wp_die')) {
+        function wp_die($m = '', $t = '', $a = []) {
+            throw new \RuntimeException('wp_die: ' . (is_scalar($m) ? (string) $m : '?'));
+        }
+    }
     if (!\function_exists('wp_cache_delete')) { function wp_cache_delete($k, $g = '') { return true; } }
 
     if (!\function_exists('wp_get_post_terms')) {

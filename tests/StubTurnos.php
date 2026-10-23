@@ -77,3 +77,22 @@ if ( ! function_exists( 'get_term' ) ) {
 		return null === $terminos ? null : (object) $terminos;
 	}
 }
+
+if ( ! function_exists( 'get_post_type' ) ) {
+	/**
+	 * Tipo de contenido de una entrada.
+	 *
+	 * @param int|null $post_id Entrada.
+	 * @return string|false
+	 */
+	function get_post_type( $post_id = null ) {
+		$post_id = (int) ( $post_id ?? 0 );
+		$tipo    = $GLOBALS['_wp_stores']['post_types'][ $post_id ] ?? null;
+
+		if ( null !== $tipo ) {
+			return $tipo;
+		}
+
+		return $GLOBALS['_wp_stores']['posts'][ $post_id ]->post_type ?? false;
+	}
+}

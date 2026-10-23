@@ -138,3 +138,47 @@ if ( ! function_exists( 'wp_get_current_user' ) ) {
 		return get_userdata( (int) get_current_user_id() );
 	}
 }
+
+if ( ! function_exists( 'remove_meta_box' ) ) {
+	/**
+	 * Quita una caja de edición (apuntada, para poder afirmar que se quita la nuestra).
+	 *
+	 * @param string $id      Identificador.
+	 * @param string $pantalla Pantalla.
+	 * @param string $contexto Contexto.
+	 * @return void
+	 */
+	function remove_meta_box( $id, $pantalla = '', $contexto = 'advanced' ) {
+		$GLOBALS['_sh_metaboxes_quitadas'][] = array(
+			'id'       => $id,
+			'pantalla' => $pantalla,
+			'contexto' => $contexto,
+		);
+	}
+}
+
+if ( ! function_exists( 'get_gmt_from_date' ) ) {
+	/**
+	 * Fecha en GMT a partir de una local.
+	 *
+	 * @param string $fecha Fecha local.
+	 * @return string
+	 */
+	function get_gmt_from_date( $fecha ) {
+		$ts = strtotime( (string) $fecha );
+
+		return false === $ts ? '' : gmdate( 'Y-m-d H:i:s', $ts );
+	}
+}
+
+if ( ! function_exists( 'sanitize_key' ) ) {
+	/**
+	 * Sanea una clave (minúsculas, guiones y barras bajas).
+	 *
+	 * @param string $clave Clave.
+	 * @return string
+	 */
+	function sanitize_key( $clave ) {
+		return strtolower( preg_replace( '/[^a-z0-9_\-]/i', '', (string) $clave ) );
+	}
+}
