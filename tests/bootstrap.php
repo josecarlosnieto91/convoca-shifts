@@ -266,6 +266,17 @@ namespace {
             $wp_insert_counter++;
             $GLOBALS['_wp_stores']['insertados'][] = $data;
             update_post_meta($wp_insert_counter, '_wp_insert_data', $data);
+
+            // El post creado entra en el almacén: si no, una consulta posterior no lo ve y un flujo que
+            // importa dos veces la misma fila se cree que solo ha creado una.
+            $GLOBALS['_wp_stores']['posts'][ $wp_insert_counter ] = (object) array(
+                'ID'          => $wp_insert_counter,
+                'post_type'   => $data['post_type'] ?? 'post',
+                'post_status' => $data['post_status'] ?? 'draft',
+                'post_title'  => $data['post_title'] ?? '',
+                'post_date'   => $data['post_date'] ?? '',
+            );
+
             return $wp_insert_counter;
         }
     }

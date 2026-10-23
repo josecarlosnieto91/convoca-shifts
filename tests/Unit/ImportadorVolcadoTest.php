@@ -137,6 +137,27 @@ final class ImportadorVolcadoTest extends TestCase {
 	}
 
 	/**
+	 * Dos filas idénticas en el mismo fichero: la segunda es repetida, no otro turno.
+	 *
+	 * Es el caso real de quien pega dos veces la misma línea en la hoja, y solo se ve si el turno recién
+	 * creado entra en la consulta de duplicados (el doble de `wp_insert_post` lo registraba solo en las
+	 * metas, así que la segunda fila pasaba por nueva).
+	 */
+	public function test_dos_filas_identicas_en_el_mismo_fichero(): void {
+		$fila = array(
+			'fecha'       => '2026-11-09',
+			'hora_inicio' => '17:00',
+			'hora_fin'    => '21:00',
+		);
+
+		$r = \Convoca\Shifts\Importador::importar( array( $fila, $fila ) );
+
+		$this->assertSame( 1, $r['creados'], 'un turno, no dos' );
+		$this->assertSame( 1, $r['repetidos'] );
+		$this->assertSame( array(), $r['errores'] );
+	}
+
+	/**
 	 * El turno que ya existe cuenta aunque esté en **borrador**: `post_status => 'any'`.
 	 */
 	public function test_un_borrador_tambien_cuenta_como_existente(): void {
@@ -247,11 +268,13 @@ final class ImportadorVolcadoTest extends TestCase {
 		);
 		$this->aportar_persona( 7 );
 
+		$dia = 4;
 		foreach ( array( '7', 'ada', 'ada@example.test' ) as $leido ) {
+			// Un día distinto por vuelta: el turno creado ya se ve en la consulta de duplicados.
 			$r = \Convoca\Shifts\Importador::importar(
 				array(
 					array(
-						'fecha'       => '2026-11-05',
+						'fecha'       => '2026-11-' . sprintf( '%02d', ++$dia ),
 						'hora_inicio' => '17:00',
 						'hora_fin'    => '21:00',
 						'responsable' => $leido,
