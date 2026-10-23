@@ -307,6 +307,7 @@ namespace {
     if (!\function_exists('_x')) { function _x($s, $c, $d = 'default') { return $s; } }
     if (!\function_exists('esc_html__')) { function esc_html__($s, $d = 'default') { return $s; } }
     if (!\function_exists('esc_attr__')) { function esc_attr__($s, $d = 'default') { return $s; } }
+    if (!\function_exists('esc_attr_e')) { function esc_attr_e($s, $d = 'default') { echo \esc_attr($s); } }
     if (!\function_exists('esc_html')) { function esc_html($s) { return \htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); } }
     if (!\function_exists('esc_attr')) { function esc_attr($s) { return \htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); } }
     if (!\function_exists('esc_url')) { function esc_url($s) { return $s; } }

@@ -81,10 +81,12 @@ class Personas_Asignables {
 			$salida[ $id ] = (object) array(
 				'ID'           => $id,
 				'display_name' => $nombre,
-				// Las plantillas venían de `get_users()` y leen estas dos: se declaran vacías para no
-				// cambiar el modo de error de PHP 8 al pintar (y `user_login` sólo se pinta si existe).
+				// Las plantillas venían de `get_users()` y leen estas: se declaran vacías para no cambiar
+				// el modo de error de PHP 8 al pintar (y `user_login` sólo se pinta si existe).
+				// `user_email` faltaba y la auditoría de horas la pinta en cada fila: aviso por renglón.
 				'first_name'   => '',
 				'user_login'   => '',
+				'user_email'   => '',
 			);
 		}
 

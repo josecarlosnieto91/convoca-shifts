@@ -59,7 +59,16 @@ if ( ! function_exists( 'check_admin_referer' ) ) {
 	function check_admin_referer( $accion = '-1' ) {
 		$GLOBALS['_sh_admin_nonces_comprobados'][] = $accion;
 
-		return (bool) ( $GLOBALS['_sh_admin_nonce_ok'] ?? false );
+		$ok = (bool) ( $GLOBALS['_sh_admin_nonce_ok'] ?? false );
+
+		// En WordPress esta función no devuelve falso: **mata** la petición (`wp_nonce_ays` → `wp_die`).
+		// Con `_sh_admin_nonce_mata` el doble hace lo mismo, para poder probar los manejadores que no
+		// comprueban el valor de vuelta y confían en esa muerte.
+		if ( ! $ok && ! empty( $GLOBALS['_sh_admin_nonce_mata'] ) ) {
+			throw new RuntimeException( 'wp_die: nonce no válido' );
+		}
+
+		return $ok;
 	}
 }
 
