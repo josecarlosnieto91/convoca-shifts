@@ -85,7 +85,9 @@ namespace {
 
     if (!\function_exists('get_option')) {
         function get_option($key, $default = false) {
-            $s = &$GLOBALS['_wp_stores']['options'];
+            // Sin ninguna opción guardada, el almacén no existe: antes esto reventaba con un TypeError
+            // y por eso media docena de funciones del plugin no se podían ni llamar desde una prueba.
+            $s = $GLOBALS['_wp_stores']['options'] ?? array();
             return \array_key_exists($key, $s) ? $s[$key] : $default;
         }
         function update_option($key, $value, $autoload = null) {
@@ -214,8 +216,13 @@ namespace {
     if (!\function_exists('wp_insert_post')) {
         static $wp_insert_counter = 500;
         function wp_insert_post($data) {
+            // Como WordPress: sin `$wp_error` un fallo devuelve 0, no un error.
+            if (!empty($GLOBALS['_sh_insert_error'])) {
+                return 0;
+            }
             global $wp_insert_counter;
             $wp_insert_counter++;
+            $GLOBALS['_wp_stores']['insertados'][] = $data;
             update_post_meta($wp_insert_counter, '_wp_insert_data', $data);
             return $wp_insert_counter;
         }
@@ -502,7 +509,9 @@ namespace {
                 if (\strpos($qs, 'SHOW TABLES') !== false) {
                     return $GLOBALS['_sh_db']['tabla'] ?? 'wp_convoca_member_sequence';
                 }
-                if (isset($GLOBALS['_sh_db']['get_var'])) { return $GLOBALS['_sh_db']['get_var']; }
+                $GLOBALS['_sh_db']['consultas'][] = $qs;
+
+                if (\array_key_exists( 'get_var', $GLOBALS['_sh_db'] ?? array() )) { return $GLOBALS['_sh_db']['get_var']; }
                 if (\strpos($qs, 'SELECT meta_value') !== false) {
                     // Check if it's for horas_contabilizadas - return 0 for tests
                     if (\strpos($qs, 'horas_contabilizadas') !== false) return '0';
@@ -558,4 +567,6 @@ namespace {
 	require_once __DIR__ . '/StubFechaCorta.php';
 	require_once __DIR__ . '/StubAdmin.php';
 	require_once __DIR__ . '/StubLicenseManager.php';
+	require_once __DIR__ . '/StubTurnos.php';
+	require_once __DIR__ . '/StubLogActivity.php';
 }
