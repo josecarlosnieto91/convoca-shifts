@@ -220,7 +220,7 @@ namespace {
     }
 
     if (!\function_exists('current_user_can')) {
-        function current_user_can($cap, ...$a) { return true; }
+        function current_user_can($cap, ...$a) { return $GLOBALS['_test_caps'][$cap] ?? true; }
     }
 
     if (!\function_exists('get_current_user_id')) {
@@ -290,7 +290,35 @@ namespace {
     if (!\function_exists('register_post_type')) { function register_post_type($s, $a) { return null; } }
     if (!\function_exists('register_post_meta')) { function register_post_meta($t, $k, $a) { return true; } }
     if (!\function_exists('register_taxonomy')) { function register_taxonomy($s, $t, $a) { return null; } }
-    if (!\function_exists('register_rest_route')) { function register_rest_route($n, $r, $a) { return true; } }
+    if (!\function_exists('__return_true')) {
+        /**
+         * Devuelve verdadero: es lo que usa WordPress para los endpoints públicos.
+         */
+        function __return_true() {
+            return true;
+        }
+    }
+
+    if (!\function_exists('is_user_logged_in')) {
+        /**
+         * Sesión de mentira, que la prueba abre y cierra a voluntad: los permisos de la API se
+         * deciden mirando quién entra, así que sin poder mover esto no hay nada que probar.
+         */
+        function is_user_logged_in() {
+            return (bool) ($GLOBALS['_sh_logged'] ?? false);
+        }
+    }
+
+    if (!\function_exists('register_rest_route')) {
+        /**
+         * Apunta las rutas en vez de descartarlas: una prueba tiene que poder decir qué endpoints hay,
+         * con qué método y con qué permiso.
+         */
+        function register_rest_route($namespace, $route, $args = []) {
+            $GLOBALS['_sh_routes'][] = \array_merge(['namespace' => $namespace, 'route' => $route], (array) $args);
+            return true;
+        }
+    }
     if (!\function_exists('register_activation_hook')) { function register_activation_hook($f, $c) { return true; } }
     if (!\function_exists('flush_rewrite_rules')) { function flush_rewrite_rules() {} }
     if (!\function_exists('wp_redirect')) { function wp_redirect($u) {} }
