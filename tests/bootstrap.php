@@ -21,7 +21,16 @@ namespace Convoca\Core {
             // Bloqueos del nucleo: sin esto, cualquier flujo que use acquire_lock()
             // (p. ej. el recordatorio del cron) revienta con "undefined method".
             public static function acquire_lock(string $key, int $ttl = 60): bool {
+                // La prueba puede decir que el cerrojo está ocupado por otro proceso.
+                if ( isset( $GLOBALS['_sh_lock'] ) && false === $GLOBALS['_sh_lock'] ) {
+                    $GLOBALS['_sh_locks_denegados'][] = $key;
+
+                    return false;
+                }
+
                 $GLOBALS['_wp_stores']['locks'][$key] = \time() + $ttl;
+                $GLOBALS['_sh_locks'][]               = $key;
+
                 return true;
             }
             public static function release_lock(string $key): void {
@@ -241,10 +250,10 @@ namespace {
 
     if (!\function_exists('wp_insert_post')) {
         static $wp_insert_counter = 500;
-        function wp_insert_post($data) {
-            // Como WordPress: sin `$wp_error` un fallo devuelve 0, no un error.
+        function wp_insert_post($data, $wp_error = false) {
+            // Como WordPress: sin `$wp_error` un fallo devuelve 0; con `$wp_error`, un WP_Error.
             if (!empty($GLOBALS['_sh_insert_error'])) {
-                return 0;
+                return $wp_error ? $GLOBALS['_sh_insert_error'] : 0;
             }
             global $wp_insert_counter;
             $wp_insert_counter++;
@@ -621,6 +630,12 @@ namespace {
             }
             public function query($q) {
                 $GLOBALS['_sh_db']['consultas'][] = (string) $q;
+
+                // Fallo provocado a mitad de una transacción: así se prueba el catch (ROLLBACK + soltar
+                // el cerrojo) sin inventar un turno corrupto.
+                if ( isset( $GLOBALS['_sh_db']['lanza_en'] ) && false !== \strpos( (string) $q, (string) $GLOBALS['_sh_db']['lanza_en'] ) ) {
+                    throw new \RuntimeException( 'fallo de base de datos a mitad de la transacción' );
+                }
 
                 // El UPDATE del alta devuelve filas afectadas: 0 hace que el código intente el INSERT.
                 // La cola se consume EN EL GLOBAL (una copia no avanza y todas las llamadas devolvían lo mismo).

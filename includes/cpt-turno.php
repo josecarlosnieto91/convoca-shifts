@@ -1099,7 +1099,9 @@ function convoca_shifts_duplicar_semana() {
 				)
 			);
 
-			if ( ! is_wp_error( $new_post_id ) ) {
+			// Un alta que no se hace devuelve 0 (WordPress sin `$wp_error`): no cuenta como turno creado
+			// ni se le escriben metas a un id que no existe.
+			if ( ! is_wp_error( $new_post_id ) && $new_post_id ) {
 				// Additional meta not handled by insert_turno.
 				update_post_meta( $new_post_id, '_notas', get_post_meta( $turno->ID, '_notas', true ) );
 
@@ -1226,7 +1228,8 @@ function convoca_shifts_crear_semana_tipo( $fecha_inicio, $dias ) {
 				)
 			);
 
-			if ( ! is_wp_error( $new_post_id ) ) {
+			// Igual que al duplicar: un alta fallida devuelve 0 y no es un turno creado.
+			if ( ! is_wp_error( $new_post_id ) && $new_post_id ) {
 				// Log activity.
 				if ( function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
 					convoca_shifts_log_activity( get_current_user_id(), $new_post_id, 'turno_creado', array( 'origen' => 'generador_semana' ) );
