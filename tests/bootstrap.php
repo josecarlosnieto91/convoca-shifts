@@ -154,7 +154,8 @@ namespace {
 
     if (!\function_exists('get_user_meta')) {
         function get_user_meta($id, $key, $single = false) {
-            $s = $GLOBALS['_wp_stores']['user_meta'];
+            // Puede no haber ninguna meta de usuario guardada: `?? []` evita el aviso y el TypeError.
+            $s = $GLOBALS['_wp_stores']['user_meta'] ?? array();
             $v = $s[$id][$key] ?? '';
             return $single ? $v : ($v !== '' ? [$v] : []);
         }

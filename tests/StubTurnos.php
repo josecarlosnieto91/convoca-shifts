@@ -112,3 +112,24 @@ if ( ! function_exists( 'get_term_meta' ) ) {
 		return $single ? $valor : (array) $valor;
 	}
 }
+
+if ( ! function_exists( 'update_term_meta' ) ) {
+	/**
+	 * Guarda la meta de un término.
+	 *
+	 * @param int    $term_id Término.
+	 * @param string $clave   Clave.
+	 * @param mixed  $valor   Valor.
+	 * @return bool
+	 */
+	function update_term_meta( $term_id, $clave, $valor ) {
+		$GLOBALS['_sh_term_meta'][ (int) $term_id ][ $clave ] = $valor;
+		$GLOBALS['_sh_term_meta_updates'][]                   = array(
+			'term'  => (int) $term_id,
+			'clave' => $clave,
+			'valor' => $valor,
+		);
+
+		return true;
+	}
+}

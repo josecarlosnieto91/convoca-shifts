@@ -235,7 +235,11 @@ if ( ! function_exists( 'esc_url_raw' ) ) {
 	 * @return string
 	 */
 	function esc_url_raw( $url ) {
-		return (string) $url;
+		$url = (string) $url;
+
+		// El real tira los esquemas peligrosos: si el doble fuera un passthrough, la prueba de
+		// saneado no podría distinguir nada.
+		return preg_match( '/^\s*(javascript|data|vbscript):/i', $url ) ? '' : $url;
 	}
 }
 
