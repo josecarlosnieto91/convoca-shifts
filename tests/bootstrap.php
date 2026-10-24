@@ -118,6 +118,21 @@ namespace {
             $GLOBALS['_wp_stores']['options'][$key] = $value;
             return true;
         }
+        function wp_delete_post($id, $force = false) {
+            $GLOBALS['_sh_borrados'][] = array('tipo' => 'post', 'id' => (int) $id, 'force' => (bool) $force);
+            return true;
+        }
+        function get_terms($args = array()) {
+            return $GLOBALS['_sh_terms'] ?? array();
+        }
+        function wp_delete_term($term_id, $taxonomy) {
+            $GLOBALS['_sh_borrados'][] = array('tipo' => 'term', 'id' => (int) $term_id, 'tax' => $taxonomy);
+            return true;
+        }
+        function wp_clear_scheduled_hook($hook, $args = array()) {
+            $GLOBALS['_sh_hooks_limpiados'][] = $hook;
+            return true;
+        }
         function delete_option($key) {
             unset($GLOBALS['_wp_stores']['options'][$key]);
             return true;

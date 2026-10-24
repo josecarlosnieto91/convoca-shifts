@@ -11,6 +11,8 @@
   <source>
     <include>
       <directory suffix=".php">./includes</directory>
+      <file>convoca-shifts.php</file>
+      <file>uninstall.php</file>
     </include>
   </source>
 </phpunit>
