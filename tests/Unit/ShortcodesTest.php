@@ -298,21 +298,29 @@ final class ShortcodesTest extends TestCase {
 	}
 
 	/**
-	 * Al guardar un turno se pide borrar el resumen guardado.
+	 * Al guardar un turno se borran **las dos** cachés del resumen.
 	 *
-	 * Ojo: hoy se pide la clave vieja (`..._semana`) y la caché que se escribe es `..._this`/`..._next`,
-	 * así que el resumen se queda una hora viejo. Está reportado en el issue #24; esta prueba solo fija
-	 * que la invalidación se dispara, no qué clave borra.
+	 * El resumen cachea por semana (`_this` y `_next`) y el widget tiene la suya. Antes se borraba `_semana`, la
+	 * clave que se usaba antes de que existiera el atributo: no se borraba nada de lo que se lee y el resumen
+	 * seguía enseñando lo de antes hasta una hora (shifts#24). La prueba anterior solo hacía `assertTrue( true )`.
 	 */
-	public function test_al_guardar_un_turno_se_pide_borrar_el_resumen(): void {
-		$GLOBALS['_wp_stores']['transients']['convoca_shifts_resumen_turnos_this'] = array(
-			'total'      => 9,
-			'sin_cubrir' => 9,
-		);
+	public function test_al_guardar_un_turno_se_borran_las_caches_del_resumen(): void {
+		foreach ( array( 'this', 'next', 'widget' ) as $sufijo ) {
+			$GLOBALS['_wp_stores']['transients'][ 'convoca_shifts_resumen_turnos_' . $sufijo ] = array(
+				'total'      => 9,
+				'sin_cubrir' => 9,
+			);
+		}
 
 		\Convoca\Shifts\convoca_shifts_clear_resumen_transient();
 
-		$this->assertTrue( true, 'la función se ejecuta sin reventar' );
+		foreach ( array( 'this', 'next', 'widget' ) as $sufijo ) {
+			$this->assertArrayNotHasKey(
+				'convoca_shifts_resumen_turnos_' . $sufijo,
+				$GLOBALS['_wp_stores']['transients'],
+				sprintf( 'la caché `_%s` se borra', $sufijo )
+			);
+		}
 	}
 
 	/**

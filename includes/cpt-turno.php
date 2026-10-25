@@ -1114,7 +1114,7 @@ function convoca_shifts_duplicar_semana() {
 		}
 
 		$wpdb->query( 'COMMIT' );
-		delete_transient( 'convoca_shifts_resumen_turnos_semana' );
+		convoca_shifts_clear_resumen_transient();
 		return $count;
 	} catch ( \Throwable $e ) {
 		$wpdb->query( 'ROLLBACK' );
@@ -1238,7 +1238,7 @@ function convoca_shifts_crear_semana_tipo( $fecha_inicio, $dias ) {
 			}
 		}
 		$wpdb->query( 'COMMIT' );
-		delete_transient( 'convoca_shifts_resumen_turnos_semana' );
+		convoca_shifts_clear_resumen_transient();
 		return $count;
 	} catch ( \Throwable $e ) {
 		$wpdb->query( 'ROLLBACK' );

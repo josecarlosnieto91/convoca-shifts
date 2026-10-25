@@ -491,8 +491,21 @@ function convoca_shifts_proximos_turnos( $atts ) {
 
 // Clear transient when a turno is saved/assigned.
 add_action( 'save_post_centro_turno', 'Convoca\Shifts\convoca_shifts_clear_resumen_transient' );
+/**
+ * Tira todas las caches del resumen de turnos.
+ *
+ * **Una sola funcion para las cuatro claves.** El resumen cachea por semana (`_this` y `_next`, segun el atributo
+ * `semana`) y el widget tiene la suya. Las invalidaciones borraban `convoca_shifts_resumen_turnos_semana`, la clave
+ * que se usaba **antes** de que existiera el atributo: no borraban nada de lo que se lee y el resumen seguia
+ * ensenando lo de antes hasta una hora (shifts#24). La clave vieja se sigue borrando porque puede quedar en
+ * instalaciones que actualicen.
+ *
+ * @return void
+ */
 function convoca_shifts_clear_resumen_transient() {
-	delete_transient( 'convoca_shifts_resumen_turnos_semana' );
+	foreach ( array( 'this', 'next', 'widget', 'semana' ) as $sufijo ) {
+		delete_transient( 'convoca_shifts_resumen_turnos_' . $sufijo );
+	}
 }
 
 // Clear transient on assign/unassign API calls.
@@ -507,7 +520,7 @@ add_action(
 	'updated_post_meta',
 	function ( $meta_id, $post_id, $meta_key, $meta_value ) {
 		if ( ( '_id_responsable' === $meta_key || '_estado' === $meta_key ) && get_post_type( $post_id ) === 'centro_turno' ) {
-			delete_transient( 'convoca_shifts_resumen_turnos_semana' );
+			convoca_shifts_clear_resumen_transient();
 		}
 	},
 	10,
