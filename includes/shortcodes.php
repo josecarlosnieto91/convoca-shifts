@@ -257,8 +257,9 @@ function convoca_shifts_resumen_turnos( $atts = array() ) {
 	wp_enqueue_style( 'convoca-shifts-style' );
 	wp_enqueue_script( 'convoca-shifts-calendario' );
 
-	$week_modifier = $atts['semana'] === 'next' ? 'next week' : 'this week';
-	$transient_key = 'convoca_shifts_resumen_turnos_' . ( $atts['semana'] === 'next' ? 'next' : 'this' );
+	$es_siguiente  = isset( $atts['semana'] ) && 'next' === $atts['semana'];
+	$week_modifier = $es_siguiente ? 'next week' : 'this week';
+	$transient_key = 'convoca_shifts_resumen_turnos_' . ( $es_siguiente ? 'next' : 'this' );
 	$resumen       = get_transient( $transient_key );
 
 	if ( false === $resumen ) {
@@ -310,16 +311,24 @@ function convoca_shifts_resumen_turnos( $atts = array() ) {
 		<div class="convoca-shifts-resumen-turnos">
 			<?php if ( $resumen['total'] > 0 ) : ?>
 				<?php /* translators: 1: number of uncovered shifts, 2: total number of shifts */ ?>
-				📅 <?php echo esc_html( sprintf( __( 'Esta semana hay %1$d turnos sin cubrir de %2$d en total.', 'convoca-shifts' ), $resumen['sin_cubrir'], $resumen['total'] ) ); ?>
+				📅
+				<?php
+				echo esc_html(
+					$es_siguiente
+						? sprintf( __( 'La semana que viene hay %1$d turnos sin cubrir de %2$d en total.', 'convoca-shifts' ), $resumen['sin_cubrir'], $resumen['total'] )
+						: sprintf( __( 'Esta semana hay %1$d turnos sin cubrir de %2$d en total.', 'convoca-shifts' ), $resumen['sin_cubrir'], $resumen['total'] )
+				);
+				?>
 			<?php else : ?>
-				📅 No hay turnos definidos para esta semana.
+				📅 <?php echo esc_html( $es_siguiente ? __( 'No hay turnos definidos para la semana que viene.', 'convoca-shifts' ) : __( 'No hay turnos definidos para esta semana.', 'convoca-shifts' ) ); ?>
 			<?php endif; ?>
 		</div>
 
 		<?php
-		// Mini list of gaps for the current week.
-		$start_of_week = wp_date( 'Y-m-d 00:00:00', strtotime( 'monday this week' ) );
-		$end_of_week   = wp_date( 'Y-m-d 23:59:59', strtotime( 'sunday this week' ) );
+		// Mini list of gaps, en la MISMA semana que el recuento. Antes iba fija a `this week` y con
+		// `semana="next"` el numero y la lista se contradecian (shifts#25).
+		$start_of_week = wp_date( 'Y-m-d 00:00:00', strtotime( 'monday ' . $week_modifier ) );
+		$end_of_week   = wp_date( 'Y-m-d 23:59:59', strtotime( 'sunday ' . $week_modifier ) );
 		$gaps          = get_posts(
 			array(
 				'post_type'      => 'centro_turno',

@@ -281,6 +281,41 @@ final class ShortcodesTest extends TestCase {
 	/**
 	 * Los próximos turnos: sin nada, lo dice; con turnos, lista fecha, hora y quién cubre.
 	 */
+	/**
+	 * La vista de la semana siguiente ensena SUS huecos, no los de esta semana.
+	 *
+	 * El recuento ya usaba el atributo, pero la lista de huecos iba fija a `this week`: el numero y la lista
+	 * se contradecian (shifts#25). Se comprueban las dos semanas para que la prueba no pueda pasar por
+	 * casualidad: cada una tiene que ensenar su propia fecha y no la de la otra.
+	 */
+	public function test_cada_semana_ensena_sus_propios_huecos(): void {
+		$lunes_proximo = (int) strtotime( 'monday next week' );
+		$hoy           = gmdate( 'Y-m-d' ) . ' 23:00:00';
+		$proxima       = gmdate( 'Y-m-d', $lunes_proximo + DAY_IN_SECONDS ) . ' 10:00:00';
+
+		$GLOBALS['_wp_stores']['posts'] = array(
+			1 => $this->turno( 1, 0, $hoy ),
+			2 => $this->turno( 2, 0, $proxima ),
+		);
+
+		$fecha_hoy     = \Convoca\Shifts\convoca_shifts_fecha_corta( strtotime( $hoy ) );
+		$fecha_proxima = \Convoca\Shifts\convoca_shifts_fecha_corta( strtotime( $proxima ) );
+
+		$GLOBALS['_wp_stores']['transients'] = array();
+		$next = \Convoca\Shifts\convoca_shifts_resumen_turnos( array( 'semana' => 'next' ) );
+
+		$GLOBALS['_wp_stores']['transients'] = array();
+		$esta = \Convoca\Shifts\convoca_shifts_resumen_turnos( array( 'semana' => 'this' ) );
+
+		$this->assertStringContainsString( $fecha_proxima, $next, 'la semana que viene ensena su hueco' );
+		$this->assertStringNotContainsString( $fecha_hoy, $next, 'y no el de esta semana' );
+		$this->assertStringContainsString( $fecha_hoy, $esta, 'esta semana ensena el suyo' );
+		$this->assertStringNotContainsString( $fecha_proxima, $esta, 'y no el de la que viene' );
+	}
+
+	/**
+	 * Los proximos turnos: sin nada, lo dice; con turnos, lista fecha, hora y quien cubre.
+	 */
 	public function test_los_proximos_turnos(): void {
 		$vacio = \Convoca\Shifts\convoca_shifts_proximos_turnos( array() );
 		$this->assertStringContainsString( 'No hay turnos próximos programados', $vacio );
