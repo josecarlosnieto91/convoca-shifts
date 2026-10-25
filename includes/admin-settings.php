@@ -46,7 +46,11 @@ function convoca_shifts_add_settings_menu() {
 }
 
 function convoca_shifts_status_page() {
-	if ( ! class_exists( 'Convoca\Shifts$1' ) ) {
+	// La guarda comprobaba `'Convoca\Shifts$1'`, que es basura de una sustitución de regex a medio hacer:
+	// `class_exists()` contestaba **siempre** que no, así que el `require_once` se ejecutaba en cada llamada y
+	// la comprobación no comprobaba nada. Hoy no rompe porque el `require_once` es idempotente; con un
+	// `require` a secas o si el fichero se cargara por otra vía, esto sería un fatal.
+	if ( ! class_exists( 'Convoca\Shifts\Convoca_Shifts_Admin_Status' ) ) {
 		require_once __DIR__ . '/class-admin-status.php';
 	}
 	Convoca_Shifts_Admin_Status::render_page();

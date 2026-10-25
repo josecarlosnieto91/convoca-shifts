@@ -189,6 +189,32 @@ final class AdminSettingsTest extends TestCase {
 	}
 
 	/**
+	 * **La guarda de la pantalla «Estado» comprueba el nombre de clase de verdad.**
+	 *
+	 * Estaba así: `if ( ! class_exists( 'Convoca\Shifts$1' ) )`. Ese `$1` es el resto de una sustitución de
+	 * regex a medio hacer, y en PHP una cadena entre comillas simples lo deja literal: `class_exists()`
+	 * contestaba **siempre** que no. No rompía porque detrás hay un `require_once` (idempotente), pero la
+	 * comprobación no comprobaba nada y con un `require` a secas sería un fatal en la pantalla de ajustes.
+	 *
+	 * Se mira el código fuente a propósito: el efecto observable (la clase queda cargada) es idéntico en los
+	 * dos casos, así que ninguna llamada puede distinguirlos. Lo que distingue es la cadena.
+	 */
+	public function test_la_guarda_de_estado_usa_el_nombre_completo_de_la_clase(): void {
+		$fuente = (string) file_get_contents( dirname( __DIR__, 2 ) . '/includes/admin-settings.php' );
+
+		$this->assertStringNotContainsString(
+			"class_exists( 'Convoca\\Shifts$1' )",
+			$fuente,
+			'la guarda no puede llevar un grupo de captura de regex'
+		);
+		$this->assertMatchesRegularExpression(
+			'/class_exists\(\s*\'Convoca\\\\Shifts\\\\Convoca_Shifts_Admin_Status\'\s*\)/',
+			$fuente,
+			'la guarda tiene que nombrar la clase completa'
+		);
+	}
+
+	/**
 	 * Busca una comprobación por su título.
 	 *
 	 * @param array  $checks Comprobaciones.
