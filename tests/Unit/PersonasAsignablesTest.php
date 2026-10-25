@@ -153,4 +153,67 @@ class PersonasAsignablesTest extends TestCase {
 	public function test_la_nota_dice_por_que_no_hay_nadie(): void {
 		$this->assertStringContainsString( 'No hay personas asignables', Personas_Asignables::nota_sin_personas() );
 	}
+
+	/**
+	 * El correo viaja con la persona cuando quien la aporta lo trae.
+	 *
+	 * La auditoría de horas pinta una columna *Email* por fila: si la lista no lo transporta, la columna sale
+	 * vacía siempre (shifts#27).
+	 */
+	public function test_el_correo_viene_con_la_persona(): void {
+		$this->aportar(
+			static function () {
+				return array(
+					array( 'id' => 7, 'nombre' => 'Ana', 'email' => 'ana@example.test' ),
+					array( 'id' => 9, 'nombre' => 'Luis', 'user_email' => 'luis@example.test' ),
+				);
+			}
+		);
+
+		$lista = Personas_Asignables::lista( 'voluntario' );
+
+		$this->assertSame( 'ana@example.test', $lista[0]->user_email, 'acepta la clave `email`' );
+		$this->assertSame( 'luis@example.test', $lista[1]->user_email, 'y la clave `user_email`' );
+	}
+
+	/**
+	 * Si la persona no trae correo, se pregunta a WordPress por el id.
+	 */
+	public function test_sin_correo_en_la_persona_se_busca_en_el_usuario(): void {
+		$GLOBALS['_wp_stores']['usuarios'][7] = (object) array(
+			'ID'           => 7,
+			'display_name' => 'Ana',
+			'user_email'   => 'ana@example.test',
+		);
+
+		$this->aportar(
+			static function () {
+				return array( array( 'id' => 7, 'nombre' => 'Ana' ) );
+			}
+		);
+
+		$lista = Personas_Asignables::lista( 'voluntario' );
+
+		$this->assertSame( 'ana@example.test', $lista[0]->user_email );
+	}
+
+	/**
+	 * Y si no hay ni una cosa ni la otra, la clave existe vacía: nada de avisos al pintar.
+	 */
+	public function test_sin_correo_en_ningun_sitio_la_clave_queda_vacia(): void {
+		// El doble de `get_userdata()` inventa un usuario para cualquier id positivo; para simular que el id no
+		// tiene cuenta se siembra explícitamente como `false`.
+		$GLOBALS['_wp_stores']['usuarios'][4242] = false;
+
+		$this->aportar(
+			static function () {
+				return array( array( 'id' => 4242, 'nombre' => 'Sin cuenta' ) );
+			}
+		);
+
+		$lista = Personas_Asignables::lista( 'voluntario' );
+
+		$this->assertTrue( property_exists( $lista[0], 'user_email' ), 'la clave existe siempre' );
+		$this->assertSame( '', $lista[0]->user_email );
+	}
 }

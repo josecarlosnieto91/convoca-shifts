@@ -83,10 +83,9 @@ class Personas_Asignables {
 				'display_name' => $nombre,
 				// Las plantillas venían de `get_users()` y leen estas: se declaran vacías para no cambiar
 				// el modo de error de PHP 8 al pintar (y `user_login` sólo se pinta si existe).
-				// `user_email` faltaba y la auditoría de horas la pinta en cada fila: aviso por renglón.
 				'first_name'   => '',
 				'user_login'   => '',
-				'user_email'   => '',
+				'user_email'   => self::email_de( $persona, $id ),
 			);
 		}
 
@@ -196,5 +195,35 @@ class Personas_Asignables {
 		}
 
 		return '';
+	}
+
+	/**
+	 * El correo de una persona, si quien la aporta lo trae.
+	 *
+	 * La auditoría de horas pinta una columna *Email* por fila y estaba saliendo **siempre vacía**: la lista
+	 * declaraba `user_email => ''` para callar el aviso de PHP 8, pero nunca lo rellenaba (shifts#27). Se busca en
+	 * la persona aportada —cada proveedor usa su forma— y, si no viene, se pregunta a WordPress por el id, que es
+	 * de donde salía antes.
+	 *
+	 * @param mixed $persona Persona tal como la devolvió el filtro.
+	 * @param int   $id      Identificador ya normalizado.
+	 * @return string Correo, o cadena vacía si no hay.
+	 */
+	private static function email_de( $persona, int $id ): string {
+		$email = '';
+
+		if ( is_object( $persona ) ) {
+			$email = (string) ( $persona->user_email ?? $persona->email ?? '' );
+		} elseif ( is_array( $persona ) ) {
+			$email = (string) ( $persona['user_email'] ?? $persona['email'] ?? '' );
+		}
+
+		if ( '' !== $email ) {
+			return $email;
+		}
+
+		$usuario = get_userdata( $id );
+
+		return $usuario ? (string) ( $usuario->user_email ?? '' ) : '';
 	}
 }

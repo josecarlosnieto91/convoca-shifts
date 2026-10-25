@@ -99,10 +99,10 @@ final class AdminAuditoriaHorasTest extends TestCase {
 
 		$this->assertStringContainsString( 'Auditoría de Horas', $html );
 		$this->assertStringContainsString( '<strong>Ada Lovelace</strong>', $html );
-		$this->assertStringNotContainsString(
+		$this->assertStringContainsString(
 			'ada@example.test',
 			$html,
-			'la lista de personas no lleva el correo: la columna Email sale vacía (issue abierto)'
+			'la columna Email lleva el correo de la persona (shifts#27)'
 		);
 		$this->assertStringContainsString( '4.50h', $html, 'las horas con dos decimales' );
 		$this->assertStringContainsString( '0.00h', $html, 'y el que no tiene, también' );
