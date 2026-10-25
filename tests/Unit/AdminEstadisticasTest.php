@@ -53,6 +53,10 @@ final class AdminEstadisticasTest extends TestCase {
 		$GLOBALS['_wp_stores']['post_meta']    = array();
 		$GLOBALS['_wp_stores']['usuarios']     = array();
 		$GLOBALS['_test_caps']                 = array();
+
+		// La caché de estadísticas precargadas vive en un global, pero hay que soltarla igual: si no, la primera
+		// prueba que la llena decide el resultado de todas las demás (shifts#30).
+		\Convoca\Shifts\convoca_shifts_reset_stats_precargadas();
 		$_GET                                  = array();
 		$_POST                                 = array();
 	}

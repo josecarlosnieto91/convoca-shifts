@@ -286,10 +286,11 @@ function convoca_shifts_preload_voluntario_stats(): array {
  * Get volunteer stats for a single user (uses preloaded cache if available).
  */
 function convoca_shifts_get_voluntario_stats( $user_id ) {
-	static $preloaded = null;
-	if ( $preloaded === null ) {
-		$preloaded = convoca_shifts_preload_voluntario_stats();
+	if ( ! isset( $GLOBALS['_sh_stats_precargadas'] ) ) {
+		$GLOBALS['_sh_stats_precargadas'] = convoca_shifts_preload_voluntario_stats();
 	}
+	$preloaded = (array) $GLOBALS['_sh_stats_precargadas'];
+
 	return $preloaded[ $user_id ] ?? array(
 		'total_turnos' => 0,
 		'realizados'   => 0,
@@ -297,6 +298,20 @@ function convoca_shifts_get_voluntario_stats( $user_id ) {
 		'total_horas'  => 0,
 		'ultimo_turno' => '',
 	);
+}
+
+/**
+ * Suelta la caché de estadísticas precargadas.
+ *
+ * La caché vive en `$GLOBALS['_sh_stats_precargadas']` y **no** en un `static` local de función: un `static` local
+ * no se alcanza desde fuera —ni por reflexión, ni con un setter—, así que quedaba pegada al proceso para siempre y
+ * la primera llamada decidía el resultado de todas las demás (shifts#30). En producción el comportamiento es
+ * idéntico: una carga por petición.
+ *
+ * @return void
+ */
+function convoca_shifts_reset_stats_precargadas(): void {
+	unset( $GLOBALS['_sh_stats_precargadas'] );
 }
 
 function convoca_shifts_get_action_label( $action ) {
