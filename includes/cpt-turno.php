@@ -218,6 +218,19 @@ function convoca_shifts_register_cpt_centro_turno() {
 	// Monitor: Ahora se usa el rol monitor_actividad (WP user), no taxonomía.
 
 	// Register Meta Fields.
+	// `_fecha_inicio` ordena el listado del panel y el calendario, se usa para detectar solapamientos y para
+	// impedir apuntarse a un turno pasado: era la unica de las metas del turno que no estaba registrada
+	// (shifts#26). Sin ella, quien lea el campo `meta` de /wp/v2/centro_turno no ve el dato que necesita para
+	// ordenar, y la mitad del contrato queda declarada y la otra no.
+	register_post_meta(
+		'centro_turno',
+		'_fecha_inicio',
+		array(
+			'show_in_rest' => true,
+			'single'       => true,
+			'type'         => 'string', // format: Y-m-d H:i:s.
+		)
+	);
 	register_post_meta(
 		'centro_turno',
 		'_hora_fin',

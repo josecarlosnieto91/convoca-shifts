@@ -90,15 +90,17 @@ final class TurnoRegistroTest extends TestCase {
 	}
 
 	/**
-	 * `_fecha_inicio` **no** se registra como meta, aunque sea la que ordena el listado.
+	 * `_fecha_inicio` se registra como las demás, como `_hora_fin`.
 	 *
-	 * Se fija tal como está (la API la lee con `get_post_meta()` a mano, así que el calendario funciona)
-	 * para que el día que alguien la registre —o deje de hacerlo— se vea. Es una asimetría con
-	 * `_hora_fin`, que sí está registrada.
+	 * Antes no: la API la leía con `get_post_meta()` a mano, así que el calendario funcionaba y la asimetría
+	 * pasaba desapercibida. Pero quien mirase el campo `meta` de `/wp/v2/centro_turno` no veía la fecha, que es
+	 * justo el dato que necesita para ordenar (shifts#26).
+	 *
+	 * El contrato completo —las once metas y sus tipos— vive en `MetasDelTurnoTest`.
 	 */
-	public function test_la_fecha_de_inicio_no_se_registra(): void {
-		$this->assertArrayNotHasKey( '_fecha_inicio', $GLOBALS['_sh_metas'] );
-		$this->assertArrayHasKey( '_hora_fin', $GLOBALS['_sh_metas'], 'la hora de fin sí está: la asimetría es real' );
+	public function test_la_fecha_de_inicio_se_registra(): void {
+		$this->assertArrayHasKey( '_fecha_inicio', $GLOBALS['_sh_metas'], 'se registra' );
+		$this->assertTrue( $GLOBALS['_sh_metas']['_fecha_inicio']['args']['show_in_rest'], 'y se ve por REST' );
 	}
 
 	/**
