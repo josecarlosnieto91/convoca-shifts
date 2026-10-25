@@ -140,8 +140,12 @@ class Convoca_Shifts_Upgrade_Manager extends \Convoca\Core\Upgrade_Manager {
 	 * Upgrade to 1.6.3: Ensure log table exists.
 	 */
 	protected function upgrade_to_1_6_3(): void {
-		if ( function_exists( 'convoca_shifts_create_log_table' ) ) {
-			convoca_shifts_create_log_table();
+		// `function_exists()` con una cadena NO aplica el espacio de nombres actual: con el nombre corto
+		// contestaba `false` siempre y esta migración se saltaba su propio cuerpo (shifts#29).
+		$crear_tabla = __NAMESPACE__ . '\\convoca_shifts_create_log_table';
+
+		if ( function_exists( $crear_tabla ) ) {
+			$crear_tabla();
 		}
 	}
 
