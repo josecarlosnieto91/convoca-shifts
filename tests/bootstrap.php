@@ -348,7 +348,15 @@ namespace {
             return true;
         }
     }
-    if (!\function_exists('add_filter')) { function add_filter($h, $c, $p = 10, $a = 1) { return true; } }
+    // Los FILTROS también se apuntan (en su propio almacén): con el no-op de antes, ni un solo
+    // `add_filter` del plugin era comprobable — ni el título del documento, ni la barra, ni los
+    // checks de salud. Cualquier prueba sobre un filtro pasaba sin comprobar nada.
+    if (!\function_exists('add_filter')) {
+        function add_filter($h, $c, $p = 10, $a = 1) {
+            $GLOBALS['_wp_stores']['filtros'][$h][] = $c;
+            return true;
+        }
+    }
     // El libro de horas vive en Convoca Core, que estos tests unitarios no cargan. Se dobla con la PUERTA
     // CERRADA por defecto, que es el valor real por defecto del núcleo: así un test que acredite sin
     // abrirla se está engañando. Para abrirla: $GLOBALS['__horas_puerta'] = true.
@@ -624,6 +632,22 @@ namespace {
             public function get_columns() { return []; }
             public function get_sortable_columns() { return []; }
             public function column_default($item, $col) { return ''; }
+
+            /**
+             * Caja de búsqueda de la tabla. WordPress la trae y las pantallas la llaman: sin ella
+             * la pantalla de turnos no se podía ni pintar.
+             *
+             * @param string $texto     Texto del botón.
+             * @param string $input_id  Identificador del campo.
+             * @param bool   $echo      Si imprime o devuelve.
+             * @return string
+             */
+            public function search_box($texto = '', $input_id = '', $echo = true) {
+                $html = '<p class="search-box"><input type="search" id="' . \htmlspecialchars((string) $input_id, ENT_QUOTES) . '" name="s">'
+                    . '<label class="screen-reader-text" for="' . \htmlspecialchars((string) $input_id, ENT_QUOTES) . '">' . \htmlspecialchars((string) $texto, ENT_QUOTES) . '</label></p>';
+                if ($echo) { echo $html; return ''; }
+                return $html;
+            }
             protected function get_table_classes() { return ['wp-list-table']; }
 
             /** Página actual: la fija la prueba con `$GLOBALS['_sh_pagenum']`. */
@@ -637,6 +661,37 @@ namespace {
                 if (!empty($_REQUEST['action']) && '-1' !== $_REQUEST['action']) { return (string) $_REQUEST['action']; }
                 if (!empty($_REQUEST['action2']) && '-1' !== $_REQUEST['action2']) { return (string) $_REQUEST['action2']; }
                 return '';
+            }
+        }
+    }
+
+    // ─── WP_Admin_Bar stub (barra de administración) ──────
+
+    // La barra del panel es un objeto con nodos: la página de turnos reescribe el enlace «Todos los
+    // turnos». Sin doble, ese método no se podía ni llamar y quedaba sin medir.
+    if (!\class_exists('WP_Admin_Bar')) {
+        class WP_Admin_Bar {
+            /** Nodos de la barra, por identificador. */
+            public $nodos = [];
+
+            /**
+             * Devuelve un nodo por identificador (false si no está, como WordPress).
+             *
+             * @param string $id Identificador del nodo.
+             * @return object|false
+             */
+            public function get_node($id) {
+                return $this->nodos[ $id ] ?? false;
+            }
+
+            /**
+             * Añade (o sustituye) un nodo.
+             *
+             * @param object $nodo Nodo con `id`.
+             * @return void
+             */
+            public function add_node($nodo) {
+                $this->nodos[ (string) $nodo->id ] = $nodo;
             }
         }
     }
