@@ -93,7 +93,9 @@ namespace Convoca\Members {
 namespace {
 
     \define('WP_DEBUG', true);
-    \define('ABSPATH', \dirname(__DIR__) . '/');
+    // `ABSPATH` apunta a un WordPress DE MENTIRA con `wp-admin/includes/upgrade.php`: el plugin lo exige
+    // antes de `dbDelta()`, y sin él cualquier camino que cree tablas revienta en la suite.
+    \define('ABSPATH', \dirname(__DIR__) . '/tests/fixtures/wp/');
     \define('OBJECT', 'OBJECT');
     if (!\defined('DAY_IN_SECONDS')) { \define('DAY_IN_SECONDS', 86400); }
     if (!\defined('HOUR_IN_SECONDS')) { \define('HOUR_IN_SECONDS', 3600); }
@@ -340,11 +342,44 @@ namespace {
         }
     }
 
+    // Funciones de WordPress que usa el ARRANQUE del plugin.
+    if (!\function_exists('get_role')) {
+        /** Rol del sitio: se lee del almacén de la prueba. Sin él, el aviso de rol del arranque revienta. */
+        function get_role($rol) {
+            return $GLOBALS['_wp_stores']['roles'][ $rol ] ?? null;
+        }
+    }
+    if (!\function_exists('wp_roles')) {
+        /** Contenedor de roles. */
+        function wp_roles() {
+            return (object) array( 'roles' => (array) ($GLOBALS['_wp_stores']['roles'] ?? array()) );
+        }
+    }
+    if (!\function_exists('is_admin')) { function is_admin() { return (bool) ($GLOBALS['convoca_test_is_admin'] ?? false); } }
+    if (!\function_exists('get_file_data')) {
+        function get_file_data($file, $headers = array(), $context = '') {
+            unset($context);
+            $salida = array();
+            if (isset($headers['Version'])) {
+                $contenido = (string) file_get_contents($file);
+                preg_match('/^ \* Version: (.+)$/m', $contenido, $m);
+                $salida['Version'] = trim($m[1] ?? '');
+            }
+            return $salida;
+        }
+    }
+    if (!\function_exists('plugin_dir_url')) { function plugin_dir_url($file) { unset($file); return 'https://example.test/wp-content/plugins/convoca-shifts/'; } }
+    if (!\function_exists('register_deactivation_hook')) { function register_deactivation_hook($f, $cb) { unset($f); $GLOBALS['convoca_test_desactivacion'] = $cb; } }
+    if (!\function_exists('register_activation_hook')) { function register_activation_hook($f, $cb) { unset($f); $GLOBALS['convoca_test_activacion'] = $cb; } }
+
     // Los enganches se APUNTAN: una prueba tiene que poder decir qué queda enganchado y con qué. Antes
     // eran un no-op y eso dejaba sin comprobar medio arranque del plugin (el modal, la limpieza de caché).
     if (!\function_exists('add_action')) {
         function add_action($h, $c, $p = 10, $a = 1) {
             $GLOBALS['_wp_stores']['acciones'][$h][] = $c;
+            // Registro PERMANENTE, aparte del almacén de la prueba: los enganches son propiedad del plugin ya
+            // cargado, y hay pruebas que limpian `_wp_stores` entero entre casos.
+            $GLOBALS['_sh_hooks_registrados'][$h][] = $c;
             return true;
         }
     }
@@ -799,7 +834,30 @@ namespace {
                 }
                 return $GLOBALS['_sh_db']['query_rc'] ?? 1;
             }
-            public function insert($t, $d, $f = []) { $this->insert_id = 42; return 1; }
+            /**
+             * `insert()`: apunta la llamada y, si es el REGISTRO DE ACTIVIDAD, la proyecta en `_sh_registro`
+             * con la forma que afirman las pruebas.
+             *
+             * Antes esto era un no-op y el registro lo fabricaba un doble de `convoca_shifts_log_activity()`.
+             * Ahora el arranque REAL está cargado y escribe por aquí, así que lo que se afirma es lo que el
+             * producto manda a la base de datos, no lo que un doble inventaba.
+             */
+            public function insert($t, $d, $f = []) {
+                $this->insert_id = 42;
+                $GLOBALS['db_inserts'][] = array('tabla' => $t, 'datos' => $d);
+
+                if (false !== strpos((string) $t, 'activity_log')) {
+                    $datos = json_decode((string) ($d['data'] ?? '{}'), true);
+                    $GLOBALS['_sh_registro'][] = array(
+                        'user_id'  => (int) ($d['user_id'] ?? 0),
+                        'turno_id' => (int) ($d['turno_id'] ?? 0),
+                        'action'   => (string) ($d['action'] ?? ''),
+                        'data'     => is_array($datos) ? $datos : array(),
+                    );
+                }
+
+                return 1;
+            }
 
             public function prepare($q, ...$args) {
                 if (empty($args)) return $q;
@@ -834,6 +892,11 @@ namespace {
 	// Doble de la cola de recursos (registrar, encolar y localizar estilos y guiones): lo
 	// necesitan los shortcodes, que hasta ahora no se probaban.
 	require_once __DIR__ . '/StubAssets.php';
+
+	// Arranque REAL antes que sus dobles: van con `function_exists`, así que se saltan solos y no hay
+	// `Cannot redeclare`.
+	require_once dirname( __DIR__ ) . '/convoca-shifts.php';
+
 	require_once __DIR__ . '/StubFechaCorta.php';
 	require_once __DIR__ . '/StubAdmin.php';
 	require_once __DIR__ . '/StubLicenseManager.php';

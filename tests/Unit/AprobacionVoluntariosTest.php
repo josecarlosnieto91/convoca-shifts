@@ -38,7 +38,15 @@ final class AprobacionVoluntariosTest extends TestCase {
 	 * Deja el arnés como estaba.
 	 */
 	private function limpiar(): void {
-		$GLOBALS['_wp_stores']      = array( 'post_meta' => array() );
+		// Los enganches NO se borran: son propiedad del plugin ya cargado, no estado de la prueba. Al
+		// limpiar el almacén entero se perdía el registro de `add_action()` del arranque y la prueba
+		// siguiente no encontraba sus escuchas.
+		// Se lee el registro PERMANENTE de enganches: el plugin ya está cargado (el arranque real se carga en
+		// el bootstrap), así que sus escuchas son de antes de que esta prueba limpie nada.
+		$acciones = isset( $GLOBALS['_sh_hooks_registrados'] ) ? $GLOBALS['_sh_hooks_registrados'] : array();
+
+		$GLOBALS['_wp_stores']              = array( 'post_meta' => array() );
+		$GLOBALS['_wp_stores']['acciones']  = $acciones;
 		$GLOBALS['_sh_registro']    = array();
 		$GLOBALS['_sh_publicados']  = array();
 		$GLOBALS['_test_caps']      = array();
