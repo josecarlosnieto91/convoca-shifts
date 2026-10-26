@@ -40,7 +40,7 @@ class Personas_Asignables {
 	 * Caché por petición: el filtro se llama hasta seis veces en una misma pantalla y la respuesta no
 	 * cambia dentro de la misma carga.
 	 *
-	 * @var array<string, array<int, object>>
+	 * @var array<string, array<int, object{ID:int, display_name:string, first_name:string, user_login:string, user_email:string}>>
 	 */
 	private static $cache = array();
 
@@ -51,7 +51,7 @@ class Personas_Asignables {
 	 * venía de `get_users()`.
 	 *
 	 * @param string $contexto 'voluntario' o 'monitor'.
-	 * @return array<int, object> Lista de personas; vacía si nadie las aporta.
+	 * @return array<int, object{ID:int, display_name:string, first_name:string, user_login:string, user_email:string}> Lista de personas; vacía si nadie las aporta.
 	 */
 	public static function lista( string $contexto = 'voluntario' ): array {
 		if ( isset( self::$cache[ $contexto ] ) ) {

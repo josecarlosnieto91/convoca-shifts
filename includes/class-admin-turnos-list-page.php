@@ -89,7 +89,7 @@ class Admin_Turnos_List_Page {
 			$node = $wp_admin_bar->get_node( 'archive' );
 		}
 		$list_node = $wp_admin_bar->get_node( 'edit-centro_turno' );
-		if ( $list_node ) {
+		if ( $list_node instanceof \stdClass ) {
 			$list_node->href = admin_url( 'edit.php?post_type=centro_turno&page=convoca-shifts-turnos-list' );
 			$wp_admin_bar->add_node( $list_node );
 		}

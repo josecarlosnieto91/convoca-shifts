@@ -55,20 +55,8 @@ parameters:
 			path: convoca-shifts.php
 
 		-
-			message: '#^Access to an undefined property object\:\:\$ID\.$#'
-			identifier: property.notFound
-			count: 4
-			path: includes/Admin_Auditoria_Horas.php
-
-		-
-			message: '#^Access to an undefined property object\:\:\$display_name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: includes/Admin_Auditoria_Horas.php
-
-		-
-			message: '#^Access to an undefined property object\:\:\$user_email\.$#'
-			identifier: property.notFound
+			message: '#^Parameter \#1 \$text of function esc_attr expects string, int given\.$#'
+			identifier: argument.type
 			count: 1
 			path: includes/Admin_Auditoria_Horas.php
 
@@ -325,24 +313,6 @@ parameters:
 			path: includes/class-admin-status.php
 
 		-
-			message: '#^Access to an undefined property object\:\:\$ID\.$#'
-			identifier: property.notFound
-			count: 4
-			path: includes/class-admin-turno-editor.php
-
-		-
-			message: '#^Access to an undefined property object\:\:\$display_name\.$#'
-			identifier: property.notFound
-			count: 2
-			path: includes/class-admin-turno-editor.php
-
-		-
-			message: '#^Access to an undefined property object\:\:\$user_login\.$#'
-			identifier: property.notFound
-			count: 1
-			path: includes/class-admin-turno-editor.php
-
-		-
 			message: '#^Argument of an invalid type array\<int, WP_Term\>\|WP_Error supplied for foreach, only iterables are supported\.$#'
 			identifier: foreach.nonIterable
 			count: 1
@@ -361,12 +331,6 @@ parameters:
 			path: includes/class-admin-turno-editor.php
 
 		-
-			message: '#^Access to an undefined property object\:\:\$href\.$#'
-			identifier: property.notFound
-			count: 1
-			path: includes/class-admin-turnos-list-page.php
-
-		-
 			message: '#^Method Convoca\\Shifts\\Admin_Turnos_List_Page\:\:titulo_documento\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -377,30 +341,6 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: includes/class-admin-turnos-list.php
-
-		-
-			message: '#^Access to an undefined property object\:\:\$ID\.$#'
-			identifier: property.notFound
-			count: 1
-			path: includes/class-personas-asignables.php
-
-		-
-			message: '#^Access to an undefined property object\:\:\$ID\.$#'
-			identifier: property.notFound
-			count: 5
-			path: includes/cpt-turno.php
-
-		-
-			message: '#^Access to an undefined property object\:\:\$display_name\.$#'
-			identifier: property.notFound
-			count: 3
-			path: includes/cpt-turno.php
-
-		-
-			message: '#^Access to an undefined property object\:\:\$user_login\.$#'
-			identifier: property.notFound
-			count: 2
-			path: includes/cpt-turno.php
 
 		-
 			message: '#^Cannot access offset 0 on non\-empty\-list\<int\>\|WP_Error\.$#'
@@ -640,6 +580,12 @@ parameters:
 			message: '#^Function Convoca\\Shifts\\convoca_shifts_turno_opciones_html\(\) has parameter \$post with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
+			path: includes/cpt-turno.php
+
+		-
+			message: '#^Parameter \#1 \$text of function esc_attr expects string, int given\.$#'
+			identifier: argument.type
+			count: 3
 			path: includes/cpt-turno.php
 
 		-
