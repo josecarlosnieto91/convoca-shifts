@@ -173,7 +173,7 @@ function convoca_shifts_estadisticas_page() {
 						}
 						?>
 						<tr>
-							<td><?php echo esc_html( wp_date( 'd/m/Y H:i', strtotime( $log->created_at ) ) ); ?></td>
+							<td><?php echo esc_html( (string) wp_date( 'd/m/Y H:i', (int) strtotime( (string) $log->created_at ) ) ); ?></td>
 							<td><strong><?php echo esc_html( $l_user_name ); ?></strong></td>
 							<td><span class="convoca-shifts-log-badge convoca-shifts-log-<?php echo esc_attr( $log->action ); ?>"><?php echo esc_html( $log->action ); ?></span></td>
 							<td><?php echo esc_html( $l_turno_title ); ?></td>

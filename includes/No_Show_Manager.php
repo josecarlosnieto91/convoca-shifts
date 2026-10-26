@@ -238,7 +238,7 @@ class No_Show_Manager {
 			array(
 				'plugin'    => 'convoca-shifts',
 				'template'  => 'aviso_faltas',
-				'entity_id' => $user->ID,
+				'entity_id' => $user_id,
 			)
 		);
 	}
@@ -275,7 +275,7 @@ class No_Show_Manager {
 				'plugin'    => 'convoca-shifts',
 				'template'  => 'faltas_admin',
 				'copy'      => false,
-				'entity_id' => $user->ID,
+				'entity_id' => $user_id,
 			)
 		);
 	}

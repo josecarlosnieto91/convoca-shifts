@@ -95,7 +95,7 @@ class Admin_Turnos_List extends \WP_List_Table {
 	protected function column_fecha( $item ): string {
 		$fecha = get_post_meta( $item->ID, '_fecha_inicio', true );
 		if ( $fecha ) {
-			return esc_html( wp_date( 'd/m/Y', strtotime( $fecha ) ) );
+			return esc_html( (string) wp_date( 'd/m/Y', (int) strtotime( (string) $fecha ) ) );
 		}
 		return '—';
 	}
@@ -109,7 +109,7 @@ class Admin_Turnos_List extends \WP_List_Table {
 		$fecha_ini = get_post_meta( $item->ID, '_fecha_inicio', true );
 		$hora_fin  = get_post_meta( $item->ID, '_hora_fin', true );
 		if ( $fecha_ini ) {
-			$hora_ini = wp_date( 'H:i', strtotime( $fecha_ini ) );
+			$hora_ini = (string) wp_date( 'H:i', (int) strtotime( (string) $fecha_ini ) );
 			return $hora_fin ? esc_html( "$hora_ini - $hora_fin" ) : esc_html( $hora_ini );
 		}
 		return '—';

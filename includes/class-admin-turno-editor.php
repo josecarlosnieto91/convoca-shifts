@@ -120,9 +120,15 @@ class Convoca_Shifts_Admin_Turno_Editor {
 		$post = $is_edit ? get_post( $post_id ) : null;
 
 		$fecha_inicio_meta = $is_edit ? get_post_meta( $post_id, '_fecha_inicio', true ) : '';
-		$fecha             = $is_edit ? ( $fecha_inicio_meta ? wp_date( 'Y-m-d', strtotime( $fecha_inicio_meta ) ) : wp_date( 'Y-m-d', strtotime( $post->post_date ) ) ) : wp_date( 'Y-m-d' );
-		$hora_ini          = $is_edit ? ( $fecha_inicio_meta ? wp_date( 'H:i', strtotime( $fecha_inicio_meta ) ) : wp_date( 'H:i', strtotime( $post->post_date ) ) ) : wp_date( 'H:i' );
-		$hora_fin          = $is_edit ? ( get_post_meta( $post_id, '_hora_fin', true ) ?: '' ) : '';
+		$post_date         = $post instanceof \WP_Post ? $post->post_date : '';
+
+		// Si no hay fecha guardada ni post del que tirar, el editor abre con la fecha actual.
+		$ts_inicio = $fecha_inicio_meta ? strtotime( (string) $fecha_inicio_meta ) : strtotime( $post_date );
+		$ts_inicio = false === $ts_inicio ? time() : $ts_inicio;
+
+		$fecha    = $is_edit ? (string) wp_date( 'Y-m-d', $ts_inicio ) : (string) wp_date( 'Y-m-d' );
+		$hora_ini = $is_edit ? (string) wp_date( 'H:i', $ts_inicio ) : (string) wp_date( 'H:i' );
+		$hora_fin = $is_edit ? ( get_post_meta( $post_id, '_hora_fin', true ) ?: '' ) : '';
 
 		$estado         = $is_edit ? get_post_meta( $post_id, '_estado', true ) : 'abierto_disponible';
 		$estado_real    = $is_edit ? get_post_meta( $post_id, '_estado_real', true ) : 'pendiente';

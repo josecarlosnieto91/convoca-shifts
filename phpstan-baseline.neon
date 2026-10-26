@@ -91,12 +91,6 @@ parameters:
 			path: includes/Hour_Sync.php
 
 		-
-			message: '#^Cannot access property \$ID on WP_User\|false\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: includes/No_Show_Manager.php
-
-		-
 			message: '#^Function Convoca\\Shifts\\convoca_shifts_add_estadisticas_menu\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -141,12 +135,6 @@ parameters:
 		-
 			message: '#^Function Convoca\\Shifts\\convoca_shifts_preload_voluntario_stats\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: includes/admin-estadisticas.php
-
-		-
-			message: '#^Parameter \#1 \$text of function esc_html expects string, string\|false given\.$#'
-			identifier: argument.type
 			count: 1
 			path: includes/admin-estadisticas.php
 
@@ -367,27 +355,9 @@ parameters:
 			path: includes/class-admin-turno-editor.php
 
 		-
-			message: '#^Cannot access property \$post_date on WP_Post\|null\.$#'
-			identifier: property.nonObject
-			count: 2
-			path: includes/class-admin-turno-editor.php
-
-		-
 			message: '#^Method Convoca\\Shifts\\Convoca_Shifts_Admin_Turno_Editor\:\:titulo_documento\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
-			path: includes/class-admin-turno-editor.php
-
-		-
-			message: '#^Parameter \#1 \$text of function esc_attr expects string, string\|false given\.$#'
-			identifier: argument.type
-			count: 2
-			path: includes/class-admin-turno-editor.php
-
-		-
-			message: '#^Parameter \#2 \$timestamp of function wp_date expects int\|null, int\|false given\.$#'
-			identifier: argument.type
-			count: 2
 			path: includes/class-admin-turno-editor.php
 
 		-
@@ -401,12 +371,6 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: includes/class-admin-turnos-list-page.php
-
-		-
-			message: '#^Parameter \#1 \$text of function esc_html expects string, string\|false given\.$#'
-			identifier: argument.type
-			count: 2
-			path: includes/class-admin-turnos-list.php
 
 		-
 			message: '#^Property WP_List_Table\:\:\$items \(array\<int\|string, mixed\>\) does not accept array\<int\|WP_Post\>\|null\.$#'
