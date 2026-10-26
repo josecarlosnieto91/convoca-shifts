@@ -1,5 +1,9 @@
+includes:
+	- phpstan-baseline.neon
+
 parameters:
-	level: 5
+	level: 8
+	reportUnmatchedIgnoredErrors: false
 	paths:
 		- includes
 		- convoca-shifts.php
