@@ -341,7 +341,7 @@ final class TurnoReglasTest extends TestCase {
 			'_id_responsable' => 7,
 			'_estado'         => 'abierto_disponible',
 		);
-		
+
 		$_POST['convoca_shifts_id_responsable'] = '7';
 
 		\Convoca\Shifts\convoca_shifts_save_turno_meta( 42 );

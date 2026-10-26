@@ -73,17 +73,23 @@ final class RestApiProximoTest extends TestCase {
 	 * Con un turno libre devuelve su fecha y hora en el formato de la casa.
 	 */
 	public function test_con_turno_libre_devuelve_su_fecha(): void {
+		// La fecha se deriva del reloj: un fixture fijo caduca y pone el CI en rojo
+		// a partir de la hora sembrada (convoca-shifts#32).
+		$ts     = time() + 3600;
+		$inicio = gmdate( 'Y-m-d H:i:s', $ts );
+		$texto  = gmdate( 'd/m/Y H:i', $ts );
+
 		$this->turnos(
 			array(
 				7 => (object) array(
 					'ID'        => 7,
 					'post_type' => 'centro_turno',
-					'post_date' => '2026-10-26 10:00:00',
+					'post_date' => $inicio,
 				),
 			)
 		);
 		$GLOBALS['_wp_stores']['post_meta'][7] = array(
-			'_fecha_inicio'   => '2026-10-26 10:00:00',
+			'_fecha_inicio'   => $inicio,
 			'_estado'         => 'abierto_disponible',
 			'_id_responsable' => 0,
 		);
@@ -91,7 +97,7 @@ final class RestApiProximoTest extends TestCase {
 		$r = \Convoca\Shifts\convoca_shifts_rest_get_proximo_libre( new \WP_REST_Request() );
 
 		$this->assertTrue( $r->get_data()['encontrado'] );
-		$this->assertStringContainsString( '26/10/2026 10:00', $r->get_data()['texto'] );
+		$this->assertStringContainsString( $texto, $r->get_data()['texto'] );
 	}
 
 	// El respaldo `convoca_shifts_fecha_legible()` NO se prueba aquí: la consulta filtra por
