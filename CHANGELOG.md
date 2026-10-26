@@ -1,3 +1,13 @@
+## [2.5.35] — 2026-10-26
+
+### Cambiado
+
+- **caches de la semana, correo de auditoria y estadisticas**
+- La cache del resumen se invalida con las claves que se leen.
+- La columna Email de auditoria deja de salir vacia.
+- El recuento y la lista de huecos hablan de la misma semana.
+- La estadistica deja de cachearse en un static irrescatable.
+
 ## [2.5.34] — 2026-10-21
 
 ### Corregido
