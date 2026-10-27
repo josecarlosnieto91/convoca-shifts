@@ -326,7 +326,7 @@ class Admin_Turnos_List extends \WP_List_Table {
 		}
 
 		$query       = new \WP_Query( $args );
-		$this->items = $query->posts;
+		$this->items = (array) $query->posts;
 
 		$this->set_pagination_args(
 			array(

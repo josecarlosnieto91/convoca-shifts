@@ -37,7 +37,7 @@ class Hour_Sync {
 	 * @param int    $user_id Responsible user ID.
 	 * @param string $status New status ('realizado', 'no_asistio', 'pendiente').
 	 */
-	public static function sync_hours_to_volunteer_global( int $post_id, int $user_id, string $status ) {
+	public static function sync_hours_to_volunteer_global( int $post_id, int $user_id, string $status ): void {
 		global $wpdb;
 		if ( $user_id <= 0 ) {
 			return;
@@ -169,7 +169,7 @@ class Hour_Sync {
 	/**
 	 * Atomically adds or subtracts hours from the global pool (caller must handle transaction)
 	 */
-	private static function update_global_hours_locked( int $user_id, float $hours ) {
+	private static function update_global_hours_locked( int $user_id, float $hours ): void {
 		global $wpdb;
 		$meta_key = '_convoca_horas_voluntariado_total';
 

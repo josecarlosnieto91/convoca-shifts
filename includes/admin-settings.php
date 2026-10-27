@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Register settings and menu page.
  */
 add_action( 'admin_menu', 'Convoca\Shifts\convoca_shifts_add_settings_menu', 25 );
-function convoca_shifts_add_settings_menu() {
+function convoca_shifts_add_settings_menu(): void {
 	add_submenu_page(
 		'edit.php?post_type=centro_turno',
 		__( 'Ajustes del Sistema', 'convoca-shifts' ),
@@ -45,7 +45,7 @@ function convoca_shifts_add_settings_menu() {
 	);
 }
 
-function convoca_shifts_status_page() {
+function convoca_shifts_status_page(): void {
 	// La guarda comprobaba `'Convoca\Shifts$1'`, que es basura de una sustitución de regex a medio hacer:
 	// `class_exists()` contestaba **siempre** que no, así que el `require_once` se ejecutaba en cada llamada y
 	// la comprobación no comprobaba nada. Hoy no rompe porque el `require_once` es idempotente; con un
@@ -60,7 +60,7 @@ function convoca_shifts_status_page() {
  * Register settings.
  */
 add_action( 'admin_init', 'Convoca\Shifts\convoca_shifts_register_plugin_settings' );
-function convoca_shifts_register_plugin_settings() {
+function convoca_shifts_register_plugin_settings(): void {
 	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_calendar_page_url', 'sanitize_text_field' );
 	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_hora_apertura', 'sanitize_text_field' );
 	register_setting( 'convoca_shifts_settings_group', 'convoca_shifts_hora_cierre', 'sanitize_text_field' );
@@ -85,7 +85,7 @@ function convoca_shifts_register_plugin_settings() {
 /**
  * Settings page HTML.
  */
-function convoca_shifts_settings_page() {
+function convoca_shifts_settings_page(): void {
 	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'general';
 	?>
 	<div class="wrap convoca-shifts-settings-wrap">
@@ -215,7 +215,7 @@ function convoca_shifts_settings_page() {
 /**
  * Render Status/Diagnostic tab.
  */
-function convoca_shifts_render_status_tab() {
+function convoca_shifts_render_status_tab(): void {
 	$checks       = convoca_shifts_get_system_checks();
 	$has_errors   = array_filter( $checks, fn( $c ) => $c['status'] === 'error' );
 	$has_warnings = array_filter( $checks, fn( $c ) => $c['status'] === 'warning' );
@@ -301,6 +301,11 @@ function convoca_shifts_aportar_checks( array $bloques, $force = false ): array 
 	return $bloques;
 }
 
+/**
+ * Documentación del método.
+ *
+ * @return mixed
+ */
 function convoca_shifts_get_system_checks( bool $force = false ) {
 	$checks = array();
 
@@ -349,6 +354,8 @@ function convoca_shifts_get_system_checks( bool $force = false ) {
 
 /**
  * Helper to find page by shortcode.
+ *
+ * @return mixed
  */
 function convoca_shifts_find_page_by_shortcode( string $shortcode ) {
 	global $wpdb;

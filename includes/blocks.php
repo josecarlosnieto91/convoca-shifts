@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * In the editor: always load (SSR preview needs FullCalendar).
  * In the frontend: load if CST blocks/shortcodes are in content, widgets, or forced via filter.
  */
-function convoca_shifts_enqueue_block_assets() {
+function convoca_shifts_enqueue_block_assets(): void {
 	// Aquí había una rama `is_admin()` que no se ejecutaba nunca: `wp_enqueue_scripts`
 	// solo se dispara en el front. El editor recibe los estilos por el `style` del bloque
 	// (ver `convoca_shifts_register_blocks()`).
@@ -43,6 +43,8 @@ add_action( 'wp_enqueue_scripts', 'Convoca\Shifts\convoca_shifts_enqueue_block_a
 /**
  * Robust detection of CST presence in current page.
  * Checks: Force filter, Post blocks, Post shortcodes, Widget shortcodes/blocks.
+ *
+ * @return mixed
  */
 function convoca_shifts_should_load_assets() {
 	// 1. Force load via filter.
@@ -140,7 +142,7 @@ function convoca_shifts_should_load_assets() {
 /**
  * Enqueue block editor specific assets (registration)
  */
-function convoca_shifts_enqueue_block_editor_assets() {
+function convoca_shifts_enqueue_block_editor_assets(): void {
 	wp_enqueue_script(
 		'convoca-shifts-blocks-js',
 		CONVOCA_SHIFTS_URL . 'assets/js/blocks.js',
@@ -154,7 +156,7 @@ add_action( 'enqueue_block_editor_assets', 'Convoca\Shifts\convoca_shifts_enqueu
 /**
  * Register Gutenberg blocks for Convoca Shifts
  */
-function convoca_shifts_register_blocks() {
+function convoca_shifts_register_blocks(): void {
 
 	$common_args = array(
 		'apiVersion'    => 3,
@@ -228,6 +230,8 @@ add_action( 'init', 'Convoca\Shifts\convoca_shifts_register_blocks' );
 
 /**
  * Render Callbacks
+ *
+ * @return mixed
  */
 function convoca_shifts_render_block_calendario() {
 	$output = convoca_shifts_calendario_centro();
@@ -236,14 +240,29 @@ function convoca_shifts_render_block_calendario() {
 	return $output;
 }
 
+/**
+ * Documentación del método.
+ *
+ * @return mixed
+ */
 function convoca_shifts_render_block_boton_apuntarse() {
 	return convoca_shifts_boton_apuntarse();
 }
 
+/**
+ * Documentación del método.
+ *
+ * @return mixed
+ */
 function convoca_shifts_render_block_resumen() {
 	return convoca_shifts_resumen_turnos();
 }
 
-function convoca_shifts_render_block_proximos_turnos( $attributes ) {
+/**
+ * Documentación del método.
+ *
+ * @return mixed
+ */
+function convoca_shifts_render_block_proximos_turnos( mixed $attributes ) {
 	return convoca_shifts_proximos_turnos( $attributes );
 }

@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Register all widgets for Convoca Shifts
  */
-function convoca_shifts_register_widgets() {
+function convoca_shifts_register_widgets(): void {
 	register_widget( 'Convoca\Shifts\Convoca_Shifts_Calendario_Widget' );
 	register_widget( 'Convoca\Shifts\Convoca_Shifts_Boton_Apuntarse_Widget' );
 	register_widget( 'Convoca\Shifts\Convoca_Shifts_Resumen_Turnos_Widget' );
@@ -50,7 +50,7 @@ class Convoca_Shifts_Calendario_Widget extends \WP_Widget {
 		);
 	}
 
-	public function widget( $args, $instance ) {
+	public function widget( $args, $instance ): void {
 		echo wp_kses_post( $args['before_widget'] );
 		if ( ! empty( $instance['title'] ) ) {
 			echo wp_kses_post( $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'] );
@@ -69,7 +69,19 @@ class Convoca_Shifts_Calendario_Widget extends \WP_Widget {
 		<?php
 	}
 
-	public function update( $new_instance, $old_instance ) {
+	/**
+	 * Documentación del método.
+	 *
+	 * @return array<string, mixed>
+	 */
+	/**
+	 * Guarda la configuración del widget.
+	 *
+	 * @param array<string, mixed> $new_instance Valores nuevos.
+	 * @param array<string, mixed> $old_instance Valores anteriores.
+	 * @return array<string, mixed>
+	 */
+	public function update( $new_instance, $old_instance ): array {
 		$instance          = array();
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? sanitize_text_field( $new_instance['title'] ) : '';
 		return $instance;
@@ -88,7 +100,7 @@ class Convoca_Shifts_Boton_Apuntarse_Widget extends \WP_Widget {
 		);
 	}
 
-	public function widget( $args, $instance ) {
+	public function widget( $args, $instance ): void {
 		echo wp_kses_post( $args['before_widget'] );
 		if ( ! empty( $instance['title'] ) ) {
 			echo wp_kses_post( $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'] );
@@ -107,7 +119,14 @@ class Convoca_Shifts_Boton_Apuntarse_Widget extends \WP_Widget {
 		<?php
 	}
 
-	public function update( $new_instance, $old_instance ) {
+	/**
+	 * Guarda la configuración del widget.
+	 *
+	 * @param array<string, mixed> $new_instance Valores nuevos.
+	 * @param array<string, mixed> $old_instance Valores anteriores.
+	 * @return array<string, mixed>
+	 */
+	public function update( $new_instance, $old_instance ): array {
 		$instance          = array();
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? sanitize_text_field( $new_instance['title'] ) : '';
 		return $instance;
@@ -126,7 +145,13 @@ class Convoca_Shifts_Resumen_Turnos_Widget extends \WP_Widget {
 		);
 	}
 
-	public function widget( $args, $instance ) {
+	/**
+	 * Pinta el widget.
+	 *
+	 * @param array<string, mixed> $args     Argumentos del tema.
+	 * @param array<string, mixed> $instance Configuración guardada.
+	 */
+	public function widget( $args, $instance ): void {
 		echo wp_kses_post( $args['before_widget'] );
 		if ( ! empty( $instance['title'] ) ) {
 			echo wp_kses_post( $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'] );
@@ -145,7 +170,14 @@ class Convoca_Shifts_Resumen_Turnos_Widget extends \WP_Widget {
 		<?php
 	}
 
-	public function update( $new_instance, $old_instance ) {
+	/**
+	 * Guarda la configuración del widget.
+	 *
+	 * @param array<string, mixed> $new_instance Valores nuevos.
+	 * @param array<string, mixed> $old_instance Valores anteriores.
+	 * @return array<string, mixed>
+	 */
+	public function update( $new_instance, $old_instance ): array {
 		$instance          = array();
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? sanitize_text_field( $new_instance['title'] ) : '';
 		return $instance;
@@ -164,7 +196,13 @@ class Convoca_Shifts_Proximos_Turnos_Widget extends \WP_Widget {
 		);
 	}
 
-	public function widget( $args, $instance ) {
+	/**
+	 * Pinta el widget.
+	 *
+	 * @param array<string, mixed> $args     Argumentos del tema.
+	 * @param array<string, mixed> $instance Configuración guardada.
+	 */
+	public function widget( $args, $instance ): void {
 		$cantidad = ! empty( $instance['cantidad'] ) ? $instance['cantidad'] : 5;
 
 		echo wp_kses_post( $args['before_widget'] );
@@ -190,7 +228,14 @@ class Convoca_Shifts_Proximos_Turnos_Widget extends \WP_Widget {
 		<?php
 	}
 
-	public function update( $new_instance, $old_instance ) {
+	/**
+	 * Guarda la configuración del widget.
+	 *
+	 * @param array<string, mixed> $new_instance Valores nuevos.
+	 * @param array<string, mixed> $old_instance Valores anteriores.
+	 * @return array<string, mixed>
+	 */
+	public function update( $new_instance, $old_instance ): array {
 		$instance             = array();
 		$instance['title']    = ( ! empty( $new_instance['title'] ) ) ? sanitize_text_field( $new_instance['title'] ) : '';
 		$instance['cantidad'] = ( ! empty( $new_instance['cantidad'] ) ) ? absint( $new_instance['cantidad'] ) : 5;

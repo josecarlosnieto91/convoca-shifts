@@ -101,7 +101,7 @@ class Admin_Auditoria_Horas {
 							<td>
 								<form method="post" style="display:inline;">
 									<?php wp_nonce_field( 'convoca_shifts_recalcular_' . $u->ID ); ?>
-									<input type="hidden" name="user_id" value="<?php echo esc_attr( $u->ID ); ?>">
+									<input type="hidden" name="user_id" value="<?php echo esc_attr( (string) $u->ID ); ?>">
 									<input type="hidden" name="convoca_shifts_action" value="recalcular">
 									<button type="submit" class="button button-small" onclick="return confirm('<?php esc_attr_e( '¿Recalcular horas? Esta acción escaneará todos los turnos realizados y actualizará el contador.', 'convoca-shifts' ); ?>')"><?php esc_html_e( 'Recalcular', 'convoca-shifts' ); ?></button>
 								</form>

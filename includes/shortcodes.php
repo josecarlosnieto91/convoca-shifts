@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Hook to register scripts properly.
 add_action( 'init', 'Convoca\Shifts\convoca_shifts_register_scripts' );
 
-function convoca_shifts_register_scripts() {
+function convoca_shifts_register_scripts(): void {
 	wp_register_style( 'convoca-shifts-style', CONVOCA_SHIFTS_URL . 'assets/css/estilo.css', array( 'convoca-core' ), CONVOCA_SHIFTS_VERSION );
 	// `dashicons` se encola donde de verdad se usa un icono: el botón de apuntarse
 	// (`convoca_shifts_boton_apuntarse`). Antes se encolaba aquí, en `init`, y la hoja de
@@ -68,6 +68,11 @@ function convoca_shifts_register_scripts() {
 
 // Shortcode: [calendario_centro].
 add_shortcode( 'convoca_calendario', 'Convoca\Shifts\convoca_shifts_calendario_centro' );
+/**
+ * Documentación del método.
+ *
+ * @return mixed
+ */
 function convoca_shifts_calendario_centro() {
 	wp_enqueue_style( 'convoca-shifts-style' );
 	wp_enqueue_script( 'convoca-shifts-calendario' );
@@ -113,7 +118,7 @@ function convoca_shifts_calendario_centro() {
 /**
  * Render the modal in the footer to avoid transform/containment issues.
  */
-function convoca_shifts_render_frontend_modal() {
+function convoca_shifts_render_frontend_modal(): void {
 	if ( ! is_user_logged_in() || ( ! current_user_can( 'gestionar_mis_turnos' ) && ! current_user_can( 'manage_options' ) ) ) {
 		return;
 	}
@@ -176,6 +181,11 @@ function convoca_shifts_render_frontend_modal() {
 
 // Shortcode: [boton_apuntarse].
 add_shortcode( 'convoca_boton_apuntarse', 'Convoca\Shifts\convoca_shifts_boton_apuntarse' );
+/**
+ * Documentación del método.
+ *
+ * @return mixed
+ */
 function convoca_shifts_boton_apuntarse() {
 	if ( ! is_user_logged_in() || ( ! current_user_can( 'gestionar_mis_turnos' ) && ! current_user_can( 'manage_options' ) ) ) {
 		return '';
@@ -252,7 +262,12 @@ function convoca_shifts_boton_apuntarse() {
 
 // Shortcode: [resumen_turnos].
 add_shortcode( 'convoca_resumen_turnos', 'Convoca\Shifts\convoca_shifts_resumen_turnos' );
-function convoca_shifts_resumen_turnos( $atts = array() ) {
+/**
+ * Documentación del método.
+ *
+ * @return mixed
+ */
+function convoca_shifts_resumen_turnos( mixed $atts = array() ) {
 	$atts = shortcode_atts( array( 'semana' => 'this' ), $atts );
 	wp_enqueue_style( 'convoca-shifts-style' );
 	wp_enqueue_script( 'convoca-shifts-calendario' );
@@ -363,7 +378,7 @@ function convoca_shifts_resumen_turnos( $atts = array() ) {
 			echo '<div class="convoca-shifts-resumen-gaps"><strong>' . esc_html__( 'Huecos libres:', 'convoca-shifts' ) . '</strong> ';
 			$gap_strings = array();
 			foreach ( $gaps as $gap ) {
-				$gap_strings[] = convoca_shifts_fecha_corta( get_post_timestamp( $gap ) ) . ' (' . esc_html( get_the_time( 'H:i', $gap ) ) . ')';
+				$gap_strings[] = convoca_shifts_fecha_corta( (int) get_post_timestamp( $gap ) ) . ' (' . esc_html( (string) get_the_time( 'H:i', $gap ) ) . ')';
 			}
 			echo esc_html( implode( ', ', $gap_strings ) );
 			echo '</div>';
@@ -419,7 +434,12 @@ add_shortcode( 'convoca_suscripcion_turnos', 'Convoca\Shifts\convoca_shifts_caja
 
 // Shortcode: [proximos_turnos cantidad="5"].
 add_shortcode( 'convoca_proximos_turnos', 'Convoca\Shifts\convoca_shifts_proximos_turnos' );
-function convoca_shifts_proximos_turnos( $atts ) {
+/**
+ * Documentación del método.
+ *
+ * @return mixed
+ */
+function convoca_shifts_proximos_turnos( mixed $atts ) {
 	$atts = shortcode_atts(
 		array(
 			'cantidad' => 5,
@@ -458,7 +478,7 @@ function convoca_shifts_proximos_turnos( $atts ) {
 	foreach ( $turnos as $turno ) {
 		$responsable_id = (int) get_post_meta( $turno->ID, '_id_responsable', true );
 		$ts             = get_post_timestamp( $turno );
-		$date           = convoca_shifts_fecha_corta( $ts );
+		$date           = convoca_shifts_fecha_corta( (int) $ts );
 		$time           = get_the_time( 'H:i', $turno );
 
 		$responsable_texto = '';
@@ -484,7 +504,7 @@ function convoca_shifts_proximos_turnos( $atts ) {
 			$texto_hora = esc_html__( 'sin hora fijada', 'convoca-shifts' );
 		} else {
 			$separador  = ' ' . esc_html__( 'a las', 'convoca-shifts' ) . ' ';
-			$texto_hora = esc_html( $time );
+			$texto_hora = esc_html( (string) $time );
 		}
 
 		echo '<li style="margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid #eee;">';

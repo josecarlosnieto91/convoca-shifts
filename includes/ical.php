@@ -258,13 +258,13 @@ class Ical {
 			$hora_fin = strlen( $hora_fin ) === 4 ? '0' . $hora_fin : $hora_fin;
 			$fin      = $dia . ' ' . $hora_fin . ':00';
 			if ( strtotime( $fin ) <= strtotime( $inicio_local ) ) {
-				$fin = wp_date( 'Y-m-d H:i:s', strtotime( $fin . ' +1 day' ) );
+				$fin = (string) wp_date( 'Y-m-d H:i:s', (int) strtotime( $fin . ' +1 day' ) );
 			}
 
 			return $fin;
 		}
 
-		return wp_date( 'Y-m-d H:i:s', strtotime( $inicio_local . ' +4 hours' ) );
+		return (string) wp_date( 'Y-m-d H:i:s', (int) strtotime( $inicio_local . ' +4 hours' ) );
 	}
 
 	/**

@@ -59,6 +59,7 @@ class Admin_Turnos_List_Page {
 	 *
 	 * @param string $admin_title Título completo que ha montado WordPress.
 	 * @param string $title       Título de la página.
+	 * @return mixed
 	 */
 	public function titulo_documento( $admin_title, $title ) {
 		$pagina = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';

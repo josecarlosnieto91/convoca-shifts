@@ -26,8 +26,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * dejaba `$dias` en `[ '0' => '', '1' => '', … ]`, así que el generador no encontraba ningún día `activo`
  * y respondía siempre «Se han generado 0 turnos nuevos.» (issue #9). Se sanea campo a campo.
  *
- * @param array $dias Datos crudos del POST, tal cual: dias[N][campo].
- * @return array Días saneados, conservando el anidamiento.
+ * @param array<string, mixed> $dias Datos crudos del POST, tal cual: dias[N][campo].
+ * @return array<int, array<string, mixed>> Días saneados, conservando el anidamiento.
  */
 function convoca_shifts_sanear_dias( array $dias ): array {
 	$limpio = array();

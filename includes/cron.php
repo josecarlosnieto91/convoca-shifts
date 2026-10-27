@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-function convoca_shifts_schedule_cron() {
+function convoca_shifts_schedule_cron(): void {
 	if ( ! wp_next_scheduled( 'convoca_shifts_hourly_event' ) ) {
 		wp_schedule_event( time(), 'hourly', 'convoca_shifts_hourly_event' );
 	}
@@ -30,7 +30,7 @@ function convoca_shifts_schedule_cron() {
 	}
 }
 
-function convoca_shifts_clear_cron() {
+function convoca_shifts_clear_cron(): void {
 	$hourly_timestamp = wp_next_scheduled( 'convoca_shifts_hourly_event' );
 	if ( $hourly_timestamp ) {
 		wp_unschedule_event( $hourly_timestamp, 'convoca_shifts_hourly_event' );
@@ -44,7 +44,7 @@ function convoca_shifts_clear_cron() {
 add_action( 'convoca_shifts_hourly_event', 'Convoca\Shifts\convoca_shifts_send_reminders' );
 add_action( 'convoca_shifts_daily_event', 'Convoca\Shifts\convoca_shifts_cleanup_old_meta' );
 
-function convoca_shifts_cleanup_old_meta() {
+function convoca_shifts_cleanup_old_meta(): void {
 	global $wpdb;
 	$two_days_ago = wp_date( 'Y-m-d H:i:s', time() - ( 2 * DAY_IN_SECONDS ) );
 
@@ -60,7 +60,7 @@ function convoca_shifts_cleanup_old_meta() {
 	);
 }
 
-function convoca_shifts_send_reminders() {
+function convoca_shifts_send_reminders(): void {
 	if ( ! \Convoca\Core\Utils::acquire_lock( 'convoca_shifts_reminder_cron', 120 ) ) {
 		return;
 	}
@@ -123,7 +123,7 @@ function convoca_shifts_send_reminders() {
 		if ( $turnos->have_posts() ) {
 			while ( $turnos->have_posts() ) {
 				$turnos->the_post();
-				$post_id = get_the_ID();
+				$post_id = (int) get_the_ID();
 
 				// Avoid sending multiple reminders for the same turno.
 				if ( get_post_meta( $post_id, '_convoca_shifts_reminder_sent', true ) ) {

@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 add_action( 'admin_menu', 'Convoca\Shifts\convoca_shifts_add_estadisticas_menu', 20 );
-function convoca_shifts_add_estadisticas_menu() {
+function convoca_shifts_add_estadisticas_menu(): void {
 	add_submenu_page(
 		'edit.php?post_type=centro_turno',
 		__( 'Estadísticas Voluntariado', 'convoca-shifts' ),
@@ -33,7 +33,7 @@ function convoca_shifts_add_estadisticas_menu() {
 	);
 }
 
-function convoca_shifts_estadisticas_page() {
+function convoca_shifts_estadisticas_page(): void {
 	global $wpdb;
 
 	// Diagnostic: Check if table exists.
@@ -213,6 +213,8 @@ function convoca_shifts_estadisticas_page() {
 
 /**
  * Preload stats for all volunteers in one query to avoid N+1.
+ *
+ * @return array<int, array<string, mixed>>
  */
 function convoca_shifts_preload_voluntario_stats(): array {
 	global $wpdb;
@@ -284,8 +286,10 @@ function convoca_shifts_preload_voluntario_stats(): array {
 
 /**
  * Get volunteer stats for a single user (uses preloaded cache if available).
+ *
+ * @return mixed
  */
-function convoca_shifts_get_voluntario_stats( $user_id ) {
+function convoca_shifts_get_voluntario_stats( mixed $user_id ) {
 	if ( ! isset( $GLOBALS['_sh_stats_precargadas'] ) ) {
 		$GLOBALS['_sh_stats_precargadas'] = convoca_shifts_preload_voluntario_stats();
 	}
@@ -314,7 +318,12 @@ function convoca_shifts_reset_stats_precargadas(): void {
 	unset( $GLOBALS['_sh_stats_precargadas'] );
 }
 
-function convoca_shifts_get_action_label( $action ) {
+/**
+ * Documentación del método.
+ *
+ * @return mixed
+ */
+function convoca_shifts_get_action_label( mixed $action ) {
 	$labels = array(
 		'turno_creado'        => __( 'Creado', 'convoca-shifts' ),
 		'turno_cubierto'      => __( 'Cubierto', 'convoca-shifts' ),
@@ -331,7 +340,7 @@ function convoca_shifts_get_action_label( $action ) {
 
 // --- Handler for Statistics CSV Export ---.
 add_action( 'admin_init', 'Convoca\Shifts\convoca_shifts_exportar_stats_csv_handler' );
-function convoca_shifts_exportar_stats_csv_handler() {
+function convoca_shifts_exportar_stats_csv_handler(): void {
 	if ( isset( $_POST['convoca_shifts_action'] ) && $_POST['convoca_shifts_action'] === 'exportar_stats_csv' && check_admin_referer( 'convoca_shifts_exportar_stats_action' ) ) {
 		if ( ! current_user_can( 'convoca_shifts_view_stats' ) ) {
 			return;

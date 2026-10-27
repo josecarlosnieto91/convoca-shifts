@@ -136,7 +136,7 @@ add_action(
  * Activation hook
  */
 register_activation_hook( __FILE__, 'Convoca\Shifts\convoca_shifts_activate_plugin' );
-function convoca_shifts_activate_plugin() {
+function convoca_shifts_activate_plugin(): void {
 	convoca_shifts_register_cpt_centro_turno();
 	convoca_shifts_create_log_table();
 	flush_rewrite_rules();
@@ -149,7 +149,7 @@ function convoca_shifts_activate_plugin() {
 	// `Personas_Asignables`, cuyo valor por defecto es vacío.
 }
 
-function convoca_shifts_create_log_table() {
+function convoca_shifts_create_log_table(): void {
 	global $wpdb;
 	$table_name      = $wpdb->prefix . 'convoca_shifts_activity_log';
 	$charset_collate = $wpdb->get_charset_collate();
@@ -173,7 +173,7 @@ function convoca_shifts_create_log_table() {
 /**
  * Log an activity to the custom table.
  */
-function convoca_shifts_log_activity( $user_id, $turno_id, $action, $data = array() ) {
+function convoca_shifts_log_activity( mixed $user_id, mixed $turno_id, mixed $action, mixed $data = array() ): void {
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'convoca_shifts_activity_log';
 
@@ -201,7 +201,7 @@ function convoca_shifts_log_activity( $user_id, $turno_id, $action, $data = arra
  * Deactivation hook
  */
 register_deactivation_hook( __FILE__, 'Convoca\Shifts\convoca_shifts_deactivate_plugin' );
-function convoca_shifts_deactivate_plugin() {
+function convoca_shifts_deactivate_plugin(): void {
 	convoca_shifts_clear_cron();
 }
 
@@ -261,7 +261,7 @@ add_action(
  * Admin notice if the required role is missing
  */
 add_action( 'admin_notices', 'Convoca\Shifts\convoca_shifts_check_required_role' );
-function convoca_shifts_check_required_role() {
+function convoca_shifts_check_required_role(): void {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}

@@ -53,6 +53,7 @@ class Convoca_Shifts_Admin_Turno_Editor {
 	 *
 	 * @param string $admin_title Título completo que ha montado WordPress.
 	 * @param string $title       Título de la página.
+	 * @return mixed
 	 */
 	public function titulo_documento( $admin_title, $title ) {
 		$pagina    = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
@@ -139,7 +140,7 @@ class Convoca_Shifts_Admin_Turno_Editor {
 
 		// Get current taxonomy terms.
 		$term_actividad    = $is_edit ? wp_get_post_terms( $post_id, 'convoca_shifts_actividad', array( 'fields' => 'ids' ) ) : array();
-		$current_actividad = ! empty( $term_actividad ) ? $term_actividad[0] : 0;
+		$current_actividad = ( is_array( $term_actividad ) && array() !== $term_actividad ) ? (int) $term_actividad[0] : 0;
 		$current_monitor   = $is_edit ? (int) get_post_meta( $post_id, '_monitor', true ) : 0;
 
 		// Las personas las aporta quien las gestiona; Shifts no pregunta por roles.
@@ -153,6 +154,7 @@ class Convoca_Shifts_Admin_Turno_Editor {
 				'orderby'    => 'name',
 			)
 		);
+		$all_actividades = is_array( $all_actividades ) ? $all_actividades : array();
 		$all_monitores   = Personas_Asignables::lista( 'monitor' );
 
 		?>

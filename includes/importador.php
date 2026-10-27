@@ -209,8 +209,8 @@ class Importador {
 	/**
 	 * Normaliza los nombres de columna: minúsculas, sin acentos y con la barra baja del guion.
 	 *
-	 * @param array $valores Cabeceras tal cual vienen.
-	 * @return string[]
+	 * @param array<int, string|null> $valores Cabeceras tal cual vienen.
+	 * @return array<int, string>
 	 */
 	private static function normalizar_cabeceras( array $valores ): array {
 		$salida = array();
@@ -229,7 +229,7 @@ class Importador {
 					'-'  => '_',
 				)
 			);
-			$salida[] = preg_replace( '/_+/', '_', $clave );
+			$salida[] = (string) preg_replace( '/_+/', '_', $clave );
 		}
 
 		return $salida;
@@ -284,7 +284,7 @@ class Importador {
 	/**
 	 * Crea los turnos de las filas leídas.
 	 *
-	 * @param array $filas Filas ya validadas por `parsear()`.
+	 * @param array<int, array<string, mixed>> $filas Filas ya validadas por `parsear()`.
 	 * @return array{creados: int, repetidos: int, errores: string[]}
 	 */
 	public static function importar( array $filas ): array {

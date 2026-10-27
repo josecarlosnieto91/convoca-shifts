@@ -60,6 +60,8 @@ class Convoca_Shifts_Upgrade_Manager extends \Convoca\Core\Upgrade_Manager {
 
 	/**
 	 * Get an array of upgrade callbacks keyed by version.
+	 *
+	 * @return array<string, mixed>
 	 */
 	protected function get_upgrade_callbacks(): array {
 		return array(

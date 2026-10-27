@@ -27,6 +27,11 @@ class Convoca_Shifts_Admin_Status {
 	const SEVERITY_WARNING = 'warning';
 	const SEVERITY_ERROR   = 'error';
 
+	/**
+	 * Documentación del método.
+	 *
+	 * @return array<int, array<string, mixed>>
+	 */
 	public static function run_all(): array {
 		return array(
 			self::check_php_version(),
@@ -36,6 +41,11 @@ class Convoca_Shifts_Admin_Status {
 		);
 	}
 
+	/**
+	 * Documentación del método.
+	 *
+	 * @return array<string, mixed>
+	 */
 	public static function check_php_version(): array {
 		$v = PHP_VERSION;
 		if ( version_compare( $v, '8.0', '>=' ) ) {
@@ -50,6 +60,11 @@ class Convoca_Shifts_Admin_Status {
 		);
 	}
 
+	/**
+	 * Documentación del método.
+	 *
+	 * @return array<string, mixed>
+	 */
 	public static function check_pages(): array {
 		$slug = 'calendario';
 		$page = get_page_by_path( $slug );
@@ -72,6 +87,11 @@ class Convoca_Shifts_Admin_Status {
 		);
 	}
 
+	/**
+	 * Documentación del método.
+	 *
+	 * @return array<string, mixed>
+	 */
 	public static function check_tables(): array {
 		global $wpdb;
 		$tables  = array( "{$wpdb->prefix}convoca_logs", "{$wpdb->prefix}convoca_locks" );
@@ -93,6 +113,11 @@ class Convoca_Shifts_Admin_Status {
 		);
 	}
 
+	/**
+	 * Documentación del método.
+	 *
+	 * @return array<string, mixed>
+	 */
 	public static function check_cron(): array {
 		$hooks   = array( 'convoca_shifts_hourly_event', 'convoca_shifts_daily_event' );
 		$missing = array();
@@ -165,6 +190,11 @@ class Convoca_Shifts_Admin_Status {
 		<?php
 	}
 
+	/**
+	 * Documentación del método.
+	 *
+	 * @return array<string, mixed>
+	 */
 	private static function result( string $id, string $label, string $message, string $severity, string $fix = '' ): array {
 		return compact( 'id', 'label', 'message', 'severity', 'fix' );
 	}
