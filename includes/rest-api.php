@@ -375,7 +375,7 @@ function convoca_shifts_rest_apuntarse_turno( WP_REST_Request $request ) {
 
 	// Update Post Title (Non-critical if it fails after COMMIT, but we want it consistent).
 	$user_info = get_userdata( $user_id );
-	$nombre    = ! empty( $user_info->first_name ) ? $user_info->first_name : $user_info->display_name;
+	$nombre    = convoca_shifts_nombre_visible( $user_info );
 	wp_update_post(
 		array(
 			'ID'          => $post_id,
@@ -411,7 +411,7 @@ function convoca_shifts_rest_apuntarse_turno( WP_REST_Request $request ) {
 	\Convoca\Core\Mailer::send(
 		$admin_email,
 		'Turno cubierto: ' . $post->post_title,
-		'El voluntario ' . $user_info->display_name . ' ha cubierto el turno del ' . $fecha_para_email . '.',
+		'El voluntario ' . convoca_shifts_nombre_visible( $user_info ) . ' ha cubierto el turno del ' . $fecha_para_email . '.',
 		array(
 			'plugin'    => 'convoca-shifts',
 			'template'  => 'turno_cubierto_admin',
@@ -607,8 +607,8 @@ function convoca_shifts_rest_apuntarse_proximo( WP_REST_Request $request ) {
 	$post_id     = $turno_id;
 	$turno_post  = get_post( $post_id );
 	$user_info   = get_userdata( $user_id );
-	$nombre      = ! empty( $user_info->first_name ) ? $user_info->first_name : $user_info->display_name;
-	$title       = $turno_post->post_title;
+	$nombre      = convoca_shifts_nombre_visible( $user_info );
+	$title       = convoca_shifts_prop_texto( $turno_post, 'post_title' );
 	$fecha_turno = get_post_meta( $turno_id, '_fecha_inicio', true );
 	// Antes se hacía wp_date() sobre el resultado de strtotime() SIN comprobarlo: con la fecha
 	// mal formada («2026-10-23 :00») strtotime devuelve false y el aviso salía «del  a las » (shifts#20).
@@ -622,7 +622,7 @@ function convoca_shifts_rest_apuntarse_proximo( WP_REST_Request $request ) {
 	} elseif ( $fecha_turno && strlen( $fecha_turno ) >= 10 && false !== strtotime( substr( $fecha_turno, 0, 10 ) ) ) {
 		$date = wp_date( 'd/m/Y', strtotime( substr( $fecha_turno, 0, 10 ) ) );
 	} else {
-		$date = $turno_post->post_date;
+		$date = convoca_shifts_prop_texto( $turno_post, 'post_date' );
 	}
 	wp_update_post(
 		array(
@@ -795,4 +795,41 @@ function apuntarse_proximo_format_date( $fecha_turno, $turno_post ): string {
 		}
 	}
 	return $turno_post->post_date;
+}
+
+/**
+ * Lee una propiedad de texto de un objeto con tolerancia a dobles de prueba.
+ *
+ * @param mixed  $objeto Objeto (WP_Post o doble).
+ * @param string $clave  Propiedad a leer.
+ * @return string Vacío si no hay objeto o la propiedad no existe.
+ */
+function convoca_shifts_prop_texto( $objeto, string $clave ): string {
+	if ( ! is_object( $objeto ) ) {
+		return '';
+	}
+
+	$datos = get_object_vars( $objeto );
+
+	return (string) ( $datos[ $clave ] ?? '' );
+}
+
+/**
+ * Nombre visible de un usuario, sea WP_User o un doble de las pruebas.
+ *
+ * `get_userdata()` devuelve false si la cuenta ya no existe; leer la propiedad
+ * directamente dejaba un aviso de PHP justo cuando tocaba avisar.
+ *
+ * @param mixed $usuario Resultado de get_userdata().
+ * @return string Nombre a mostrar (vacío si no hay usuario).
+ */
+function convoca_shifts_nombre_visible( $usuario ): string {
+	if ( ! is_object( $usuario ) ) {
+		return '';
+	}
+
+	$datos  = get_object_vars( $usuario );
+	$nombre = (string) ( $datos['first_name'] ?? '' );
+
+	return '' !== $nombre ? $nombre : (string) ( $datos['display_name'] ?? '' );
 }

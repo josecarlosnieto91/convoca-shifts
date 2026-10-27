@@ -349,12 +349,6 @@ parameters:
 			path: includes/cpt-turno.php
 
 		-
-			message: '#^Cannot access property \$post_date on WP_Post\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: includes/cpt-turno.php
-
-		-
 			message: '#^Function Convoca\\Shifts\\convoca_shifts_actividad_add_meta_fields\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -659,24 +653,6 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: includes/importador.php
-
-		-
-			message: '#^Cannot access property \$display_name on WP_User\|false\.$#'
-			identifier: property.nonObject
-			count: 3
-			path: includes/rest-api.php
-
-		-
-			message: '#^Cannot access property \$post_date on WP_Post\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: includes/rest-api.php
-
-		-
-			message: '#^Cannot access property \$post_title on WP_Post\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: includes/rest-api.php
 
 		-
 			message: '#^Function Convoca\\Shifts\\apuntarse_proximo_format_date\(\) has parameter \$fecha_turno with no type specified\.$#'

@@ -1482,7 +1482,8 @@ function convoca_shifts_check_user_overlap( $user_id, $start_time, $end_time, $e
 
 	if ( $conflict_id && function_exists( 'Convoca\Shifts\convoca_shifts_log_activity' ) ) {
 		// Log the details of the conflict for debugging.
-		$existing_start = get_post_meta( $conflict_id, '_fecha_inicio', true ) ?: get_post( $conflict_id )->post_date;
+		$conflicto      = get_post( $conflict_id );
+		$existing_start = get_post_meta( $conflict_id, '_fecha_inicio', true ) ?: convoca_shifts_prop_texto( $conflicto, 'post_date' );
 		$existing_end   = get_post_meta( $conflict_id, '_hora_fin', true );
 		convoca_shifts_log_activity(
 			get_current_user_id(),
