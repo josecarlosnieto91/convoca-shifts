@@ -158,7 +158,7 @@ final class AdminSettingsTest extends TestCase {
 		$GLOBALS['_sh_db']['get_results'] = array(
 			(object) array(
 				'ID'           => 12,
-				'post_content' => '[calendario_centro]',
+				'post_content' => '[convoca_calendario]',
 			),
 		);
 		$GLOBALS['_wp_stores']['posts'][12] = (object) array(

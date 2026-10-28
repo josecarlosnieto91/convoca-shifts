@@ -1,3 +1,14 @@
+## [2.5.36] — 2026-10-28
+
+### Corregido
+
+- **el diagnóstico pedía una página que nunca podía reconocer**: la comprobación del calendario exigía
+  `[calendario_centro]`, pero el shortcode real es `[convoca_calendario]`. Como la búsqueda usa
+  `has_shortcode()`, que necesita el shortcode registrado, ese check salía en rojo en cualquier
+  instalación aunque la página existiera.
+- Añadido un test de coherencia: todo shortcode que el diagnóstico pide tiene que estar registrado por
+  el plugin, y un control negativo para que el test no pase por accidente.
+
 ## [2.5.35] — 2026-10-26
 
 ### Cambiado

@@ -329,10 +329,10 @@ function convoca_shifts_get_system_checks( bool $force = false ) {
 
 	// 2. Pages.
 	$required_pages = array(
-		'calendario_centro' => array(
+		'convoca_calendario' => array(
 			'title'     => __( 'Página: Calendario', 'convoca-shifts' ),
-			'shortcode' => '[calendario_centro]',
-			'fix'       => __( 'Crea una página con el shortcode [calendario_centro].', 'convoca-shifts' ),
+			'shortcode' => '[convoca_calendario]',
+			'fix'       => __( 'Crea una página con el shortcode [convoca_calendario].', 'convoca-shifts' ),
 		),
 	);
 
