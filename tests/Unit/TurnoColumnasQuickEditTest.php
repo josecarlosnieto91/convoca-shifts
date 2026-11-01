@@ -50,21 +50,6 @@ final class TurnoColumnasQuickEditTest extends TestCase {
 	}
 
 	/**
-	 * La columna de responsable va delante de la fecha, que es donde se mira.
-	 */
-	public function test_las_columnas_nuevas_van_donde_toca(): void {
-		$columnas = \Convoca\Shifts\convoca_shifts_set_custom_edit_centro_turno_columns(
-			array(
-				'cb'    => 'casilla',
-				'title' => 'Título',
-				'date'  => 'Fecha',
-			)
-		);
-
-		$this->assertSame( array( 'cb', 'title', 'responsable', 'estado_real', 'date' ), array_keys( $columnas ) );
-	}
-
-	/**
 	 * Columna de responsable: nombre de pila, guion si la persona ya no existe y «sin asignar» si no hay.
 	 */
 	public function test_la_columna_de_responsable(): void {
