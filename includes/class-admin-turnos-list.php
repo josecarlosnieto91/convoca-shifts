@@ -33,6 +33,18 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 
 class Admin_Turnos_List extends \WP_List_Table {
 
+	/**
+	 * Los estados de post que enseña el listado.
+	 *
+	 * Fuente única: el listado y los números que lo acompañan tienen que mirar los mismos, o el
+	 * total dice una cosa y la tabla otra (un turno en borrador visible y sin contar).
+	 *
+	 * `any` en WP_Query equivale a estos cinco: quedan fuera `trash`, `auto-draft` e `inherit`.
+	 *
+	 * @var string[]
+	 */
+	public const ESTADOS_LISTADOS = array( 'publish', 'future', 'draft', 'pending', 'private' );
+
 	public function __construct() {
 		parent::__construct(
 			array(
@@ -278,7 +290,7 @@ class Admin_Turnos_List extends \WP_List_Table {
 			'post_type'      => 'centro_turno',
 			'posts_per_page' => $per_page,
 			'paged'          => $current_page,
-			'post_status'    => 'any',
+			'post_status'    => self::ESTADOS_LISTADOS,
 			'order'          => $order,
 		);
 

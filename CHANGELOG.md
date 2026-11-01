@@ -1,3 +1,9 @@
+## [2.5.38] — 2026-11-01
+
+### Cambiado
+
+- **las estadisticas cuentan los mismos estados que el listado**
+
 ## [2.5.37] — 2026-11-01
 
 ### Cambiado

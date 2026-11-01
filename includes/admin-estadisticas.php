@@ -221,8 +221,14 @@ function convoca_shifts_preload_voluntario_stats(): array {
 	$stats = array();
 
 	// Total hours and counts per volunteer in a single query.
+	// Mismos estados que el listado: si aquí solo entra `publish`, el total de turnos del panel no
+	// cuadra con la tabla (los borradores se ven allí y no suman aquí).
+	$estados_sql = implode( ', ', array_fill( 0, count( Admin_Turnos_List::ESTADOS_LISTADOS ), '%s' ) );
+
+	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- placeholders generados, no datos.
 	$results = $wpdb->get_results(
-		"
+		$wpdb->prepare(
+			"
         SELECT
             pm_resp.meta_value AS user_id,
             COUNT(*) AS total_turnos,
@@ -233,9 +239,11 @@ function convoca_shifts_preload_voluntario_stats(): array {
         JOIN {$wpdb->postmeta} pm_resp ON p.ID = pm_resp.post_id AND pm_resp.meta_key = '_id_responsable'
         LEFT JOIN {$wpdb->postmeta} pm_real ON p.ID = pm_real.post_id AND pm_real.meta_key = '_estado_real'
         LEFT JOIN {$wpdb->postmeta} pm_fecha ON p.ID = pm_fecha.post_id AND pm_fecha.meta_key = '_fecha_inicio'
-        WHERE p.post_type = 'centro_turno' AND p.post_status = 'publish'
+        WHERE p.post_type = 'centro_turno' AND p.post_status IN ( {$estados_sql} )
         GROUP BY pm_resp.meta_value
-    "
+    ",
+			Admin_Turnos_List::ESTADOS_LISTADOS
+		)
 	);
 
 	if ( ! $results ) {
@@ -254,8 +262,10 @@ function convoca_shifts_preload_voluntario_stats(): array {
 	}
 
 	// Hours calculation (requires _hora_fin join) in a second aggregated query.
+	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- placeholders generados, no datos.
 	$hour_results = $wpdb->get_results(
-		"
+		$wpdb->prepare(
+			"
         SELECT
             pm_resp.meta_value AS user_id,
             TIMESTAMPDIFF(SECOND, pm_fecha.meta_value,
@@ -266,9 +276,11 @@ function convoca_shifts_preload_voluntario_stats(): array {
         JOIN {$wpdb->postmeta} pm_real ON p.ID = pm_real.post_id AND pm_real.meta_key = '_estado_real'
         LEFT JOIN {$wpdb->postmeta} pm_fecha ON p.ID = pm_fecha.post_id AND pm_fecha.meta_key = '_fecha_inicio'
         LEFT JOIN {$wpdb->postmeta} pm_fin ON p.ID = pm_fin.post_id AND pm_fin.meta_key = '_hora_fin'
-        WHERE p.post_type = 'centro_turno' AND p.post_status = 'publish'
+        WHERE p.post_type = 'centro_turno' AND p.post_status IN ( {$estados_sql} )
           AND pm_real.meta_value = 'realizado'
-    "
+    ",
+			Admin_Turnos_List::ESTADOS_LISTADOS
+		)
 	);
 
 	if ( $hour_results ) {
