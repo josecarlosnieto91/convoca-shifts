@@ -906,4 +906,28 @@ namespace {
 	require_once __DIR__ . '/StubRest.php';
 	require_once __DIR__ . '/StubFecha.php';
 	require_once __DIR__ . '/StubBlocks.php';
+
+    // Clases REALES del nucleo (Convoca\Core\*). Este bootstrap no carga el de Core
+    // entero porque define cientos de dobles de WordPress que chocarian con los de aqui;
+    // solo se registra su autoloader PSR-4. Los dobles que ya existan (StubMailer,
+    // StubLicenseManager...) siguen ganando: si la clase ya esta declarada, no se
+    // dispara el autoloader.
+    if ( ! function_exists( 'convoca_shifts_core_autoload' ) ) {
+        function convoca_shifts_core_autoload( $class ) {
+            $prefijo = 'Convoca\\Core\\';
+            if ( 0 !== strpos( $class, $prefijo ) ) {
+                return;
+            }
+            $core = \getenv( 'CONVOCA_CORE_PATH' ) ?: \dirname( __DIR__, 2 ) . '/convoca-core';
+            $relativo = str_replace( '\\', '/', substr( $class, strlen( $prefijo ) ) );
+            foreach ( array( 'includes/' . $relativo . '.php', 'includes/class-' . strtolower( str_replace( '_', '-', $relativo ) ) . '.php' ) as $ruta ) {
+                if ( \file_exists( $core . '/' . $ruta ) ) {
+                    require_once $core . '/' . $ruta;
+                    return;
+                }
+            }
+        }
+        spl_autoload_register( 'convoca_shifts_core_autoload' );
+    }
+
 }

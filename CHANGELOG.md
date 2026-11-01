@@ -1,3 +1,14 @@
+## [2.5.39] — 2026-11-01
+
+### Cambiado
+
+- **`Admin_Status` delega en Core**: las comprobaciones de PHP, tablas y cron y el
+  pintado pasan a `Convoca\Core\Admin\Diagnostico`. La comprobación de la página del
+  calendario sigue aquí. La API pública de la clase no cambia.
+- **arnés de pruebas**: el bootstrap registra el autoloader real de Core (sin cargar
+  su bootstrap entero, que chocaría con los dobles de este repo), para que las pruebas
+  puedan usar clases nuevas del núcleo.
+
 ## [2.5.38] — 2026-11-01
 
 ### Cambiado
