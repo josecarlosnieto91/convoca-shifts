@@ -1,3 +1,11 @@
+## [2.5.40] — 2026-11-01
+
+### Cambiado
+
+- **el arreglo de una comprobación va aparte**: `Diagnostico::resultado()` se queda en
+  cuatro parámetros y el texto del arreglo se añade con `con_arreglo()` (core 2.3.54).
+  Mismos textos y mismas severidades.
+
 ## [2.5.39] — 2026-11-01
 
 ### Cambiado

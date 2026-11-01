@@ -68,19 +68,23 @@ class Convoca_Shifts_Admin_Status {
 		$page = get_page_by_path( $slug );
 		if ( $page && $page->post_status === 'publish' ) {
 			$has = has_shortcode( $page->post_content, 'calendario_centro' );
-			return Diagnostico::resultado(
-				'page_calendario',
-				'Página Calendario',
-				$has ? 'Existe con shortcode [calendario_centro]' : 'Existe pero sin el shortcode',
-				$has ? self::SEVERITY_OK : self::SEVERITY_WARNING,
+			return Diagnostico::con_arreglo(
+				Diagnostico::resultado(
+					'page_calendario',
+					'Página Calendario',
+					$has ? 'Existe con shortcode [calendario_centro]' : 'Existe pero sin el shortcode',
+					$has ? self::SEVERITY_OK : self::SEVERITY_WARNING
+				),
 				'Añade el shortcode [calendario_centro] a la página.'
 			);
 		}
-		return Diagnostico::resultado(
-			'page_calendario',
-			'Página Calendario',
-			'No encontrada',
-			self::SEVERITY_ERROR,
+		return Diagnostico::con_arreglo(
+			Diagnostico::resultado(
+				'page_calendario',
+				'Página Calendario',
+				'No encontrada',
+				self::SEVERITY_ERROR
+			),
 			'Crea una página con el shortcode [calendario_centro]'
 		);
 	}
