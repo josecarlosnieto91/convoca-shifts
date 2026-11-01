@@ -77,6 +77,14 @@ jobs:
         with:
           dependency-versions: highest
           composer-options: '--ignore-platform-req=ext-iconv'
+      # El núcleo es una dependencia REAL de este plugin (Logger, Utils, Mailer,
+      # Hour_Ledger, y desde 2.5.39 Admin\Diagnostico). En CI no está al lado: se trae
+      # para probar contra la clase de verdad, no contra un doble que deje la suite
+      # corriendo en falso. Sin esto, AdminStatusTest da class.notFound.
+      - name: Traer el nucleo (dependencia real)
+        run: |
+          git clone --depth 1 https://github.com/josecarlosnieto91/convoca-core.git ../convoca-core
+          ( cd ../convoca-core && composer install --no-dev --no-interaction --ignore-platform-req=ext-iconv --optimize-autoloader )
       - name: Run unit tests
         run: vendor/bin/phpunit --testsuite unit
 
