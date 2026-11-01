@@ -1,3 +1,9 @@
+## [2.5.37] — 2026-11-01
+
+### Cambiado
+
+- **la pantalla de estado, en el autoload**
+
 ## [2.5.36] — 2026-10-28
 
 ### Corregido
