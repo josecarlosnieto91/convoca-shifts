@@ -42,6 +42,9 @@ add_action( 'widgets_init', 'Convoca\Shifts\convoca_shifts_register_widgets' );
  * Widget: Calendario Centro
  */
 class Convoca_Shifts_Calendario_Widget extends \WP_Widget {
+
+	use Formulario_Titulo;
+
 	public function __construct() {
 		parent::__construct(
 			'convoca_shifts_calendario_widget',
@@ -59,16 +62,6 @@ class Convoca_Shifts_Calendario_Widget extends \WP_Widget {
 		echo wp_kses_post( $args['after_widget'] );
 	}
 
-	public function form( $instance ) {
-		$title = ! empty( $instance['title'] ) ? $instance['title'] : '';
-		?>
-		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Título:', 'convoca-shifts' ); ?></label>
-			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
-		</p>
-		<?php
-	}
-
 	/**
 	 * Documentación del método.
 	 *
@@ -81,17 +74,15 @@ class Convoca_Shifts_Calendario_Widget extends \WP_Widget {
 	 * @param array<string, mixed> $old_instance Valores anteriores.
 	 * @return array<string, mixed>
 	 */
-	public function update( $new_instance, $old_instance ): array {
-		$instance          = array();
-		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? sanitize_text_field( $new_instance['title'] ) : '';
-		return $instance;
-	}
 }
 
 /**
  * Widget: Botón Apuntarse
  */
 class Convoca_Shifts_Boton_Apuntarse_Widget extends \WP_Widget {
+
+	use Formulario_Titulo;
+
 	public function __construct() {
 		parent::__construct(
 			'convoca_shifts_boton_apuntarse_widget',
@@ -109,16 +100,6 @@ class Convoca_Shifts_Boton_Apuntarse_Widget extends \WP_Widget {
 		echo wp_kses_post( $args['after_widget'] );
 	}
 
-	public function form( $instance ) {
-		$title = ! empty( $instance['title'] ) ? $instance['title'] : '';
-		?>
-		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Título:', 'convoca-shifts' ); ?></label>
-			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
-		</p>
-		<?php
-	}
-
 	/**
 	 * Guarda la configuración del widget.
 	 *
@@ -126,17 +107,15 @@ class Convoca_Shifts_Boton_Apuntarse_Widget extends \WP_Widget {
 	 * @param array<string, mixed> $old_instance Valores anteriores.
 	 * @return array<string, mixed>
 	 */
-	public function update( $new_instance, $old_instance ): array {
-		$instance          = array();
-		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? sanitize_text_field( $new_instance['title'] ) : '';
-		return $instance;
-	}
 }
 
 /**
  * Widget: Resumen Turnos
  */
 class Convoca_Shifts_Resumen_Turnos_Widget extends \WP_Widget {
+
+	use Formulario_Titulo;
+
 	public function __construct() {
 		parent::__construct(
 			'convoca_shifts_resumen_turnos_widget',
@@ -160,16 +139,6 @@ class Convoca_Shifts_Resumen_Turnos_Widget extends \WP_Widget {
 		echo wp_kses_post( $args['after_widget'] );
 	}
 
-	public function form( $instance ) {
-		$title = ! empty( $instance['title'] ) ? $instance['title'] : '';
-		?>
-		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Título:', 'convoca-shifts' ); ?></label>
-			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
-		</p>
-		<?php
-	}
-
 	/**
 	 * Guarda la configuración del widget.
 	 *
@@ -177,11 +146,6 @@ class Convoca_Shifts_Resumen_Turnos_Widget extends \WP_Widget {
 	 * @param array<string, mixed> $old_instance Valores anteriores.
 	 * @return array<string, mixed>
 	 */
-	public function update( $new_instance, $old_instance ): array {
-		$instance          = array();
-		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? sanitize_text_field( $new_instance['title'] ) : '';
-		return $instance;
-	}
 }
 
 /**

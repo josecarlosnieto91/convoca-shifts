@@ -171,6 +171,45 @@ final class WidgetsTest extends TestCase {
 	}
 
 	/**
+	 * Los otros dos formularios de un solo campo: calendario y botón.
+	 *
+	 * Seis widgets comparten el mismo formulario de título; solo dos estaban probados. Sin esto, unificar
+	 * los tres idénticos podría romper los otros dos sin que nada se pusiera en rojo.
+	 *
+	 * @dataProvider widgets_de_titulo
+	 *
+	 * @param string $clase  Clase del widget.
+	 * @param string $idbase Identificador base del widget.
+	 */
+	public function test_los_formularios_de_un_solo_campo( string $clase, string $idbase ): void {
+		$widget = new $clase();
+
+		ob_start();
+		$widget->form( array( 'title' => 'Con "comillas"' ) );
+		$form = (string) ob_get_clean();
+
+		$this->assertStringContainsString( 'name="widget-' . $idbase . '[2][title]"', $form );
+		$this->assertStringContainsString( 'id="widget-' . $idbase . '__2__title"', $form );
+		$this->assertStringContainsString( 'value="Con &quot;comillas&quot;"', $form, 'el valor va escapado' );
+		$this->assertStringNotContainsString( 'cantidad', $form, 'estos no llevan segundo campo' );
+
+		$this->assertSame( array( 'title' => 'Hola' ), $widget->update( array( 'title' => '  Hola  ' ), array() ) );
+		$this->assertSame( array( 'title' => '' ), $widget->update( array(), array( 'title' => 'viejo' ) ) );
+	}
+
+	/**
+	 * Los dos widgets de un solo campo.
+	 *
+	 * @return array<string, array{0: class-string, 1: string}>
+	 */
+	public static function widgets_de_titulo(): array {
+		return array(
+			'calendario' => array( \Convoca\Shifts\Convoca_Shifts_Calendario_Widget::class, 'convoca_shifts_calendario_widget' ),
+			'boton'      => array( \Convoca\Shifts\Convoca_Shifts_Boton_Apuntarse_Widget::class, 'convoca_shifts_boton_apuntarse_widget' ),
+		);
+	}
+
+	/**
 	 * Y en «Próximos» hay un segundo campo: la cantidad, con su 5 por defecto.
 	 */
 	public function test_el_formulario_de_los_proximos(): void {

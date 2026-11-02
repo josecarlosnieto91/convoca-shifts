@@ -1,3 +1,12 @@
+## [2.5.42] — 2026-11-02
+
+### Cambiado
+
+- **un formulario, tres widgets**: Calendario, Botón y Resumen tenían el mismo `form()` y el mismo
+  `update()` copiados; pasan a un trait `Formulario_Titulo`. El de «Próximos» no lo usa porque lleva
+  además la cantidad. Las pruebas de los cuatro formularios se amplían a los dos que no estaban
+  cubiertos: 453 pruebas.
+
 ## [2.5.41] — 2026-11-02
 
 ### Cambiado
