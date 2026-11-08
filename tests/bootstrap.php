@@ -619,7 +619,15 @@ namespace {
             return $GLOBALS['_sh_cron'][$h] ?? false;
         }
     }
-    if (!\function_exists('wp_schedule_event')) { function wp_schedule_event($ts, $r, $h, $a = []) { return true; } }
+    if (!\function_exists('wp_schedule_event')) {
+        function wp_schedule_event($ts, $r, $h, $a = []) {
+            // Como WordPress: si el enganche ya tiene un evento, devuelve falso y no lo duplica.
+            if (!empty($GLOBALS['_sh_cron'][$h])) { return false; }
+            $GLOBALS['_sh_cron'][$h]                 = $ts;
+            $GLOBALS['_sh_cron_recurrencias'][$h]    = $r;
+            return true;
+        }
+    }
     if (!\function_exists('wp_set_script_translations')) { function wp_set_script_translations($h, $d, $p) {} }
     if (!\function_exists('load_plugin_textdomain')) { function load_plugin_textdomain($d, $dep, $p) {} }
     if (!\function_exists('delete_post_meta_by_key')) { function delete_post_meta_by_key($key) { return true; } }

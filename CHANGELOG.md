@@ -1,3 +1,13 @@
+## [2.5.43] — 2026-11-08
+
+### Corregido
+
+- **el cron se asegura en cada carga, no solo en la activación** (#33): `convoca_shifts_schedule_cron()`
+  se engancha también a `init`. Un sitio ya activo —o al que un plugin de caché le vacía la tabla de
+  cron— se quedaba sin recordatorios ni limpieza, en silencio. Es idempotente: si el evento existe, no
+  se toca. Tres pruebas nuevas, y el doble de `wp_schedule_event` ahora apunta el evento y rechaza
+  duplicados como WordPress, para que la prueba pueda comprobarlo.
+
 ## [2.5.42] — 2026-11-02
 
 ### Cambiado

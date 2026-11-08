@@ -21,6 +21,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Asegura los eventos del cron.
+ *
+ * Idempotente: si el evento existe no lo toca. Se llama en la activación y también en `init`, porque un
+ * sitio ya activo (o uno al que un plugin de caché le vacía la tabla de cron) no vuelve a pasar por la
+ * activación y se quedaba sin recordatorios ni limpieza, en silencio (issue #33).
+ */
 function convoca_shifts_schedule_cron(): void {
 	if ( ! wp_next_scheduled( 'convoca_shifts_hourly_event' ) ) {
 		wp_schedule_event( time(), 'hourly', 'convoca_shifts_hourly_event' );
@@ -40,6 +47,9 @@ function convoca_shifts_clear_cron(): void {
 		wp_unschedule_event( $daily_timestamp, 'convoca_shifts_daily_event' );
 	}
 }
+
+// Se asegura en cada carga: la activación no basta para los sitios que ya estaban activos (#33).
+add_action( 'init', 'Convoca\Shifts\convoca_shifts_schedule_cron' );
 
 add_action( 'convoca_shifts_hourly_event', 'Convoca\Shifts\convoca_shifts_send_reminders' );
 add_action( 'convoca_shifts_daily_event', 'Convoca\Shifts\convoca_shifts_cleanup_old_meta' );
