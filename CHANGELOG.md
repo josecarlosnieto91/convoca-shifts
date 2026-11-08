@@ -1,3 +1,13 @@
+## [2.5.45] — 2026-11-08
+
+### Corregido
+
+- **fuera la paleta de un cliente del PHP** (#35): el aviso «Sin cubrir» usa el acento del sitio
+  (`--conv-accent-strong`), los bordes y fondos usan los tokens neutros y las pantallas de administración
+  pasan a los colores de WordPress. Ya no queda `#d35400` ni ningún gris de la paleta incrustado.
+
+Prueba nueva: falla si reaparece un color de cliente en cualquier PHP del plugin.
+
 ## [2.5.44] — 2026-11-08
 
 ### Cambiado

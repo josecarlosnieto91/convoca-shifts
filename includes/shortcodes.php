@@ -159,7 +159,7 @@ function convoca_shifts_render_frontend_modal(): void {
 					<option value="cerrado">🔴 <?php esc_html_e( 'Cerrado', 'convoca-shifts' ); ?></option>
 				</select>
 				<?php else : ?>
-				<select id="fe_estado" style="width:100%; pointer-events: none; background: #f1f5f9;">
+				<select id="fe_estado" style="width:100%; pointer-events: none; background: var(--conv-surface, #f1f5f9);">
 					<option value="abierto_disponible">🟡 <?php esc_html_e( 'Pendiente (Disponible para voluntarios)', 'convoca-shifts' ); ?></option>
 				</select>
 				<?php endif; ?>
@@ -488,11 +488,11 @@ function convoca_shifts_proximos_turnos( mixed $atts ) {
 				$nombre_mostrar = ! empty( $user->first_name ) ? $user->first_name : $user->display_name;
 				// El nombre se escapa AQUÍ (viene del usuario) y el HTML de la etiqueta se añade después:
 				// antes se imprimía todo con esc_html() y el resultado era el código a la vista
-				// (`<span style="color:#d35400...">`), y escaparlo de otra forma habría metido el nombre sin escapar.
+				// (`<span style="color:var(--conv-accent-strong, #b05500)...">`), y escaparlo de otra forma habría metido el nombre sin escapar.
 				$responsable_texto = ' — 👤 ' . esc_html( $nombre_mostrar );
 			}
 		} else {
-			$responsable_texto = ' — <span style="color:#d35400; font-weight:bold;">⚠️ ' . esc_html__( 'Sin cubrir', 'convoca-shifts' ) . '</span>';
+			$responsable_texto = ' — <span style="color:var(--conv-accent-strong, #b05500); font-weight:bold;">⚠️ ' . esc_html__( 'Sin cubrir', 'convoca-shifts' ) . '</span>';
 		}
 
 		// La hora sale del post, y un turno creado sin horario queda a las 00:00: decirlo («sin hora
@@ -507,7 +507,7 @@ function convoca_shifts_proximos_turnos( mixed $atts ) {
 			$texto_hora = esc_html( (string) $time );
 		}
 
-		echo '<li style="margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid #eee;">';
+		echo '<li style="margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid var(--conv-border, #dcdcde);">';
 		echo '📅 <strong>' . esc_html( $date ) . '</strong>' . $separador . $texto_hora;
 		// wp_kses_post y no esc_html: aquí SÍ hay que interpretar la etiqueta del estado. Lo que
 		// viene de fuera (el nombre del responsable) ya va escapado arriba.

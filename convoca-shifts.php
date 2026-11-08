@@ -3,7 +3,7 @@
  * Plugin Name:       Convoca Shifts
  * Plugin URI:        https://getconvoca.app
  * Description:       Volunteer shift management for community centers.
- * Version: 2.5.44
+ * Version: 2.5.45
  * Requires at least: 6.4
  * Requires PHP:      8.2
  * Tested up to:      7.1.3
@@ -276,7 +276,7 @@ function convoca_shifts_check_required_role(): void {
 		?>
 		<div class="convoca-alert convoca-alert--warning" style="display:block;margin-bottom:20px;">
 			<p><?php esc_html_e( '<strong>Atención:</strong> El rol "Voluntario Aprobado" no existe. Lo crea Convoca Core al cargar: comprueba que esté activo y actualizado.', 'convoca-shifts' ); ?>
-			<a href="?convoca_shifts_dismiss_role_notice=1" style="float:right;text-decoration:none;color:#999;">✕</a></p>
+			<a href="?convoca_shifts_dismiss_role_notice=1" style="float:right;text-decoration:none;color:#646970;">✕</a></p>
 		</div>
 		<?php
 	}

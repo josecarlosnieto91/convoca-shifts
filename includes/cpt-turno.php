@@ -963,7 +963,7 @@ function convoca_shifts_generar_turnos_page(): void {
 								echo '<option value="abierto_ocupado">' . esc_html__( '🔵 Ocupado (Actividad)', 'convoca-shifts' ) . '</option>';
 								echo '<option value="cerrado">' . esc_html__( '🔴 Cerrado', 'convoca-shifts' ) . '</option>';
 								echo '</select>';
-								echo '<div class="convoca-shifts-ocupado-extra" style="display:none; flex-direction: column; gap: 5px; margin-top: 5px; background: #fff; padding: 5px; border: 1px solid #eee;">';
+								echo '<div class="convoca-shifts-ocupado-extra" style="display:none; flex-direction: column; gap: 5px; margin-top: 5px; background: #fff; padding: 5px; border: 1px solid #dcdcde;">';
 								wp_dropdown_categories(
 									array(
 										'show_option_none' => __( '— Actividad —', 'convoca-shifts' ),
