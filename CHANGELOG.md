@@ -1,3 +1,11 @@
+## [2.5.44] — 2026-11-08
+
+### Cambiado
+
+- **el CSS deja de depender de la paleta del tema**: La hoja de turnos usa tokens neutros en vez de **64 presets del tema** y **14 colores** de la paleta de un cliente. Los plugins usan tokens `--conv-*` con valor
+  neutro y el tema de Convoca los rellena con su paleta, así que su aspecto no cambia. Prueba nueva
+  (`CssTokensTest`) que falla si vuelven los presets o un color de cliente.
+
 ## [2.5.43] — 2026-11-08
 
 ### Corregido

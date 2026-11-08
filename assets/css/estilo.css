@@ -1,3 +1,19 @@
+:root {
+	/* Tokens neutros del producto: cualquier sitio puede sobrescribirlos desde su CSS. */
+	--conv-bg: #ffffff;
+	--conv-surface: #f6f7f7;
+	--conv-fg: #1d2327;
+	--conv-muted: #50575e;
+	--conv-border: #dcdcde;
+	--conv-accent: #2271b1;
+	--conv-accent-strong: #135e96;
+	--conv-highlight: #8a6500;
+	--conv-ok: #0a7c3f;
+	--conv-accent-alt: #3858e9;
+	--conv-font-display: 'Outfit', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+	--conv-font-body: 'Outfit', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
 /* Container */
 .convoca-shifts-calendario-wrapper {
     max-width: 1000px;
@@ -39,7 +55,7 @@
 /* FullCalendar Customizations */
 .fc .fc-toolbar-title {
     font-size: 1.5em;
-    color: var(--wp--preset--color--antracita, #1a1a1a);
+    color: var(--conv-fg);
     font-weight: 700;
 }
 
@@ -65,7 +81,7 @@
 }
 
 /* Modern Day Styles (Matching Backend) */
-.fc .fc-day-past { background-color: var(--wp--preset--color--gris-piedra, #f4f4f4) !important; }
+.fc .fc-day-past { background-color: var(--conv-border) !important; }
 .fc .fc-day-future { background-color: #ffffff !important; }
 .fc .fc-day-today { background-color: #fffef2 !important; border: 2px solid #fde047 !important; }
 
@@ -108,7 +124,7 @@
     z-index: 1;
 }
 .fc .fc-day-future:hover .fc-daygrid-day-number {
-    background: var(--wp--preset--color--naranja, #ff8700);
+    background: var(--conv-accent);
     color: #fff;
 }
 
@@ -124,7 +140,7 @@
 }
 
 .fc-theme-standard td, .fc-theme-standard th {
-    border: 1px solid var(--wp--preset--color--gris-medio, #e0e0e0) !important;
+    border: 1px solid var(--conv-muted) !important;
 }
 
 .fc .fc-list-empty {
@@ -145,7 +161,7 @@
 
 /* Quick action button */
 .convoca-shifts-btn-proximo {
-    background: var(--wp--preset--color--naranja, #ff8700);
+    background: var(--conv-accent);
     color: #fff;
     border: none;
     padding: 12px 20px;
@@ -159,7 +175,7 @@
     transition: background 0.2s;
 }
 .convoca-shifts-btn-proximo:hover {
-    background: var(--wp--preset--color--naranja-intenso, #ff500a);
+    background: var(--conv-accent);
 }
 .convoca-shifts-btn-proximo:disabled {
     background: #ccc;
@@ -228,8 +244,8 @@
 
 /* Resumen Wrapper */
 .convoca-shifts-resumen-wrapper {
-    background: var(--wp--preset--color--gris-piedra, #f4f4f4);
-    border-left: 4px solid var(--wp--preset--color--naranja, #ff8700);
+    background: var(--conv-border);
+    border-left: 4px solid var(--conv-accent);
     padding: 15px;
     margin-bottom: 20px;
     border-radius: 4px;
@@ -277,7 +293,7 @@
     width: 95%;
     max-width: 550px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    border: 1px solid var(--wp--preset--color--gris-medio, #e0e0e0);
+    border: 1px solid var(--conv-muted);
     position: relative;
     max-height: 90vh;
     overflow-y: auto;
@@ -288,7 +304,7 @@
     margin-top: 0;
     margin-bottom: 25px;
     font-size: 1.75rem;
-    color: var(--wp--preset--color--antracita, #1a1a1a);
+    color: var(--conv-fg);
     font-weight: 800;
     text-align: center;
 }
@@ -321,8 +337,8 @@
 }
 
 .convoca-shifts-preset-btn {
-    background: var(--wp--preset--color--blanco, #ffffff);
-    border: 2px solid var(--wp--preset--color--gris-medio, #e0e0e0);
+    background: var(--conv-bg);
+    border: 2px solid var(--conv-muted);
     padding: 12px;
     border-radius: 8px;
     cursor: pointer;
@@ -332,17 +348,17 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    color: var(--wp--preset--color--antracita, #1a1a1a);
+    color: var(--conv-fg);
 }
 
 .convoca-shifts-preset-btn:hover {
-    border-color: var(--wp--preset--color--naranja, #ff8700);
+    border-color: var(--conv-accent);
     background: rgba(255, 135, 0, 0.1);
 }
 
 .convoca-shifts-preset-btn.active {
-    border-color: var(--wp--preset--color--naranja, #ff8700);
-    background: var(--wp--preset--color--naranja, #ff8700);
+    border-color: var(--conv-accent);
+    background: var(--conv-accent);
     color: #fff;
 }
 
@@ -352,7 +368,7 @@
     gap: 15px;
     margin-top: 30px;
     padding-top: 25px;
-    border-top: 2px solid var(--wp--preset--color--gris-piedra, #f4f4f4);
+    border-top: 2px solid var(--conv-border);
 }
 
 .convoca-shifts-modal-footer .button {
@@ -373,13 +389,13 @@
 /* Guardar - Green */
 .convoca-shifts-modal-footer #convoca-shifts-fe-save,
 .convoca-shifts-modal-footer button[type="submit"] {
-    background: var(--wp--preset--color--verde, #2d5a27) !important;
+    background: var(--conv-ok) !important;
     color: #fff !important;
 }
 
 .convoca-shifts-modal-footer #convoca-shifts-fe-save:hover,
 .convoca-shifts-modal-footer button[type="submit"]:hover {
-    background: var(--wp--preset--color--verde, #2d5a27) !important;
+    background: var(--conv-ok) !important;
     transform: translateY(-2px);
     box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3) !important;
 }
@@ -387,9 +403,9 @@
 /* Cancelar - Red */
 .convoca-shifts-modal-footer .convoca-shifts-fe-cancel,
 .convoca-shifts-modal-footer .convoca-shifts-cancel-btn {
-    background: var(--wp--preset--color--gris-piedra, #f4f4f4) !important;
+    background: var(--conv-border) !important;
     color: #64748b !important;
-    border: 1px solid var(--wp--preset--color--gris-medio, #e0e0e0) !important;
+    border: 1px solid var(--conv-muted) !important;
 }
 
 .convoca-shifts-modal-footer .convoca-shifts-fe-cancel:hover,
@@ -402,7 +418,7 @@
 .convoca-shifts-modal input[type="time"],
 .convoca-shifts-modal select {
     padding: 10px;
-    border: 1px solid var(--wp--preset--color--gris-medio, #e0e0e0);
+    border: 1px solid var(--conv-muted);
     border-radius: 6px;
     width: 100%;
 }
@@ -454,9 +470,9 @@
 
 .fc-list-event-title .convoca-shifts-event-link {
     margin-left: 10px;
-    background: var(--wp--preset--color--gris-piedra, #f4f4f4);
-    color: var(--wp--preset--color--antracita, #1a1a1a);
-    border: 1px solid var(--wp--preset--color--gris-medio, #e0e0e0);
+    background: var(--conv-border);
+    color: var(--conv-fg);
+    border: 1px solid var(--conv-muted);
 }
 
 .fc-daygrid-event-harness {
@@ -638,19 +654,19 @@
 }
 
 /* Public Notice */
-.convoca-shifts-public-notice { background: rgba(255, 135, 0, 0.1); color: var(--wp--preset--color--antracita, #1a1a1a); padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--wp--preset--color--naranja, #ff8700); font-size: 14px; display: flex; align-items: center; gap: 10px; }
+.convoca-shifts-public-notice { background: rgba(255, 135, 0, 0.1); color: var(--conv-fg); padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--conv-accent); font-size: 14px; display: flex; align-items: center; gap: 10px; }
 .convoca-shifts-public-notice.warning { background: #fffbeb; color: #92400e; border-color: #fde68a; }
 .convoca-shifts-public-notice a { font-weight: 700; color: #2563eb; text-decoration: underline; }
 .convoca-shifts-public-notice a:hover { color: #1d4ed8; }
 
 /* ── Admin: Turno Rápido Calendar ────────────── */
-#convoca-shifts-admin-calendar-container { background: var(--wp--preset--color--gris-piedra, #f4f4f4); border: 1px solid var(--wp--preset--color--gris-medio, #e0e0e0); }
+#convoca-shifts-admin-calendar-container { background: var(--conv-border); border: 1px solid var(--conv-muted); }
 
-#convoca-shifts-calendar-grid { background: var(--wp--preset--color--blanco, #ffffff); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-#convoca-shifts-calendar-grid table { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; border: 1px solid var(--wp--preset--color--gris-medio, #e0e0e0); }
-#convoca-shifts-calendar-grid th { background: var(--wp--preset--color--blanco, #ffffff); padding: 12px; border-bottom: 2px solid var(--wp--preset--color--gris-medio, #e0e0e0); border-right: 1px solid var(--wp--preset--color--gris-medio, #e0e0e0); text-align: center; font-size: 0.8em; text-transform: uppercase; color: var(--wp--preset--color--antracita, #1a1a1a); font-weight: 700; letter-spacing: 0.05em; }
+#convoca-shifts-calendar-grid { background: var(--conv-bg); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+#convoca-shifts-calendar-grid table { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; border: 1px solid var(--conv-muted); }
+#convoca-shifts-calendar-grid th { background: var(--conv-bg); padding: 12px; border-bottom: 2px solid var(--conv-muted); border-right: 1px solid var(--conv-muted); text-align: center; font-size: 0.8em; text-transform: uppercase; color: var(--conv-fg); font-weight: 700; letter-spacing: 0.05em; }
 #convoca-shifts-calendar-grid th:last-child { border-right: none; }
-#convoca-shifts-calendar-grid td { border-bottom: 1px solid var(--wp--preset--color--gris-medio, #e0e0e0); border-right: 1px solid var(--wp--preset--color--gris-medio, #e0e0e0); height: 110px; vertical-align: top; padding: 12px; position: relative; transition: all 0.2s ease; font-family: var(--wp--preset--font-family--body, inherit); }
+#convoca-shifts-calendar-grid td { border-bottom: 1px solid var(--conv-muted); border-right: 1px solid var(--conv-muted); height: 110px; vertical-align: top; padding: 12px; position: relative; transition: all 0.2s ease; font-family: var(--conv-font-body); }
 #convoca-shifts-calendar-grid td:last-child { border-right: none; }
 #convoca-shifts-calendar-grid tr:last-child td { border-bottom: none; }
 
@@ -658,25 +674,25 @@
     display: inline-flex; align-items: center; justify-content: center;
     width: 32px; height: 32px; border-radius: 8px;
     font-weight: 700; font-size: 1.1em;
-    background: rgba(0,0,0,0.05); color: var(--wp--preset--color--antracita, #1a1a1a);
+    background: rgba(0,0,0,0.05); color: var(--conv-fg);
     transition: all 0.2s ease;
 }
 
-.convoca-shifts-future-day { background: var(--wp--preset--color--blanco, #ffffff); cursor: pointer; }
-.convoca-shifts-future-day:hover { background: var(--wp--preset--color--gris-piedra, #f4f4f4); box-shadow: inset 0 0 10px rgba(59, 130, 246, 0.1); transform: scale(1.01); z-index: 5; border: 1px solid var(--wp--preset--color--naranja, #ff8700) !important; }
-.convoca-shifts-future-day:hover .convoca-shifts-day-num { background: var(--wp--preset--color--naranja, #ff8700); color: var(--wp--preset--color--blanco, #ffffff); transform: translateY(-2px); }
+.convoca-shifts-future-day { background: var(--conv-bg); cursor: pointer; }
+.convoca-shifts-future-day:hover { background: var(--conv-border); box-shadow: inset 0 0 10px rgba(59, 130, 246, 0.1); transform: scale(1.01); z-index: 5; border: 1px solid var(--conv-accent) !important; }
+.convoca-shifts-future-day:hover .convoca-shifts-day-num { background: var(--conv-accent); color: var(--conv-bg); transform: translateY(-2px); }
 
-.convoca-shifts-past-day { background: var(--wp--preset--color--blanco, #ffffff); color: #475569; cursor: default; filter: grayscale(0.5); }
+.convoca-shifts-past-day { background: var(--conv-bg); color: #475569; cursor: default; filter: grayscale(0.5); }
 .convoca-shifts-past-day .convoca-shifts-day-num { opacity: 0.6; background: rgba(0,0,0,0.03); }
 
 .convoca-shifts-weekend { background: #fffcf8; }
 .convoca-shifts-past-day.convoca-shifts-weekend { background: #fcfaf7; }
 
-.convoca-shifts-today { background: var(--wp--preset--color--amarillo, #fffbeb); cursor: pointer; border: 2px solid var(--wp--preset--color--amarillo, #fbbf24) !important; z-index: 10; box-shadow: 0 0 15px rgba(251, 191, 36, 0.2); }
-.convoca-shifts-today .convoca-shifts-day-num { background: var(--wp--preset--color--amarillo, #fbbf24); color: var(--wp--preset--color--blanco, #ffffff); box-shadow: 0 2px 4px rgba(251, 191, 36, 0.3); }
+.convoca-shifts-today { background: var(--conv-highlight); cursor: pointer; border: 2px solid var(--conv-highlight) !important; z-index: 10; box-shadow: 0 0 15px rgba(251, 191, 36, 0.2); }
+.convoca-shifts-today .convoca-shifts-day-num { background: var(--conv-highlight); color: var(--conv-bg); box-shadow: 0 2px 4px rgba(251, 191, 36, 0.3); }
 .convoca-shifts-today:hover { background: #fff9db; transform: scale(1.01); }
 
-.convoca-shifts-empty { background: var(--wp--preset--color--gris-piedra, #f4f4f4); cursor: default; opacity: 0.5; }
+.convoca-shifts-empty { background: var(--conv-border); cursor: default; opacity: 0.5; }
 
 /* Admin: Modal */
 .convoca-shifts-modal {
@@ -692,22 +708,22 @@
     margin: 0 !important; padding: 0 !important;
 }
 .convoca-shifts-modal.is-active { display: flex !important; }
-.convoca-shifts-modal-content { background-color: var(--wp--preset--color--blanco, #ffffff); padding: 35px; border-radius: 16px; width: 95%; max-width: 550px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); position: relative; border: 1px solid var(--wp--preset--color--gris-medio, #e0e0e0); margin: auto !important; }
+.convoca-shifts-modal-content { background-color: var(--conv-bg); padding: 35px; border-radius: 16px; width: 95%; max-width: 550px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); position: relative; border: 1px solid var(--conv-muted); margin: auto !important; }
 .convoca-shifts-close { color: #475569; float: right; font-size: 24px; font-weight: bold; cursor: pointer; line-height: 1; }
 .convoca-shifts-close:hover { color: #475569; }
 .convoca-shifts-form-row { display: flex; gap: 20px; margin-bottom: 20px; }
 .convoca-shifts-form-group { margin-bottom: 20px; flex: 1; }
-.convoca-shifts-form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--wp--preset--color--antracita, #1a1a1a); }
-.convoca-shifts-form-group input[type="time"], .convoca-shifts-form-group select { width: 100%; padding: 10px; border: 1px solid var(--wp--preset--color--gris-medio, #e0e0e0); border-radius: 6px; font-size: 14px; }
-.convoca-shifts-modal-footer { margin-top: 30px; display: flex; justify-content: stretch; gap: 15px; border-top: 2px solid var(--wp--preset--color--gris-piedra, #f4f4f4); padding-top: 25px; }
+.convoca-shifts-form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--conv-fg); }
+.convoca-shifts-form-group input[type="time"], .convoca-shifts-form-group select { width: 100%; padding: 10px; border: 1px solid var(--conv-muted); border-radius: 6px; font-size: 14px; }
+.convoca-shifts-modal-footer { margin-top: 30px; display: flex; justify-content: stretch; gap: 15px; border-top: 2px solid var(--conv-border); padding-top: 25px; }
 .convoca-shifts-modal-footer .convoca-btn { flex: 1; padding: 15px 25px !important; font-size: 16px !important; height: auto !important; line-height: 1.2 !important; border-radius: 10px !important; font-weight: 700 !important; text-align: center !important; transition: all 0.2s ease !important; border: none !important; cursor: pointer !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important; }
 .convoca-shifts-cancel-btn:hover { background: #fee2e2 !important; color: #ef4444 !important; border-color: #fecaca !important; }
 
 /* Admin: Presets */
 .convoca-shifts-presets { display: flex; flex-direction: column; gap: 10px; }
-.convoca-shifts-preset-btn { background: var(--wp--preset--color--blanco, #ffffff); border: 2px solid var(--wp--preset--color--gris-medio, #e0e0e0); padding: 12px; border-radius: 8px; cursor: pointer; text-align: left; font-weight: 500; transition: all 0.2s; display: flex; align-items: center; gap: 10px; color: var(--wp--preset--color--antracita, #1a1a1a); font-family: inherit; }
-.convoca-shifts-preset-btn:hover { border-color: var(--wp--preset--color--naranja, #ff8700); background: #eff6ff; }
-.convoca-shifts-preset-btn.active { border-color: var(--wp--preset--color--naranja, #ff8700); background: var(--wp--preset--color--naranja, #ff8700); color: var(--wp--preset--color--blanco, #ffffff); }
+.convoca-shifts-preset-btn { background: var(--conv-bg); border: 2px solid var(--conv-muted); padding: 12px; border-radius: 8px; cursor: pointer; text-align: left; font-weight: 500; transition: all 0.2s; display: flex; align-items: center; gap: 10px; color: var(--conv-fg); font-family: inherit; }
+.convoca-shifts-preset-btn:hover { border-color: var(--conv-accent); background: #eff6ff; }
+.convoca-shifts-preset-btn.active { border-color: var(--conv-accent); background: var(--conv-accent); color: var(--conv-bg); }
 
 /* ── Admin: Diagnostic Panel ─────────────────── */
 .convoca-shifts-diagnostic-wrapper { background: #fff; border: 1px solid #ccd0d4; box-shadow: 0 1px 1px rgba(0,0,0,.04); margin-top: 20px; }
@@ -808,7 +824,7 @@
    tres vistas (Mes, Semana, Lista): cero fondos claros dentro del calendario.
    Prueba que lo fija: tests/Unit/ModoOscuroDelCalendarioTest.php
    ══════════════════════════════════════════════════════════════════════════════════════════════ */
-/* El modal de crear turno y sus piezas usaban `--wp--preset--color--blanco`, que el tema NO remapea en
+/* El modal de crear turno y sus piezas usaban un color fijo que el tema NO remapea en
    modo oscuro: quedaba claro sobre claro (~1,08:1, medido el 16/10/2026, shifts#21). Se pintan con los
    tokens oscuros del tema, que es de donde sale el resto del modo oscuro. */
 .dark-mode .convoca-shifts-modal-content {
@@ -871,7 +887,7 @@
 
 .dark-mode .fc .fc-day-today {
 	background-color: var(--dark-elevated-2, #381a28) !important;
-	box-shadow: inset 0 0 0 2px var(--dark-amber, #ffab00) !important;
+	box-shadow: inset 0 0 0 2px var(--dark-amber, var(--conv-highlight)) !important;
 }
 
 .dark-mode .convoca-shifts-weekend {
@@ -924,7 +940,7 @@
 	gap: 0.5rem 1rem;
 	align-items: baseline;
 	padding: 0.6rem 0;
-	border-bottom: 1px solid var(--wp--preset--color--gris-medio, #e0e0e0);
+	border-bottom: 1px solid var(--conv-muted);
 }
 
 .convoca-shifts-proximos-lista li:last-child {
