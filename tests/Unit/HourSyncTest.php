@@ -135,7 +135,7 @@ final class HourSyncTest extends TestCase {
 
 		$this->assertSame( 4.0, (float) $GLOBALS['_wp_stores']['post_meta'][1]['_convoca_shifts_horas_contabilizadas'] );
 		$this->assertContains( 'COMMIT', $GLOBALS['_sh_db']['consultas'] );
-		$this->assertStringContainsString( 'wp_usermeta', implode( ' ', $GLOBALS['_sh_db']['consultas'] ), 'el saldo se actualiza en un solo UPSERT' );
+		$this->assertStringContainsString( 'wp_usermeta', implode( ' ', $GLOBALS['_sh_db']['consultas'] ), 'el saldo se actualiza en usermeta' );
 
 		$avisos = \Convoca\Core\Utils::$actions_fired;
 		$this->assertNotEmpty( $avisos, 'se avisa de las horas nuevas' );
@@ -228,13 +228,24 @@ final class HourSyncTest extends TestCase {
 		$GLOBALS['__horas_puerta'] = true;
 		$this->persona( 7 );
 		$this->turno( 1, '2026-11-05 17:00:00', '21:00' );
-		$GLOBALS['_sh_db']['lanza_en'] = 'INSERT INTO wp_usermeta';
+		$GLOBALS['_sh_db']['lanza_en'] = 'UPDATE wp_usermeta';
 
 		\Convoca\Shifts\Hour_Sync::sync_hours_to_volunteer_global( 1, 7, 'realizado' );
 
 		$this->assertContains( 'ROLLBACK', $GLOBALS['_sh_db']['consultas'], 'se deshace la transacción' );
 		$this->assertSame( array(), $GLOBALS['__horas_credit'] ?? array(), 'no se llega a acreditar' );
 		$this->assertSame( 'Turnos/Sync', \Convoca\Core\Logger::get_logs()[0]['context'] ?? '', 'y queda apuntado' );
+	}
+
+	/**
+	 * El saldo se actualiza sobre una fila concreta, no con un UPSERT que no existe (shifts#36).
+	 */
+	public function test_el_saldo_no_depende_de_un_indice_unico_que_no_existe(): void {
+		$fuente = (string) file_get_contents( dirname( __DIR__, 2 ) . '/includes/Hour_Sync.php' );
+
+		$this->assertStringNotContainsString( 'ON DUPLICATE KEY UPDATE', $fuente, 'usermeta no tiene índice único' );
+		$this->assertStringContainsString( 'FOR UPDATE', $fuente, 'se bloquea la fila del saldo' );
+		$this->assertStringContainsString( 'WHERE umeta_id = %d', $fuente, 'se actualiza una sola fila' );
 	}
 
 	/**

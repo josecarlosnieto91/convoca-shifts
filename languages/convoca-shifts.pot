@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: convoca-shifts 2.5.45\n"
+"Project-Id-Version: Convoca Shifts 2.5.46\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/convoca-shifts\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-02T00:02:04+00:00\n"
+"POT-Creation-Date: 2026-11-09T00:39:25+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: convoca-shifts\n"
@@ -1080,12 +1080,12 @@ msgstr ""
 msgid "Enlace a la entrada del blog o página con más información e inscripciones."
 msgstr ""
 
-#: includes/cron.php:146
+#: includes/cron.php:156
 msgid "Recordatorio de turno"
 msgstr ""
 
 #. translators: 1: first name, 2: turn title, 3: start time
-#: includes/cron.php:148
+#: includes/cron.php:158
 #, php-format
 msgid "Hola %1$s,\\n\\nTe recordamos que tienes un turno asignado para abrir el centro pronto:\\n\\nTurno: %2$s\\nHora de inicio: %3$s\\n\\n¡Gracias por tu voluntariado!"
 msgstr ""

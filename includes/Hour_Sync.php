@@ -167,22 +167,46 @@ class Hour_Sync {
 	}
 
 	/**
-	 * Atomically adds or subtracts hours from the global pool (caller must handle transaction)
+	 * Adds or subtracts hours from the global pool (caller must handle transaction).
+	 *
+	 * `wp_usermeta` no tiene índice único en (user_id, meta_key), así que el `ON DUPLICATE KEY
+	 * UPDATE` no se disparaba nunca: cada sincronización insertaba una fila más y
+	 * `get_user_meta( …, true )` seguía leyendo la primera, con el total congelado (shifts#36).
+	 * Se bloquea la fila existente y se actualiza esa; solo se inserta si no hay ninguna.
 	 */
 	private static function update_global_hours_locked( int $user_id, float $hours ): void {
 		global $wpdb;
 		$meta_key = '_convoca_horas_voluntariado_total';
 
-		// Atomic UPSERT: handles both insert and update in one query, avoiding SELECT+INSERT race.
-		$wpdb->query(
+		$umeta_id = $wpdb->get_var(
 			$wpdb->prepare(
-				"INSERT INTO {$wpdb->usermeta} (user_id, meta_key, meta_value)
-             VALUES (%d, %s, %f)
-             ON DUPLICATE KEY UPDATE meta_value = CAST(meta_value AS DECIMAL(10,2)) + %f",
+				"SELECT umeta_id FROM {$wpdb->usermeta}
+				 WHERE user_id = %d AND meta_key = %s
+				 ORDER BY umeta_id ASC LIMIT 1 FOR UPDATE",
 				$user_id,
-				$meta_key,
-				$hours,
-				$hours
+				$meta_key
+			)
+		);
+
+		if ( $umeta_id ) {
+			$wpdb->query(
+				$wpdb->prepare(
+					"UPDATE {$wpdb->usermeta}
+					 SET meta_value = CAST(meta_value AS DECIMAL(10,2)) + %f
+					 WHERE umeta_id = %d",
+					$hours,
+					(int) $umeta_id
+				)
+			);
+			return;
+		}
+
+		$wpdb->insert(
+			$wpdb->usermeta,
+			array(
+				'user_id'    => $user_id,
+				'meta_key'   => $meta_key,
+				'meta_value' => $hours,
 			)
 		);
 	}

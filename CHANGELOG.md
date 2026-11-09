@@ -1,3 +1,9 @@
+## [2.5.46] — 2026-11-09
+
+### Cambiado
+
+- **El saldo de horas se actualiza sobre una fila concreta, no con un UPSERT sin índice único**
+
 ## [2.5.45] — 2026-11-08
 
 ### Corregido
