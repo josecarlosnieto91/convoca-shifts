@@ -233,6 +233,11 @@ jobs:
           php-version: '8.3'
           extensions: mbstring, intl, gd, mysqli, pdo_mysql, zip
           tools: wp-cli
+      - name: Instalar WP-CLI
+        run: |
+          curl -fsSL -o /tmp/wp-cli.phar https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+          sudo install -m 0755 /tmp/wp-cli.phar /usr/local/bin/wp
+          wp --version
       - uses: ramsey/composer-install@v3
         with:
           dependency-versions: highest
