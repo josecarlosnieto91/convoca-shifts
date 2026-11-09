@@ -33,6 +33,13 @@ jobs:
       - name: Instalar gettext (msgfmt, lo exige el contrato de traducciones)
         run: sudo apt-get update -qq && sudo apt-get install -y -qq gettext
 
+      # El núcleo es dependencia real (Admin\Diagnostico): sin clonarlo, la suite de
+      # cobertura revienta con class.notFound. El CI normal ya lo trae; aquí faltaba.
+      - name: Traer el nucleo (dependencia real)
+        run: |
+          git clone --depth 1 https://github.com/josecarlosnieto91/convoca-core.git ../convoca-core
+          ( cd ../convoca-core && composer install --no-dev --no-interaction --ignore-platform-req=ext-iconv --optimize-autoloader )
+
       - name: Tests unitarios con cobertura
         # phpunit-unit.xml no declara <source>: se usa phpunit.xml.dist (misma suite unit,
         # con el filtro de cobertura sobre ./includes).
