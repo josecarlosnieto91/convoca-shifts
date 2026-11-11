@@ -76,11 +76,14 @@ final class RegresionesFormulariosTest extends TestCase {
 	 * se envía y el manejador cae en su primera comprobación («Acceso denegado.», HTTP 500).
 	 */
 	public function test_el_nonce_del_editor_viaja_dentro_del_formulario(): void {
-		$this->markTestIncomplete(
-			'Pendiente del arreglo de convoca-shifts#10: mover wp_nonce_field( "convoca_shifts_save_turno_…" ) ' .
-			'dentro del <form>. Cuando se mueva, bastará con comprobar que el bloque del formulario contiene ' .
-			'name="_convoca_shifts_nonce" y quitar esta marca.'
+		$bloque = $this->bloque_del_formulario( 'includes/class-admin-turno-editor.php', 'value="convoca_shifts_save_turno"' );
+
+		$this->assertStringContainsString(
+			"wp_nonce_field( 'convoca_shifts_save_turno_'",
+			$bloque,
+			'El nonce debe imprimirse dentro del formulario.'
 		);
+		$this->assertStringContainsString( '_convoca_shifts_nonce', $bloque );
 	}
 
 	/**
