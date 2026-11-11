@@ -1,3 +1,10 @@
+## [2.5.47] — 2026-11-11
+
+### Corregido
+
+- **Calendario con texto de contraste y controles accesibles**
+- El evento expone textColor y los controles de navegación llevan aria-label y aria-hidden.
+
 ## [2.5.46] — 2026-11-09
 
 ### Cambiado
