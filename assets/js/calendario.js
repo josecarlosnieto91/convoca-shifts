@@ -281,6 +281,14 @@ jQuery(document).ready(function ($) {
 
             calendar.render();
             $(calendarEl).addClass('fc'); // Mark as initialized
+            // Los iconos de FullCalendar son decorativos; los botones ya llevan nombre.
+            calendarEl.querySelectorAll('.fc-icon').forEach(function (icon) {
+                icon.setAttribute('aria-hidden', 'true');
+            });
+            var prevBtn = calendarEl.querySelector('.fc-prev-button');
+            var nextBtn = calendarEl.querySelector('.fc-next-button');
+            if (prevBtn) prevBtn.setAttribute('aria-label', 'Anterior');
+            if (nextBtn) nextBtn.setAttribute('aria-label', 'Siguiente');
             window.convocaShiftsCalendarInstance = calendar;
 
             // Load Proximo Libre for summary

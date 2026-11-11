@@ -167,12 +167,14 @@ function convoca_shifts_rest_get_turnos( WP_REST_Request $request ) {
 			$responsable_id = (int) get_post_meta( $post_id, '_id_responsable', true );
 			$necesita_apoyo = get_post_meta( $post_id, '_necesita_apoyo', true );
 
-			$title = get_the_title();
-			$color = '#f1c40f'; // Default yellow (Pendiente).
+			$title      = get_the_title();
+			$color      = '#f1c40f'; // Default yellow (Pendiente).
+			$text_color = '#1a1a1a'; // Texto oscuro sobre amarillo/verde/azul: contraste AA.
 
 			if ( $estado === 'cerrado' ) {
-				$color = '#e74c3c'; // Red.
-				$title = '🔴 Centro Cerrado';
+				$color      = '#e74c3c'; // Red.
+				$title      = '🔴 Centro Cerrado';
+				$text_color = '#ffffff';
 			} elseif ( $estado === 'abierto_ocupado' ) {
 				$color          = '#3498db'; // Blue.
 				$actividad_obj  = wp_get_post_terms( $post_id, 'convoca_shifts_actividad' );
@@ -259,6 +261,7 @@ function convoca_shifts_rest_get_turnos( WP_REST_Request $request ) {
 				'start'         => $event_start,
 				'end'           => $event_end,
 				'color'         => $color,
+				'textColor'     => $text_color,
 				'extendedProps' => $props,
 			);
 		}

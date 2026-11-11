@@ -114,7 +114,7 @@
 /* Highlight today's number */
 .fc .fc-day-today .fc-daygrid-day-number {
     background: #fbbf24 !important;
-    color: #fff !important;
+    color: #1a1a1a !important;
     box-shadow: 0 2px 4px rgba(251, 191, 36, 0.3);
 }
 
@@ -643,6 +643,7 @@
 }
 .fc .fc-daygrid-day-number {
     width: 28px;
+    color: #1a1a1a !important;
     height: 28px;
     font-size: 0.9em;
     border-radius: 6px;
